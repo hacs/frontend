@@ -12,7 +12,6 @@
 		"${env:HOME}${env:USERPROFILE}/.ssh:/tmp/.ssh" // This is added so you can push from inside the container
 	],
 	"extensions": [
-		"ms-python.python",
 		"github.vscode-pull-request-github",
 		"tabnine.tabnine-vscode"
 	],

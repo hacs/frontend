@@ -42,30 +42,9 @@ export class HacsPanelRepository extends LitElement {
   public repository_view = false;
 
   @property()
-  private ActiveSpinnerMainAction: boolean;
-
-  @property()
-  private ActiveSpinnerUninstall: boolean;
-
-  @property()
-  private ActiveSpinnerLoader: boolean;
-
   private repo: Repository;
 
-  ResetSpinner() {
-    this.ActiveSpinnerMainAction = false;
-    this.ActiveSpinnerUninstall = false;
-    this.ActiveSpinnerLoader = false;
-  }
-
   private RepositoryWebSocketAction(Action: string, Data: any = undefined): void {
-    if (Action === "install") {
-      this.ActiveSpinnerMainAction = true;
-    } else if (Action === "uninstall") {
-      this.ActiveSpinnerUninstall = true;
-    } else {
-      this.ActiveSpinnerLoader = true;
-    }
     let message: { [x: string]: any; type: string; action?: string; repository?: string; data?: any; id?: number; }
     if (Data) {
       message = {
@@ -81,27 +60,14 @@ export class HacsPanelRepository extends LitElement {
         repository: this.repository
       }
     }
-    this.hass.connection.sendMessagePromise(message).then(
-      (resp) => {
-        this.repositories = (resp as Repository[]);
-        this.ResetSpinner();
-        this.requestUpdate();
-      },
-      (err) => {
-        console.error('Message failed!', err);
-        this.ResetSpinner();
-        this.requestUpdate();
-      }
-    )
+    this.hass.connection.sendMessage(message);
   };
-
 
   protected firstUpdated() {
     if (!this.repo.updated_info) {
+      this.RepositoryWebSocketAction("set_state", "other");
       this.RepositoryWebSocketAction("update");
     }
-    this.ActiveSpinnerMainAction = false;
-    this.ActiveSpinnerUninstall = false;
   }
 
   render(): TemplateResult | void {
@@ -147,7 +113,7 @@ export class HacsPanelRepository extends LitElement {
       <ha-icon  icon="mdi:arrow-left"></ha-icon>
         ${back}
       </mwc-button>
-      ${(this.ActiveSpinnerLoader ? html`<paper-spinner active class="loader"></paper-spinner>` : "")}
+      ${(this.repo.state == "other" ? html`<paper-spinner active class="loader"></paper-spinner>` : "")}
     </div>
 
 
@@ -229,12 +195,13 @@ export class HacsPanelRepository extends LitElement {
       <div class="card-actions">
 
       <mwc-button @click=${this.RepositoryInstall}>
-        ${(this.ActiveSpinnerMainAction ? html`<paper-spinner active></paper-spinner>` : html`
+        ${(this.repo.state == "installing"
+        ? html`<paper-spinner active></paper-spinner>` : html`
         ${this.hass.localize(`component.hacs.repository.${this.repo.main_action.toLowerCase()}`)}
         `)}
       </mwc-button>
 
-      ${(this.repo.pending_upgrade ? html`
+      ${(this.repo.state == "installing" ? html`
       <a href="https://github.com/${this.repo.full_name}/releases" rel='noreferrer' target="_blank">
         <mwc-button>
         ${this.hass.localize(`component.hacs.repository.changelog`)}
@@ -249,7 +216,7 @@ export class HacsPanelRepository extends LitElement {
 
       ${(this.repo.installed ? html`
         <mwc-button class="right" @click=${this.RepositoryUnInstall}>
-        ${(this.ActiveSpinnerUninstall ? html`<paper-spinner active></paper-spinner>` : html`
+        ${(this.repo.state == "uninstalling" ? html`<paper-spinner active></paper-spinner>` : html`
         ${this.hass.localize(`component.hacs.repository.uninstall`)}
         `)}
         </mwc-button>`: "")}
@@ -274,18 +241,22 @@ export class HacsPanelRepository extends LitElement {
   }
 
   RepositoryReload() {
+    this.RepositoryWebSocketAction("set_state", "other");
     this.RepositoryWebSocketAction("update");
   }
 
   RepositoryInstall() {
+    this.RepositoryWebSocketAction("set_state", "installing");
     this.RepositoryWebSocketAction("install");
   }
 
   RepositoryUnInstall() {
+    this.RepositoryWebSocketAction("set_state", "uninstalling");
     this.RepositoryWebSocketAction("uninstall");
   }
 
   RepositoryBeta() {
+    this.RepositoryWebSocketAction("set_state", "other");
     if (this.repo.beta) {
       this.RepositoryWebSocketAction("hide_beta");
     } else {
@@ -294,6 +265,7 @@ export class HacsPanelRepository extends LitElement {
   }
 
   RepositoryHide() {
+    this.RepositoryWebSocketAction("set_state", "other");
     if (this.repo.hide) {
       this.RepositoryWebSocketAction("unhide");
     } else {
@@ -302,6 +274,7 @@ export class HacsPanelRepository extends LitElement {
   }
 
   SetVersion(ev: any) {
+    this.RepositoryWebSocketAction("set_state", "other");
     var Version = ev.composedPath()[2].outerText;
     if (Version) this.RepositoryWebSocketAction("set_version", Version);
   }
