@@ -11,10 +11,15 @@ import { unsafeHTML } from 'lit-html/directives/unsafe-html';
 import { HomeAssistant } from "custom-card-helpers";
 import { HacsStyle } from "../style/hacs-style"
 
+import { RepositoryWebSocketAction } from "../misc/RepositoryWebSocketAction"
+
 import { Configuration, Repository, Route } from "../types"
 import { navigate } from "../misc/navigate"
 
 import "../misc/Authors"
+import "../misc/buttons/HacsButtonOpenPlugin"
+import "../misc/buttons/HacsButtonOpenRepository"
+import "../misc/buttons/HacsButtonUninstall"
 import "../misc/RepositoryNote"
 import "./corePanel"
 
@@ -44,29 +49,10 @@ export class HacsPanelRepository extends LitElement {
   @property()
   private repo: Repository;
 
-  private RepositoryWebSocketAction(Action: string, Data: any = undefined): void {
-    let message: { [x: string]: any; type: string; action?: string; repository?: string; data?: any; id?: number; }
-    if (Data) {
-      message = {
-        type: "hacs/repository/data",
-        action: (Action as string),
-        repository: this.repository,
-        data: Data
-      }
-    } else {
-      message = {
-        type: "hacs/repository",
-        action: Action,
-        repository: this.repository
-      }
-    }
-    this.hass.connection.sendMessage(message);
-  };
-
   protected firstUpdated() {
     if (!this.repo.updated_info) {
-      this.RepositoryWebSocketAction("set_state", "other");
-      this.RepositoryWebSocketAction("update");
+      RepositoryWebSocketAction(this.hass, this.repo.id, "set_state", "other");
+      RepositoryWebSocketAction(this.hass, this.repo.id, "update");
     }
   }
 
@@ -208,19 +194,9 @@ export class HacsPanelRepository extends LitElement {
         </mwc-button>
       </a>`: "")}
 
-        <a href="https://github.com/${this.repo.full_name}" rel='noreferrer' target="_blank">
-          <mwc-button>
-          ${this.hass.localize(`component.hacs.repository.repository`)}
-          </mwc-button>
-        </a>
-
-      ${(this.repo.installed ? html`
-        <mwc-button class="right" @click=${this.RepositoryUnInstall}>
-        ${(this.repo.state == "uninstalling" ? html`<paper-spinner active></paper-spinner>` : html`
-        ${this.hass.localize(`component.hacs.repository.uninstall`)}
-        `)}
-        </mwc-button>`: "")}
-
+      <hacs-button-open-repository .hass=${this.hass} .repository=${this.repo}></hacs-button-open-repository>
+      <hacs-button-open-plugin .hass=${this.hass} .repository=${this.repo}></hacs-button-open-plugin>
+      <hacs-button-uninstall class="right" .hass=${this.hass} .repository=${this.repo}></hacs-button-uninstall>
 
       </div>
     </ha-card>
@@ -241,42 +217,42 @@ export class HacsPanelRepository extends LitElement {
   }
 
   RepositoryReload() {
-    this.RepositoryWebSocketAction("set_state", "other");
-    this.RepositoryWebSocketAction("update");
+    RepositoryWebSocketAction(this.hass, this.repo.id, "set_state", "other");
+    RepositoryWebSocketAction(this.hass, this.repo.id, "update");
   }
 
   RepositoryInstall() {
-    this.RepositoryWebSocketAction("set_state", "installing");
-    this.RepositoryWebSocketAction("install");
+    RepositoryWebSocketAction(this.hass, this.repo.id, "set_state", "installing");
+    RepositoryWebSocketAction(this.hass, this.repo.id, "install");
   }
 
   RepositoryUnInstall() {
-    this.RepositoryWebSocketAction("set_state", "uninstalling");
-    this.RepositoryWebSocketAction("uninstall");
+    RepositoryWebSocketAction(this.hass, this.repo.id, "set_state", "uninstalling");
+    RepositoryWebSocketAction(this.hass, this.repo.id, "uninstall");
   }
 
   RepositoryBeta() {
-    this.RepositoryWebSocketAction("set_state", "other");
+    RepositoryWebSocketAction(this.hass, this.repo.id, "set_state", "other");
     if (this.repo.beta) {
-      this.RepositoryWebSocketAction("hide_beta");
+      RepositoryWebSocketAction(this.hass, this.repo.id, "hide_beta");
     } else {
-      this.RepositoryWebSocketAction("show_beta");
+      RepositoryWebSocketAction(this.hass, this.repo.id, "show_beta");
     }
   }
 
   RepositoryHide() {
-    this.RepositoryWebSocketAction("set_state", "other");
+    RepositoryWebSocketAction(this.hass, this.repo.id, "set_state", "other");
     if (this.repo.hide) {
-      this.RepositoryWebSocketAction("unhide");
+      RepositoryWebSocketAction(this.hass, this.repo.id, "unhide");
     } else {
-      this.RepositoryWebSocketAction("hide");
+      RepositoryWebSocketAction(this.hass, this.repo.id, "hide");
     }
   }
 
   SetVersion(ev: any) {
-    this.RepositoryWebSocketAction("set_state", "other");
+    RepositoryWebSocketAction(this.hass, this.repo.id, "set_state", "other");
     var Version = ev.composedPath()[2].outerText;
-    if (Version) this.RepositoryWebSocketAction("set_version", Version);
+    if (Version) RepositoryWebSocketAction(this.hass, this.repo.id, "set_version", Version);
   }
 
   GoBackToStore() {
