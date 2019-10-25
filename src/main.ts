@@ -109,7 +109,7 @@ class HacsFrontendBase extends LitElement {
       this.panel = "installed";
     }
 
-    if (this.repositories === undefined) return html`<paper-spinner active class="loader"></paper-spinner>`;
+    if (this.repositories === undefined || this.configuration === undefined) return html`<paper-spinner active class="loader"></paper-spinner>`;
 
     if (/repository\//i.test(this.panel)) {
       this.repository_view = true;

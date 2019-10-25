@@ -11,6 +11,7 @@ export class RepositoryBannerNote extends LitElement {
     @property() private LLConfig: any;
 
     protected firstUpdated() {
+        if (!this.repository.installed) return
         this.hass.connection.sendMessagePromise({
             type: 'lovelace/config', force: false
         }).then(
