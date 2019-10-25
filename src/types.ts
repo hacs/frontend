@@ -16,6 +16,7 @@ export interface Configuration {
 }
 
 export interface Repository {
+    domain: string;
     category: string;
     country: string;
     description: string

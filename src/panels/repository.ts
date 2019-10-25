@@ -17,10 +17,13 @@ import { Configuration, Repository, Route } from "../types"
 import { navigate } from "../misc/navigate"
 
 import "../misc/Authors"
-import "../misc/buttons/HacsButtonOpenPlugin"
-import "../misc/buttons/HacsButtonOpenRepository"
-import "../misc/buttons/HacsButtonUninstall"
+import "../buttons/HacsButtonOpenPlugin"
+import "../buttons/HacsButtonOpenRepository"
+import "../buttons/HacsButtonUninstall"
+import "../buttons/HacsButtonMainAction"
+import "../buttons/HacsButtonChangelog"
 import "../misc/RepositoryNote"
+import "../misc/RepositoryBannerNote"
 import "./corePanel"
 
 @customElement("hacs-panel-repository")
@@ -102,6 +105,7 @@ export class HacsPanelRepository extends LitElement {
       ${(this.repo.state == "other" ? html`<paper-spinner active class="loader"></paper-spinner>` : "")}
     </div>
 
+    <hacs-repository-banner-note .hass=${this.hass} .repository=${this.repo}></hacs-repository-banner-note>
 
     <ha-card header="${this.repo.name}">
       <paper-menu-button no-animations horizontal-align="right" role="group" aria-haspopup="true" vertical-align="top" aria-disabled="false">
@@ -179,25 +183,11 @@ export class HacsPanelRepository extends LitElement {
 
 
       <div class="card-actions">
-
-      <mwc-button @click=${this.RepositoryInstall}>
-        ${(this.repo.state == "installing"
-        ? html`<paper-spinner active></paper-spinner>` : html`
-        ${this.hass.localize(`component.hacs.repository.${this.repo.main_action.toLowerCase()}`)}
-        `)}
-      </mwc-button>
-
-      ${(this.repo.state == "installing" ? html`
-      <a href="https://github.com/${this.repo.full_name}/releases" rel='noreferrer' target="_blank">
-        <mwc-button>
-        ${this.hass.localize(`component.hacs.repository.changelog`)}
-        </mwc-button>
-      </a>`: "")}
-
-      <hacs-button-open-repository .hass=${this.hass} .repository=${this.repo}></hacs-button-open-repository>
-      <hacs-button-open-plugin .hass=${this.hass} .repository=${this.repo}></hacs-button-open-plugin>
-      <hacs-button-uninstall class="right" .hass=${this.hass} .repository=${this.repo}></hacs-button-uninstall>
-
+        <hacs-button-main-action .hass=${this.hass} .repository=${this.repo}></hacs-button-main-action>
+        <hacs-button-changelog .hass=${this.hass} .repository=${this.repo}></hacs-button-changelog>
+        <hacs-button-open-repository .hass=${this.hass} .repository=${this.repo}></hacs-button-open-repository>
+        <hacs-button-open-plugin .hass=${this.hass} .repository=${this.repo}></hacs-button-open-plugin>
+        <hacs-button-uninstall class="right" .hass=${this.hass} .repository=${this.repo}></hacs-button-uninstall>
       </div>
     </ha-card>
 
@@ -219,16 +209,6 @@ export class HacsPanelRepository extends LitElement {
   RepositoryReload() {
     RepositoryWebSocketAction(this.hass, this.repo.id, "set_state", "other");
     RepositoryWebSocketAction(this.hass, this.repo.id, "update");
-  }
-
-  RepositoryInstall() {
-    RepositoryWebSocketAction(this.hass, this.repo.id, "set_state", "installing");
-    RepositoryWebSocketAction(this.hass, this.repo.id, "install");
-  }
-
-  RepositoryUnInstall() {
-    RepositoryWebSocketAction(this.hass, this.repo.id, "set_state", "uninstalling");
-    RepositoryWebSocketAction(this.hass, this.repo.id, "uninstall");
   }
 
   RepositoryBeta() {
