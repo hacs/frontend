@@ -3,6 +3,11 @@ export interface Route {
     prefix: string;
 }
 
+export interface Status {
+    startup: boolean;
+    background_task: boolean;
+}
+
 export interface Configuration {
     appdaemon: boolean;
     dev: string;

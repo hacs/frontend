@@ -13,7 +13,7 @@ import { HacsStyle } from "../style/hacs-style"
 
 import "../misc/CustomRepositories"
 
-import { Configuration, Repository } from "../types"
+import { Configuration, Repository, Status } from "../types"
 
 @customElement("hacs-panel-settings")
 export class HacsPanelSettings extends LitElement {
@@ -25,6 +25,9 @@ export class HacsPanelSettings extends LitElement {
 
   @property()
   public configuration!: Configuration
+
+  @property()
+  public status!: Status
 
   @property()
   private ActiveSpinnerReload: boolean
@@ -86,6 +89,7 @@ export class HacsPanelSettings extends LitElement {
     </ha-card>
     <hacs-custom-repositories
       .hass=${this.hass}
+      .status=${this.status}
       .configuration=${this.configuration}
       .repositories=${this.repositories}
     >

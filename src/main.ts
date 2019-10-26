@@ -10,7 +10,7 @@ import "./panels/corePanel";
 import "./panels/repository";
 import "./panels/settings";
 import { HacsStyle } from "./style/hacs-style";
-import { Configuration, Repository, Route } from "./types";
+import { Configuration, Repository, Route, Status } from "./types";
 
 
 @customElement("hacs-frontend")
@@ -23,6 +23,9 @@ class HacsFrontendBase extends LitElement {
 
   @property()
   public configuration!: Configuration
+
+  @property()
+  public status!: Status
 
   @property()
   public route!: Route;
@@ -67,11 +70,26 @@ class HacsFrontendBase extends LitElement {
     );
   }
 
+  public getStatus(): void {
+    this.hass.connection.sendMessagePromise({
+      type: "hacs/status"
+    }).then(
+      (resp) => {
+        this.status = (resp as Status);
+        this.requestUpdate();
+      },
+      (err) => {
+        console.error('[hacs/status] Message failed!', err);
+      }
+    );
+  }
+
   protected firstUpdated() {
     localStorage.setItem("hacs-search", "");
     this.panel = this._page;
     this.getRepositories();
-    this.getConfig()
+    this.getConfig();
+    this.getStatus();
 
     if (/repository\//i.test(this.panel)) {
       // How fun, this is a repository!
@@ -92,12 +110,20 @@ class HacsFrontendBase extends LitElement {
       { type: "hacs/config" }
     );
 
+    this.hass.connection.sendMessagePromise(
+      { type: "hacs/status" }
+    );
+
     this.hass.connection.subscribeEvents(
       () => this.getRepositories(), "hacs/repository"
     );
 
     this.hass.connection.subscribeEvents(
       () => this.getConfig(), "hacs/config"
+    );
+
+    this.hass.connection.subscribeEvents(
+      () => this.getStatus(), "hacs/status"
     );
   }
 
@@ -174,6 +200,7 @@ class HacsFrontendBase extends LitElement {
     .repositories=${this.repositories}
     .panel=${this.panel}
     .route=${this.route}
+    .status=${this.status}
     .repository_view=${this.repository_view}
     .repository=${this.repository}
     >
@@ -182,6 +209,7 @@ class HacsFrontendBase extends LitElement {
     ${(this.panel === "settings" ? html`
     <hacs-panel-settings
         .hass=${this.hass}
+        .status=${this.status}
         .configuration=${this.configuration}
         .repositories=${this.repositories}>
         </hacs-panel-settings>` : "")}

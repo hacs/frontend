@@ -2,7 +2,8 @@ import { LitElement, customElement, property, CSSResultArray, css, TemplateResul
 import { HacsStyle } from "../style/hacs-style"
 import { HomeAssistant } from "custom-card-helpers";
 
-import { Configuration, Repository } from "../types"
+import { Configuration, Repository, Status } from "../types"
+import { RepositoryWebSocketAction } from "../misc/RepositoryWebSocketAction"
 
 
 @customElement("hacs-custom-repositories")
@@ -17,47 +18,31 @@ export class CustomRepositories extends LitElement {
     public custom!: Repository[];
 
     @property()
+    public status!: Status
+
+    @property()
     public configuration!: Configuration;
 
     @property()
-    public SaveSpinner?: boolean;
+    public SaveSpinner: boolean;
+
+    protected updated() {
+        this.SaveSpinner = false;
+    }
 
     Delete(ev) {
         if (!window.confirm(this.hass.localize("component.hacs.confirm.delete", "item", ev.composedPath()[3].innerText))) return;
-        this.hass.connection.sendMessagePromise({
-            type: "hacs/repository",
-            action: "delete",
-            repository: ev.composedPath()[4].repoID
-        }).then(
-            (resp) => {
-                this.repositories = (resp as Repository[]);
-                this.requestUpdate();
-            },
-            (err) => {
-                console.error('Message failed!', err);
-            }
-        );
+        var repo = ev.composedPath()[4].repoID
+        RepositoryWebSocketAction(this.hass, repo, "delete")
+        this.requestUpdate();
     }
 
     Save(ev) {
         this.SaveSpinner = true;
-        console.log(ev.composedPath()[1].children[0].value)
-        console.log(ev.composedPath()[1].children[1].selectedItem.category)
-        this.hass.connection.sendMessagePromise({
-            type: "hacs/repository/data",
-            action: "add",
-            repository: ev.composedPath()[1].children[0].value,
-            data: ev.composedPath()[1].children[1].selectedItem.category
-        }).then(
-            (resp) => {
-                this.repositories = (resp as Repository[]);
-                this.SaveSpinner = false;
-                this.requestUpdate();
-            },
-            (err) => {
-                console.error('Message failed!', err);
-            }
-        );
+        var category = ev.composedPath()[1].children[1].selectedItem.category
+        var repo = ev.composedPath()[1].children[0].value
+        RepositoryWebSocketAction(this.hass, repo, "add", category)
+        this.requestUpdate();
     }
 
     protected render(): TemplateResult | void {
@@ -65,6 +50,7 @@ export class CustomRepositories extends LitElement {
             if (!repo.custom) return false;
             return true;
         })
+        if (this.status.startup) this.custom = [];
 
         return html`
         <ha-card header="${this.hass.localize("component.hacs.settings.custom_repositories")}">
