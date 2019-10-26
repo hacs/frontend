@@ -30,7 +30,14 @@ export class RepositoryBannerNote extends LitElement {
         var title: string = "";
         var type: "alert" | "warning" | "info" | "" = ""
 
-        if (this.repository.category == "integration") {
+        if (this.repository.status == "pending-restart") {
+            type = "alert";
+            title = "Restart pending"
+            message = `
+            You need to restart Home Assistant.
+            `
+        }
+        else if (this.repository.category == "integration") {
             if (!this.hass.config.components.includes(this.repository.domain)) {
                 type = "warning";
                 title = "Not Loaded"
@@ -59,14 +66,6 @@ export class RepositoryBannerNote extends LitElement {
                     `
                 }
             }
-        }
-
-        else if (this.repository.status == "pending-restart") {
-            type = "alert";
-            title = "Restart pending"
-            message = `
-            You need to restart Home Assistant.
-            `
         }
         if (message.length == 0) return html``;
         return html`
