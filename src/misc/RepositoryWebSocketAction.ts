@@ -7,7 +7,7 @@ export function RepositoryWebSocketAction(
     Data: any = undefined
 ): void {
     let message: { [x: string]: any; type: string; action?: string; repository?: string; data?: any; id?: number; }
-    if (Data) {
+    if (Data !== undefined) {
         message = {
             type: "hacs/repository/data",
             action: Action,
