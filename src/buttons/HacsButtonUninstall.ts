@@ -17,6 +17,12 @@ export class HacsButtonUninstall extends HacsRepositoryButton {
     }
 
     RepositoryUnInstall() {
+        if (window.confirm(
+            this.hass.localize("component.hacs.confirm.uninstall", "item", this.repository.name)
+        )) this.ExecuteAction()
+    }
+
+    ExecuteAction() {
         RepositoryWebSocketAction(
             this.hass, this.repository.id, "set_state", "uninstalling");
         RepositoryWebSocketAction(
