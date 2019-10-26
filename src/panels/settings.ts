@@ -71,13 +71,13 @@ export class HacsPanelSettings extends LitElement {
         `)}
       </mwc-button>
 
-      <a href="https://github.com/custom-components/hacs" target="_blank" rel="noreferrer">
+      <a href="https://github.com/hacs/integration" target="_blank" rel="noreferrer">
         <mwc-button raised>
           ${this.hass.localize(`component.hacs.settings.hacs_repo`)}
         </mwc-button>
       </a>
 
-      <a href="https://github.com/custom-components/hacs/issues" target="_blank" rel="noreferrer">
+      <a href="https://github.com/hacs/integration/issues" target="_blank" rel="noreferrer">
         <mwc-button raised>
           ${this.hass.localize(`component.hacs.repository.open_issue`)}
         </mwc-button>
@@ -113,8 +113,8 @@ export class HacsPanelSettings extends LitElement {
   }
 
   UpgradeAll() {
-    this.ActiveSpinnerReload = true;
-    console.log("This should reload data, but that is not added.")
+    this.ActiveSpinnerUpgradeAll = true;
+    console.log("This should Upgrade all repositories, but that is not added.")
   }
 
   static get styles(): CSSResultArray {

@@ -124,7 +124,9 @@ class HacsFrontendBase extends LitElement {
     <app-header slot="header" fixed>
         <app-toolbar>
         <ha-menu-button .hass="${this.hass}" .narrow="${this.narrow}"></ha-menu-button>
-        <div main-title>${this.hass.localize(`component.hacs.config.title`)}</div>
+        <div main-title>${this.hass.localize(`component.hacs.config.title`)}
+        ${(this._rootPath == "hacs_dev" ? html`DEVELOPMENT` : "")}
+        </div>
         </app-toolbar>
     <paper-tabs
     scrollable

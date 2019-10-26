@@ -14,6 +14,8 @@ import { HacsStyle } from "../style/hacs-style"
 import { Configuration, Repository, Route } from "../types"
 import { navigate } from "../misc/navigate"
 
+import "../buttons/HacsButtonClearNew"
+
 
 @customElement("hacs-panel")
 export class HacsPanelStore extends LitElement {
@@ -57,6 +59,7 @@ export class HacsPanelStore extends LitElement {
     } else {
 
       const category = this.panel;
+      var newRepositories: Repository[] = [];
       const config = this.configuration;
       this.SearchTerm = localStorage.getItem("hacs-search");
       var SearchTerm = this.SearchTerm;
@@ -88,6 +91,8 @@ export class HacsPanelStore extends LitElement {
             return false;
           }
 
+          if (repo.new) newRepositories.push(repo);
+
           // Fallback to not showing it if no search.
           return true;
         }
@@ -106,16 +111,63 @@ export class HacsPanelStore extends LitElement {
         .value=${this.SearchTerm}
       ></paper-input>
 
+    ${(newRepositories.length !== 0 ? html`
+    <div class="card-group">
+      <h1>${this.hass.localize(`component.hacs.store.new_repositories`)}</h1>
+      ${newRepositories.sort((a, b) => (a.name > b.name) ? 1 : -1).map(repo =>
+        html`
+          ${(this.configuration.frontend_mode !== "Table" ? html`
+          <paper-card @click="${this.ShowRepository}" .RepoID="${repo.id}">
+          <div class="card-content">
+            <div>
+              <ha-icon
+                icon="mdi:new-box"
+                class="${repo.status}"
+                title="${repo.status_description}"
+                >
+              </ha-icon>
+              <div>
+                <div class="title">${repo.name}</div>
+                <div class="addition">${repo.description}</div>
+              </div>
+            </div>
+          </div>
+          </paper-card>
+
+        ` : html`
+
+        <paper-item .RepoID=${repo.id} @click="${this.ShowRepository}">
+          <div class="icon">
+            <ha-icon
+              icon="mdi:new-box"
+              class="${repo.status}"
+              title="${repo.status_description}">
+          </ha-icon>
+          </div>
+          <paper-item-body two-line>
+            <div>${repo.name}</div>
+            <div class="addition">${repo.description}</div>
+          </paper-item-body>
+        </paper-item>
+        `)}
+      `)}
+    </div>
+    <div class="card-group">
+      <hacs-button-clear-new .hass=${this.hass} .category=${category}></hacs-button-clear-new>
+    </div>
+    <hr>
+    ` : "")}
+
     <div class="card-group">
     ${_repositories.sort((a, b) => (a.name > b.name) ? 1 : -1).map(repo =>
-        html`
+          html`
 
       ${(this.configuration.frontend_mode !== "Table" ? html`
         <paper-card @click="${this.ShowRepository}" .RepoID="${repo.id}">
         <div class="card-content">
           <div>
             <ha-icon
-              icon="mdi:cube"
+              icon=${(repo.new ? "mdi:new-box" : "mdi:cube")}
               class="${repo.status}"
               title="${repo.status_description}"
               >
@@ -133,7 +185,7 @@ export class HacsPanelStore extends LitElement {
       <paper-item .RepoID=${repo.id} @click="${this.ShowRepository}">
         <div class="icon">
           <ha-icon
-            icon="mdi:cube"
+            icon=${(repo.new ? "mdi:new-box" : "mdi:cube")}
             class="${repo.status}"
             title="${repo.status_description}">
         </ha-icon>
@@ -188,6 +240,9 @@ export class HacsPanelStore extends LitElement {
     return [
       HacsStyle,
       css`
+      hr {
+        width: 95%
+      }
       paper-item {
         margin-bottom: 24px;
       }

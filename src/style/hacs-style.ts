@@ -75,6 +75,9 @@ const baseHacsStyles = css`
     ha-icon.pending-restart {
         color: var(--hacs-status-pending-restart);
     }
+    ha-icon.new {
+        color: var(--hacs-badge-color);
+      }
 `
 
 
