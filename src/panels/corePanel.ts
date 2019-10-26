@@ -57,7 +57,6 @@ export class HacsPanelStore extends LitElement {
       >
       </hacs-panel-repository>`
     } else {
-
       const category = this.panel;
       var newRepositories: Repository[] = [];
       const config = this.configuration;
@@ -73,7 +72,7 @@ export class HacsPanelStore extends LitElement {
           if (repo.hide) return false;
 
           // Check contry restrictions
-          if (config.country !== null) {
+          if (config.country !== "ALL" && repo.country !== undefined) {
             if (config.country !== repo.country) return false;
           }
 

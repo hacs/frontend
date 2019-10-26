@@ -5,10 +5,9 @@ export interface Route {
 
 export interface Configuration {
     appdaemon: boolean;
-    country: string;
     dev: string;
     frontend_mode: string;
-    option_country: string;
+    country: string;
     python_script: boolean;
     theme: boolean;
     version: string;
