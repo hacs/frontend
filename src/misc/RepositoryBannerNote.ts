@@ -84,12 +84,12 @@ export class RepositoryBannerNote extends LitElement {
                 margin-left: 5%;
             }
             .alert {
-                background-color: var(--hacs-status-pending-restart)
-
+                background-color: var(--hacs-status-pending-restart);
+                color: var(--text-primary-color);
             }
             .warning {
                 background-color: var(--hacs-status-pending-update)
-
+                color: var(--text-primary-color);
             }
             .info {
 

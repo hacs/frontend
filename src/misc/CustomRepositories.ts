@@ -31,10 +31,11 @@ export class CustomRepositories extends LitElement {
     }
 
     Delete(ev) {
-        if (!window.confirm(this.hass.localize("component.hacs.confirm.delete", "item", ev.composedPath()[3].innerText))) return;
+        if (!window.confirm(
+            this.hass.localize(
+                "component.hacs.confirm.delete", "item", ev.composedPath()[3].innerText))) return;
         var repo = ev.composedPath()[4].repoID
         RepositoryWebSocketAction(this.hass, repo, "delete")
-        this.requestUpdate();
     }
 
     Save(ev) {
@@ -42,7 +43,6 @@ export class CustomRepositories extends LitElement {
         var category = ev.composedPath()[1].children[1].selectedItem.category
         var repo = ev.composedPath()[1].children[0].value
         RepositoryWebSocketAction(this.hass, repo, "add", category)
-        this.requestUpdate();
     }
 
     protected render(): TemplateResult | void {
@@ -50,7 +50,6 @@ export class CustomRepositories extends LitElement {
             if (!repo.custom) return false;
             return true;
         })
-        if (this.status.startup) this.custom = [];
 
         return html`
         <ha-card header="${this.hass.localize("component.hacs.settings.custom_repositories")}">
@@ -75,8 +74,6 @@ export class CustomRepositories extends LitElement {
 
             <div class="card-actions">
                 <paper-input class="inputfield" placeholder=${(this.hass.localize("component.hacs.settings.add_custom_repository"))} type="text"></paper-input>
-
-
                 <paper-dropdown-menu class="category"
                 label="${this.hass.localize(`component.hacs.settings.category`)}">
                   <paper-listbox slot="dropdown-content" selected="-1">

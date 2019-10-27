@@ -171,12 +171,13 @@ export class HacsPanelRepository extends LitElement {
                           ${this.repo.releases.map(release =>
           html`<paper-item @click="${this.SetVersion}">${release}</paper-item>`
         )}
+                          ${(this.repo.full_name !== "hacs/integration" ? html`
                           <paper-item @click="${this.SetVersion}">${this.repo.default_branch}</paper-item>
+                          ` : "")}
                       </paper-listbox>
                   </paper-dropdown-menu>
               </div>`
       )}
-
         </div>
         <hacs-authors .hass=${this.hass} .authors=${this.repo.authors}></hacs-authors>
       </div>

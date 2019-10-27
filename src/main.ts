@@ -9,6 +9,7 @@ import scrollToTarget from "./misc/ScrollToTarget";
 import "./panels/corePanel";
 import "./panels/repository";
 import "./panels/settings";
+import "./misc/HacsError";
 import { HacsStyle } from "./style/hacs-style";
 import { Configuration, Repository, Route, Status } from "./types";
 
@@ -192,7 +193,7 @@ class HacsFrontendBase extends LitElement {
     </paper-tab>
     </paper-tabs>
     </app-header>
-
+    <hacs-error .hass=${this.hass}></hacs-error>
     ${(this.panel === "installed" || "repository" || "integration" || "plugin" || "appdaemon" || "python_script" || "theme" ? html`
     <hacs-panel
     .hass=${this.hass}
