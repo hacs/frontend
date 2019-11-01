@@ -10,8 +10,9 @@ import "./panels/corePanel";
 import "./panels/repository";
 import "./panels/settings";
 import "./misc/HacsError";
+import "./misc/HacsCritical";
 import { HacsStyle } from "./style/hacs-style";
-import { Configuration, Repository, Route, Status } from "./types";
+import { Configuration, Repository, Route, Status, Critical } from "./types";
 
 
 @customElement("hacs-frontend")
@@ -30,6 +31,9 @@ class HacsFrontendBase extends LitElement {
 
   @property()
   public route!: Route;
+
+  @property()
+  public critical!: Critical[];
 
   @property()
   public narrow!: boolean;
@@ -71,6 +75,20 @@ class HacsFrontendBase extends LitElement {
     );
   }
 
+  public getCritical(): void {
+    this.hass.connection.sendMessagePromise({
+      type: "hacs/get_critical"
+    }).then(
+      (resp) => {
+        this.critical = (resp as Critical[]);
+        this.requestUpdate();
+      },
+      (err) => {
+        console.error('[hacs/get_critical] Message failed!', err);
+      }
+    );
+  }
+
   public getStatus(): void {
     this.hass.connection.sendMessagePromise({
       type: "hacs/status"
@@ -91,6 +109,7 @@ class HacsFrontendBase extends LitElement {
     this.getRepositories();
     this.getConfig();
     this.getStatus();
+    this.getCritical();
 
     if (/repository\//i.test(this.panel)) {
       // How fun, this is a repository!
@@ -193,6 +212,7 @@ class HacsFrontendBase extends LitElement {
     </paper-tab>
     </paper-tabs>
     </app-header>
+    <hacs-critical .hass=${this.hass} .critical=${this.critical}></hacs-critical>
     <hacs-error .hass=${this.hass}></hacs-error>
     ${(this.panel === "installed" || "repository" || "integration" || "plugin" || "appdaemon" || "python_script" || "theme" ? html`
     <hacs-panel

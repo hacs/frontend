@@ -19,6 +19,13 @@ export interface Configuration {
     categories: [string]
 }
 
+export interface Critical {
+    repository: string;
+    reason: string;
+    link: string;
+    acknowledged: boolean;
+}
+
 export interface Repository {
     domain: string;
     category: string;
