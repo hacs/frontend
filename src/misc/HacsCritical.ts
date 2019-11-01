@@ -10,7 +10,6 @@ export class HacsCritical extends LitElement {
 
     async Acknowledge(ev) {
         var repository = ev.composedPath()[3].repository
-        console.log(repository);
         const resp = await this.hass.connection.sendMessagePromise({
             type: "hacs/critical",
             repository: repository
@@ -30,25 +29,28 @@ export class HacsCritical extends LitElement {
         return html`
             ${_critical.map(repo =>
             html`
-                <ha-card header="Critical Issue!" class="alert">
+            <ha-card header="Critical Issue!" class="alert">
                 <div class="card-content">
                     The repository "${repo.repository}" has been flagged as a critical repository.</br>
                     The repository has now been uninstalled and removed.</br>
                     For information about how and why these are handled, see
-                    <a href="https://hacs.xyz/maintainers/critical">https://hacs.xyz/maintainers/critical</a></br>
+                    <a href="https://hacs.xyz/maintainers/critical">
+                        https://hacs.xyz/maintainers/critical
+                    </a></br>
                     As a result of this Home Assistant was also restarted.</br></br>
+
                     <b>Reason: </b>${repo.reason}
                 </div>
-            <div class="card-actions">
-                <mwc-button @click=${this.Acknowledge} .repository=${repo.repository}>
-                    Acknowledge
-                </mwc-button>
-            <a href="${repo.link}" rel='noreferrer' target="_blank">
-                <mwc-button>
-                    More information about this incident
-                </mwc-button>
-            </a>
-            </div>
+                <div class="card-actions">
+                    <mwc-button @click=${this.Acknowledge} .repository=${repo.repository}>
+                        Acknowledge
+                    </mwc-button>
+                    <a href="${repo.link}" rel='noreferrer' target="_blank">
+                        <mwc-button>
+                            More information about this incident
+                        </mwc-button>
+                    </a>
+                </div>
             </ha-card>`
         )}
             `;
