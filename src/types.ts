@@ -30,6 +30,8 @@ export interface Critical {
 }
 
 export interface Repository {
+    homeassistant: string;
+    can_install: boolean;
     domain: string;
     category: string;
     country: string;

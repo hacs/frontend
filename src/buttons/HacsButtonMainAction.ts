@@ -34,6 +34,12 @@ export class HacsButtonMainAction extends HacsRepositoryButton {
     }
 
     RepositoryInstall() {
+        if (!this.repository.can_install) {
+            window.alert(
+                `This repository version requires Home Assistant version ${this.repository.homeassistant}`
+            );
+            return;
+        }
         if (this.pathExists && !this.repository.installed) {
             if (window.confirm(
                 this.hass.localize("component.hacs.confirm.exsist", "item", this.repository.local_path)
