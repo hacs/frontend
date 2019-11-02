@@ -128,7 +128,7 @@ export class HacsPanelSettings extends LitElement {
       msg += "\n"
       msg += "\n"
       elements.forEach(element => {
-        msg += `${element.name} ${element.installed_version} -> ${element.available_version}`
+        msg += `${element.name} ${element.installed_version} -> ${element.available_version}\n`
       });
       if (!window.confirm(msg)) return;
       this.hass.connection.sendMessage({
