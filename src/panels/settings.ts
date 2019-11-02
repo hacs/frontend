@@ -118,7 +118,27 @@ export class HacsPanelSettings extends LitElement {
   }
 
   UpgradeAll() {
-    console.log("This should Upgrade all repositories, but that is not added.")
+    var elements: Repository[] = []
+    this.repositories.forEach(element => {
+      if (element.pending_upgrade)
+        elements.push(element)
+    });
+    if (elements.length > 0) {
+      var msg = "This will upgrade all of these repositores, make sure that you have read the release notes for all of them before proceeding."
+      msg += "\n"
+      msg += "\n"
+      elements.forEach(element => {
+        msg += `${element.name} ${element.installed_version} -> ${element.available_version}`
+      });
+      if (!window.confirm(msg)) return;
+      this.hass.connection.sendMessage({
+        type: "hacs/settings",
+        action: "upgrade_all"
+      });
+    } else {
+      window.alert("No upgrades pending")
+    }
+
   }
 
   static get styles(): CSSResultArray {
