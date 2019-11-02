@@ -6,6 +6,9 @@ export interface Route {
 export interface Status {
     startup: boolean;
     background_task: boolean;
+    upgrading_all: boolean;
+    reloading_data: boolean;
+    disabled: boolean;
 }
 
 export interface Configuration {

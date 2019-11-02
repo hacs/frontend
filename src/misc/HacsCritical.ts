@@ -34,8 +34,8 @@ export class HacsCritical extends LitElement {
                     The repository "${repo.repository}" has been flagged as a critical repository.</br>
                     The repository has now been uninstalled and removed.</br>
                     For information about how and why these are handled, see
-                    <a href="https://hacs.xyz/maintainers/critical">
-                        https://hacs.xyz/maintainers/critical
+                    <a href="https://hacs.xyz/docs/developer/maintaner#critical-repositories">
+                        https://hacs.xyz/docs/developer/maintaner#critical-repositories
                     </a></br>
                     As a result of this Home Assistant was also restarted.</br></br>
 

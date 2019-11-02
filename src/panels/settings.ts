@@ -29,18 +29,8 @@ export class HacsPanelSettings extends LitElement {
   @property()
   public status!: Status
 
-  @property()
-  private ActiveSpinnerReload: boolean
-
-  @property()
-  private ActiveSpinnerUpgradeAll: boolean
-
-  ResetSpinner() {
-    this.ActiveSpinnerReload = false;
-    this.ActiveSpinnerUpgradeAll = false;
-  }
-
   render(): TemplateResult | void {
+    if (this.status.reloading_data) var reload_disable = "disabled"; else reload_disable = "";
     return html`
 
     <ha-card header="${this.hass.localize("component.hacs.config.title")}">
@@ -62,17 +52,26 @@ export class HacsPanelSettings extends LitElement {
       </div>
       <div class="card-actions">
 
-      <mwc-button raised @click=${this.ReloadData}>
-        ${(this.ActiveSpinnerReload ? html`<paper-spinner active></paper-spinner>` : html`
-        ${this.hass.localize(`component.hacs.settings.reload_data`)}
-        `)}
-      </mwc-button>
+      ${(this.status.reloading_data ? html`
+          <mwc-button raised disabled>
+            <paper-spinner active></paper-spinner>
+          </mwc-button>
+      ` : html`
+          <mwc-button raised @click=${this.ReloadData}>
+            ${this.hass.localize(`component.hacs.settings.reload_data`)}
+          </mwc-button>
+      `)}
 
-      <mwc-button raised @click=${this.UpgradeAll}>
-        ${(this.ActiveSpinnerUpgradeAll ? html`<paper-spinner active></paper-spinner>` : html`
-        ${this.hass.localize(`component.hacs.settings.upgrade_all`)}
-        `)}
-      </mwc-button>
+
+      ${(this.status.upgrading_all ? html`
+          <mwc-button raised disabled>
+            <paper-spinner active></paper-spinner>
+          </mwc-button>
+      ` : html`
+          <mwc-button raised @click=${this.UpgradeAll}>
+            ${this.hass.localize(`component.hacs.settings.upgrade_all`)}
+          </mwc-button>
+      `)}
 
       <a href="https://github.com/hacs/integration" target="_blank" rel="noreferrer">
         <mwc-button raised>
@@ -112,12 +111,13 @@ export class HacsPanelSettings extends LitElement {
   }
 
   ReloadData() {
-    this.ActiveSpinnerReload = true;
-    console.log("This should reload data, but that is not added.")
+    this.hass.connection.sendMessage({
+      type: "hacs/settings",
+      action: "reload_data"
+    });
   }
 
   UpgradeAll() {
-    this.ActiveSpinnerUpgradeAll = true;
     console.log("This should Upgrade all repositories, but that is not added.")
   }
 
