@@ -136,7 +136,9 @@ class HacsFrontendBase extends LitElement {
       this.panel = "installed";
     }
 
-    if (this.repositories === undefined || this.configuration === undefined) return html`<paper-spinner active class="loader"></paper-spinner>`;
+    if (this.repositories === undefined || this.configuration === undefined) {
+      return html`<paper-spinner active class="loader"></paper-spinner>`;
+    }
 
     if (/repository\//i.test(this.panel)) {
       this.repository_view = true;
@@ -148,73 +150,70 @@ class HacsFrontendBase extends LitElement {
 
     return html`
     <app-header-layout has-scrolling-region>
-    <app-header slot="header" fixed>
+      <app-header slot="header" fixed>
         <app-toolbar>
         <ha-menu-button .hass="${this.hass}" .narrow="${this.narrow}"></ha-menu-button>
-        <div main-title>${this.hass.localize(`component.hacs.config.title`)}
-        ${(this._rootPath === "hacs_dev" ? html`DEVELOPMENT` : "")}
-        </div>
+          <div main-title>${this.hass.localize(`component.hacs.config.title`)}
+          ${(this._rootPath === "hacs_dev" ? html`DEVELOPMENT` : "")}
+          </div>
         </app-toolbar>
-    <paper-tabs
-    scrollable
-    attr-for-selected="page-name"
-    .selected=${page}
-    @iron-activate=${this.handlePageSelected}>
+      <paper-tabs scrollable attr-for-selected="page-name" .selected=${page} @iron-activate=${this.handlePageSelected}>
 
-    <paper-tab page-name="installed">
-    ${this.hass.localize(`component.hacs.common.installed`)}
-    </paper-tab>
+        <paper-tab page-name="installed">
+          ${this.hass.localize(`component.hacs.common.installed`)}
+        </paper-tab>
 
-    <paper-tab page-name="integration">
-    ${this.hass.localize(`component.hacs.common.integrations`)}
-    </paper-tab>
+        <paper-tab page-name="integration">
+          ${this.hass.localize(`component.hacs.common.integrations`)}
+        </paper-tab>
 
-    <paper-tab page-name="plugin">
-    ${this.hass.localize(`component.hacs.common.plugins`)}
-    </paper-tab>
+        <paper-tab page-name="plugin">
+          ${this.hass.localize(`component.hacs.common.plugins`)}
+        </paper-tab>
 
-    ${(this.configuration.appdaemon
+        ${(this.configuration.appdaemon
         ? html`<paper-tab page-name="appdaemon">
-        ${this.hass.localize(`component.hacs.common.appdaemon_apps`)}
-    </paper-tab>` : "")}
+            ${this.hass.localize(`component.hacs.common.appdaemon_apps`)}
+        </paper-tab>` : "")}
 
-    ${(this.configuration.python_script
+        ${(this.configuration.python_script
         ? html`<paper-tab page-name="python_script">
-        ${this.hass.localize(`component.hacs.common.python_scripts`)}
-    </paper-tab>` : "")}
+            ${this.hass.localize(`component.hacs.common.python_scripts`)}
+        </paper-tab>` : "")}
 
-    ${(this.configuration.theme
+        ${(this.configuration.theme
         ? html`<paper-tab page-name="theme">
-        ${this.hass.localize(`component.hacs.common.themes`)}
-    </paper-tab>` : "")}
+            ${this.hass.localize(`component.hacs.common.themes`)}
+        </paper-tab>` : "")}
 
-    <paper-tab page-name="settings">
-    ${this.hass.localize("component.hacs.common.settings")}
-    </paper-tab>
-    </paper-tabs>
+        <paper-tab page-name="settings">
+          ${this.hass.localize("component.hacs.common.settings")}
+        </paper-tab>
+      </paper-tabs>
     </app-header>
+
     <hacs-critical .hass=${this.hass} .critical=${this.critical}></hacs-critical>
     <hacs-error .hass=${this.hass}></hacs-error>
-    ${(this.panel === "installed" || "repository" || "integration" || "plugin" || "appdaemon" || "python_script" || "theme" ? html`
-    <hacs-panel
-    .hass=${this.hass}
-    .configuration=${this.configuration}
-    .repositories=${this.repositories}
-    .panel=${this.panel}
-    .route=${this.route}
-    .status=${this.status}
-    .repository_view=${this.repository_view}
-    .repository=${this.repository}
-    >
-    </hacs-panel>` : "")}
 
-    ${(this.panel === "settings" ? html`
-    <hacs-panel-settings
+    ${(this.panel !== "settings" ? html`
+      <hacs-panel
+        .hass=${this.hass}
+        .configuration=${this.configuration}
+        .repositories=${this.repositories}
+        .panel=${this.panel}
+        .route=${this.route}
+        .status=${this.status}
+        .repository_view=${this.repository_view}
+        .repository=${this.repository}
+      >
+      </hacs-panel>`
+        : html`
+      <hacs-panel-settings
         .hass=${this.hass}
         .status=${this.status}
         .configuration=${this.configuration}
         .repositories=${this.repositories}>
-        </hacs-panel-settings>` : "")}
+      </hacs-panel-settings>` )}
 
     </app-header-layout>`;
   }
