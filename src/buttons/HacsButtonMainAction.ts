@@ -5,8 +5,7 @@ import { RepositoryWebSocketAction } from "../misc/RepositoryWebSocketAction"
 @customElement("hacs-button-main-action")
 export class HacsButtonMainAction extends HacsRepositoryButton {
 
-    @property()
-    private pathExists: boolean = false;
+    @property() private pathExists: boolean = false;
 
     protected firstUpdated() {
         this.hass.connection.sendMessagePromise({

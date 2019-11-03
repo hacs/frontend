@@ -8,23 +8,12 @@ import { RepositoryWebSocketAction } from "../misc/RepositoryWebSocketAction"
 
 @customElement("hacs-custom-repositories")
 export class CustomRepositories extends LitElement {
-    @property()
-    public hass!: HomeAssistant;
-
-    @property()
-    public repositories!: Repository[];
-
-    @property()
-    public custom!: Repository[];
-
-    @property()
-    public status!: Status
-
-    @property()
-    public configuration!: Configuration;
-
-    @property()
-    public SaveSpinner: boolean;
+    @property() public hass!: HomeAssistant;
+    @property() public repositories!: Repository[];
+    @property() public custom!: Repository[];
+    @property() public status!: Status
+    @property() public configuration!: Configuration;
+    @property() public SaveSpinner: boolean;
 
     protected updated() {
         this.SaveSpinner = false;

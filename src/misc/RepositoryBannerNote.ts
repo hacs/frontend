@@ -7,7 +7,6 @@ import { HomeAssistant } from "custom-card-helpers";
 export class RepositoryBannerNote extends LitElement {
     @property() public hass!: HomeAssistant;
     @property() public repository!: Repository;
-
     @property() private LLConfig: any;
 
     protected firstUpdated() {

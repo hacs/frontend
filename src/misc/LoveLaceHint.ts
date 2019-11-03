@@ -5,14 +5,9 @@ import { HomeAssistant } from "custom-card-helpers";
 
 @customElement("hacs-lovelace-hint")
 export class LoveLaceHint extends LitElement {
-    @property()
-    public hass!: HomeAssistant;
-
-    @property()
-    public configuration!: Configuration;
-
-    @property()
-    public repository!: Repository;
+    @property() public hass!: HomeAssistant;
+    @property() public configuration!: Configuration;
+    @property() public repository!: Repository;
 
     protected render(): TemplateResult | void {
         return html`

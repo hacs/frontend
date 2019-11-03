@@ -7,14 +7,9 @@ import "./LoveLaceHint"
 
 @customElement("hacs-repository-note")
 export class RepositoryNote extends LitElement {
-    @property()
-    public hass!: HomeAssistant;
-
-    @property()
-    public configuration!: Configuration;
-
-    @property()
-    public repository!: Repository;
+    @property() public hass!: HomeAssistant;
+    @property() public configuration!: Configuration;
+    @property() public repository!: Repository;
 
     protected render(): TemplateResult | void {
 

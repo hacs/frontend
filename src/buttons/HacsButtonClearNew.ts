@@ -4,6 +4,7 @@ import { HacsRepositoryButton } from "./HacsRepositoryButton"
 @customElement("hacs-button-clear-new")
 export class HacsButtonClearNew extends HacsRepositoryButton {
     @property() public category?: string
+
     protected render(): TemplateResult | void {
         return html`
             <mwc-button @click=${this.ExecuteAction}>

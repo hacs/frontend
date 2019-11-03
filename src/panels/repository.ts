@@ -30,29 +30,14 @@ import "./corePanel"
 
 @customElement("hacs-panel-repository")
 export class HacsPanelRepository extends LitElement {
-  @property()
-  public hass!: HomeAssistant;
-
-  @property()
-  public repositories!: Repository[];
-
-  @property()
-  public configuration!: Configuration;
-
-  @property()
-  public repository!: string;
-
-  @property()
-  public panel;
-
-  @property()
-  public route!: Route;
-
-  @property()
-  public repository_view = false;
-
-  @property()
-  private repo: Repository;
+  @property() public hass!: HomeAssistant;
+  @property() public repositories!: Repository[];
+  @property() public configuration!: Configuration;
+  @property() public repository!: string;
+  @property() public panel: string;
+  @property() public route!: Route;
+  @property() public repository_view = false;
+  @property() private repo: Repository;
 
   protected firstUpdated() {
     if (!this.repo.updated_info) {

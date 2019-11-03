@@ -19,30 +19,14 @@ import "../buttons/HacsButtonClearNew"
 
 @customElement("hacs-panel")
 export class HacsPanelStore extends LitElement {
-
-  @property()
-  public hass!: HomeAssistant;
-
-  @property()
-  public repositories!: Repository[]
-
-  @property()
-  public configuration!: Configuration
-
-  @property()
-  public route!: Route;
-
-  @property()
-  public panel;
-
-  @property()
-  public repository_view = false;
-
-  @property()
-  public repository: string;
-
-  @property()
-  public SearchTerm: string = "";
+  @property() public hass!: HomeAssistant;
+  @property() public repositories!: Repository[]
+  @property() public configuration!: Configuration
+  @property() public route!: Route;
+  @property() public panel;
+  @property() public repository_view = false;
+  @property() public repository: string;
+  @property() public SearchTerm: string = "";
 
   protected render(): TemplateResult | void {
     if (this.panel === "repository") {

@@ -17,35 +17,16 @@ import { Configuration, Repository, Route, Status, Critical } from "./types";
 
 @customElement("hacs-frontend")
 class HacsFrontendBase extends LitElement {
-  @property()
-  public hass!: HomeAssistant;
-
-  @property()
-  public repositories!: Repository[]
-
-  @property()
-  public configuration!: Configuration
-
-  @property()
-  public status!: Status
-
-  @property()
-  public route!: Route;
-
-  @property()
-  public critical!: Critical[];
-
-  @property()
-  public narrow!: boolean;
-
-  @property()
-  public panel!: string;
-
-  @property()
-  public repository: string;
-
-  @property()
-  public repository_view = false;
+  @property() public hass!: HomeAssistant;
+  @property() public repositories!: Repository[]
+  @property() public configuration!: Configuration
+  @property() public status!: Status
+  @property() public route!: Route;
+  @property() public critical!: Critical[];
+  @property() public narrow!: boolean;
+  @property() public panel!: string;
+  @property() public repository: string;
+  @property() public repository_view = false;
 
   public getRepositories(): void {
     this.hass.connection.sendMessagePromise({

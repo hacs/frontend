@@ -17,17 +17,10 @@ import { Configuration, Repository, Status } from "../types"
 
 @customElement("hacs-panel-settings")
 export class HacsPanelSettings extends LitElement {
-  @property()
-  public hass!: HomeAssistant;
-
-  @property()
-  public repositories!: Repository[]
-
-  @property()
-  public configuration!: Configuration
-
-  @property()
-  public status!: Status
+  @property() public hass!: HomeAssistant;
+  @property() public repositories!: Repository[]
+  @property() public configuration!: Configuration
+  @property() public status!: Status
 
   render(): TemplateResult | void {
     if (this.status.reloading_data) var reload_disable = "disabled"; else reload_disable = "";

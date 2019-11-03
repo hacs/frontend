@@ -4,11 +4,8 @@ import { HomeAssistant } from "custom-card-helpers";
 
 @customElement("hacs-authors")
 export class Authors extends LitElement {
-    @property()
-    public hass!: HomeAssistant;
-
-    @property()
-    public authors!: [string];
+    @property() public hass!: HomeAssistant;
+    @property() public authors!: [string];
 
     protected render(): TemplateResult | void {
         if (String(this.authors.length) === "0") return html``
