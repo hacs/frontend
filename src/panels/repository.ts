@@ -17,6 +17,7 @@ import { Configuration, Repository, Route } from "../types"
 import { navigate } from "../misc/navigate"
 
 import "../misc/Authors"
+import "../misc/HacsRepositoryMenu"
 import "../buttons/HacsButtonOpenPlugin"
 import "../buttons/HacsButtonOpenRepository"
 import "../buttons/HacsButtonUninstall"
@@ -25,6 +26,7 @@ import "../buttons/HacsButtonChangelog"
 import "../misc/RepositoryNote"
 import "../misc/RepositoryBannerNote"
 import "./corePanel"
+
 
 @customElement("hacs-panel-repository")
 export class HacsPanelRepository extends LitElement {
@@ -81,18 +83,14 @@ export class HacsPanelRepository extends LitElement {
     this.repo = _repositories[0]
 
     if (this.repo.installed) {
-      var back = `
-        ${this.hass.localize(`component.hacs.repository.back_to`)} ${this.hass.localize(`component.hacs.repository.installed`)}
-        `;
+      var back = this.hass.localize(`component.hacs.repository.installed`);
     } else {
       if (this.repo.category === "appdaemon") {
         var FE_cat = "appdaemon_apps";
       } else {
         FE_cat = `${this.repo.category}s`
       }
-      var back = `
-        ${this.hass.localize(`component.hacs.repository.back_to`)} ${this.hass.localize(`component.hacs.common.${FE_cat}`)}
-        `;
+      var back = this.hass.localize(`component.hacs.common.${FE_cat}`);
     }
 
     return html`
@@ -100,6 +98,7 @@ export class HacsPanelRepository extends LitElement {
     <div class="getBack">
       <mwc-button @click=${this.GoBackToStore} title="${back}">
       <ha-icon  icon="mdi:arrow-left"></ha-icon>
+        ${this.hass.localize(`component.hacs.repository.back_to`)}
         ${back}
       </mwc-button>
       ${(this.repo.state == "other" ? html`<paper-spinner active class="loader"></paper-spinner>` : "")}
@@ -108,47 +107,15 @@ export class HacsPanelRepository extends LitElement {
     <hacs-repository-banner-note .hass=${this.hass} .repository=${this.repo}></hacs-repository-banner-note>
 
     <ha-card header="${this.repo.name}">
-      <paper-menu-button no-animations horizontal-align="right" role="group" aria-haspopup="true" vertical-align="top" aria-disabled="false">
-        <paper-icon-button icon="hass:dots-vertical" slot="dropdown-trigger" role="button"></paper-icon-button>
-        <paper-listbox slot="dropdown-content" role="listbox" tabindex="0">
+      <hacs-repository-menu .hass=${this.hass} .repository=${this.repo}></hacs-repository-menu>
 
-        <paper-item @click=${this.RepositoryReload}>
-        ${this.hass.localize(`component.hacs.repository.update_information`)}
-        </paper-item>
 
-      ${(this.repo.version_or_commit === "version" ? html`
-      <paper-item @click=${this.RepositoryBeta}>
-      ${(this.repo.beta ?
-          this.hass.localize(`component.hacs.repository.hide_beta`) :
-          this.hass.localize(`component.hacs.repository.show_beta`)
-        )}
-        </paper-item>`: "")}
-
-        ${(!this.repo.custom ? html`
-        <paper-item @click=${this.RepositoryHide}>
-          ${this.hass.localize(`component.hacs.repository.hide`)}
-        </paper-item>`: "")}
-
-        <a href="https://github.com/${this.repo.full_name}" rel='noreferrer' target="_blank">
-          <paper-item>
-            <ha-icon class="link-icon" icon="mdi:open-in-new"></ha-icon>
-            ${this.hass.localize(`component.hacs.repository.open_issue`)}
-          </paper-item>
-        </a>
-
-        <a href="https://github.com" rel='noreferrer' target="_blank">
-          <paper-item>
-            <ha-icon class="link-icon" icon="mdi:open-in-new"></ha-icon>
-            ${this.hass.localize(`component.hacs.repository.flag_this`)}
-          </paper-item>
-        </a>
-
-        </paper-listbox>
-      </paper-menu-button>
       <div class="card-content">
+
         <div class="description addition">
           ${this.repo.description}
         </div>
+
         <div class="information">
           ${(this.repo.installed ?
         html`
@@ -190,6 +157,7 @@ export class HacsPanelRepository extends LitElement {
         <hacs-button-open-plugin .hass=${this.hass} .repository=${this.repo}></hacs-button-open-plugin>
         <hacs-button-uninstall class="right" .hass=${this.hass} .repository=${this.repo}></hacs-button-uninstall>
       </div>
+
     </ha-card>
 
     <ha-card>
@@ -205,29 +173,6 @@ export class HacsPanelRepository extends LitElement {
       </div>
     </ha-card>
           `;
-  }
-
-  RepositoryReload() {
-    RepositoryWebSocketAction(this.hass, this.repo.id, "set_state", "other");
-    RepositoryWebSocketAction(this.hass, this.repo.id, "update");
-  }
-
-  RepositoryBeta() {
-    RepositoryWebSocketAction(this.hass, this.repo.id, "set_state", "other");
-    if (this.repo.beta) {
-      RepositoryWebSocketAction(this.hass, this.repo.id, "hide_beta");
-    } else {
-      RepositoryWebSocketAction(this.hass, this.repo.id, "show_beta");
-    }
-  }
-
-  RepositoryHide() {
-    RepositoryWebSocketAction(this.hass, this.repo.id, "set_state", "other");
-    if (this.repo.hide) {
-      RepositoryWebSocketAction(this.hass, this.repo.id, "unhide");
-    } else {
-      RepositoryWebSocketAction(this.hass, this.repo.id, "hide");
-    }
   }
 
   SetVersion(ev: any) {
@@ -256,11 +201,6 @@ export class HacsPanelRepository extends LitElement {
 
   static get styles(): CSSResultArray {
     return [HacsStyle, css`
-      paper-dropdown-menu {
-        width: 250px;
-        margin-top: -24px;
-
-      }
       paper-spinner.loader {
         position: absolute;
         top: 20%;
@@ -304,10 +244,7 @@ export class HacsPanelRepository extends LitElement {
         color: var(--dark-primary-color);
         margin-right: 8px;
       }
-      paper-menu-button {
-        float: right;
-        top: -65px;
-      }
+
     `]
   }
 }
