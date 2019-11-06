@@ -16,6 +16,7 @@
   },
   "homepage": "https://github.com/custom-components/hacs#readme",
   "dependencies": {
+    "card-tools": "github:thomasloven/lovelace-card-tools",
     "custom-card-helpers": "^1.2.6",
     "lit-element": "^2.0.1"
   },
