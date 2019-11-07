@@ -3,7 +3,7 @@ import { HomeAssistant } from "custom-card-helpers";
 import {
   css, CSSResultArray, customElement, html, LitElement, property, TemplateResult
 } from "lit-element";
-import { load_lovelace } from "./misc/LoadLovelace";
+import { load_lovelace } from "card-tools/src/hass";
 import { navigate } from "./misc/navigate";
 import scrollToTarget from "./misc/ScrollToTarget";
 import "./panels/corePanel";
@@ -100,6 +100,7 @@ class HacsFrontendBase extends LitElement {
 
     // "steal" LL elements
     load_lovelace();
+
 
 
     // Event subscription
@@ -226,8 +227,8 @@ class HacsFrontendBase extends LitElement {
     if (newPage !== this._page) {
       navigate(this, `/${this._rootPath}/${newPage}`);
     }
-
     scrollToTarget(
+
       this,
       // @ts-ignore
       this.shadowRoot!.querySelector("app-header-layout").header.scrollTarget

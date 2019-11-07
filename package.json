@@ -1,6 +1,6 @@
 {
   "name": "hacs-frontend-elements",
-  "description": "Frontend elements for HACS",
+  "description": "Frontend of HACS",
   "source": "src/main.ts",
   "scripts": {
     "start": "rollup --config rollup.config.dev.js --watch",
@@ -16,7 +16,7 @@
   },
   "homepage": "https://github.com/custom-components/hacs#readme",
   "dependencies": {
-    "card-tools": "github:thomasloven/lovelace-card-tools",
+    "card-tools": "github:thomasloven/card-tools",
     "custom-card-helpers": "^1.2.6",
     "lit-element": "^2.0.1"
   },
