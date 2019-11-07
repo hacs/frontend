@@ -18,6 +18,7 @@ import { navigate } from "../misc/navigate"
 
 import "../misc/Authors"
 import "../misc/HacsRepositoryMenu"
+import "../buttons/HacsButtonAddToLovelace"
 import "../buttons/HacsButtonOpenPlugin"
 import "../buttons/HacsButtonOpenRepository"
 import "../buttons/HacsButtonUninstall"
@@ -140,6 +141,7 @@ export class HacsPanelRepository extends LitElement {
         <hacs-button-changelog .hass=${this.hass} .repository=${this.repo}></hacs-button-changelog>
         <hacs-button-open-repository .hass=${this.hass} .repository=${this.repo}></hacs-button-open-repository>
         <hacs-button-open-plugin .hass=${this.hass} .repository=${this.repo}></hacs-button-open-plugin>
+        <hacs-button-add-to-lovelace .hass=${this.hass} .repository=${this.repo}></hacs-button-add-to-lovelace>
         <hacs-button-uninstall class="right" .hass=${this.hass} .repository=${this.repo}></hacs-button-uninstall>
       </div>
 
