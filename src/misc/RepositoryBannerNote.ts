@@ -1,6 +1,6 @@
 import { LitElement, customElement, CSSResultArray, css, TemplateResult, html, property } from "lit-element";
 import { HacsStyle } from "../style/hacs-style"
-import { Repository } from "../types";
+import { Repository, Configuration } from "../types";
 import { AddedToLovelace } from "./AddedToLovelace"
 import { HomeAssistant } from "custom-card-helpers";
 import { LovelaceConfig } from "../misc/LovelaceTypes"
@@ -10,6 +10,7 @@ import "../buttons/HacsButtonAddToLovelace"
 export class RepositoryBannerNote extends LitElement {
     @property() public hass!: HomeAssistant;
     @property() public repository!: Repository;
+    @property() public configuration: Configuration;
     @property() public lovelaceconfig: LovelaceConfig;
 
     protected render(): TemplateResult | void {
@@ -62,7 +63,11 @@ export class RepositoryBannerNote extends LitElement {
                     ${message}
                 </div>
                 <div class="card-actions">
-                    <hacs-button-add-to-lovelace .hass=${this.hass} .repository=${this.repository} .lovelaceconfig=${this.lovelaceconfig}>
+                    <hacs-button-add-to-lovelace
+                        .hass=${this.hass}
+                        .configuration=${this.configuration}
+                        .repository=${this.repository}
+                        .lovelaceconfig=${this.lovelaceconfig}>
                     </hacs-button-add-to-lovelace>
                 </div>
             </ha-card>

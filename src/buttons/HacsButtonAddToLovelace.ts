@@ -1,11 +1,14 @@
 import { customElement, TemplateResult, html, property } from "lit-element";
 import { HacsRepositoryButton } from "./HacsRepositoryButton"
 import { LovelaceConfig, LovelaceResourceConfig } from '../misc/LovelaceTypes'
+import { Configuration } from '../types'
 
 @customElement("hacs-button-add-to-lovelace")
 export class HacsButtonAddToLovelace extends HacsRepositoryButton {
     @property() public lovelaceconfig: LovelaceConfig;
+    @property() public configuration!: Configuration;
     protected render(): TemplateResult | void {
+        if (!this.configuration.experimental) return html``
         if (!this.repository.installed) return html``
         if (this.repository.javascript_type === null) return html``
 
