@@ -2,7 +2,7 @@ export interface LovelaceConfig {
     title?: string;
     views: LovelaceViewConfig[];
     background?: string;
-    resources?: Array<{ type: "css" | "js" | "module" | "html"; url: string }>;
+    resources?: LovelaceResourceConfig[];
 }
 
 export interface LovelaceViewConfig {
@@ -32,4 +32,9 @@ export interface LovelaceCardConfig {
     view_index?: number;
     type: string;
     [key: string]: any;
+}
+
+export interface LovelaceResourceConfig {
+    type: "css" | "js" | "module" | "html";
+    url: string;
 }

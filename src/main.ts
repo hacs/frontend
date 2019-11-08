@@ -11,6 +11,7 @@ import "./panels/repository";
 import "./panels/settings";
 import "./misc/HacsError";
 import "./misc/HacsCritical";
+import { LovelaceConfig } from "./misc/LovelaceTypes"
 import { HacsStyle } from "./style/hacs-style";
 import { Configuration, Repository, Route, Status, Critical } from "./types";
 
@@ -27,6 +28,7 @@ class HacsFrontendBase extends LitElement {
   @property() public panel!: string;
   @property() public repository: string;
   @property() public repository_view = false;
+  @property() public lovelaceconfig: LovelaceConfig;
 
   public getRepositories(): void {
     this.hass.connection.sendMessagePromise({
@@ -84,6 +86,20 @@ class HacsFrontendBase extends LitElement {
     );
   }
 
+  public getLovelaceConfig(): void {
+    this.hass.connection.sendMessagePromise({
+      type: 'lovelace/config', force: false
+    }).then(
+      (resp) => {
+        this.lovelaceconfig = (resp as LovelaceConfig);
+      },
+      () => {
+        this.lovelaceconfig = undefined;
+      }
+    );
+
+  }
+
   protected firstUpdated() {
     localStorage.setItem("hacs-search", "");
     this.panel = this._page;
@@ -91,6 +107,7 @@ class HacsFrontendBase extends LitElement {
     this.getConfig();
     this.getStatus();
     this.getCritical();
+    this.getLovelaceConfig();
 
     if (/repository\//i.test(this.panel)) {
       // How fun, this is a repository!
@@ -126,6 +143,9 @@ class HacsFrontendBase extends LitElement {
 
     this.hass.connection.subscribeEvents(
       () => this.getStatus(), "hacs/status"
+    );
+    this.hass.connection.subscribeEvents(
+      () => this.getLovelaceConfig(), "lovelace_updated"
     );
   }
 
@@ -206,6 +226,7 @@ class HacsFrontendBase extends LitElement {
         .status=${this.status}
         .repository_view=${this.repository_view}
         .repository=${this.repository}
+        .lovelaceconfig=${this.lovelaceconfig}
       >
       </hacs-panel>`
         : html`
