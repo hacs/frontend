@@ -15,6 +15,7 @@ import { RepositoryWebSocketAction } from "../misc/RepositoryWebSocketAction"
 
 import { Configuration, Repository, Route } from "../types"
 import { navigate } from "../misc/navigate"
+import { LovelaceConfig } from "../misc/LovelaceTypes"
 
 import "../misc/Authors"
 import "../misc/HacsRepositoryMenu"
@@ -38,6 +39,7 @@ export class HacsPanelRepository extends LitElement {
   @property() public route!: Route;
   @property() public repository_view = false;
   @property() private repo: Repository;
+  @property() public lovelaceconfig: LovelaceConfig;
 
   protected firstUpdated() {
     if (!this.repo.updated_info) {
@@ -57,6 +59,7 @@ export class HacsPanelRepository extends LitElement {
         .route=${this.route}
         .repository_view=${this.repository_view}
         .repository=${this.repository}
+        .lovelaceconfig=${this.lovelaceconfig}
       >
       </hacs-panel>
       `
@@ -89,7 +92,12 @@ export class HacsPanelRepository extends LitElement {
       ${(this.repo.state == "other" ? html`<paper-spinner active class="loader"></paper-spinner>` : "")}
     </div>
 
-    <hacs-repository-banner-note .hass=${this.hass} .repository=${this.repo}></hacs-repository-banner-note>
+    <hacs-repository-banner-note
+      .hass=${this.hass}
+      .repository=${this.repo}
+      .lovelaceconfig=${this.lovelaceconfig}
+      .configuration=${this.configuration}>
+    </hacs-repository-banner-note>
 
     <ha-card header="${this.repo.name}">
       <hacs-repository-menu .hass=${this.hass} .repository=${this.repo}></hacs-repository-menu>
@@ -139,7 +147,9 @@ export class HacsPanelRepository extends LitElement {
         <hacs-button-main-action .hass=${this.hass} .repository=${this.repo}></hacs-button-main-action>
         <hacs-button-changelog .hass=${this.hass} .repository=${this.repo}></hacs-button-changelog>
         <hacs-button-open-repository .hass=${this.hass} .repository=${this.repo}></hacs-button-open-repository>
-        <hacs-button-open-plugin .hass=${this.hass} .repository=${this.repo}></hacs-button-open-plugin>
+        ${(this.repo.category === "plugin" ? html`
+          <hacs-button-open-plugin .hass=${this.hass} .repository=${this.repo}></hacs-button-open-plugin>
+        ` : "")}
         <hacs-button-uninstall class="right" .hass=${this.hass} .repository=${this.repo}></hacs-button-uninstall>
       </div>
 

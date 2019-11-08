@@ -1,27 +1,17 @@
 import { LitElement, customElement, CSSResultArray, css, TemplateResult, html, property } from "lit-element";
 import { HacsStyle } from "../style/hacs-style"
-import { Repository } from "../types";
+import { Repository, Configuration } from "../types";
+import { AddedToLovelace } from "./AddedToLovelace"
 import { HomeAssistant } from "custom-card-helpers";
+import { LovelaceConfig } from "../misc/LovelaceTypes"
+import "../buttons/HacsButtonAddToLovelace"
 
 @customElement("hacs-repository-banner-note")
 export class RepositoryBannerNote extends LitElement {
     @property() public hass!: HomeAssistant;
     @property() public repository!: Repository;
-    @property() private LLConfig: any;
-
-    protected firstUpdated() {
-        if (!this.repository.installed) return
-        this.hass.connection.sendMessagePromise({
-            type: 'lovelace/config', force: false
-        }).then(
-            (resp) => {
-                this.LLConfig = resp;
-            },
-            () => {
-                this.LLConfig = undefined;
-            }
-        );
-    }
+    @property() public configuration: Configuration;
+    @property() public lovelaceconfig: LovelaceConfig;
 
     protected render(): TemplateResult | void {
         if (!this.repository.installed) return html``
@@ -47,15 +37,8 @@ export class RepositoryBannerNote extends LitElement {
         }
 
         else if (this.repository.category == "plugin") {
-            if (this.LLConfig !== undefined) {
-                var loaded: boolean = false;
-                var URL: string = `/community_plugin/${this.repository.full_name.split("/")[1]}/${this.repository.file_name}`;
-
-                (this.LLConfig.resources as [any]).forEach((item: any) => {
-                    if (item.url === URL) {
-                        loaded = true
-                    }
-                })
+            if (this.lovelaceconfig !== undefined) {
+                var loaded: boolean = AddedToLovelace(this.repository, this.lovelaceconfig);
 
                 if (!loaded) {
                     type = "warning";
@@ -67,13 +50,28 @@ export class RepositoryBannerNote extends LitElement {
             }
         }
         if (message.length == 0) return html``;
-        return html`
+        if (this.repository.category !== "plugin") return html`
             <ha-card header="${title}" class="${type}">
                 <div class="card-content">
                     ${message}
                 </div>
             </ha-card>
             `;
+        return html`
+            <ha-card header="${title}" class="${type}">
+                <div class="card-content">
+                    ${message}
+                </div>
+                <div class="card-actions">
+                    <hacs-button-add-to-lovelace
+                        .hass=${this.hass}
+                        .configuration=${this.configuration}
+                        .repository=${this.repository}
+                        .lovelaceconfig=${this.lovelaceconfig}>
+                    </hacs-button-add-to-lovelace>
+                </div>
+            </ha-card>
+        `
     }
 
     static get styles(): CSSResultArray {

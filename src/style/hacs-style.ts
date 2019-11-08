@@ -80,6 +80,8 @@ const baseHacsStyles = css`
       }
 `
 
+const mobileHacsStyles = css`
 
+`
 
-export const HacsStyle: CSSResultArray = [haStyle, navStyle, baseHacsStyles, customHacsStyles]
+export const HacsStyle: CSSResultArray = [haStyle, navStyle, baseHacsStyles, customHacsStyles, mobileHacsStyles]

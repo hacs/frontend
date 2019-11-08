@@ -13,6 +13,8 @@ import { HomeAssistant } from "custom-card-helpers";
 import { HacsStyle } from "../style/hacs-style"
 import { Configuration, Repository, Route } from "../types"
 import { navigate } from "../misc/navigate"
+import { LovelaceConfig } from "../misc/LovelaceTypes"
+import { AddedToLovelace } from "../misc/AddedToLovelace"
 
 import "../buttons/HacsButtonClearNew"
 
@@ -27,6 +29,7 @@ export class HacsPanelStore extends LitElement {
   @property() public repository_view = false;
   @property() public repository: string;
   @property() public SearchTerm: string = "";
+  @property() public lovelaceconfig: LovelaceConfig;
 
   protected render(): TemplateResult | void {
     if (this.panel === "repository") {
@@ -38,6 +41,7 @@ export class HacsPanelStore extends LitElement {
         .configuration=${this.configuration}
         .repositories=${this.repositories}
         .repository=${this.repository}
+        .lovelaceconfig=${this.lovelaceconfig}
       >
       </hacs-panel-repository>`
     } else {
@@ -105,8 +109,8 @@ export class HacsPanelStore extends LitElement {
             <div>
               <ha-icon
                 icon="mdi:new-box"
-                class="${repo.status}"
-                title="${repo.status_description}"
+                class="${this.StatusAndDescription(repo).status}"
+                title="${this.StatusAndDescription(repo).description}"
                 >
               </ha-icon>
               <div>
@@ -123,8 +127,8 @@ export class HacsPanelStore extends LitElement {
           <div class="icon">
             <ha-icon
               icon="mdi:new-box"
-              class="${repo.status}"
-              title="${repo.status_description}">
+              class="${this.StatusAndDescription(repo).status}"
+              title="${this.StatusAndDescription(repo).description}"
           </ha-icon>
           </div>
           <paper-item-body two-line>
@@ -151,8 +155,8 @@ export class HacsPanelStore extends LitElement {
           <div>
             <ha-icon
               icon=${(repo.new ? "mdi:new-box" : "mdi:cube")}
-              class="${repo.status}"
-              title="${repo.status_description}"
+              class="${this.StatusAndDescription(repo).status}"
+              title="${this.StatusAndDescription(repo).description}"
               >
             </ha-icon>
             <div>
@@ -169,8 +173,8 @@ export class HacsPanelStore extends LitElement {
         <div class="icon">
           <ha-icon
             icon=${(repo.new ? "mdi:new-box" : "mdi:cube")}
-            class="${repo.status}"
-            title="${repo.status_description}">
+            class="${this.StatusAndDescription(repo).status}"
+            title="${this.StatusAndDescription(repo).description}"
         </ha-icon>
         </div>
         <paper-item-body two-line>
@@ -190,6 +194,24 @@ export class HacsPanelStore extends LitElement {
     </script>
           `;
     }
+  }
+
+  StatusAndDescription(repository: Repository): { status: string, description: string } {
+    var status = repository.status;
+    var description = repository.status_description;
+
+    if (repository.installed) {
+      if (repository.category === "plugin" && !AddedToLovelace(repository, this.lovelaceconfig)) {
+        status = "pending-restart";
+        description = "Not loaded in lovelace";
+      } else if (repository.category === "integration" &&
+        !this.hass.config.components.includes(repository.domain)) {
+        status = "pending-restart";
+        description = "Not loaded in Home Assistant";
+      }
+    }
+
+    return { status: status, description: description }
   }
 
   DoSearch(ev) {

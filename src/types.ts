@@ -19,6 +19,7 @@ export interface Configuration {
     python_script: boolean;
     theme: boolean;
     version: string;
+    experimental: boolean;
     categories: [string]
 }
 
