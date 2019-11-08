@@ -92,7 +92,12 @@ export class HacsPanelRepository extends LitElement {
       ${(this.repo.state == "other" ? html`<paper-spinner active class="loader"></paper-spinner>` : "")}
     </div>
 
-    <hacs-repository-banner-note .hass=${this.hass} .repository=${this.repo} .lovelaceconfig=${this.lovelaceconfig}></hacs-repository-banner-note>
+    <hacs-repository-banner-note
+      .hass=${this.hass}
+      .repository=${this.repo}
+      .lovelaceconfig=${this.lovelaceconfig}
+      .configuration=${this.configuration}>
+    </hacs-repository-banner-note>
 
     <ha-card header="${this.repo.name}">
       <hacs-repository-menu .hass=${this.hass} .repository=${this.repo}></hacs-repository-menu>

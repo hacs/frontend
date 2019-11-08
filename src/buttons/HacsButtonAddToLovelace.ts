@@ -6,7 +6,7 @@ import { Configuration } from '../types'
 @customElement("hacs-button-add-to-lovelace")
 export class HacsButtonAddToLovelace extends HacsRepositoryButton {
     @property() public lovelaceconfig: LovelaceConfig;
-    @property() public configuration!: Configuration;
+    @property() public configuration: Configuration;
     protected render(): TemplateResult | void {
         if (!this.configuration.experimental) return html``
         if (!this.repository.installed) return html``

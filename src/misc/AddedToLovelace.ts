@@ -14,6 +14,5 @@ export function AddedToLovelace(repository: Repository, lovelaceconfig: Lovelace
             })
         }
         return loaded;
-    }
-    return false;
+    } else return true;
 }
