@@ -8,10 +8,9 @@ export function AddedToLovelace(repository: Repository, lovelaceconfig: Lovelace
 
         if (lovelaceconfig.resources !== undefined) {
             lovelaceconfig.resources.forEach((item: LovelaceResourceConfig) => {
-                if (loaded) loaded = loaded;
-                else if (item.url === URL) {
-                    loaded = true
-                }
+                if (!loaded) {
+                    if (item.url === URL) loaded = true;
+                };
             })
         }
         return loaded;

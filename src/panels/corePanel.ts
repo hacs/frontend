@@ -48,7 +48,6 @@ export class HacsPanelStore extends LitElement {
       const category = this.panel;
       var newRepositories: Repository[] = [];
       const config = this.configuration;
-      const lovelaceconfig = this.lovelaceconfig
       this.SearchTerm = localStorage.getItem("hacs-search");
       var SearchTerm = this.SearchTerm;
       var _repositories = this.repositories.filter(function (repo) {
@@ -201,9 +200,15 @@ export class HacsPanelStore extends LitElement {
     var status = repository.status;
     var description = repository.status_description;
 
-    if (repository.category === "plugin" && !AddedToLovelace(repository, this.lovelaceconfig)) {
-      status = "pending-restart";
-      description = "Not loaded in lovelace";
+    if (repository.installed) {
+      if (repository.category === "plugin" && !AddedToLovelace(repository, this.lovelaceconfig)) {
+        status = "pending-restart";
+        description = "Not loaded in lovelace";
+      } else if (repository.category === "integration" &&
+        !this.hass.config.components.includes(repository.domain)) {
+        status = "pending-restart";
+        description = "Not loaded in Home Assistant";
+      }
     }
 
     return { status: status, description: description }
