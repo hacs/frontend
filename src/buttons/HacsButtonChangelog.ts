@@ -7,8 +7,14 @@ export class HacsButtonChangelog extends HacsRepositoryButton {
     protected render(): TemplateResult | void {
         if (!this.repository.pending_upgrade) return html``
 
+        var URL: String = `https://github.com/${this.repository.full_name}/releases`
+
+        if (this.repository.version_or_commit === "commit") {
+            URL = `https://github.com/${this.repository.full_name}/compare/${this.repository.installed_version}...${this.repository.available_version}`
+        }
+
         return html`
-        <a href="https://github.com/${this.repository.full_name}/releases" rel='noreferrer' target="_blank">
+        <a href="${URL}" rel='noreferrer' target="_blank">
           <mwc-button>
           ${this.hass.localize(`component.hacs.repository.changelog`)}
           </mwc-button>
