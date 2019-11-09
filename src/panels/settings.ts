@@ -12,6 +12,7 @@ import { HomeAssistant } from "custom-card-helpers";
 import { HacsStyle } from "../style/hacs-style"
 
 import "../misc/CustomRepositories"
+import "../misc/HiddenRepositories"
 
 import { Configuration, Repository, Status } from "../types"
 
@@ -86,6 +87,13 @@ export class HacsPanelSettings extends LitElement {
       .repositories=${this.repositories}
     >
     </hacs-custom-repositories>
+    <hacs-hidden-repositories
+    .hass=${this.hass}
+    .status=${this.status}
+    .configuration=${this.configuration}
+    .repositories=${this.repositories}
+    >
+    </hacs-hidden-repositories
           `;
   }
 
