@@ -236,7 +236,6 @@ class HacsFrontendBase extends LitElement {
         .configuration=${this.configuration}
         .repositories=${this.repositories}>
       </hacs-panel-settings>` )}
-
     </app-header-layout>`;
   }
 

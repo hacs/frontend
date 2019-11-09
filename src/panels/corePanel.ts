@@ -16,6 +16,7 @@ import { navigate } from "../misc/navigate"
 import { LovelaceConfig } from "../misc/LovelaceTypes"
 import { AddedToLovelace } from "../misc/AddedToLovelace"
 
+
 import "../buttons/HacsButtonClearNew"
 
 
@@ -96,7 +97,11 @@ export class HacsPanelStore extends LitElement {
         placeholder="  ${this.hass.localize("component.hacs.store.placeholder_search")}."
         autofocus
         .value=${this.SearchTerm}
-      ></paper-input>
+      >
+        ${(this.SearchTerm.length > 0 ? html`
+          <ha-icon slot="suffix" icon="mdi:close" @click="${this.clearSearch}"></ha-icon>
+        ` : "")}
+      </paper-input>
 
     ${(newRepositories.length !== 0 ? html`
     <div class="card-group">
@@ -219,6 +224,11 @@ export class HacsPanelStore extends LitElement {
 
     localStorage.setItem("hacs-search", this.SearchTerm);
   };
+
+  clearSearch() {
+    this.SearchTerm = "";
+    localStorage.setItem("hacs-search", this.SearchTerm);
+  }
 
   ShowRepository(ev) {
     var RepoID: string
