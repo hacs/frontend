@@ -10,7 +10,6 @@ import { RepositoryWebSocketAction } from "./RepositoryWebSocketAction"
 export class HiddenRepositories extends LitElement {
     @property() public hass!: HomeAssistant;
     @property() public repositories!: Repository[];
-    @property() public _hidden!: Repository[];
 
     UnHide(ev) {
         var repo = ev.composedPath()[4].repoID
@@ -18,19 +17,16 @@ export class HiddenRepositories extends LitElement {
     }
 
     protected render(): TemplateResult | void {
-        this._hidden = this.repositories.filter(function (repo) {
-            if (!repo.hide) return false;
-            return true;
-        })
+        var _hidden: Repository[] = this.repositories.filter(function (repo) { return repo.hide })
 
-        if (this._hidden.length === 0) return html``
+        if (_hidden.length === 0) return html``
 
         return html`
         <ha-card header="${this.hass.localize("component.hacs.settings.hidden_repositories")}">
             <div class="card-content">
             <div class="custom-repositories-list">
 
-            ${this._hidden.sort((a, b) => (a.full_name > b.full_name) ? 1 : -1).map(repo =>
+            ${_hidden.sort((a, b) => (a.full_name > b.full_name) ? 1 : -1).map(repo =>
             html`
                 <div class="row" .repoID=${repo.id}>
                     <paper-item>
