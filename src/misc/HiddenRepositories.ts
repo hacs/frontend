@@ -23,7 +23,7 @@ export class HiddenRepositories extends LitElement {
         if (this._hidden.length === 0) return html``
 
         return html`
-        <ha-card header="${this.hass.localize("component.hacs.settings.hidden_repositories")}">
+        <ha-card header="${this.hass.localize("component.hacs.settings.hidden_repositories").toUpperCase()}">
             <div class="card-content">
             <div class="custom-repositories-list">
 
@@ -32,7 +32,7 @@ export class HiddenRepositories extends LitElement {
                 <div class="row" .repoID=${repo.id}>
                     <paper-item>
                     <ha-icon
-                    title="${(this.hass.localize("component.hacs.settings.unhide")).toUpperCase()}"
+                    title="${this.hass.localize("component.hacs.settings.unhide")}"
                     class="listicon" icon="mdi:restore"
                     @click=${this.UnHide}
                     ></ha-icon>
