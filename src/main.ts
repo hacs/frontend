@@ -10,6 +10,7 @@ import "./buttons/HacsHelpButton"
 import "./panels/corePanel";
 import "./panels/repository";
 import "./panels/settings";
+import "./misc/HacsProgressbar"
 import "./misc/HacsError";
 import "./misc/HacsCritical";
 import { LovelaceConfig } from "./misc/LovelaceTypes"
@@ -216,6 +217,8 @@ class HacsFrontendBase extends LitElement {
         </paper-tab>
       </paper-tabs>
     </app-header>
+
+    <hacs-progressbar .status=${this.status}></hacs-progressbar>
 
     <hacs-critical .hass=${this.hass} .critical=${this.critical}></hacs-critical>
     <hacs-error .hass=${this.hass}></hacs-error>
