@@ -22,12 +22,20 @@ export class HacsButtonMainAction extends HacsRepositoryButton {
     }
 
     protected render(): TemplateResult | void {
+        const label = this.hass.localize(`component.hacs.repository.${this.repository.main_action.toLowerCase()}`)
+        if (this.status.background_task) {
+            return html`
+                <mwc-button disabled>
+                    ${label}
+                </mwc-button>
+            `
+        }
         return html`
-            <mwc-button @click=${this.RepositoryInstall}>
+            <mwc-button
+            @click=${this.RepositoryInstall}>
                 ${(this.repository.state == "installing"
                 ? html`<paper-spinner active></paper-spinner>`
-                : html`${this.hass.localize(
-                    `component.hacs.repository.${this.repository.main_action.toLowerCase()}`)}`)}
+                : html`${label}`)}
             </mwc-button>
         `;
     }

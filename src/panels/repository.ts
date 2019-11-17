@@ -13,7 +13,7 @@ import { HacsStyle } from "../style/hacs-style"
 
 import { RepositoryWebSocketAction } from "../misc/RepositoryWebSocketAction"
 
-import { Configuration, Repository, Route } from "../types"
+import { Configuration, Repository, Route, Status } from "../types"
 import { navigate } from "../misc/navigate"
 import { LovelaceConfig } from "../misc/LovelaceTypes"
 
@@ -37,6 +37,7 @@ export class HacsPanelRepository extends LitElement {
   @property() public repository!: string;
   @property() public panel: string;
   @property() public route!: Route;
+  @property() public status!: Status;
   @property() public repository_view = false;
   @property() private repo: Repository;
   @property() public lovelaceconfig: LovelaceConfig;
@@ -144,13 +145,13 @@ export class HacsPanelRepository extends LitElement {
 
 
       <div class="card-actions">
-        <hacs-button-main-action .hass=${this.hass} .repository=${this.repo}></hacs-button-main-action>
+        <hacs-button-main-action .hass=${this.hass} .repository=${this.repo} .status=${this.status}></hacs-button-main-action>
         <hacs-button-changelog .hass=${this.hass} .repository=${this.repo}></hacs-button-changelog>
         <hacs-button-open-repository .hass=${this.hass} .repository=${this.repo}></hacs-button-open-repository>
         ${(this.repo.category === "plugin" ? html`
           <hacs-button-open-plugin .hass=${this.hass} .repository=${this.repo}></hacs-button-open-plugin>
         ` : "")}
-        <hacs-button-uninstall class="right" .hass=${this.hass} .repository=${this.repo}></hacs-button-uninstall>
+        <hacs-button-uninstall class="right" .hass=${this.hass} .repository=${this.repo} .status=${this.status}></hacs-button-uninstall>
       </div>
 
     </ha-card>

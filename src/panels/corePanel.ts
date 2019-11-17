@@ -11,7 +11,7 @@ import {
 import { HomeAssistant } from "custom-card-helpers";
 
 import { HacsStyle } from "../style/hacs-style"
-import { Configuration, Repository, Route } from "../types"
+import { Configuration, Repository, Route, Status } from "../types"
 import { navigate } from "../misc/navigate"
 import { LovelaceConfig } from "../misc/LovelaceTypes"
 import { AddedToLovelace } from "../misc/AddedToLovelace"
@@ -28,6 +28,7 @@ export class HacsPanelStore extends LitElement {
   @property() public configuration!: Configuration
   @property() public route!: Route;
   @property() public panel;
+  @property() public status!: Status;
   @property() public repository_view = false;
   @property() public repository: string;
   @property() public SearchTerm: string = "";
@@ -40,6 +41,7 @@ export class HacsPanelStore extends LitElement {
       <hacs-panel-repository
         .hass=${this.hass}
         .route=${this.route}
+        .status=${this.status}
         .configuration=${this.configuration}
         .repositories=${this.repositories}
         .repository=${this.repository}

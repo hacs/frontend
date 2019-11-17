@@ -7,11 +7,20 @@ export class HacsButtonUninstall extends HacsRepositoryButton {
     protected render(): TemplateResult | void {
         if (!this.repository.installed) return html``
 
+        const label = this.hass.localize('component.hacs.repository.uninstall');
+        if (this.status.background_task) {
+            return html`
+                <mwc-button disabled>
+                    ${label}
+                </mwc-button>
+            `
+        }
+
         return html`
             <mwc-button @click=${this.RepositoryUnInstall}>
                 ${(this.repository.state == "uninstalling"
                 ? html`<paper-spinner active></paper-spinner>`
-                : html`${this.hass.localize('component.hacs.repository.uninstall')}`)}
+                : html`${label}`)}
             </mwc-button>
         `;
     }
