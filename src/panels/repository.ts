@@ -58,6 +58,7 @@ export class HacsPanelRepository extends LitElement {
         .repositories=${this.repositories}
         .panel=${this.panel}
         .route=${this.route}
+        .status=${this.status}
         .repository_view=${this.repository_view}
         .repository=${this.repository}
         .lovelaceconfig=${this.lovelaceconfig}
