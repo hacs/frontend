@@ -155,7 +155,7 @@ export class HacsPanelRepository extends LitElement {
 
     </ha-card>
 
-    <ha-card>
+    <ha-card class="additional">
       <div class="card-content">
         <div class="more_info">
           ${unsafeHTML(this.repo.additional_info)}
@@ -218,6 +218,9 @@ export class HacsPanelRepository extends LitElement {
       }
       .information {
         width: 60%;
+      }
+      .additional {
+        margin-bottom: 108px;
       }
       .getBack {
         margin-top: 8px;
