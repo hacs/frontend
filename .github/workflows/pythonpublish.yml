@@ -15,7 +15,7 @@ jobs:
         python-version: '3.x'
     - name: "Set version number"
       run: |
-        sed -i '/version=/c\version="${{ github.ref }}"' ./setup.py
+        sed -i '/version=/c\version="${{ github.ref }}",' ./setup.py
         sed -i 's|refs/heads/||' ./setup.py
         sed -i 's|refs/tags/||' ./setup.py
     - name: Install dependencies
