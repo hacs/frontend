@@ -1,0 +1,2 @@
+graft hacs_frontend
+global-exclude *.py[cod]
