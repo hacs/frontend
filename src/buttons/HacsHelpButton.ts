@@ -5,11 +5,14 @@ import { HacsStyle } from "../style/hacs-style"
 export class HacsHelpButton extends LitElement {
     protected render(): TemplateResult | void {
         return html`
-        <ha-icon
-            title="Help"
-            class="float" icon="mdi:help-circle-outline"
-            @click=${this.openHelp}
-        ></ha-icon>
+        <a href="#">
+            <ha-icon
+                title="Help"
+                class="float"
+                icon="mdi:help-circle-outline"
+                @click=${this.openHelp}>
+            </ha-icon>
+        </a>
         `
     }
 
