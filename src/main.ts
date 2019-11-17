@@ -6,6 +6,7 @@ import {
 import { load_lovelace } from "card-tools/src/hass";
 import { navigate } from "./misc/navigate";
 import scrollToTarget from "./misc/ScrollToTarget";
+import "./buttons/HacsHelpButton"
 import "./panels/corePanel";
 import "./panels/repository";
 import "./panels/settings";
@@ -236,6 +237,7 @@ class HacsFrontendBase extends LitElement {
         .configuration=${this.configuration}
         .repositories=${this.repositories}>
       </hacs-panel-settings>` )}
+      <hacs-help-button></hacs-help-button>
     </app-header-layout>`;
   }
 
