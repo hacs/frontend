@@ -15,6 +15,7 @@ import { Configuration, Repository, Route } from "../types"
 import { navigate } from "../misc/navigate"
 import { LovelaceConfig } from "../misc/LovelaceTypes"
 import { AddedToLovelace } from "../misc/AddedToLovelace"
+import { LoadedInHA } from "../misc/LoadedInHA"
 
 
 import "../buttons/HacsButtonClearNew"
@@ -209,8 +210,7 @@ export class HacsPanelStore extends LitElement {
       if (repository.category === "plugin" && !AddedToLovelace(repository, this.lovelaceconfig)) {
         status = "pending-restart";
         description = "Not loaded in lovelace";
-      } else if (repository.category === "integration" &&
-        !this.hass.config.components.includes(repository.domain)) {
+      } else if (repository.category === "integration" && !LoadedInHA(repository, this.hass)) {
         status = "pending-restart";
         description = "Not loaded in Home Assistant";
       }
