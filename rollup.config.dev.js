@@ -5,14 +5,14 @@ import serve from 'rollup-plugin-serve'
 export default {
     input: ['src/main.ts'],
     output: {
-        dir: 'build',
+        dir: 'hacs_frontend',
         format: 'es',
     },
     plugins: [
         resolve(),
         typescript(),
         serve({
-            contentBase: ['build'],
+            contentBase: ['hacs_frontend'],
             host: '0.0.0.0',
             port: 5000,
         }),
