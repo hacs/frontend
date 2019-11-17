@@ -30,7 +30,7 @@ export class HacsRepositoryMenu extends LitElement {
                 : "")}
 
 
-                ${(!this.repository.custom ? html`
+                ${(!this.repository.custom && !this.repository.installed ? html`
                 <paper-item @click=${this.RepositoryHide}>
                     ${this.hass.localize(`component.hacs.repository.hide`)}
                 </paper-item>`
@@ -45,7 +45,7 @@ export class HacsRepositoryMenu extends LitElement {
                 </a>
 
 
-                <a href="https://github.com" rel='noreferrer' target="_blank">
+                <a href="https://github.com/hacs/default/issues/new?assignees=ludeeus&labels=flag&template=flag.md&title=${this.repository.full_name}" rel='noreferrer' target="_blank">
                 <paper-item>
                     <ha-icon class="link-icon" icon="mdi:open-in-new"></ha-icon>
                     ${this.hass.localize(`component.hacs.repository.flag_this`)}
