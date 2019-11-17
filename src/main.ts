@@ -146,6 +146,9 @@ class HacsFrontendBase extends LitElement {
       () => this.getStatus(), "hacs/status"
     );
     this.hass.connection.subscribeEvents(
+      () => window.location.reload(), "hacs/reload"
+    );
+    this.hass.connection.subscribeEvents(
       () => this.getLovelaceConfig(), "lovelace_updated"
     );
   }
