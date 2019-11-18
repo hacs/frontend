@@ -38,7 +38,7 @@ export class HacsHelpButton extends LitElement {
                 right: 40px;
                 border-radius: 50px;
                 text-align: center;
-                color: var(--primary-color);
+                color: var(--accent-color);
                 background-color: var(--paper-card-background-color, var(--primary-background-color));
             }
         `]
