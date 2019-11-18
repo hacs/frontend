@@ -208,6 +208,9 @@ export class HacsPanelRepository extends LitElement {
         width: 300px;
         height: 300px;
      }
+     paper-dropdown-menu {
+        width: 80%;
+     }
       .description {
         font-style: italic;
         padding-bottom: 16px;
