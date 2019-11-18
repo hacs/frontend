@@ -2,7 +2,6 @@ import { LitElement, customElement, CSSResultArray, css, TemplateResult, html, p
 import { HacsStyle } from "../style/hacs-style"
 import { Repository, Configuration } from "../types";
 import { AddedToLovelace } from "./AddedToLovelace"
-import { LoadedInHA } from "./LoadedInHA"
 import { HomeAssistant } from "custom-card-helpers";
 import { LovelaceConfig } from "../misc/LovelaceTypes"
 import "../buttons/HacsButtonAddToLovelace"
@@ -26,16 +25,6 @@ export class RepositoryBannerNote extends LitElement {
             message = `
             You need to restart Home Assistant.
             `
-        }
-        else if (this.repository.category == "integration") {
-            var loaded: boolean = LoadedInHA(this.repository, this.hass)
-            if (!loaded) {
-                type = "warning";
-                title = "Not Loaded"
-                message = `
-                This integration is not loaded in Home Assistant.
-                `
-            }
         }
 
         else if (this.repository.category == "plugin") {
