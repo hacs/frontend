@@ -73,7 +73,7 @@ export class HacsPanelRepository extends LitElement {
     this.repo = _repositories[0]
 
     if (this.repo.installed) {
-      var back = this.hass.localize(`component.hacs.repository.installed`);
+      var back = this.hass.localize(`component.hacs.common.installed`);
     } else {
       if (this.repo.category === "appdaemon") {
         var FE_cat = "appdaemon_apps";
