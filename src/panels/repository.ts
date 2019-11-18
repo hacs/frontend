@@ -96,6 +96,7 @@ export class HacsPanelRepository extends LitElement {
 
     <hacs-repository-banner-note
       .hass=${this.hass}
+      .status=${this.status}
       .repository=${this.repo}
       .lovelaceconfig=${this.lovelaceconfig}
       .configuration=${this.configuration}>

@@ -1,6 +1,6 @@
 import { LitElement, customElement, CSSResultArray, css, TemplateResult, html, property } from "lit-element";
 import { HacsStyle } from "../style/hacs-style"
-import { Repository, Configuration } from "../types";
+import { Repository, Configuration, Status } from "../types";
 import { AddedToLovelace } from "./AddedToLovelace"
 import { HomeAssistant } from "custom-card-helpers";
 import { LovelaceConfig } from "../misc/LovelaceTypes"
@@ -10,6 +10,7 @@ import "../buttons/HacsButtonAddToLovelace"
 export class RepositoryBannerNote extends LitElement {
     @property() public hass!: HomeAssistant;
     @property() public repository!: Repository;
+    @property() public status!: Status;
     @property() public configuration: Configuration;
     @property() public lovelaceconfig: LovelaceConfig;
 
@@ -29,7 +30,7 @@ export class RepositoryBannerNote extends LitElement {
 
         else if (this.repository.category == "plugin") {
             if (this.lovelaceconfig !== undefined) {
-                var loaded: boolean = AddedToLovelace(this.repository, this.lovelaceconfig);
+                var loaded: boolean = AddedToLovelace(this.repository, this.lovelaceconfig, this.status);
 
                 if (!loaded) {
                     type = "warning";

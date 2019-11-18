@@ -207,7 +207,7 @@ export class HacsPanelStore extends LitElement {
     var description = repository.status_description;
 
     if (repository.installed && !this.status.background_task) {
-      if (repository.category === "plugin" && !AddedToLovelace(repository, this.lovelaceconfig)) {
+      if (repository.category === "plugin" && !AddedToLovelace(repository, this.lovelaceconfig, this.status)) {
         status = "pending-restart";
         description = "Not loaded in lovelace";
       }
