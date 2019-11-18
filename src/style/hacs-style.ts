@@ -3,17 +3,6 @@ import { CSSResultArray, css } from "lit-element";
 import { haStyle } from "./ha-style"
 import { navStyle } from "./nav-style"
 
-const customHacsStyles = css`
-    :host {
-        --hacs-status-installed: #126e15;
-        --hacs-status-pending-restart: #a70000;
-        --hacs-status-pending-update: #ffab40;
-        --hacs-status-default: var(--primary-text-color);
-        --hacs-badge-color: var(--primary-color);
-        --hacs-badge-text-color: var(--primary-text-color);
-      }
-`
-
 const baseHacsStyles = css`
     :root {
         font-family: var(--paper-font-body1_-_font-family);
@@ -67,16 +56,19 @@ const baseHacsStyles = css`
         color: var(--primary-text-color);
     }
     ha-icon.installed {
-        color: var(--hacs-status-installed);
+        color: var(--hacs-status-installed, #126e15);
     }
     ha-icon.pending-upgrade {
-        color: var(--hacs-status-pending-update);
+        color: var(--hacs-status-pending-update, #ffab40);
     }
     ha-icon.pending-restart {
-        color: var(--hacs-status-pending-restart);
+        color: var(--hacs-status-pending-restart, var(--google-red-500));
+    }
+    ha-icon.not-loaded {
+        color: var(--hacs-status-not-loaded, var(--google-red-500));
     }
     ha-icon.new {
-        color: var(--hacs-badge-color);
+        color: var(--hacs-badge-color, var(--primary-color));
       }
 `
 
@@ -84,4 +76,4 @@ const mobileHacsStyles = css`
 
 `
 
-export const HacsStyle: CSSResultArray = [haStyle, navStyle, baseHacsStyles, customHacsStyles, mobileHacsStyles]
+export const HacsStyle: CSSResultArray = [haStyle, navStyle, baseHacsStyles, mobileHacsStyles]
