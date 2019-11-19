@@ -110,7 +110,8 @@ export class HacsPanelStore extends LitElement {
       ${newRepositories.sort((a, b) => (a.name > b.name) ? 1 : -1).map(repo =>
         html`
           ${(this.configuration.frontend_mode !== "Table" ? html`
-          <paper-card @click="${this.ShowRepository}" .RepoID="${repo.id}">
+          <paper-card @click="${this.ShowRepository}" .RepoID="${repo.id}"
+            class="${(this.configuration.frontend_compact ? "compact" : "")}">
           <div class="card-content">
             <div>
               <ha-icon
@@ -156,7 +157,8 @@ export class HacsPanelStore extends LitElement {
           html`
 
       ${(this.configuration.frontend_mode !== "Table" ? html`
-        <paper-card @click="${this.ShowRepository}" .RepoID="${repo.id}">
+        <paper-card @click="${this.ShowRepository}" .RepoID="${repo.id}"
+          class="${(this.configuration.frontend_compact ? "compact" : "")}">
         <div class="card-content">
           <div>
             <ha-icon
@@ -277,6 +279,11 @@ export class HacsPanelStore extends LitElement {
 
       .search-bar-installed, .search-bar-settings {
         display: none;
+      }
+
+      .compact {
+        height: 80px !important;
+        white-space: nowrap !important;
       }
 
       .card-group {

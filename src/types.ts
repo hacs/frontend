@@ -16,6 +16,7 @@ export interface Configuration {
     appdaemon: boolean;
     dev: string;
     frontend_mode: string;
+    frontend_compact: boolean;
     country: string;
     python_script: boolean;
     theme: boolean;

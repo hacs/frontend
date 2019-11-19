@@ -36,6 +36,10 @@ export class HacsPanelSettings extends LitElement {
           .checked=${this.configuration.frontend_mode === "Table"}
           @change=${this.SetFeStyle}
         >Table view</ha-switch>
+        <ha-switch
+          .checked=${this.configuration.frontend_compact}
+          @change=${this.SetFeCompact}
+        >Compact mode</ha-switch>
     </div>
       </div>
       <div class="card-actions">
@@ -98,6 +102,13 @@ export class HacsPanelSettings extends LitElement {
     });
   }
 
+  SetFeCompact() {
+    this.hass.connection.sendMessage({
+      type: "hacs/settings",
+      action: `set_fe_compact_${String(this.configuration.frontend_compact).toLocaleLowerCase()}`
+    });
+  }
+
   ReloadData() {
     this.hass.connection.sendMessage({
       type: "hacs/settings",
@@ -134,6 +145,9 @@ export class HacsPanelSettings extends LitElement {
     ha-card {
       width: 90%;
       margin-left: 5%;
+    }
+    ha-switch {
+      margin-bottom: 8px;
     }
     mwc-button {
       margin: 0 8px 0 8px;
