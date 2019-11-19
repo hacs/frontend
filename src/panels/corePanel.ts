@@ -130,7 +130,8 @@ export class HacsPanelStore extends LitElement {
 
         ` : html`
 
-        <paper-item .RepoID=${repo.id} @click="${this.ShowRepository}">
+        <paper-item .RepoID=${repo.id} @click="${this.ShowRepository}"
+          class="${(this.configuration.frontend_compact ? "compact" : "")}">
           <div class="icon">
             <ha-icon
               icon="mdi:new-box"
@@ -177,7 +178,8 @@ export class HacsPanelStore extends LitElement {
 
       ` : html`
 
-      <paper-item .RepoID=${repo.id} @click="${this.ShowRepository}">
+      <paper-item .RepoID=${repo.id} @click="${this.ShowRepository}"
+        class="${(this.configuration.frontend_compact ? "compact" : "")}">
         <div class="icon">
           <ha-icon
             icon=${(repo.new ? "mdi:new-box" : "mdi:cube")}
@@ -281,8 +283,13 @@ export class HacsPanelStore extends LitElement {
         display: none;
       }
 
-      .compact {
+      paper-card.compact {
         height: 80px !important;
+        white-space: nowrap !important;
+      }
+
+      paper-item.compact {
+        margin-bottom: 2px !important;
         white-space: nowrap !important;
       }
 
