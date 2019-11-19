@@ -32,16 +32,10 @@ export class HacsPanelSettings extends LitElement {
         <p><b>${this.hass.localize("component.hacs.common.version")}:</b> ${this.configuration.version}</p>
         <p><b>${this.hass.localize("component.hacs.common.repositories")}:</b> ${this.repositories.length}</p>
         <div class="version-available">
-        <paper-dropdown-menu label="${this.hass.localize(`component.hacs.settings.display`)}">
-            <paper-listbox slot="dropdown-content" selected="-1">
-              <paper-item .display="grid" @click="${this.SetFeStyleGrid}">
-                ${this.hass.localize(`component.hacs.settings.grid`)}
-              </paper-item>
-              <paper-item .display="table" @click="${this.SetFeStyleTable}">
-                ${this.hass.localize(`component.hacs.settings.table`)}
-              </paper-item>
-            </paper-listbox>
-        </paper-dropdown-menu>
+        <ha-switch
+          .checked=${this.configuration.frontend_mode === "Table"}
+          @change=${this.SetFeStyle}
+        >Table view</ha-switch>
     </div>
       </div>
       <div class="card-actions">
@@ -97,17 +91,12 @@ export class HacsPanelSettings extends LitElement {
           `;
   }
 
-  SetFeStyleGrid() {
+  SetFeStyle() {
+    var femode = "grid"
+    if (this.configuration.frontend_mode !== "Table") femode = "table";
     this.hass.connection.sendMessage({
       type: "hacs/settings",
-      action: "set_fe_grid"
-    });
-  }
-
-  SetFeStyleTable() {
-    this.hass.connection.sendMessage({
-      type: "hacs/settings",
-      action: "set_fe_table"
+      action: `set_fe_${femode}`
     });
   }
 
