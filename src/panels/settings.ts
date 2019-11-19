@@ -92,11 +92,9 @@ export class HacsPanelSettings extends LitElement {
   }
 
   SetFeStyle() {
-    var femode = "grid"
-    if (this.configuration.frontend_mode !== "Table") femode = "table";
     this.hass.connection.sendMessage({
       type: "hacs/settings",
-      action: `set_fe_${femode}`
+      action: `set_fe_${(this.configuration.frontend_mode !== "Table" ? "table" : "grid")}`
     });
   }
 
