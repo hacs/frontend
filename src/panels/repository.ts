@@ -127,15 +127,15 @@ export class HacsPanelRepository extends LitElement {
               </div>
           ` : html`
               <div class="version-available">
-                  <paper-dropdown-menu
+                  <paper-dropdown-menu @value-changed="${this.SetVersion}"
                     label="${this.hass.localize(`component.hacs.repository.available`)}:
                      (${this.hass.localize(`component.hacs.repository.newest`)}: ${this.repo.releases[0]})">
                       <paper-listbox slot="dropdown-content" selected="-1">
                           ${this.repo.releases.map(release =>
-          html`<paper-item @click="${this.SetVersion}">${release}</paper-item>`
+          html`<paper-item>${release}</paper-item>`
         )}
                           ${(this.repo.full_name !== "hacs/integration" ? html`
-                          <paper-item @click="${this.SetVersion}">${this.repo.default_branch}</paper-item>
+                          <paper-item>${this.repo.default_branch}</paper-item>
                           ` : "")}
                       </paper-listbox>
                   </paper-dropdown-menu>
@@ -173,10 +173,11 @@ export class HacsPanelRepository extends LitElement {
           `;
   }
 
-  SetVersion(ev: any) {
-    RepositoryWebSocketAction(this.hass, this.repo.id, "set_state", "other");
-    var Version = ev.composedPath()[2].outerText;
-    if (Version) RepositoryWebSocketAction(this.hass, this.repo.id, "set_version", Version);
+  SetVersion(e: any) {
+    if (e.detail.value.length > 0) {
+      RepositoryWebSocketAction(this.hass, this.repo.id, "set_state", "other");
+      RepositoryWebSocketAction(this.hass, this.repo.id, "set_version", e.detail.value);
+    }
   }
 
   GoBackToStore() {
