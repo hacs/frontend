@@ -29,7 +29,7 @@ export class RepositoryBannerNote extends LitElement {
         }
 
         else if (this.repository.category == "plugin") {
-            if (this.lovelaceconfig !== undefined) {
+            if (this.lovelaceconfig !== undefined && !this.status.background_task) {
                 var loaded: boolean = AddedToLovelace(this.repository, this.lovelaceconfig, this.status);
 
                 if (!loaded) {
