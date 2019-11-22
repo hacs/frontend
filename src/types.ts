@@ -50,6 +50,7 @@ export interface Repository {
     info: string;
     updated_info: boolean;
     beta: boolean;
+    stars: number;
     version_or_commit: string;
     custom: boolean;
     installed_version: string;
