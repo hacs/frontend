@@ -11,7 +11,7 @@ import {
 import { HomeAssistant } from "custom-card-helpers";
 
 import { HacsStyle } from "../style/hacs-style"
-import { Configuration, Repository, Route, Status } from "../types"
+import { Configuration, Repository, Route, Status, ValueChangedEvent } from "../types"
 import { navigate } from "../misc/navigate"
 import { LovelaceConfig } from "../misc/LovelaceTypes"
 import { AddedToLovelace } from "../misc/AddedToLovelace"
@@ -29,6 +29,7 @@ export class HacsPanelStore extends LitElement {
   @property() public status!: Status;
   @property() public repository_view = false;
   @property() public repository: string;
+  @property() public SortKey: string = "name";
   @property() public SearchTerm: string = "";
   @property() public lovelaceconfig: LovelaceConfig;
 
@@ -90,24 +91,32 @@ export class HacsPanelStore extends LitElement {
       });
 
       return html`
-      <paper-input
-        class="search-bar search-bar-${this.panel}"
-        type="text"
-        id="Search"
-        @input=${this.DoSearch}
-        placeholder="  ${this.hass.localize("component.hacs.store.placeholder_search")}."
-        autofocus
-        .value=${this.SearchTerm}
-      >
-        ${(this.SearchTerm.length > 0 ? html`
-          <ha-icon slot="suffix" icon="mdi:close" @click="${this.clearSearch}"></ha-icon>
-        ` : "")}
-      </paper-input>
+      <div class="store-top store-top-${this.panel}">
+        <paper-input
+          class="search-bar"
+          type="text"
+          id="Search"
+          @input=${this.DoSearch}
+          placeholder="  ${this.hass.localize("component.hacs.store.placeholder_search")}."
+          autofocus
+          .value=${this.SearchTerm}
+        >
+          ${(this.SearchTerm.length > 0 ? html`
+            <ha-icon slot="suffix" icon="mdi:close" @click="${this.clearSearch}"></ha-icon>
+          ` : "")}
+        </paper-input>
+        <paper-dropdown-menu @value-changed="${this.SetSortKey}" class="sort" label="Sort">
+          <paper-listbox slot="dropdown-content" selected="0">
+            <paper-item>Name</paper-item>
+            <paper-item>Status</paper-item>
+          </paper-listbox>
+        </paper-dropdown-menu>
+        </div>
 
     ${(newRepositories.length !== 0 ? html`
     <div class="card-group">
       <h1>${this.hass.localize(`component.hacs.store.new_repositories`)}</h1>
-      ${newRepositories.sort((a, b) => (a.name > b.name) ? 1 : -1).map(repo =>
+      ${newRepositories.sort((a, b) => (a[this.SortKey] > b[this.SortKey]) ? 1 : -1).map(repo =>
         html`
           ${(this.configuration.frontend_mode !== "Table" ? html`
           <paper-card @click="${this.ShowRepository}" .RepoID="${repo.id}">
@@ -129,7 +138,7 @@ export class HacsPanelStore extends LitElement {
 
         ` : html`
 
-        <paper-item .RepoID=${repo.id} @click="${this.ShowRepository}">
+        <paper-item .RepoID=${repo.id} @click="${this.ShowRepository}" class="list">
           <div class="icon">
             <ha-icon
               icon="mdi:new-box"
@@ -152,7 +161,7 @@ export class HacsPanelStore extends LitElement {
     ` : "")}
 
     <div class="card-group">
-    ${_repositories.sort((a, b) => (a.name > b.name) ? 1 : -1).map(repo =>
+    ${_repositories.sort((a, b) => (a[this.SortKey] > b[this.SortKey]) ? 1 : -1).map(repo =>
           html`
 
       ${(this.configuration.frontend_mode !== "Table" ? html`
@@ -175,7 +184,7 @@ export class HacsPanelStore extends LitElement {
 
       ` : html`
 
-      <paper-item .RepoID=${repo.id} @click="${this.ShowRepository}">
+      <paper-item .RepoID=${repo.id} @click="${this.ShowRepository}" class="list">
         <div class="icon">
           <ha-icon
             icon=${(repo.new ? "mdi:new-box" : "mdi:cube")}
@@ -200,6 +209,11 @@ export class HacsPanelStore extends LitElement {
     </script>
           `;
     }
+  }
+
+  SetSortKey(ev: ValueChangedEvent) {
+    if (ev.detail.value.length === 0) return;
+    this.SortKey = ev.detail.value.replace(" ", "_").toLowerCase()
   }
 
   StatusAndDescription(repository: Repository): { status: string, description: string } {
@@ -255,7 +269,7 @@ export class HacsPanelStore extends LitElement {
       hr {
         width: 95%
       }
-      paper-item {
+      paper-item.list {
         margin-bottom: 24px;
       }
       paper-item:hover {
@@ -264,7 +278,7 @@ export class HacsPanelStore extends LitElement {
     }
       .search-bar {
         display: block;
-        width: 92%;
+        width: 60%;
         margin-left: 3.4%;
         margin-top: 2%;
         background-color: var(--primary-background-color);
@@ -275,7 +289,24 @@ export class HacsPanelStore extends LitElement {
         border-bottom-width: thin;
       }
 
-      .search-bar-installed, .search-bar-settings {
+      .sort {
+        display: block;
+        width: 30%;
+        margin-left: 3.4%;
+        margin-top: 2%;
+        background-color: var(--primary-background-color);
+        color: var(--primary-text-color);
+        line-height: 32px;
+        border-color: var(--dark-primary-color);
+        border-width: inherit;
+        border-bottom-width: thin;
+      }
+
+      .store-top {
+        display: flex;
+      }
+
+      .store-top-installed, .store-top-settings {
         display: none;
       }
 

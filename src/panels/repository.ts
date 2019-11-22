@@ -13,7 +13,7 @@ import { HacsStyle } from "../style/hacs-style"
 
 import { RepositoryWebSocketAction } from "../misc/RepositoryWebSocketAction"
 
-import { Configuration, Repository, Route, Status } from "../types"
+import { Configuration, Repository, Route, Status, ValueChangedEvent } from "../types"
 import { navigate } from "../misc/navigate"
 import { LovelaceConfig } from "../misc/LovelaceTypes"
 
@@ -173,7 +173,7 @@ export class HacsPanelRepository extends LitElement {
           `;
   }
 
-  SetVersion(e: any) {
+  SetVersion(e: ValueChangedEvent) {
     if (e.detail.value.length > 0) {
       RepositoryWebSocketAction(this.hass, this.repo.id, "set_state", "other");
       RepositoryWebSocketAction(this.hass, this.repo.id, "set_version", e.detail.value);
