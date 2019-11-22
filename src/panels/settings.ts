@@ -35,12 +35,12 @@ export class HacsPanelSettings extends LitElement {
         <ha-switch
           .checked=${this.configuration.frontend_mode === "Table"}
           @change=${this.SetFeStyle}
-        >Table view</ha-switch>
+        >${this.hass.localize(`component.hacs.settings.table_view`)}</ha-switch>
         ${(this.configuration.experimental ? html`
           <ha-switch
             .checked=${this.configuration.frontend_compact}
             @change=${this.SetFeCompact}
-          >Compact mode</ha-switch>
+          >${this.hass.localize(`component.hacs.settings.compact_mode`)}</ha-switch>
         ` : "")}
 
     </div>
