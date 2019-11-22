@@ -36,10 +36,13 @@ export class HacsPanelSettings extends LitElement {
           .checked=${this.configuration.frontend_mode === "Table"}
           @change=${this.SetFeStyle}
         >Table view</ha-switch>
-        <ha-switch
-          .checked=${this.configuration.frontend_compact}
-          @change=${this.SetFeCompact}
-        >Compact mode</ha-switch>
+        ${(this.configuration.experimental ? html`
+          <ha-switch
+            .checked=${this.configuration.frontend_compact}
+            @change=${this.SetFeCompact}
+          >Compact mode</ha-switch>
+        ` : "")}
+
     </div>
       </div>
       <div class="card-actions">
