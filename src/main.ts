@@ -103,6 +103,9 @@ class HacsFrontendBase extends LitElement {
   }
 
   protected firstUpdated() {
+    window.onpopstate = function () {
+      window.location.reload()
+    };
     localStorage.setItem("hacs-search", "");
     this.panel = this._page;
     this.getRepositories();
