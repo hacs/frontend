@@ -7,9 +7,9 @@ export class HacsHelpButton extends LitElement {
         return html`
         <a href="#">
             <ha-icon
-                title="Help"
+                title="Documentation"
                 class="float"
-                icon="mdi:help-circle-outline"
+                icon="mdi:help-circle"
                 @click=${this.openHelp}>
             </ha-icon>
         </a>
@@ -38,8 +38,8 @@ export class HacsHelpButton extends LitElement {
                 right: 40px;
                 border-radius: 50px;
                 text-align: center;
-                color: var(--accent-color);
-                background-color: var(--paper-card-background-color, var(--primary-background-color));
+                color: var(--paper-card-background-color, var(--primary-background-color));
+                background-color: var(--accent-color);
             }
         `]
     }

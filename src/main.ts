@@ -167,7 +167,7 @@ class HacsFrontendBase extends LitElement {
     }
 
     if (this.repositories === undefined || this.configuration === undefined || this.status === undefined) {
-      return html`<paper-spinner active class="loader"></paper-spinner>`;
+      return html`<div  class="loader"><paper-spinner active></paper-spinner></div>`
     }
 
     if (/repository\//i.test(this.panel)) {
@@ -279,14 +279,19 @@ class HacsFrontendBase extends LitElement {
 
   static get styles(): CSSResultArray {
     return [HacsStyle, css`
-    paper-spinner.loader {
+    .loader {
+      background-color: var(--primary-background-color);
+      height: 100%;
+      width: 100%;
+    }
+    paper-spinner {
       position: absolute;
-      top: 20%;
+      top: 30%;
       left: 50%;
       transform: translate(-50%, -50%);
       z-index: 99;
-      width: 300px;
-      height: 300px;
+      width: 150px;
+      height: 150px;
    }
     `];
   }
