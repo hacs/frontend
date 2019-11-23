@@ -31,6 +31,10 @@ export interface Critical {
     acknowledged: boolean;
 }
 
+export interface SelectedValue {
+    detail: { selected: string }
+}
+
 export interface Repository {
     homeassistant: string;
     can_install: boolean;
