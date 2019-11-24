@@ -106,14 +106,14 @@ export class CustomRepositories extends LitElement {
                 bottom: 5px;
             }
             .saveicon {
-                color: var(--accent-color);
+                color: var(--primary-color);
                 position: absolute;
                 right: 0;
                 bottom: 24px;
                 cursor: pointer;
             }
             .listicon {
-                color: var(--accent-color);
+                color: var(--primary-color);
                 right: 0px;
                 position: absolute;
                 cursor: pointer;
