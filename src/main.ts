@@ -239,6 +239,7 @@ class HacsFrontendBase extends LitElement {
     this.repository_view = false;
     const newPage = e.detail.selected;
     this.panel = newPage;
+    this.route.path = `/${newPage}`
     this.requestUpdate();
     if (newPage !== this._page) {
       navigate(this, `/${this._rootPath}/${newPage}`);
