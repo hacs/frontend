@@ -71,5 +71,8 @@ export interface Repository {
     releases: [string];
     selected_tag: string;
     default_branch: string;
+}
 
+export interface ValueChangedEvent {
+    detail: { value: string }
 }
