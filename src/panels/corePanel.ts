@@ -192,13 +192,7 @@ export class HacsPanelStore extends LitElement {
 
 
       `)}
-    </div>
-    <script>
-    var objDiv = document.getElementById("191563578");
-    objDiv.scrollTop = objDiv.scrollHeight;
-    console.log("done")
-    </script>
-          `;
+    </div>`;
     }
   }
 

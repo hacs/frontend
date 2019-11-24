@@ -19,7 +19,6 @@ export class HacsHelpButton extends LitElement {
     openHelp() {
         const base = "https://hacs.xyz/docs/navigation/"
         var location = window.location.pathname.split("/")[2];
-        console.log(location);
         if (location === "integration") location = "stores";
         if (location === "plugin") location = "stores";
         if (location === "appdaemon") location = "stores";
