@@ -84,7 +84,7 @@ export class HacsPanelRepository extends LitElement {
       } else {
         FE_cat = `${this.repo.category}s`
       }
-      var back = this.hass.localize(`component.hacs.common.${FE_cat} `);
+      var back = this.hass.localize(`component.hacs.common.${FE_cat}`);
     }
 
     return html`
@@ -192,13 +192,13 @@ export class HacsPanelRepository extends LitElement {
     } else {
       this.panel = this.repo.category
     }
-    navigate(this, `/ ${this._rootPath} /${this.panel}`)
+    navigate(this, `/${this._rootPath}/${this.panel}`)
     this.requestUpdate();
   }
 
   private get _rootPath() {
-    if (window.location.pathname.split("/")[1] === "hacs_dev") return "hacs_dev";
-    return "hacs"
+    if (this.route.prefix.split("/")[1] === undefined) return "hacs";
+    return this.route.prefix.split("/")[1];
   }
 
 
