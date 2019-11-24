@@ -34,12 +34,12 @@ export class HacsError extends LitElement {
                     ${additional}
                 </div>
             <div class="card-actions">
-                <mwc-button raised @click=${this.clearError}>
+                <mwc-button @click=${this.clearError}>
                     Acknowledge
                 </mwc-button>
             ${(this.error.action === "add_repository" ? html`
             <a href="https://hacs.xyz/docs/publish/start" rel='noreferrer' target="_blank">
-                <mwc-button raised>
+                <mwc-button>
                     Documentation
                 </mwc-button>
             </a>

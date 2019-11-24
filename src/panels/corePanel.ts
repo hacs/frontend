@@ -119,7 +119,8 @@ export class HacsPanelStore extends LitElement {
       ${newRepositories.sort((a, b) => (a[this.SortKey] > b[this.SortKey]) ? 1 : -1).map(repo =>
         html`
           ${(this.configuration.frontend_mode !== "Table" ? html`
-          <paper-card @click="${this.ShowRepository}" .RepoID="${repo.id}">
+          <paper-card @click="${this.ShowRepository}" .RepoID="${repo.id}"
+            class="${(this.configuration.frontend_compact ? "compact" : "")}">
           <div class="card-content">
             <div>
               <ha-icon
@@ -138,7 +139,8 @@ export class HacsPanelStore extends LitElement {
 
         ` : html`
 
-        <paper-item .RepoID=${repo.id} @click="${this.ShowRepository}" class="list">
+        <paper-item .RepoID=${repo.id} @click="${this.ShowRepository}"
+          class="${(this.configuration.frontend_compact ? "compact" : "")}">
           <div class="icon">
             <ha-icon
               icon="mdi:new-box"
@@ -165,7 +167,8 @@ export class HacsPanelStore extends LitElement {
           html`
 
       ${(this.configuration.frontend_mode !== "Table" ? html`
-        <paper-card @click="${this.ShowRepository}" .RepoID="${repo.id}">
+        <paper-card @click="${this.ShowRepository}" .RepoID="${repo.id}"
+          class="${(this.configuration.frontend_compact ? "compact" : "")}">
         <div class="card-content">
           <div>
             <ha-icon
@@ -184,7 +187,8 @@ export class HacsPanelStore extends LitElement {
 
       ` : html`
 
-      <paper-item .RepoID=${repo.id} @click="${this.ShowRepository}" class="list">
+      <paper-item .RepoID=${repo.id} @click="${this.ShowRepository}"
+        class="${(this.configuration.frontend_compact ? "compact" : "")}">
         <div class="icon">
           <ha-icon
             icon=${(repo.new ? "mdi:new-box" : "mdi:cube")}
@@ -201,13 +205,7 @@ export class HacsPanelStore extends LitElement {
 
 
       `)}
-    </div>
-    <script>
-    var objDiv = document.getElementById("191563578");
-    objDiv.scrollTop = objDiv.scrollHeight;
-    console.log("done")
-    </script>
-          `;
+    </div>`;
     }
   }
 
@@ -310,6 +308,16 @@ export class HacsPanelStore extends LitElement {
         display: none;
       }
 
+      paper-card.compact {
+        height: 80px !important;
+        white-space: nowrap !important;
+      }
+
+      paper-item.compact {
+        margin-bottom: 2px !important;
+        white-space: nowrap !important;
+      }
+
       .card-group {
           margin-top: 24px;
           width: 95%;
@@ -328,11 +336,23 @@ export class HacsPanelStore extends LitElement {
         }
 
         .card-group paper-card {
-          --card-group-columns: 3;
+          --card-group-columns: 5;
           width: calc((100% - 12px * var(--card-group-columns)) / var(--card-group-columns));
           margin: 4px;
           vertical-align: top;
           height: 136px;
+        }
+
+        @media screen and (max-width: 2400px) and (min-width: 1801px) {
+          .card-group paper-card {
+            --card-group-columns: 4;
+          }
+        }
+
+        @media screen and (max-width: 1800px) and (min-width: 1201px) {
+          .card-group paper-card {
+            --card-group-columns: 3;
+          }
         }
 
         @media screen and (max-width: 1200px) and (min-width: 601px) {

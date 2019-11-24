@@ -16,6 +16,7 @@ export interface Configuration {
     appdaemon: boolean;
     dev: string;
     frontend_mode: string;
+    frontend_compact: boolean;
     country: string;
     python_script: boolean;
     theme: boolean;
@@ -29,6 +30,10 @@ export interface Critical {
     reason: string;
     link: string;
     acknowledged: boolean;
+}
+
+export interface SelectedValue {
+    detail: { selected: string }
 }
 
 export interface Repository {
@@ -50,6 +55,7 @@ export interface Repository {
     info: string;
     updated_info: boolean;
     beta: boolean;
+    stars: number;
     version_or_commit: string;
     custom: boolean;
     installed_version: string;
