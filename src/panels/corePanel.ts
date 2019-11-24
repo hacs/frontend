@@ -116,7 +116,7 @@ export class HacsPanelStore extends LitElement {
     ${(newRepositories.length !== 0 ? html`
     <div class="card-group">
       <h1>${this.hass.localize(`component.hacs.store.new_repositories`)}</h1>
-      ${newRepositories.sort((a, b) => (a[this.SortKey] > b[this.SortKey]) ? 1 : -1).map(repo =>
+      ${newRepositories.sort((a, b) => (this.SortRepo(a, b)) ? 1 : -1).map(repo =>
         html`
           ${(this.configuration.frontend_mode !== "Table" ? html`
           <paper-card @click="${this.ShowRepository}" .RepoID="${repo.id}"
@@ -163,7 +163,7 @@ export class HacsPanelStore extends LitElement {
     ` : "")}
 
     <div class="card-group">
-    ${_repositories.sort((a, b) => (a[this.SortKey] > b[this.SortKey]) ? 1 : -1).map(repo =>
+    ${_repositories.sort((a, b) => (this.SortRepo(a, b)) ? 1 : -1).map(repo =>
           html`
 
       ${(this.configuration.frontend_mode !== "Table" ? html`
@@ -207,6 +207,14 @@ export class HacsPanelStore extends LitElement {
       `)}
     </div>`;
     }
+  }
+
+  SortRepo(a: Repository, b: Repository): boolean {
+
+    if (this.SortKey === "stars") return a.stars < b.stars
+    if (this.SortKey === "status") return a.status < b.status
+
+    return a[this.SortKey] > b[this.SortKey];
   }
 
   SetSortKey(ev: ValueChangedEvent) {
