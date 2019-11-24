@@ -13,11 +13,6 @@ export class CustomRepositories extends LitElement {
     @property() public custom!: Repository[];
     @property() public status!: Status
     @property() public configuration!: Configuration;
-    @property() public SaveSpinner: boolean;
-
-    protected updated() {
-        this.SaveSpinner = false;
-    }
 
     Delete(ev) {
         if (!window.confirm(
@@ -28,9 +23,8 @@ export class CustomRepositories extends LitElement {
     }
 
     Save(ev) {
-        this.SaveSpinner = true;
-        var category = ev.composedPath()[1].children[1].selectedItem.category
-        var repo = ev.composedPath()[1].children[0].value
+        var category = ev.composedPath()[2].children[1].selectedItem.category
+        var repo = ev.composedPath()[2].children[0].value
         RepositoryWebSocketAction(this.hass, repo, "add", category)
     }
 
@@ -79,13 +73,11 @@ export class CustomRepositories extends LitElement {
               </paper-dropdown-menu>
 
               <div class="save">
-                ${(this.SaveSpinner ? html`<paper-spinner active class="loading"></paper-spinner>` : html`
                 <ha-icon title="${(this.hass.localize("component.hacs.settings.save"))}"
                     icon="mdi:content-save"
                     class="saveicon MobileGrid"
                     @click=${this.Save}>
                 </ha-icon>
-                `)}
             </div>
 
         </ha-card>
@@ -118,11 +110,13 @@ export class CustomRepositories extends LitElement {
                 position: absolute;
                 right: 0;
                 bottom: 24px;
+                cursor: pointer;
             }
             .listicon {
-                color: var(--primary-color);
+                color: var(--accent-color);
                 right: 0px;
                 position: absolute;
+                cursor: pointer;
             }
             .loading {
                 position: absolute;
