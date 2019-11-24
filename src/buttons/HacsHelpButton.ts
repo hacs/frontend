@@ -9,7 +9,7 @@ export class HacsHelpButton extends LitElement {
             <ha-icon
                 title="Documentation"
                 class="float"
-                icon="mdi:help-circle"
+                icon="mdi:help"
                 @click=${this.openHelp}>
             </ha-icon>
         </a>
@@ -31,11 +31,12 @@ export class HacsHelpButton extends LitElement {
         return [HacsStyle, css`
             .float{
                 position: fixed;
-                width: 60px;
-                height:60px;
-                bottom: 40px;
-                right: 40px;
+                width: 36px;
+                height:36px;
+                bottom: 24px;
+                right: 24px;
                 border-radius: 50px;
+                border: 4px solid var(--accent-color);
                 text-align: center;
                 color: var(--paper-card-background-color, var(--primary-background-color));
                 background-color: var(--accent-color);
