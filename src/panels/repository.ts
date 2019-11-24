@@ -112,7 +112,7 @@ export class HacsPanelRepository extends LitElement {
           ${this.repo.description}
         </div>
 
-        <div class="information">
+        <div class="information MobileGrid">
           ${(this.repo.installed ?
         html`
           <div class="version installed">
@@ -146,7 +146,7 @@ export class HacsPanelRepository extends LitElement {
       </div>
 
 
-      <div class="card-actions">
+      <div class="card-actions MobileGrid">
         <hacs-button-main-action .hass=${this.hass} .repository=${this.repo} .status=${this.status}></hacs-button-main-action>
         <hacs-button-changelog .hass=${this.hass} .repository=${this.repo}></hacs-button-changelog>
         <hacs-button-open-repository .hass=${this.hass} .repository=${this.repo}></hacs-button-open-repository>

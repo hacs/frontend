@@ -62,8 +62,8 @@ export class CustomRepositories extends LitElement {
             </div>
 
             <div class="card-actions">
-                <paper-input class="inputfield" placeholder=${(this.hass.localize("component.hacs.settings.add_custom_repository"))} type="text"></paper-input>
-                <paper-dropdown-menu class="category"
+                <paper-input class="inputfield MobileGrid" placeholder=${(this.hass.localize("component.hacs.settings.add_custom_repository"))} type="text"></paper-input>
+                <paper-dropdown-menu class="category MobileGrid"
                 label="${this.hass.localize(`component.hacs.settings.category`)}">
                   <paper-listbox slot="dropdown-content" selected="-1">
                       ${this.configuration.categories.map(category => html`
@@ -73,9 +73,11 @@ export class CustomRepositories extends LitElement {
                   </paper-listbox>
               </paper-dropdown-menu>
 
+              <div class="save">
                 ${(this.SaveSpinner ? html`<paper-spinner active class="loading"></paper-spinner>` : html`
                 <ha-icon title="${(this.hass.localize("component.hacs.settings.save"))}"
-                    icon="mdi:content-save" class="saveicon"
+                    icon="mdi:content-save"
+                    class="saveicon MobileGrid"
                     @click=${this.Save}>
                 </ha-icon>
                 `)}
@@ -94,7 +96,6 @@ export class CustomRepositories extends LitElement {
             .custom-repositories {
 
             }
-
             .add-repository {
 
             }
@@ -108,7 +109,7 @@ export class CustomRepositories extends LitElement {
                 bottom: 5px;
             }
             .saveicon {
-                color: var(--primary-color);
+                color: var(--accent-color);
                 position: absolute;
                 right: 0;
                 bottom: 24px;
@@ -122,6 +123,15 @@ export class CustomRepositories extends LitElement {
                 position: absolute;
                 right: 10px;
                 bottom: 22px;
+            }
+
+            @media screen and (max-width: 600px) and (min-width: 0) {
+                .saveicon {
+                    height: 64px;
+                }
+                .save {
+                    padding-bottom: 64px;
+                }
             }
         `]
     }

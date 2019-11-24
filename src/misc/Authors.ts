@@ -10,7 +10,7 @@ export class Authors extends LitElement {
     protected render(): TemplateResult | void {
         if (String(this.authors.length) === "0") return html``
         return html`
-            <div class="autors">
+            <div class="MobileGrid">
                 <p><b>${this.hass.localize("component.hacs.repository.authors")}: </b>
 
                     ${this.authors.map(author =>

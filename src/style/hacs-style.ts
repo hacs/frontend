@@ -73,7 +73,22 @@ const baseHacsStyles = css`
 `
 
 const mobileHacsStyles = css`
-
+    @media screen and (max-width: 600px) and (min-width: 0) {
+      .MobileHide {
+          display: none !important;
+      }
+      .MobileGrid {
+          display: grid !important;
+          text-align: center !important;
+          position: initial !important;
+          width: 100% !important;
+          padding-left: 0px !important;
+          padding-right: 0px !important;
+      }
+      hacs-help-button {
+          display: none;
+      }
+    }
 `
 
 export const HacsStyle: CSSResultArray = [haStyle, navStyle, baseHacsStyles, mobileHacsStyles]

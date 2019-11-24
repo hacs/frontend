@@ -38,37 +38,37 @@ export class HacsPanelSettings extends LitElement {
         >Table view</ha-switch>
     </div>
       </div>
-      <div class="card-actions">
+      <div class="card-actions MobileGrid">
 
       ${(this.status.reloading_data ? html`
-          <mwc-button raised disabled>
+          <mwc-button  disabled>
             <paper-spinner active></paper-spinner>
           </mwc-button>
       ` : html`
-          <mwc-button raised @click=${this.ReloadData}>
+          <mwc-button  @click=${this.ReloadData}>
             ${this.hass.localize(`component.hacs.settings.reload_data`)}
           </mwc-button>
       `)}
 
 
       ${(this.status.upgrading_all ? html`
-          <mwc-button raised disabled>
+          <mwc-button  disabled>
             <paper-spinner active></paper-spinner>
           </mwc-button>
       ` : html`
-          <mwc-button raised @click=${this.UpgradeAll}>
+          <mwc-button  @click=${this.UpgradeAll}>
             ${this.hass.localize(`component.hacs.settings.upgrade_all`)}
           </mwc-button>
       `)}
 
       <a href="https://github.com/hacs/integration" target="_blank" rel="noreferrer">
-        <mwc-button raised>
+        <mwc-button >
           ${this.hass.localize(`component.hacs.settings.hacs_repo`)}
         </mwc-button>
       </a>
 
       <a href="https://github.com/hacs/integration/issues" target="_blank" rel="noreferrer">
-        <mwc-button raised>
+        <mwc-button >
           ${this.hass.localize(`component.hacs.repository.open_issue`)}
         </mwc-button>
       </a>
