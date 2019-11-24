@@ -24,7 +24,6 @@ export class HacsPanelSettings extends LitElement {
   @property() public status!: Status
 
   render(): TemplateResult | void {
-    if (this.status.reloading_data) var reload_disable = "disabled"; else reload_disable = "";
     return html`
 
     <ha-card header="${this.hass.localize("component.hacs.config.title")}">
@@ -41,13 +40,19 @@ export class HacsPanelSettings extends LitElement {
       <div class="card-actions MobileGrid">
 
       ${(this.status.reloading_data ? html`
-          <mwc-button  disabled>
-            <paper-spinner active></paper-spinner>
-          </mwc-button>
+        <mwc-button  disabled>
+          <paper-spinner active></paper-spinner>
+        </mwc-button>
       ` : html`
-          <mwc-button  @click=${this.ReloadData}>
-            ${this.hass.localize(`component.hacs.settings.reload_data`)}
-          </mwc-button>
+      ${(this.status.background_task ? html`
+        <mwc-button disabled>
+          ${this.hass.localize(`component.hacs.settings.reload_data`)}
+        </mwc-button>
+      `: html`
+        <mwc-button @click=${this.UpgradeAll}>
+          ${this.hass.localize(`component.hacs.settings.reload_data`)}
+        </mwc-button>
+      `)}
       `)}
 
 
@@ -56,9 +61,15 @@ export class HacsPanelSettings extends LitElement {
             <paper-spinner active></paper-spinner>
           </mwc-button>
       ` : html`
-          <mwc-button  @click=${this.UpgradeAll}>
-            ${this.hass.localize(`component.hacs.settings.upgrade_all`)}
-          </mwc-button>
+      ${(this.status.background_task ? html`
+        <mwc-button disabled>
+          ${this.hass.localize(`component.hacs.settings.upgrade_all`)}
+        </mwc-button>
+      `: html`
+        <mwc-button @click=${this.UpgradeAll}>
+          ${this.hass.localize(`component.hacs.settings.upgrade_all`)}
+        </mwc-button>
+      `)}
       `)}
 
       <a href="https://github.com/hacs/integration" target="_blank" rel="noreferrer">

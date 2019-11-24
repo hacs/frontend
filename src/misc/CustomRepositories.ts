@@ -45,6 +45,9 @@ export class CustomRepositories extends LitElement {
             <div class="card-content">
             <div class="custom-repositories-list">
 
+            ${(this.status.background_task ? html`
+
+            ` : html`
             ${this.custom.sort((a, b) => (a.full_name > b.full_name) ? 1 : -1).map(repo =>
             html`
                 <div class="row" .repoID=${repo.id}>
@@ -58,6 +61,8 @@ export class CustomRepositories extends LitElement {
                     </paper-item>
                 </div>
                 `)}
+            `)}
+
             </div>
             </div>
 
