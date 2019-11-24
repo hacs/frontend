@@ -8,3 +8,9 @@ def locate_js():
 
 def locate_gz():
     return f"{__path__[0]}/main.js.gz"
+
+def locate_debug_js():
+    return f"{__path__[0]}/debug.js"
+
+def locate_debug_gz():
+    return f"{__path__[0]}/debug.js.gz"

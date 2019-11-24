@@ -1,4 +1,5 @@
-import { customElement, TemplateResult, html } from "lit-element";
+import { customElement, CSSResultArray, css, TemplateResult, html } from "lit-element";
+import { HacsStyle } from "../style/hacs-style"
 import { HacsRepositoryButton } from "./HacsRepositoryButton"
 import { RepositoryWebSocketAction } from "../misc/RepositoryWebSocketAction"
 
@@ -17,12 +18,19 @@ export class HacsButtonUninstall extends HacsRepositoryButton {
         }
 
         return html`
-            <mwc-button @click=${this.RepositoryUnInstall}>
+            <mwc-button @click=${this.RepositoryUnInstall}">
                 ${(this.repository.state == "uninstalling"
                 ? html`<paper-spinner active></paper-spinner>`
                 : html`${label}`)}
             </mwc-button>
         `;
+    }
+    static get styles(): CSSResultArray {
+        return [HacsStyle, css`
+          mwc-button {
+            --mdc-theme-primary: var(--google-red-500);
+          }
+        `]
     }
 
     RepositoryUnInstall() {

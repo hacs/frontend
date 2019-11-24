@@ -39,7 +39,6 @@ export class LoveLaceHint extends LitElement {
         });
         document.execCommand('copy');
     }
-
     static get styles(): CSSResultArray {
         return [HacsStyle, css`
             .lovelace-hint {

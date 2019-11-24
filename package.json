@@ -4,7 +4,7 @@
   "source": "src/main.ts",
   "scripts": {
     "start": "rollup --config rollup.config.dev.js --watch",
-    "build": "npm run lint && rollup --config rollup.config.prod.js",
+    "build": "npm run lint && rollup --config rollup.config.prod.js && rollup --config rollup.config.debug.js",
     "lint": "eslint src/*.ts --fix"
   },
   "repository": {

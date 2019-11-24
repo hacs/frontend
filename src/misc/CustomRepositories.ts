@@ -13,11 +13,6 @@ export class CustomRepositories extends LitElement {
     @property() public custom!: Repository[];
     @property() public status!: Status
     @property() public configuration!: Configuration;
-    @property() public SaveSpinner: boolean;
-
-    protected updated() {
-        this.SaveSpinner = false;
-    }
 
     Delete(ev) {
         if (!window.confirm(
@@ -28,9 +23,8 @@ export class CustomRepositories extends LitElement {
     }
 
     Save(ev) {
-        this.SaveSpinner = true;
-        var category = ev.composedPath()[1].children[1].selectedItem.category
-        var repo = ev.composedPath()[1].children[0].value
+        var category = ev.composedPath()[2].children[1].selectedItem.category
+        var repo = ev.composedPath()[2].children[0].value
         RepositoryWebSocketAction(this.hass, repo, "add", category)
     }
 
@@ -45,6 +39,9 @@ export class CustomRepositories extends LitElement {
             <div class="card-content">
             <div class="custom-repositories-list">
 
+            ${(this.status.background_task ? html`
+
+            ` : html`
             ${this.custom.sort((a, b) => (a.full_name > b.full_name) ? 1 : -1).map(repo =>
             html`
                 <div class="row" .repoID=${repo.id}>
@@ -58,12 +55,14 @@ export class CustomRepositories extends LitElement {
                     </paper-item>
                 </div>
                 `)}
+            `)}
+
             </div>
             </div>
 
             <div class="card-actions">
-                <paper-input class="inputfield" placeholder=${(this.hass.localize("component.hacs.settings.add_custom_repository"))} type="text"></paper-input>
-                <paper-dropdown-menu class="category"
+                <paper-input class="inputfield MobileGrid" placeholder=${(this.hass.localize("component.hacs.settings.add_custom_repository"))} type="text"></paper-input>
+                <paper-dropdown-menu class="category MobileGrid"
                 label="${this.hass.localize(`component.hacs.settings.category`)}">
                   <paper-listbox slot="dropdown-content" selected="-1">
                       ${this.configuration.categories.map(category => html`
@@ -73,12 +72,12 @@ export class CustomRepositories extends LitElement {
                   </paper-listbox>
               </paper-dropdown-menu>
 
-                ${(this.SaveSpinner ? html`<paper-spinner active class="loading"></paper-spinner>` : html`
+              <div class="save">
                 <ha-icon title="${(this.hass.localize("component.hacs.settings.save"))}"
-                    icon="mdi:content-save" class="saveicon"
+                    icon="mdi:content-save"
+                    class="saveicon MobileGrid"
                     @click=${this.Save}>
                 </ha-icon>
-                `)}
             </div>
 
         </ha-card>
@@ -94,7 +93,6 @@ export class CustomRepositories extends LitElement {
             .custom-repositories {
 
             }
-
             .add-repository {
 
             }
@@ -112,16 +110,27 @@ export class CustomRepositories extends LitElement {
                 position: absolute;
                 right: 0;
                 bottom: 24px;
+                cursor: pointer;
             }
             .listicon {
                 color: var(--primary-color);
                 right: 0px;
                 position: absolute;
+                cursor: pointer;
             }
             .loading {
                 position: absolute;
                 right: 10px;
                 bottom: 22px;
+            }
+
+            @media screen and (max-width: 600px) and (min-width: 0) {
+                .saveicon {
+                    height: 64px;
+                }
+                .save {
+                    padding-bottom: 64px;
+                }
             }
         `]
     }

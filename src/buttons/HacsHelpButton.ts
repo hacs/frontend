@@ -7,9 +7,9 @@ export class HacsHelpButton extends LitElement {
         return html`
         <a href="#">
             <ha-icon
-                title="Help"
+                title="Documentation"
                 class="float"
-                icon="mdi:help-circle-outline"
+                icon="mdi:help"
                 @click=${this.openHelp}>
             </ha-icon>
         </a>
@@ -19,7 +19,6 @@ export class HacsHelpButton extends LitElement {
     openHelp() {
         const base = "https://hacs.xyz/docs/navigation/"
         var location = window.location.pathname.split("/")[2];
-        console.log(location);
         if (location === "integration") location = "stores";
         if (location === "plugin") location = "stores";
         if (location === "appdaemon") location = "stores";
@@ -32,14 +31,15 @@ export class HacsHelpButton extends LitElement {
         return [HacsStyle, css`
             .float{
                 position: fixed;
-                width: 60px;
-                height:60px;
-                bottom: 40px;
-                right: 40px;
+                width: 36px;
+                height:36px;
+                bottom: 24px;
+                right: 24px;
                 border-radius: 50px;
+                border: 4px solid var(--accent-color);
                 text-align: center;
-                color: var(--accent-color);
-                background-color: var(--paper-card-background-color, var(--primary-background-color));
+                color: var(--paper-card-background-color, var(--primary-background-color));
+                background-color: var(--accent-color);
             }
         `]
     }

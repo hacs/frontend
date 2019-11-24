@@ -6,16 +6,18 @@ import {
 import { load_lovelace } from "card-tools/src/hass";
 import { navigate } from "./misc/navigate";
 import scrollToTarget from "./misc/ScrollToTarget";
-import "./buttons/HacsHelpButton"
+import "./buttons/HacsHelpButton";
 import "./panels/corePanel";
 import "./panels/repository";
 import "./panels/settings";
-import "./misc/HacsProgressbar"
+import "./misc/HacsProgressbar";
 import "./misc/HacsError";
 import "./misc/HacsCritical";
-import { LovelaceConfig } from "./misc/LovelaceTypes"
+import { LovelaceConfig } from "./misc/LovelaceTypes";
 import { HacsStyle } from "./style/hacs-style";
-import { Configuration, Repository, Route, Status, Critical } from "./types";
+import {
+  Configuration, Repository, Route, Status, Critical, SelectedValue
+} from "./types";
 
 
 @customElement("hacs-frontend")
@@ -99,10 +101,12 @@ class HacsFrontendBase extends LitElement {
         this.lovelaceconfig = undefined;
       }
     );
-
   }
 
   protected firstUpdated() {
+    window.onpopstate = function () {
+      window.location.reload();
+    };
     localStorage.setItem("hacs-search", "");
     this.panel = this._page;
     this.getRepositories();
@@ -111,30 +115,16 @@ class HacsFrontendBase extends LitElement {
     this.getCritical();
     this.getLovelaceConfig();
 
-    if (/repository\//i.test(this.panel)) {
+    if (/repository\//i.test(this.route.path)) {
       // How fun, this is a repository!
       this.repository_view = true;
-      this.repository = this.panel.split("/")[1];
+      this.repository = this.route.path.split("/")[2];
     } else this.repository_view = false;
 
     // "steal" LL elements
     load_lovelace();
 
-
-
     // Event subscription
-    this.hass.connection.sendMessagePromise(
-      { type: "hacs/repository" }
-    );
-
-    this.hass.connection.sendMessagePromise(
-      { type: "hacs/config" }
-    );
-
-    this.hass.connection.sendMessagePromise(
-      { type: "hacs/status" }
-    );
-
     this.hass.connection.subscribeEvents(
       () => this.getRepositories(), "hacs/repository"
     );
@@ -146,12 +136,18 @@ class HacsFrontendBase extends LitElement {
     this.hass.connection.subscribeEvents(
       () => this.getStatus(), "hacs/status"
     );
+
     this.hass.connection.subscribeEvents(
-      () => window.location.reload(), "hacs/reload"
+      (e) => this._reload(e), "hacs/reload"
     );
+
     this.hass.connection.subscribeEvents(
       () => this.getLovelaceConfig(), "lovelace_updated"
     );
+  }
+
+  _reload(e: any) {
+    window.location.reload(e.data.force);
   }
 
 
@@ -162,14 +158,14 @@ class HacsFrontendBase extends LitElement {
       this.panel = "installed";
     }
 
-    if (this.repositories === undefined || this.configuration === undefined) {
-      return html`<paper-spinner active class="loader"></paper-spinner>`;
+    if (this.repositories === undefined || this.configuration === undefined || this.status === undefined) {
+      return html`<div  class="loader"><paper-spinner active></paper-spinner></div>`;
     }
 
-    if (/repository\//i.test(this.panel)) {
+    if (/repository\//i.test(this.route.path)) {
       this.repository_view = true;
-      this.repository = this.panel.split("/")[1];
-      this.panel = this.panel.split("/")[0];
+      this.repository = this.route.path.split("/")[2];
+      this.panel = "repository";
     } else this.repository_view = false;
 
     const page = this.panel;
@@ -185,17 +181,11 @@ class HacsFrontendBase extends LitElement {
         </app-toolbar>
       <paper-tabs scrollable attr-for-selected="page-name" .selected=${page} @iron-activate=${this.handlePageSelected}>
 
-        <paper-tab page-name="installed">
-          ${this.hass.localize(`component.hacs.common.installed`)}
-        </paper-tab>
+        <paper-tab page-name="installed">${this.hass.localize(`component.hacs.common.installed`)}</paper-tab>
 
-        <paper-tab page-name="integration">
-          ${this.hass.localize(`component.hacs.common.integrations`)}
-        </paper-tab>
+        <paper-tab page-name="integration">${this.hass.localize(`component.hacs.common.integrations`)}</paper-tab>
 
-        <paper-tab page-name="plugin">
-          ${this.hass.localize(`component.hacs.common.plugins`)}
-        </paper-tab>
+        <paper-tab page-name="plugin">${this.hass.localize(`component.hacs.common.plugins`)}</paper-tab>
 
         ${(this.configuration.appdaemon
         ? html`<paper-tab page-name="appdaemon">
@@ -212,9 +202,7 @@ class HacsFrontendBase extends LitElement {
             ${this.hass.localize(`component.hacs.common.themes`)}
         </paper-tab>` : "")}
 
-        <paper-tab page-name="settings">
-          ${this.hass.localize("component.hacs.common.settings")}
-        </paper-tab>
+        <paper-tab page-name="settings">${this.hass.localize("component.hacs.common.settings")}</paper-tab>
       </paper-tabs>
     </app-header>
 
@@ -242,19 +230,17 @@ class HacsFrontendBase extends LitElement {
         .status=${this.status}
         .configuration=${this.configuration}
         .repositories=${this.repositories}>
-      </hacs-panel-settings>` )}
+      </hacs-panel-settings>`)}
       <hacs-help-button></hacs-help-button>
     </app-header-layout>`;
   }
 
-  handlePageSelected(ev) {
+  handlePageSelected(e: SelectedValue) {
     this.repository_view = false;
-    const newPage = ev.detail.item.getAttribute("page-name");
+    const newPage = e.detail.selected;
     this.panel = newPage;
-    this.requestUpdate();
-    if (newPage !== this._page) {
-      navigate(this, `/${this._rootPath}/${newPage}`);
-    }
+    this.route.path = `/${newPage}`
+    navigate(this, `${this.route.prefix}${this.route.path}`);
     scrollToTarget(
 
       this,
@@ -264,25 +250,30 @@ class HacsFrontendBase extends LitElement {
   }
 
   private get _page() {
-    if (this.route.path.substr(1) === null) return "installed";
-    return this.route.path.substr(1);
+    if (this.route.path.split("/")[1] === undefined) return "installed";
+    return this.route.path.split("/")[1];
   }
 
   private get _rootPath() {
-    if (window.location.pathname.split("/")[1] === "hacs_dev") return "hacs_dev";
-    return "hacs";
+    if (this.route.prefix.split("/")[1] === undefined) return "hacs";
+    return this.route.prefix.split("/")[1];
   }
 
   static get styles(): CSSResultArray {
     return [HacsStyle, css`
-    paper-spinner.loader {
+    .loader {
+      background-color: var(--primary-background-color);
+      height: 100%;
+      width: 100%;
+    }
+    paper-spinner {
       position: absolute;
-      top: 20%;
+      top: 30%;
       left: 50%;
       transform: translate(-50%, -50%);
       z-index: 99;
-      width: 300px;
-      height: 300px;
+      width: 150px;
+      height: 150px;
    }
     `];
   }

@@ -32,6 +32,10 @@ export interface Critical {
     acknowledged: boolean;
 }
 
+export interface SelectedValue {
+    detail: { selected: string }
+}
+
 export interface Repository {
     homeassistant: string;
     can_install: boolean;
@@ -51,6 +55,7 @@ export interface Repository {
     info: string;
     updated_info: boolean;
     beta: boolean;
+    stars: number;
     version_or_commit: string;
     custom: boolean;
     installed_version: string;
