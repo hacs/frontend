@@ -115,10 +115,10 @@ class HacsFrontendBase extends LitElement {
     this.getCritical();
     this.getLovelaceConfig();
 
-    if (/repository\//i.test(this.panel)) {
+    if (/repository\//i.test(this.route.path)) {
       // How fun, this is a repository!
       this.repository_view = true;
-      this.repository = this.panel.split("/")[1];
+      this.repository = this.route.path.split("/")[2];
     } else this.repository_view = false;
 
     // "steal" LL elements
@@ -162,10 +162,10 @@ class HacsFrontendBase extends LitElement {
       return html`<div  class="loader"><paper-spinner active></paper-spinner></div>`;
     }
 
-    if (/repository\//i.test(this.panel)) {
+    if (/repository\//i.test(this.route.path)) {
       this.repository_view = true;
-      this.repository = this.panel.split("/")[1];
-      this.panel = this.panel.split("/")[0];
+      this.repository = this.route.path.split("/")[2];
+      this.panel = "repository";
     } else this.repository_view = false;
 
     const page = this.panel;

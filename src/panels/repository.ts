@@ -43,9 +43,10 @@ export class HacsPanelRepository extends LitElement {
   @property() public lovelaceconfig: LovelaceConfig;
 
   protected firstUpdated() {
-    if (!this.repo.updated_info) {
-      RepositoryWebSocketAction(this.hass, this.repo.id, "set_state", "other");
-      RepositoryWebSocketAction(this.hass, this.repo.id, "update");
+
+    if (this.repo === undefined || !this.repo.updated_info) {
+      RepositoryWebSocketAction(this.hass, this.repository, "set_state", "other");
+      RepositoryWebSocketAction(this.hass, this.repository, "update");
     }
   }
 
@@ -66,11 +67,14 @@ export class HacsPanelRepository extends LitElement {
       </hacs-panel>
       `
     }
+
     var _repository = this.repository;
     var _repositories = this.repositories.filter(function (repo) {
       return repo.id === _repository
     });
     this.repo = _repositories[0]
+
+    if (this.repo === undefined) return html`<div class="loader"><paper-spinner active></paper-spinner></div>`
 
     if (this.repo.installed) {
       var back = this.hass.localize(`component.hacs.common.installed`);
@@ -80,7 +84,7 @@ export class HacsPanelRepository extends LitElement {
       } else {
         FE_cat = `${this.repo.category}s`
       }
-      var back = this.hass.localize(`component.hacs.common.${FE_cat}`);
+      var back = this.hass.localize(`component.hacs.common.${FE_cat} `);
     }
 
     return html`
@@ -91,7 +95,7 @@ export class HacsPanelRepository extends LitElement {
         ${this.hass.localize(`component.hacs.repository.back_to`)}
         ${back}
       </mwc-button>
-      ${(this.repo.state == "other" ? html`<paper-spinner active class="loader"></paper-spinner>` : "")}
+      ${(this.repo.state == "other" ? html`<div class="loader"><paper-spinner active></paper-spinner></div>` : "")}
     </div>
 
     <hacs-repository-banner-note
@@ -170,7 +174,7 @@ export class HacsPanelRepository extends LitElement {
       ></hacs-repository-note>
       </div>
     </ha-card>
-          `;
+        `;
   }
 
   SetVersion(e: any) {
@@ -188,7 +192,7 @@ export class HacsPanelRepository extends LitElement {
     } else {
       this.panel = this.repo.category
     }
-    navigate(this, `/${this._rootPath}/${this.panel}`)
+    navigate(this, `/ ${this._rootPath} /${this.panel}`)
     this.requestUpdate();
   }
 
@@ -200,15 +204,20 @@ export class HacsPanelRepository extends LitElement {
 
   static get styles(): CSSResultArray {
     return [HacsStyle, css`
-      paper-spinner.loader {
+      .loader {
+        background-color: var(--primary-background-color);
+        height: 100%;
+        width: 100%;
+      }
+      paper-spinner {
         position: absolute;
-        top: 20%;
+        top: 30%;
         left: 50%;
         transform: translate(-50%, -50%);
         z-index: 99;
-        width: 300px;
-        height: 300px;
-     }
+        width: 150px;
+        height: 150px;
+    }
      paper-dropdown-menu {
         width: 80%;
      }
