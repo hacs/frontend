@@ -14,8 +14,8 @@ export class LoveLaceHint extends LitElement {
             <div class="lovelace-hint">
                 <p class="example-title">${this.hass.localize(`component.hacs.repository.lovelace_instruction`)}:</p>
                 <pre id="LovelaceExample" class="yaml">
-  - url: /community_plugin/${this.repository.full_name.split("/")[1]}/${this.repository.file_name}
-    type: ${(this.repository.javascript_type !== undefined
+- url: /community_plugin/${this.repository.full_name.split("/")[1]}/${this.repository.file_name}
+  type: ${(this.repository.javascript_type !== undefined
                 ? html`${this.repository.javascript_type}`
                 : html`${this.hass.localize(`component.hacs.repository.lovelace_no_js_type`)}`)}</pre>
 
@@ -39,7 +39,6 @@ export class LoveLaceHint extends LitElement {
         });
         document.execCommand('copy');
     }
-
     static get styles(): CSSResultArray {
         return [HacsStyle, css`
             .lovelace-hint {
