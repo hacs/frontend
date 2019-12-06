@@ -134,9 +134,9 @@ export class HacsPanelRepository extends LitElement {
                   <paper-dropdown-menu @value-changed="${this.SetVersion}"
                     label="${this.hass.localize(`component.hacs.repository.available`)}:
                      (${this.hass.localize(`component.hacs.repository.newest`)}: ${this.repo.releases[0]})">
-                      <paper-listbox slot="dropdown-content" selected="-1">
+                      <paper-listbox slot="dropdown-content" selected="${this.repo.selected_tag}" attr-for-selected="value">
                           ${this.repo.releases.map(release =>
-          html`<paper-item>${release}</paper-item>`
+          html`<paper-item value="${release}">${release}</paper-item>`
         )}
                           ${(this.repo.full_name !== "hacs/integration" ? html`
                           <paper-item>${this.repo.default_branch}</paper-item>
