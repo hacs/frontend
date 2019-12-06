@@ -139,7 +139,7 @@ export class HacsPanelRepository extends LitElement {
           html`<paper-item value="${release}">${release}</paper-item>`
         )}
                           ${(this.repo.full_name !== "hacs/integration" ? html`
-                          <paper-item>${this.repo.default_branch}</paper-item>
+                          <paper-item value="${this.repo.default_branch}">${this.repo.default_branch}</paper-item>
                           ` : "")}
                       </paper-listbox>
                   </paper-dropdown-menu>
