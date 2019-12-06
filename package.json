@@ -3,9 +3,8 @@
   "description": "Frontend of HACS",
   "source": "src/main.ts",
   "scripts": {
-    "start": "rollup --config rollup.config.dev.js --watch",
-    "build": "npm run lint && rollup --config rollup.config.prod.js && rollup --config rollup.config.debug.js",
-    "lint": "eslint src/*.ts --fix"
+    "start": "rollup --config rollup.config.js --watch",
+    "build": "rollup --config rollup.config.js && rollup --config rollup.config.debug.js"
   },
   "repository": {
     "type": "git",
@@ -18,7 +17,11 @@
   "dependencies": {
     "card-tools": "github:thomasloven/card-tools",
     "custom-card-helpers": "^1.2.6",
-    "lit-element": "^2.0.1"
+    "lit-element": "^2.0.1",
+    "marked": "^0.7.0",
+    "xss": "^1.0.6",
+    "yaml": "^1.7.2",
+    "highlight.js": "^9.16.2"
   },
   "devDependencies": {
     "@babel/core": "^7.6.4",
@@ -32,6 +35,7 @@
     "prettier": "^1.16.4",
     "rollup": "^1.24.0",
     "rollup-plugin-babel": "^4.3.2",
+    "rollup-plugin-commonjs": "^10.1.0",
     "rollup-plugin-delete": "^1.1.0",
     "rollup-plugin-gzip": "^2.2.0",
     "rollup-plugin-node-resolve": "^5.2.0",

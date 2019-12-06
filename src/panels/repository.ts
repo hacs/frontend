@@ -17,6 +17,9 @@ import { Configuration, Repository, Route, Status, ValueChangedEvent } from "../
 import { navigate } from "../misc/navigate"
 import { LovelaceConfig } from "../misc/LovelaceTypes"
 
+import { markdown } from "../markdown/markdown"
+import { GFM, HLJS } from '../markdown/styles';
+
 import "../misc/Authors"
 import "../misc/HacsRepositoryMenu"
 import "../buttons/HacsButtonOpenPlugin"
@@ -164,8 +167,9 @@ export class HacsPanelRepository extends LitElement {
 
     <ha-card class="additional">
       <div class="card-content">
-        <div class="more_info">
-          ${unsafeHTML(this.repo.additional_info)}
+        <div class="more_info markdown-body">
+        <style>${GFM} ${HLJS}</style>
+          ${markdown.html(this.repo.additional_info || "")}
         </div>
       <hacs-repository-note
         .hass=${this.hass}

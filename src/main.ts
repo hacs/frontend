@@ -23,15 +23,25 @@ import {
 @customElement("hacs-frontend")
 class HacsFrontendBase extends LitElement {
   @property() public hass!: HomeAssistant;
+
   @property() public repositories!: Repository[]
+
   @property() public configuration!: Configuration
+
   @property() public status!: Status
+
   @property() public route!: Route;
+
   @property() public critical!: Critical[];
+
   @property() public narrow!: boolean;
+
   @property() public panel!: string;
+
   @property() public repository: string;
+
   @property() public repository_view = false;
+
   @property() public lovelaceconfig: LovelaceConfig;
 
   public getRepositories(): void {
@@ -188,17 +198,17 @@ class HacsFrontendBase extends LitElement {
         <paper-tab page-name="plugin">${this.hass.localize(`component.hacs.common.plugins`)}</paper-tab>
 
         ${(this.configuration.appdaemon
-        ? html`<paper-tab page-name="appdaemon">
+    ? html`<paper-tab page-name="appdaemon">
             ${this.hass.localize(`component.hacs.common.appdaemon_apps`)}
         </paper-tab>` : "")}
 
         ${(this.configuration.python_script
-        ? html`<paper-tab page-name="python_script">
+    ? html`<paper-tab page-name="python_script">
             ${this.hass.localize(`component.hacs.common.python_scripts`)}
         </paper-tab>` : "")}
 
         ${(this.configuration.theme
-        ? html`<paper-tab page-name="theme">
+    ? html`<paper-tab page-name="theme">
             ${this.hass.localize(`component.hacs.common.themes`)}
         </paper-tab>` : "")}
 
@@ -224,7 +234,7 @@ class HacsFrontendBase extends LitElement {
         .lovelaceconfig=${this.lovelaceconfig}
       >
       </hacs-panel>`
-        : html`
+    : html`
       <hacs-panel-settings
         .hass=${this.hass}
         .status=${this.status}
@@ -239,7 +249,7 @@ class HacsFrontendBase extends LitElement {
     this.repository_view = false;
     const newPage = e.detail.selected;
     this.panel = newPage;
-    this.route.path = `/${newPage}`
+    this.route.path = `/${newPage}`;
     navigate(this, `${this.route.prefix}${this.route.path}`);
     scrollToTarget(
 
