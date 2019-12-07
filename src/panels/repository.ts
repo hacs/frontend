@@ -7,7 +7,6 @@ import {
   css,
   property
 } from "lit-element";
-import { unsafeHTML } from 'lit-html/directives/unsafe-html';
 import { HomeAssistant } from "custom-card-helpers";
 import { HacsStyle } from "../style/hacs-style"
 
@@ -226,7 +225,6 @@ export class HacsPanelRepository extends LitElement {
         width: 80%;
      }
       .description {
-        font-style: italic;
         padding-bottom: 16px;
       }
       .version {

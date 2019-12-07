@@ -28,6 +28,7 @@ jobs:
         TWINE_USERNAME: __token__
         TWINE_PASSWORD: ${{ secrets.PYPI_TOKEN }}
       run: |
+        npm run postinstall
         npm run build
         python setup.py sdist bdist_wheel
         twine upload dist/*
