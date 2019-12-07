@@ -811,12 +811,12 @@ export const GFM3 = css`
   }
 
   .markdown-body table tr {
-    background-color: #fff;
+    background-color: var(--primary-background-color, #fff);
     border-top: 1px solid #c6cbd1;
   }
 
   .markdown-body table tr:nth-child(2n) {
-    background-color: #f6f8fa;
+    background-color: var(--secondary-background-color, #f6f8fa);;
   }
 
   .markdown-body img {
