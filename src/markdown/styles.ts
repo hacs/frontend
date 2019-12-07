@@ -362,6 +362,7 @@ const GFM2 = css`
 
   .markdown-body a {
     color: var(--primary-color, #0366d6);
+    font-weight: 600;
     text-decoration: none;
   }
 
@@ -811,12 +812,12 @@ export const GFM3 = css`
   }
 
   .markdown-body table tr {
-    background-color: var(--primary-background-color, #fff);
+    background-color: hsla(var(--primary-background-color, #fff), .1);
     border-top: 1px solid #c6cbd1;
   }
 
   .markdown-body table tr:nth-child(2n) {
-    background-color: var(--secondary-background-color, #f6f8fa);;
+    background-color: var(--primary-background-color, #fff);
   }
 
   .markdown-body img {
