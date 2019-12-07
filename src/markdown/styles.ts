@@ -161,7 +161,6 @@ const GFM2 = css`
     -ms-text-size-adjust: 100%;
     -webkit-text-size-adjust: 100%;
     line-height: 1.5;
-    color: #24292e;
     font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Helvetica, Arial, sans-serif, Apple Color Emoji,
       Segoe UI Emoji;
     font-size: 16px;
@@ -362,7 +361,7 @@ const GFM2 = css`
   }
 
   .markdown-body a {
-    color: #0366d6;
+    color: var(--primary-color, #0366d6);
     text-decoration: none;
   }
 
@@ -871,7 +870,7 @@ export const GFM3 = css`
     overflow: auto;
     font-size: 85%;
     line-height: 1.45;
-    background-color: #f6f8fa;
+    background-color: var(--primary-background-color, #f6f8fa);
     border-radius: 3px;
   }
 
@@ -962,7 +961,7 @@ export const GFM3 = css`
   .markdown-body :checked + .radio-label {
     position: relative;
     z-index: 1;
-    border-color: #0366d6;
+    border-color: var(--primary-color, #0366d6);
   }
 
   .markdown-body .select-menu-item input[type='radio']:not(:checked) + .octicon-check,
