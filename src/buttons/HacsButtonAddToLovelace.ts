@@ -8,7 +8,6 @@ export class HacsButtonAddToLovelace extends HacsRepositoryButton {
     @property() public lovelaceconfig: LovelaceConfig;
     @property() public configuration: Configuration;
     protected render(): TemplateResult | void {
-        if (!this.configuration.experimental) return html``
         if (!this.repository.installed) return html``
         if (this.repository.javascript_type === null) return html``
 
