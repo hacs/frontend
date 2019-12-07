@@ -11,6 +11,13 @@ const baseHacsStyles = css`
         font-weight: var(--paper-font-body1_-_font-weight);
         line-height: var(--paper-font-body1_-_line-height);
     }
+    :host {
+        --hacs-status-installed: #126e15;
+        --hacs-status-pending-update: #ffab40;
+        --hacs-status-pending-restart: var(--google-red-500);
+        --hacs-status-not-loaded: var(--google-red-500);
+        --hacs-badge-color: var(--primary-color);
+    }
     a {
         text-decoration: none;
         color: var(--dark-primary-color);
@@ -56,19 +63,19 @@ const baseHacsStyles = css`
         color: var(--primary-text-color);
     }
     ha-icon.installed {
-        color: var(--hacs-status-installed, #126e15);
+        color: var(--hacs-status-installed);
     }
     ha-icon.pending-upgrade {
-        color: var(--hacs-status-pending-update, #ffab40);
+        color: var(--hacs-status-pending-update);
     }
     ha-icon.pending-restart {
-        color: var(--hacs-status-pending-restart, var(--google-red-500));
+        color: var(--hacs-status-pending-restart);
     }
     ha-icon.not-loaded {
-        color: var(--hacs-status-not-loaded, var(--google-red-500));
+        color: var(--hacs-status-not-loaded);
     }
     ha-icon.new {
-        color: var(--hacs-badge-color, var(--primary-color));
+        color: var(--hacs-badge-color);
       }
 `
 

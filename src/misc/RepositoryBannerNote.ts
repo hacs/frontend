@@ -78,10 +78,11 @@ export class RepositoryBannerNote extends LitElement {
             }
             .warning {
                 background-color: var(--hacs-status-pending-update)
-                color: var(--text-primary-color);
+                color: var(--primary-text-color);
             }
             .info {
-
+                background-color: var(--primary-background-color)
+                color: var(--primary-text-color);
             }
         `]
     }
