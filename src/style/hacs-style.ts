@@ -17,6 +17,7 @@ const baseHacsStyles = css`
         --hacs-status-pending-restart: var(--google-red-500);
         --hacs-status-not-loaded: var(--google-red-500);
         --hacs-badge-color: var(--primary-color);
+        --link-color: var(--primary-color);
     }
     a {
         text-decoration: none;
