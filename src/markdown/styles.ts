@@ -811,6 +811,10 @@ export const GFM3 = css`
     border: 1px solid #dfe2e5;
   }
 
+  .markdown-body table th {
+    background-color: var(--primary-background-color, #fff);
+  }
+
   .markdown-body table tr {
     background-color: hsla(var(--primary-background-color, #fff), .1);
     border-top: 1px solid #c6cbd1;
