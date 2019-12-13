@@ -19,7 +19,7 @@
     "card-tools": "github:thomasloven/card-tools",
     "custom-card-helpers": "^1.2.6",
     "lit-element": "^2.0.1",
-    "marked": "^0.7.0",
+    "marked": "^0.8.0",
     "xss": "^1.0.6",
     "yaml": "^1.7.2",
     "highlight.js": "^9.16.2"
