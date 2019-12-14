@@ -16,7 +16,7 @@ export class Authors extends LitElement {
                     ${this.authors.map(author =>
             html`
                         <a href="https://github.com/${author.replace("@", "")}"
-                                target="_blank" rel='noreferrer'>
+                                target="_blank" rel='noreferrer' class="autors">
                             ${author.replace("@", "")}
                         </a>`)}
 
@@ -28,7 +28,7 @@ export class Authors extends LitElement {
     static get styles(): CSSResultArray {
         return [HacsStyle, css`
             .autors {
-
+                color: var(--link-color);
             }
         `]
     }

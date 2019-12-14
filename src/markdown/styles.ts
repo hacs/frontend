@@ -361,7 +361,7 @@ const GFM2 = css`
   }
 
   .markdown-body a {
-    color: var(--hacs-link-color);
+    color: var(--link-color);
     font-weight: 600;
     text-decoration: none;
   }
@@ -966,7 +966,7 @@ export const GFM3 = css`
   .markdown-body :checked + .radio-label {
     position: relative;
     z-index: 1;
-    border-color: var(--hacs-link-color);
+    border-color: var(--link-color);
   }
 
   .markdown-body .select-menu-item input[type='radio']:not(:checked) + .octicon-check,

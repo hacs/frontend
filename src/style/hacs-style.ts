@@ -4,13 +4,13 @@ import { haStyle } from "./ha-style"
 import { navStyle } from "./nav-style"
 
 const customHacsStyles = css`
-    :host {
+    :root {
         --hacs-status-installed: #126e15;
         --hacs-status-pending-update: #ffab40;
         --hacs-status-pending-restart: var(--google-red-500);
         --hacs-status-not-loaded: var(--google-red-500);
         --hacs-badge-color: var(--primary-color);
-        --hacs-link-color: var(--primary-color);
+        --link-color: var(--accent-color);
       }`
 
 const baseHacsStyles = css`
@@ -23,7 +23,7 @@ const baseHacsStyles = css`
     }
     a {
         text-decoration: none;
-        color: var(--hacs-link-color);
+        color: var(--link-color);
     }
     h1 {
         font-family: var(--paper-font-title_-_font-family);
