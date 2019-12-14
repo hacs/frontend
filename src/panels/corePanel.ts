@@ -119,7 +119,7 @@ export class HacsPanelStore extends LitElement {
       ${newRepositories.sort((a, b) => (this.SortRepo(a, b)) ? 1 : -1).map(repo =>
         html`
           ${(this.configuration.frontend_mode !== "Table" ? html`
-          <paper-card @click="${this.ShowRepository}" .RepoID="${repo.id}"
+          <ha-card @click="${this.ShowRepository}" .RepoID="${repo.id}"
             class="${(this.configuration.frontend_compact ? "compact" : "")}">
           <div class="card-content">
             <div>
@@ -135,7 +135,7 @@ export class HacsPanelStore extends LitElement {
               </div>
             </div>
           </div>
-          </paper-card>
+          </ha-card>
 
         ` : html`
 
@@ -167,7 +167,7 @@ export class HacsPanelStore extends LitElement {
           html`
 
       ${(this.configuration.frontend_mode !== "Table" ? html`
-        <paper-card @click="${this.ShowRepository}" .RepoID="${repo.id}"
+        <ha-card @click="${this.ShowRepository}" .RepoID="${repo.id}"
           class="${(this.configuration.frontend_compact ? "compact" : "")}">
         <div class="card-content">
           <div>
@@ -183,7 +183,7 @@ export class HacsPanelStore extends LitElement {
             </div>
           </div>
         </div>
-        </paper-card>
+        </ha-card>
 
       ` : html`
 
@@ -321,7 +321,7 @@ export class HacsPanelStore extends LitElement {
         display: none;
       }
 
-      paper-card.compact {
+      ha-card.compact {
         height: 80px !important;
         white-space: nowrap !important;
       }
@@ -329,6 +329,10 @@ export class HacsPanelStore extends LitElement {
       paper-item.compact {
         margin-bottom: 2px !important;
         white-space: nowrap !important;
+      }
+
+      ha-card {
+        display: inline-flex;
       }
 
       .card-group {
@@ -348,7 +352,7 @@ export class HacsPanelStore extends LitElement {
           margin-top: 4px;
         }
 
-        .card-group paper-card {
+        .card-group ha-card {
           --card-group-columns: 5;
           width: calc((100% - 12px * var(--card-group-columns)) / var(--card-group-columns));
           margin: 4px;
@@ -357,25 +361,25 @@ export class HacsPanelStore extends LitElement {
         }
 
         @media screen and (max-width: 2400px) and (min-width: 1801px) {
-          .card-group paper-card {
+          .card-group ha-card {
             --card-group-columns: 4;
           }
         }
 
         @media screen and (max-width: 1800px) and (min-width: 1201px) {
-          .card-group paper-card {
+          .card-group ha-card {
             --card-group-columns: 3;
           }
         }
 
         @media screen and (max-width: 1200px) and (min-width: 601px) {
-          .card-group paper-card {
+          .card-group ha-card {
             --card-group-columns: 2;
           }
         }
 
         @media screen and (max-width: 600px) and (min-width: 0) {
-          .card-group paper-card {
+          .card-group ha-card {
             width: 100%;
             margin: 4px 0;
           }

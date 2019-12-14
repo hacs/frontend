@@ -43,7 +43,7 @@ const baseHacsStyles = css`
         text-overflow: ellipsis;
         overflow: hidden;
     }
-    paper-card {
+    ha-card {
         cursor: pointer;
     }
     ha-card {
