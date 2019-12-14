@@ -43,7 +43,7 @@ export class HacsButtonMainAction extends HacsRepositoryButton {
     RepositoryInstall() {
         if (!this.repository.can_install) {
             window.alert(
-                `This repository version requires Home Assistant version ${this.repository.homeassistant}`
+                `This repository version requires Home Assistant version '${this.repository.homeassistant}' or newer`
             );
             return;
         }
