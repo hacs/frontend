@@ -73,7 +73,7 @@ export class RepositoryBannerNote extends LitElement {
                 margin-left: 5%;
             }
             .alert {
-                background-color: var(--hacs-status-pending-restart);
+                background-color: var(--hacs-status-pending-restart, var(--google-red-500));
                 color: var(--text-primary-color);
             }
             .warning {

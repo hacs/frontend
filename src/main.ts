@@ -271,12 +271,8 @@ class HacsFrontendBase extends LitElement {
 
   static get styles(): CSSResultArray {
     return [HacsStyle, css`
-    :root {
-      --hacs-status-installed: #126e15;
-      --hacs-status-pending-update: #ffab40;
-      --hacs-status-pending-restart: var(--google-red-500);
-      --hacs-status-not-loaded: var(--google-red-500);
-      --hacs-badge-color: var(--primary-color);
+    app-header-layout {
+      background: var(--lovelace-background, var(--primary-background-color));
     }
     .loader {
       background-color: var(--primary-background-color);
