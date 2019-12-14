@@ -198,17 +198,17 @@ class HacsFrontendBase extends LitElement {
         <paper-tab page-name="plugin">${this.hass.localize(`component.hacs.common.plugins`)}</paper-tab>
 
         ${(this.configuration.appdaemon
-    ? html`<paper-tab page-name="appdaemon">
+        ? html`<paper-tab page-name="appdaemon">
             ${this.hass.localize(`component.hacs.common.appdaemon_apps`)}
         </paper-tab>` : "")}
 
         ${(this.configuration.python_script
-    ? html`<paper-tab page-name="python_script">
+        ? html`<paper-tab page-name="python_script">
             ${this.hass.localize(`component.hacs.common.python_scripts`)}
         </paper-tab>` : "")}
 
         ${(this.configuration.theme
-    ? html`<paper-tab page-name="theme">
+        ? html`<paper-tab page-name="theme">
             ${this.hass.localize(`component.hacs.common.themes`)}
         </paper-tab>` : "")}
 
@@ -234,7 +234,7 @@ class HacsFrontendBase extends LitElement {
         .lovelaceconfig=${this.lovelaceconfig}
       >
       </hacs-panel>`
-    : html`
+        : html`
       <hacs-panel-settings
         .hass=${this.hass}
         .status=${this.status}
@@ -271,6 +271,13 @@ class HacsFrontendBase extends LitElement {
 
   static get styles(): CSSResultArray {
     return [HacsStyle, css`
+    :root {
+      --hacs-status-installed: #126e15;
+      --hacs-status-pending-update: #ffab40;
+      --hacs-status-pending-restart: var(--google-red-500);
+      --hacs-status-not-loaded: var(--google-red-500);
+      --hacs-badge-color: var(--primary-color);
+    }
     .loader {
       background-color: var(--primary-background-color);
       height: 100%;
