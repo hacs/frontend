@@ -828,6 +828,7 @@ export const GFM3 = css`
     max-width: 100%;
     box-sizing: initial;
     background-color: #fff;
+    border-radius: var(--ha-card-border-radius);
   }
 
   .markdown-body img[align='right'] {

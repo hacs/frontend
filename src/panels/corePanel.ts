@@ -275,6 +275,11 @@ export class HacsPanelStore extends LitElement {
       hr {
         width: 95%
       }
+      paper-item {
+        border-radius: var(--ha-card-border-radius);
+        cursor: pointer;
+
+      }
       paper-item.list {
         margin-bottom: 24px;
       }
@@ -298,6 +303,7 @@ export class HacsPanelStore extends LitElement {
         border-color: var(--dark-primary-color);
         border-width: inherit;
         border-bottom-width: thin;
+        border-radius: var(--ha-card-border-radius)
       }
 
       .sort {
@@ -311,6 +317,7 @@ export class HacsPanelStore extends LitElement {
         border-color: var(--dark-primary-color);
         border-width: inherit;
         border-bottom-width: thin;
+        border-radius: var(--ha-card-border-radius)
       }
 
       .store-top {
