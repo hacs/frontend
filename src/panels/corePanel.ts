@@ -277,8 +277,9 @@ export class HacsPanelStore extends LitElement {
       }
       paper-item {
         border-radius: var(--ha-card-border-radius);
+        background: var(--primary-background-color);
         cursor: pointer;
-
+        margin-bottom: 12px;
       }
       paper-item.list {
         margin-bottom: 24px;
@@ -340,6 +341,10 @@ export class HacsPanelStore extends LitElement {
 
       ha-card {
         display: inline-flex;
+      }
+
+      .card-content, paper-item-body {
+        width: 95%;
       }
 
       .card-group {
