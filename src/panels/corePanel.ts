@@ -93,7 +93,7 @@ export class HacsPanelStore extends LitElement {
       return html`
       <div class="store-top store-top-${this.panel}">
         <paper-input
-          class="search-bar"
+          class="search-bar padder"
           type="text"
           id="Search"
           @input=${this.DoSearch}
@@ -105,7 +105,7 @@ export class HacsPanelStore extends LitElement {
             <ha-icon slot="suffix" icon="mdi:close" @click="${this.clearSearch}"></ha-icon>
           ` : "")}
         </paper-input>
-        <paper-dropdown-menu @value-changed="${this.SetSortKey}" class="sort" label="Sort">
+        <paper-dropdown-menu @value-changed="${this.SetSortKey}" class="sort padder" label="Sort">
           <paper-listbox slot="dropdown-content" selected="0">
             <paper-item>Name</paper-item>
             <paper-item>Status</paper-item>
@@ -282,9 +282,14 @@ export class HacsPanelStore extends LitElement {
         outline: 0;
         background: var(--table-row-alternative-background-color);
     }
+
+    .padder {
+      padding-left: 8px;
+      padding-right: 8px;
+    }
       .search-bar {
         display: block;
-        width: 60%;
+        width: calc(60% - 16px);
         margin-left: 3.4%;
         margin-top: 2%;
         background-color: var(--primary-background-color);
@@ -297,7 +302,7 @@ export class HacsPanelStore extends LitElement {
 
       .sort {
         display: block;
-        width: 30%;
+        width: calc(30% - 16px);
         margin-left: 3.4%;
         margin-top: 2%;
         background-color: var(--primary-background-color);
