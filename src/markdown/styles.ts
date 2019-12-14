@@ -877,7 +877,7 @@ export const GFM3 = css`
     font-size: 85%;
     line-height: 1.45;
     background-color: var(--primary-background-color, #f6f8fa);
-    border-radius: 3px;
+    border-radius: var(--ha-card-border-radius, 3px)
   }
 
   .markdown-body pre code {
