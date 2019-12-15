@@ -110,7 +110,7 @@ export class HacsInstalled extends LitElement {
             <div class="leftspace grouptitle">
                 Pending Upgrades
             </div>
-                ${(updatable_repositories.map(repository => {
+                ${(updatable_repositories.sort((a, b) => (a.name, b.name) ? 1 : -1).map(repository => {
             return this.render_card(repository)
         }))}
             </div>
@@ -124,7 +124,7 @@ export class HacsInstalled extends LitElement {
                     <div class="leftspace grouptitle">
                     ${this.hass.localize(`component.hacs.common.${category}`)}
                     </div>
-                    ${categories[category].map(repository => {
+                    ${categories[category].sort((a, b) => (a.name, b.name) ? 1 : -1).map(repository => {
                 return this.render_card(repository)
             })}
                 </div>
