@@ -52,6 +52,7 @@ export class HacsPanelStore extends LitElement {
       var newRepositories: Repository[] = [];
       const config = this.configuration;
       this.SearchTerm = localStorage.getItem("hacs-search");
+      this.SortKey = localStorage.getItem("hacs-sort");
       var SearchTerm = this.SearchTerm;
       var _repositories = this.repositories.filter(function (repo) {
 
@@ -106,9 +107,10 @@ export class HacsPanelStore extends LitElement {
           ` : "")}
         </paper-input>
         <paper-dropdown-menu @value-changed="${this.SetSortKey}" class="sort padder" label="Sort">
-          <paper-listbox slot="dropdown-content" selected="0">
-            <paper-item>Name</paper-item>
-            <paper-item>Status</paper-item>
+          <paper-listbox slot="dropdown-content" selected="${this.SortKey}" attr-for-selected="key">
+            <paper-item key="name">Name</paper-item>
+            <paper-item key="stars">Stars</paper-item>
+            <paper-item key="status">Status</paper-item>
           </paper-listbox>
         </paper-dropdown-menu>
         </div>
@@ -220,6 +222,7 @@ export class HacsPanelStore extends LitElement {
   SetSortKey(ev: ValueChangedEvent) {
     if (ev.detail.value.length === 0) return;
     this.SortKey = ev.detail.value.replace(" ", "_").toLowerCase()
+    localStorage.setItem("hacs-sort", this.SortKey);
   }
 
   StatusAndDescription(repository: Repository): { status: string, description: string } {
