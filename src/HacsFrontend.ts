@@ -206,6 +206,7 @@ class HacsFrontendBase extends LitElement {
     </app-header>
 
     <hacs-progressbar .status=${this.status}></hacs-progressbar>
+    <slot></slot>
 
     <hacs-critical .hass=${this.hass} .critical=${this.critical}></hacs-critical>
     <hacs-error .hass=${this.hass}></hacs-error>
@@ -231,7 +232,6 @@ class HacsFrontendBase extends LitElement {
         .repositories=${this.repositories}>
       </hacs-panel-settings>`)}
 
-      <slot></slot>
     </app-header-layout>`;
   }
 
@@ -241,6 +241,7 @@ class HacsFrontendBase extends LitElement {
     this.panel = newPage;
     this.route.path = `/${newPage}`;
     navigate(this, `${this.route.prefix}${this.route.path}`);
+    this.dispatchEvent(new CustomEvent('hacs-location-change', { detail: { value: this.route }, bubbles: true, composed: true }))
     scrollToTarget(
 
       this,

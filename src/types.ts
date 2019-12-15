@@ -74,5 +74,9 @@ export interface Repository {
 }
 
 export interface ValueChangedEvent {
-    detail: { value: string }
+    detail?: { value: string }
+}
+
+export interface LocationChangedEvent {
+    detail?: { value: Route }
 }
