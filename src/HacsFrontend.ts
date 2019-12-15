@@ -13,6 +13,7 @@ import "./panels/installed";
 import "./panels/repository";
 import "./panels/store";
 import "./components/HacsProgressbar";
+import "./components/buttons/HacsHelpButton";
 import "./misc/HacsError";
 import "./misc/HacsCritical";
 import { LovelaceConfig } from "./misc/LovelaceTypes";
