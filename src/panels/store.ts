@@ -99,7 +99,6 @@ export class HacsStore extends LitElement {
 
     DoSearch(ev) {
         this.search = ev.composedPath()[0].value.toLowerCase();
-
         localStorage.setItem("hacs-search", this.search);
     };
 
@@ -113,6 +112,9 @@ export class HacsStore extends LitElement {
             <hacs-progressbar></hacs-progressbar>
         `
         var new_repositories = [];
+
+        this.search = localStorage.getItem("hacs-search");
+        this.sort = localStorage.getItem("hacs-sort");
 
         var repositories = this.repositories.filter(repository => {
             if (repository.category === this.store) {
