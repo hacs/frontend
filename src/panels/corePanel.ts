@@ -18,8 +18,6 @@ import { AddedToLovelace } from "../misc/AddedToLovelace"
 
 import "../components/buttons/HacsButtonClearNew"
 
-import "../stores/integration"
-
 
 @customElement("hacs-panel")
 export class HacsPanelStore extends LitElement {

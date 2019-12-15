@@ -36,19 +36,19 @@ class HacsFrontend extends LitElement {
         return html`
         <hacs-frontendbase .hass=${this.hass} .route=${this.route} .narrow=${this.narrow}>
 
-        ${(this.route.path === "/installed" ? html`
-        <h1>installed</h1>
-        ` : "")}
+            ${(this.route.path === "/installed" ? html`
+                <h1>installed</h1>
+            ` : "")}
 
-        ${(this.route.path === "/settings" ? html`
-        <h1>settings</h1>
-        ` : "")}
+            ${(this.route.path === "/settings" ? html`
+                <h1>settings</h1>
+            ` : "")}
 
-        ${(this.route.path !== "/installed" && this.route.path !== "/settings" ? html`
-        <hacs-store .store=${this._get_store} .repositories=${true}></hacs-store>
-        ` : "")}
+            ${(this.route.path !== "/installed" && this.route.path !== "/settings" ? html`
+                <hacs-store .store=${this._get_store} .repositories=${true}></hacs-store>
+            ` : "")}
 
-        <hacs-help-button></hacs-help-button>
+            <hacs-help-button></hacs-help-button>
         </hacs-frontendbase>
         `
     }
