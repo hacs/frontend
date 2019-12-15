@@ -109,7 +109,7 @@ export class HacsInstalled extends LitElement {
             ${(updatable_repositories.length !== 0 ? html`
             <div class="card-group">
             <div class="leftspace grouptitle">
-                Pending Upgrades
+            ${localize("store.pending_upgrades")}
             </div>
                 ${(updatable_repositories.sort((a, b) => (a.name, b.name) ? 1 : -1).map(repository => {
             return this.render_card(repository)

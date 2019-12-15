@@ -156,7 +156,7 @@ export class HacsStore extends LitElement {
             ${(new_repositories.length !== 0 ? html`
             <div class="card-group">
             <div class="leftspace grouptitle">
-                New repositories
+                ${localize("store.new_repositories")}
             </div>
                 ${(new_repositories.map(repository => {
             return this.render_card(repository)
