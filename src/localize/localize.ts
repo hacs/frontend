@@ -13,6 +13,7 @@ export function localize(source: string, string: string) {
     try {
         return languages[source][section][key]
     } catch (error) {
+        console.error(error)
         return languages["en"][section][key]
     }
 }
