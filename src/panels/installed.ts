@@ -83,12 +83,17 @@ export class HacsStoreBase extends LitElement {
         <hacs-body>
             ${(updatable_repositories.length !== 0 ? html`
             <div class="card-group">
-            <div class="title">Pending Upgrades</div>
+            <div class="leftspace grouptitle">
+                Pending Upgrades
+            </div>
                 ${(updatable_repositories.map(repository => {
             return this.render_card(repository)
         }))}
-        <hr>
             </div>
+            <i class="leftspace">
+                If you have many updates you can update all of them under the settings tab.
+            </i>
+            <hr noshade>
             ` : "")}
             ${(installed_repositories.length !== 0 ? html`
             <div class="card-group">
@@ -113,6 +118,9 @@ export class HacsStoreBase extends LitElement {
               }
               ha-card {
                 display: inline-flex;
+              }
+              .grouptitle {
+                font-size: larger;
               }
 
             `]

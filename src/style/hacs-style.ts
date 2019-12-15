@@ -124,7 +124,10 @@ const baseHacsStyles = css`
         }
       }
       hr {
-        width: 95%
+        border-color: var(--accent-color);
+      }
+      .leftspace {
+        margin-left: 8px !important;
       }
 `
 
