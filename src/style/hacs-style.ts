@@ -80,7 +80,16 @@ const baseHacsStyles = css`
 
       ha-card.compact {
         height: 80px !important;
-        white-space: nowrap !important;
+      }
+
+      ha-card.compact .addition {
+        height: 1.2em;
+        white-space: preliine !important;
+      }
+
+      ha-card.compact .title {
+        height: 1.2em;
+        white-space: preliine !important;
       }
 
       paper-item.compact {

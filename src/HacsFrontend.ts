@@ -156,9 +156,10 @@ class HacsFrontendBase extends LitElement {
 
   protected render(): TemplateResult | void {
     // Handle access to root
-    if (this.panel === "") {
+    if (this.panel === "" || this.panel === undefined) {
       navigate(this, `/${this._rootPath}/installed`);
       this.panel = "installed";
+      this.route.path = "/installed"
     }
 
     if (this.repositories === undefined || this.configuration === undefined || this.status === undefined) {
