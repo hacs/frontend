@@ -50,10 +50,8 @@ export class LoveLaceHint extends LitElement {
                 margin-block-end: 0em;
             }
             .yaml {
-                overflow: auto;
                 display: inline-flex;
                 width: calc(100% - 46px);
-                white-space: pre-wrap;
             }
 
         `]
