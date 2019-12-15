@@ -1,13 +1,12 @@
 import { LitElement, customElement, CSSResultArray, css, TemplateResult, html, property } from "lit-element";
-import { Status } from "../types"
 import { HacsStyle } from "../style/hacs-style"
 
 @customElement("hacs-progressbar")
 export class HacsProgressbar extends LitElement {
-    @property() public status!: Status;
+    @property() public active: boolean = false;
 
     protected render(): TemplateResult | void {
-        if (!this.status.background_task) return html``;
+        if (!this.active) return html``;
 
         return html`
             <paper-progress indeterminate></paper-progress>

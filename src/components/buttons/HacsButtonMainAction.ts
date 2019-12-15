@@ -1,6 +1,6 @@
 import { customElement, TemplateResult, html, property } from "lit-element";
 import { HacsRepositoryButton } from "./HacsRepositoryButton"
-import { RepositoryWebSocketAction } from "../misc/RepositoryWebSocketAction"
+import { RepositoryWebSocketAction } from "../../misc/RepositoryWebSocketAction"
 
 @customElement("hacs-button-main-action")
 export class HacsButtonMainAction extends HacsRepositoryButton {

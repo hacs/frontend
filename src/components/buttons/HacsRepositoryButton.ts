@@ -1,6 +1,6 @@
 import { LitElement, CSSResultArray, property } from "lit-element";
-import { HacsStyle } from "../style/hacs-style"
-import { Repository, Status } from "../types";
+import { HacsStyle } from "../../style/hacs-style"
+import { Repository, Status } from "../../types";
 import { HomeAssistant } from "custom-card-helpers";
 
 export class HacsRepositoryButton extends LitElement {

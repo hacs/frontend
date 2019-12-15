@@ -16,7 +16,9 @@ import { navigate } from "../misc/navigate"
 import { LovelaceConfig } from "../misc/LovelaceTypes"
 import { AddedToLovelace } from "../misc/AddedToLovelace"
 
-import "../buttons/HacsButtonClearNew"
+import "../components/buttons/HacsButtonClearNew"
+
+import "../stores/integration"
 
 
 @customElement("hacs-panel")
@@ -92,6 +94,7 @@ export class HacsPanelStore extends LitElement {
       });
 
       return html`
+      <hacs-store .hass=${this.hass} .store=${this.panel} .repositories=${this.repositories}></hacs-store>
       <div class="store-top store-top-${this.panel}">
         <paper-input
           class="search-bar padder"

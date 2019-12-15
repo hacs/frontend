@@ -1,5 +1,5 @@
 import { LitElement, CSSResultArray, TemplateResult, html, css, customElement } from "lit-element";
-import { HacsStyle } from "../style/hacs-style"
+import { HacsStyle } from "../../style/hacs-style"
 
 @customElement("hacs-help-button")
 export class HacsHelpButton extends LitElement {

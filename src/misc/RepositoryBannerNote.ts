@@ -4,7 +4,7 @@ import { Repository, Configuration, Status } from "../types";
 import { AddedToLovelace } from "./AddedToLovelace"
 import { HomeAssistant } from "custom-card-helpers";
 import { LovelaceConfig } from "../misc/LovelaceTypes"
-import "../buttons/HacsButtonAddToLovelace"
+import "../components/buttons/HacsButtonAddToLovelace"
 
 @customElement("hacs-repository-banner-note")
 export class RepositoryBannerNote extends LitElement {

@@ -1,7 +1,7 @@
 import { customElement, TemplateResult, html, property } from "lit-element";
 import { HacsRepositoryButton } from "./HacsRepositoryButton"
-import { LovelaceConfig, LovelaceResourceConfig } from '../misc/LovelaceTypes'
-import { Configuration } from '../types'
+import { LovelaceConfig, LovelaceResourceConfig } from '../../misc/LovelaceTypes'
+import { Configuration } from '../../types'
 
 @customElement("hacs-button-add-to-lovelace")
 export class HacsButtonAddToLovelace extends HacsRepositoryButton {

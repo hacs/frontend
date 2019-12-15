@@ -1,7 +1,7 @@
 import { customElement, CSSResultArray, css, TemplateResult, html } from "lit-element";
-import { HacsStyle } from "../style/hacs-style"
+import { HacsStyle } from "../../style/hacs-style"
 import { HacsRepositoryButton } from "./HacsRepositoryButton"
-import { RepositoryWebSocketAction } from "../misc/RepositoryWebSocketAction"
+import { RepositoryWebSocketAction } from "../../misc/RepositoryWebSocketAction"
 
 @customElement("hacs-button-uninstall")
 export class HacsButtonUninstall extends HacsRepositoryButton {
