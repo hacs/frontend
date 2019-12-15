@@ -1,19 +1,20 @@
-const languages = {}
-
 import * as en from './languages/en.json';
-languages["en"] = en
 import * as no from './languages/no.json';
-languages["no"] = no
 
-export function localize(source: string, string: string) {
+var languages = { no: no, en: en };
+
+export function localize(string: string) {
 
     const section = string.split(".")[0]
     const key = string.split(".")[1]
 
+    const lang = (localStorage.getItem("selectedLanguage") || "en").replace(/['"]+/g, '');
+
+    console.debug(`Using ${lang}`)
+
     try {
-        return languages[source][section][key]
-    } catch (error) {
-        console.error(error)
+        return languages[lang][section][key]
+    } catch (e) {
         return languages["en"][section][key]
     }
 }

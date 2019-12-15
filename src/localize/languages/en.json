@@ -1,6 +1,5 @@
 {
-    "name": "test",
-    "test": {
-        "test": "test"
+    "base": {
+        "name": "Name"
     }
 }
