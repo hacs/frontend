@@ -10,7 +10,6 @@ import { HomeAssistant } from "custom-card-helpers";
 import { Route } from "./types";
 import './HacsFrontend'
 
-
 @customElement("hacs-frontend")
 class HacsFrontend extends LitElement {
     @property() public hass!: HomeAssistant;
