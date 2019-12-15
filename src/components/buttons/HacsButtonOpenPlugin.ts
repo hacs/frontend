@@ -1,5 +1,6 @@
 import { customElement, TemplateResult, html } from "lit-element";
 import { HacsRepositoryButton } from "./HacsRepositoryButton"
+import { localize } from "../../localize/localize"
 
 @customElement("hacs-button-open-plugin")
 export class HacsButtonOpenPlugin extends HacsRepositoryButton {
@@ -12,7 +13,7 @@ export class HacsButtonOpenPlugin extends HacsRepositoryButton {
         return html`
             <a href="/community_plugin/${path.pop()}/${this.repository.file_name}" target="_blank">
                 <mwc-button>
-                    ${this.hass.localize(`component.hacs.repository.open_plugin`)}
+                    ${localize(`repository.open_plugin`)}
                 </mwc-button>
             </a>
         `;

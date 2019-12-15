@@ -2,6 +2,7 @@ import { LitElement, customElement, CSSResultArray, css, TemplateResult, html, p
 import { Configuration, Repository } from "../types"
 import { HacsStyle } from "../style/hacs-style"
 import { HomeAssistant } from "custom-card-helpers";
+import { localize } from "../localize/localize"
 
 import "./LoveLaceHint"
 
@@ -15,16 +16,16 @@ export class RepositoryNote extends LitElement {
 
         return html`
             <div class="repository-note">
-            <p>${this.hass.localize(`component.hacs.repository.note_installed`)} '${this.repository.local_path}'
+            <p>${localize(`repository.note_installed`)} '${this.repository.local_path}'
 
             ${(this.repository.category === "appdaemon" ? html`,
-            ${this.hass.localize(`component.hacs.repository.note_${this.repository.category}`)}` : "")}
+            ${localize(`repository.note_${this.repository.category}`)}` : "")}
 
             ${(this.repository.category === "integration" ? html`,
-            ${this.hass.localize(`component.hacs.repository.note_${this.repository.category}`)}` : "")}
+            ${localize(`repository.note_${this.repository.category}`)}` : "")}
 
             ${(this.repository.category === "plugin" ? html`,
-            ${this.hass.localize(`component.hacs.repository.note_${this.repository.category}`)}` : "")}
+            ${localize(`repository.note_${this.repository.category}`)}` : "")}
 
             .</p>
 

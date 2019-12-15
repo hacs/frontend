@@ -16,6 +16,8 @@ import { navigate } from "../misc/navigate"
 import { LovelaceConfig } from "../misc/LovelaceTypes"
 import { AddedToLovelace } from "../misc/AddedToLovelace"
 
+import { localize } from "../localize/localize"
+
 import "../components/buttons/HacsButtonClearNew"
 
 
@@ -98,7 +100,7 @@ export class HacsPanelStore extends LitElement {
           type="text"
           id="Search"
           @input=${this.DoSearch}
-          placeholder="  ${this.hass.localize("component.hacs.store.placeholder_search")}."
+          placeholder="  ${localize("store.placeholder_search")}."
           autofocus
           .value=${this.SearchTerm}
         >
@@ -117,7 +119,7 @@ export class HacsPanelStore extends LitElement {
 
     ${(newRepositories.length !== 0 ? html`
     <div class="card-group">
-      <h1>${this.hass.localize(`component.hacs.store.new_repositories`)}</h1>
+      <h1>${localize(`store.new_repositories`)}</h1>
       ${newRepositories.sort((a, b) => (this.SortRepo(a, b)) ? 1 : -1).map(repo =>
         html`
           ${(this.configuration.frontend_mode !== "Table" ? html`

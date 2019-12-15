@@ -16,6 +16,7 @@ import "../components/HacsBody"
 import "../components/HacsProgressbar"
 import { LovelaceConfig } from "../misc/LovelaceTypes"
 import { AddedToLovelace } from "../misc/AddedToLovelace"
+import { localize } from "../localize/localize"
 
 @customElement("hacs-installed")
 export class HacsInstalled extends LitElement {
@@ -122,7 +123,7 @@ export class HacsInstalled extends LitElement {
             return html`
                 <div class="card-group">
                     <div class="leftspace grouptitle">
-                    ${this.hass.localize(`component.hacs.common.${category}`)}
+                    ${localize(`common.${category}`)}
                     </div>
                     ${categories[category].sort((a, b) => (a.name, b.name) ? 1 : -1).map(repository => {
                 return this.render_card(repository)

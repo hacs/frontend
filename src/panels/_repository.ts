@@ -13,7 +13,7 @@ import { HacsStyle } from "../style/hacs-style"
 import { RepositoryWebSocketAction } from "../misc/RepositoryWebSocketAction"
 
 import { Configuration, Repository, Route, Status, ValueChangedEvent } from "../types"
-import { navigate } from "../misc/navigate"
+import { localize } from "../localize/localize"
 import { LovelaceConfig } from "../misc/LovelaceTypes"
 
 import { markdown } from "../markdown/markdown"
@@ -62,14 +62,14 @@ export class HacsPanelRepository extends LitElement {
     if (this.repo === undefined) return html`<div class="loader"><paper-spinner active></paper-spinner></div>`
 
     if (this.repo.installed) {
-      var back = this.hass.localize(`component.hacs.common.installed`);
+      var back = localize(`common.installed`);
     } else {
       if (this.repo.category === "appdaemon") {
         var FE_cat = "appdaemon_apps";
       } else {
         FE_cat = `${this.repo.category}s`
       }
-      var back = this.hass.localize(`component.hacs.common.${FE_cat}`);
+      var back = localize(`common.${FE_cat}`);
     }
 
     return html`
@@ -77,7 +77,7 @@ export class HacsPanelRepository extends LitElement {
     <div class="getBack">
       <mwc-button @click=${this.GoBackToStore} title="${back}">
       <ha-icon  icon="mdi:arrow-left"></ha-icon>
-        ${this.hass.localize(`component.hacs.repository.back_to`)}
+        ${localize(`repository.back_to`)}
         ${back}
       </mwc-button>
       ${(this.repo.state == "other" ? html`<div class="loader"><paper-spinner active></paper-spinner></div>` : "")}
@@ -105,20 +105,20 @@ export class HacsPanelRepository extends LitElement {
           ${(this.repo.installed ?
         html`
           <div class="version installed">
-            <b>${this.hass.localize(`component.hacs.repository.installed`)}: </b> ${this.repo.installed_version}
+            <b>${localize(`repository.installed`)}: </b> ${this.repo.installed_version}
           </div>
           ` :
         "")}
 
         ${(String(this.repo.releases.length) === "0" ? html`
               <div class="version-available">
-                  <b>${this.hass.localize(`component.hacs.repository.available`)}: </b> ${this.repo.available_version}
+                  <b>${localize(`repository.available`)}: </b> ${this.repo.available_version}
               </div>
           ` : html`
               <div class="version-available">
                   <paper-dropdown-menu @value-changed="${this.SetVersion}"
-                    label="${this.hass.localize(`component.hacs.repository.available`)}:
-                     (${this.hass.localize(`component.hacs.repository.newest`)}: ${this.repo.releases[0]})">
+                    label="${localize(`repository.available`)}:
+                     (${localize(`repository.newest`)}: ${this.repo.releases[0]})">
                       <paper-listbox slot="dropdown-content" selected="${this.repo.selected_tag}" attr-for-selected="value">
                           ${this.repo.releases.map(release =>
           html`<paper-item value="${release}">${release}</paper-item>`

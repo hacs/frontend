@@ -1,6 +1,7 @@
 import { customElement, TemplateResult, html, property } from "lit-element";
 import { HacsRepositoryButton } from "./HacsRepositoryButton"
 import { RepositoryWebSocketAction } from "../../misc/RepositoryWebSocketAction"
+import { localize } from "../../localize/localize"
 
 @customElement("hacs-button-main-action")
 export class HacsButtonMainAction extends HacsRepositoryButton {
@@ -22,7 +23,7 @@ export class HacsButtonMainAction extends HacsRepositoryButton {
     }
 
     protected render(): TemplateResult | void {
-        const label = this.hass.localize(`component.hacs.repository.${this.repository.main_action.toLowerCase()}`)
+        const label = localize(`repository.${this.repository.main_action.toLowerCase()}`)
         if (this.status.background_task) {
             return html`
                 <mwc-button class="disabled-button" title="Installation/Upgrade is disabled while background tasks is running." @click=${this.disabledAction}>
@@ -52,9 +53,9 @@ export class HacsButtonMainAction extends HacsRepositoryButton {
         }
         if (this.pathExists && !this.repository.installed) {
             if (window.confirm(
-                this.hass.localize("component.hacs.confirm.exsist", "item", this.repository.local_path)
-                + "\n" + this.hass.localize("component.hacs.confirm.overwrite")
-                + "\n" + this.hass.localize("component.hacs.confirm.continue")
+                localize("confirm.exsist", "item", this.repository.local_path)
+                + "\n" + localize("confirm.overwrite")
+                + "\n" + localize("confirm.continue")
             )) this.ExecuteAction()
         } else this.ExecuteAction()
     }

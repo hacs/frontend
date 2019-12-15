@@ -22,6 +22,8 @@ import {
   Configuration, Repository, Route, Status, Critical, SelectedValue, LocationChangedEvent
 } from "./types";
 
+import { localize } from "./localize/localize"
+
 
 @customElement("hacs-frontendbase")
 class HacsFrontendBase extends LitElement {
@@ -191,28 +193,28 @@ class HacsFrontendBase extends LitElement {
         </app-toolbar>
       <paper-tabs scrollable attr-for-selected="page-name" .selected=${page} @iron-activate=${this.handlePageSelected}>
 
-        <paper-tab page-name="installed">${this.hass.localize(`component.hacs.common.installed`)}</paper-tab>
+        <paper-tab page-name="installed">${localize(`common.installed`)}</paper-tab>
 
-        <paper-tab page-name="integration">${this.hass.localize(`component.hacs.common.integrations`)}</paper-tab>
+        <paper-tab page-name="integration">${localize(`common.integrations`)}</paper-tab>
 
-        <paper-tab page-name="plugin">${this.hass.localize(`component.hacs.common.plugins`)}</paper-tab>
+        <paper-tab page-name="plugin">${localize(`common.plugins`)}</paper-tab>
 
         ${(this.configuration.appdaemon
         ? html`<paper-tab page-name="appdaemon">
-            ${this.hass.localize(`component.hacs.common.appdaemon_apps`)}
+            ${localize(`common.appdaemon_apps`)}
         </paper-tab>` : "")}
 
         ${(this.configuration.python_script
         ? html`<paper-tab page-name="python_script">
-            ${this.hass.localize(`component.hacs.common.python_scripts`)}
+            ${localize(`common.python_scripts`)}
         </paper-tab>` : "")}
 
         ${(this.configuration.theme
         ? html`<paper-tab page-name="theme">
-            ${this.hass.localize(`component.hacs.common.themes`)}
+            ${localize(`common.themes`)}
         </paper-tab>` : "")}
 
-        <paper-tab page-name="settings">${this.hass.localize("component.hacs.common.settings")}</paper-tab>
+        <paper-tab page-name="settings">${localize("common.settings")}</paper-tab>
       </paper-tabs>
     </app-header>
 

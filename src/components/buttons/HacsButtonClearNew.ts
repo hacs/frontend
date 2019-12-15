@@ -1,5 +1,6 @@
 import { customElement, TemplateResult, html, property } from "lit-element";
 import { HacsRepositoryButton } from "./HacsRepositoryButton"
+import { localize } from "../../localize/localize"
 
 @customElement("hacs-button-clear-new")
 export class HacsButtonClearNew extends HacsRepositoryButton {
@@ -8,7 +9,7 @@ export class HacsButtonClearNew extends HacsRepositoryButton {
     protected render(): TemplateResult | void {
         return html`
             <mwc-button @click=${this.ExecuteAction}>
-                ${this.hass.localize(`component.hacs.store.clear_new`)}
+                ${localize(`store.clear_new`)}
             </mwc-button>
         `;
     }

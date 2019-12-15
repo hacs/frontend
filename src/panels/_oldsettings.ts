@@ -16,6 +16,8 @@ import "../misc/HiddenRepositories"
 
 import { Configuration, Repository, Status } from "../types"
 
+import { localize } from "../localize/localize"
+
 @customElement("hacs-panel-settings")
 export class HacsPanelSettings extends LitElement {
   @property() public hass!: HomeAssistant;
@@ -26,20 +28,20 @@ export class HacsPanelSettings extends LitElement {
   render(): TemplateResult | void {
     return html`
 
-    <ha-card header="${this.hass.localize("component.hacs.config.title")}">
+    <ha-card header="${localize("config.title")}">
       <div class="card-content">
-        <p><b>${this.hass.localize("component.hacs.common.version")}:</b> ${this.configuration.version}</p>
-        <p><b>${this.hass.localize("component.hacs.common.repositories")}:</b> ${this.repositories.length}</p>
+        <p><b>${localize("common.version")}:</b> ${this.configuration.version}</p>
+        <p><b>${localize("common.repositories")}:</b> ${this.repositories.length}</p>
         <div class="version-available">
         <ha-switch
           .checked=${this.configuration.frontend_mode === "Table"}
           @change=${this.SetFeStyle}
-        >${this.hass.localize(`component.hacs.settings.table_view`)}</ha-switch>
+        >${localize(`settings.table_view`)}</ha-switch>
         ${(this.configuration.experimental ? html`
           <ha-switch
             .checked=${this.configuration.frontend_compact}
             @change=${this.SetFeCompact}
-          >${this.hass.localize(`component.hacs.settings.compact_mode`)}</ha-switch>
+          >${localize(`settings.compact_mode`)}</ha-switch>
         ` : "")}
 
     </div>
@@ -53,11 +55,11 @@ export class HacsPanelSettings extends LitElement {
       ` : html`
       ${(this.status.background_task ? html`
         <mwc-button disabled>
-          ${this.hass.localize(`component.hacs.settings.reload_data`)}
+          ${localize(`settings.reload_data`)}
         </mwc-button>
       `: html`
         <mwc-button @click=${this.UpgradeAll}>
-          ${this.hass.localize(`component.hacs.settings.reload_data`)}
+          ${localize(`settings.reload_data`)}
         </mwc-button>
       `)}
       `)}
@@ -70,24 +72,24 @@ export class HacsPanelSettings extends LitElement {
       ` : html`
       ${(this.status.background_task ? html`
         <mwc-button disabled>
-          ${this.hass.localize(`component.hacs.settings.upgrade_all`)}
+          ${localize(`settings.upgrade_all`)}
         </mwc-button>
       `: html`
         <mwc-button @click=${this.UpgradeAll}>
-          ${this.hass.localize(`component.hacs.settings.upgrade_all`)}
+          ${localize(`settings.upgrade_all`)}
         </mwc-button>
       `)}
       `)}
 
       <a href="https://github.com/hacs/integration" target="_blank" rel="noreferrer">
         <mwc-button >
-          ${this.hass.localize(`component.hacs.settings.hacs_repo`)}
+          ${localize(`settings.hacs_repo`)}
         </mwc-button>
       </a>
 
       <a href="https://github.com/hacs/integration/issues" target="_blank" rel="noreferrer">
         <mwc-button >
-          ${this.hass.localize(`component.hacs.repository.open_issue`)}
+          ${localize(`repository.open_issue`)}
         </mwc-button>
       </a>
       </div>

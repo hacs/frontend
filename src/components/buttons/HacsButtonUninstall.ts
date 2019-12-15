@@ -3,12 +3,14 @@ import { HacsStyle } from "../../style/hacs-style"
 import { HacsRepositoryButton } from "./HacsRepositoryButton"
 import { RepositoryWebSocketAction } from "../../misc/RepositoryWebSocketAction"
 
+import { localize } from "../../localize/localize"
+
 @customElement("hacs-button-uninstall")
 export class HacsButtonUninstall extends HacsRepositoryButton {
     protected render(): TemplateResult | void {
         if (!this.repository.installed) return html``
 
-        const label = this.hass.localize('component.hacs.repository.uninstall');
+        const label = localize('repository.uninstall');
         if (this.status.background_task) {
             return html`
             <mwc-button class="disabled-button" title="Uninstall is disabled while background tasks is running." @click=${this.disabledAction}>
@@ -39,7 +41,7 @@ export class HacsButtonUninstall extends HacsRepositoryButton {
 
     RepositoryUnInstall() {
         if (window.confirm(
-            this.hass.localize("component.hacs.confirm.uninstall", "item", this.repository.name)
+            localize("confirm.uninstall", "item", this.repository.name)
         )) this.ExecuteAction()
     }
 

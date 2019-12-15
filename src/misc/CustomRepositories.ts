@@ -5,6 +5,8 @@ import { HomeAssistant } from "custom-card-helpers";
 import { Configuration, Repository, Status } from "../types"
 import { RepositoryWebSocketAction } from "../misc/RepositoryWebSocketAction"
 
+import { localize } from "../localize/localize"
+
 
 @customElement("hacs-custom-repositories")
 export class CustomRepositories extends LitElement {
@@ -35,7 +37,7 @@ export class CustomRepositories extends LitElement {
         })
 
         return html`
-        <ha-card header="${this.hass.localize("component.hacs.settings.custom_repositories")}">
+        <ha-card header="${localize("settings.custom_repositories")}">
             <div class="card-content">
             <div class="custom-repositories-list">
 
@@ -48,7 +50,7 @@ export class CustomRepositories extends LitElement {
                     <paper-item>
                         ${repo.full_name}
                         <ha-icon
-                        title="${(this.hass.localize("component.hacs.settings.delete"))}"
+                        title="${(localize("settings.delete"))}"
                         class="listicon" icon="mdi:delete"
                         @click=${this.Delete}
                         ></ha-icon>
@@ -61,19 +63,19 @@ export class CustomRepositories extends LitElement {
             </div>
 
             <div class="card-actions">
-                <paper-input class="inputfield MobileGrid" placeholder=${(this.hass.localize("component.hacs.settings.add_custom_repository"))} type="text"></paper-input>
+                <paper-input class="inputfield MobileGrid" placeholder=${(localize("settings.add_custom_repository"))} type="text"></paper-input>
                 <paper-dropdown-menu class="category MobileGrid"
-                label="${this.hass.localize(`component.hacs.settings.category`)}">
+                label="${localize(`settings.category`)}">
                   <paper-listbox slot="dropdown-content" selected="-1">
                       ${this.configuration.categories.map(category => html`
                       <paper-item .category=${category}>
-                        ${this.hass.localize(`component.hacs.common.${category}`)}
+                        ${localize(`common.${category}`)}
                       </paper-item>`)}
                   </paper-listbox>
               </paper-dropdown-menu>
 
               <div class="save">
-                <ha-icon title="${(this.hass.localize("component.hacs.settings.save"))}"
+                <ha-icon title="${(localize("settings.save"))}"
                     icon="mdi:content-save"
                     class="saveicon MobileGrid"
                     @click=${this.Save}>

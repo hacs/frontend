@@ -2,6 +2,8 @@ import { customElement, TemplateResult, html } from "lit-element";
 import { HacsRepositoryButton } from "./HacsRepositoryButton"
 import { RepositoryWebSocketAction } from "../../misc/RepositoryWebSocketAction"
 
+import { localize } from "../../localize/localize"
+
 @customElement("hacs-button-changelog")
 export class HacsButtonChangelog extends HacsRepositoryButton {
     protected render(): TemplateResult | void {
@@ -16,7 +18,7 @@ export class HacsButtonChangelog extends HacsRepositoryButton {
         return html`
         <a href="${URL}" rel='noreferrer' target="_blank">
           <mwc-button>
-          ${this.hass.localize(`component.hacs.repository.changelog`)}
+          ${localize(`repository.changelog`)}
           </mwc-button>
         </a>
         `;

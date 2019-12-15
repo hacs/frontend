@@ -11,7 +11,7 @@ import { HomeAssistant } from "custom-card-helpers";
 
 import { HacsStyle } from "../style/hacs-style"
 import { Repository, Status, Configuration, ValueChangedEvent, AllCategories, Route } from "../types"
-
+import { localize } from "../localize/localize"
 import "../components/HacsBody"
 import "../components/HacsProgressbar"
 import { LovelaceConfig } from "../misc/LovelaceTypes"
@@ -138,7 +138,7 @@ export class HacsStore extends LitElement {
 
             <div class="store-top">
             <paper-input class="search-bar padder" type="text" id="Search" @input=${this.DoSearch}
-            placeholder="  ${this.hass.localize("component.hacs.store.placeholder_search")}."
+            placeholder="  ${localize("store.placeholder_search")}."
             autofocus .value=${this.search}>
             ${(this.search.length > 0 ? html`
                 <ha-icon slot="suffix" icon="mdi:close" @click="${this.clearSearch}"></ha-icon>

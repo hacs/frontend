@@ -1,6 +1,7 @@
 import { LitElement, customElement, CSSResultArray, css, TemplateResult, html, property } from "lit-element";
 import { HacsStyle } from "../style/hacs-style"
 import { HomeAssistant } from "custom-card-helpers";
+import { localize } from "../localize/localize"
 
 @customElement("hacs-authors")
 export class Authors extends LitElement {
@@ -11,7 +12,7 @@ export class Authors extends LitElement {
         if (String(this.authors.length) === "0") return html``
         return html`
             <div class="MobileGrid">
-                <p><b>${this.hass.localize("component.hacs.repository.authors")}: </b>
+                <p><b>${localize("repository.authors")}: </b>
 
                     ${this.authors.map(author =>
             html`
