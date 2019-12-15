@@ -229,9 +229,7 @@ class HacsFrontendBase extends LitElement {
           .configuration=${this.configuration}
           .status=${this.status}
       ></hacs-installed>
-    ` : "")}
-
-    ${(this.route.path === "/settings" ? html`
+    ` : this.route.path === "/settings" ? html`
         <hacs-settings
             .hass=${this.hass}
             .route=${this.route}
@@ -240,9 +238,7 @@ class HacsFrontendBase extends LitElement {
             .status=${this.status}
         >
         </hacs-settings>
-    ` : "")}
-
-    ${(this.route.path.includes("/repository") ? html`
+    ` : this.route.path.includes("/repository") ? html`
         <hacs-panel-repository
           .repository=${this._get_repository}
           .hass=${this.hass}
@@ -251,9 +247,7 @@ class HacsFrontendBase extends LitElement {
           .configuration=${this.configuration}
           .status=${this.status}
         ></hacs-panel-repository>
-    ` : "")}
-
-    ${(this.route.path !== "/installed" && this.route.path !== "/settings" && !this.route.path.includes("/repository") ? html`
+    ` : html`
         <hacs-store
           .store=${this._get_store}
           .hass=${this.hass}
@@ -262,7 +256,7 @@ class HacsFrontendBase extends LitElement {
           .configuration=${this.configuration}
           .status=${this.status}
         ></hacs-store>
-    ` : "")}
+    `)}
 
     <hacs-help-button></hacs-help-button>
 
