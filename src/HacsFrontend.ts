@@ -7,9 +7,10 @@ import { load_lovelace } from "card-tools/src/hass";
 import { navigate } from "./misc/navigate";
 import scrollToTarget from "./misc/ScrollToTarget";
 import "./panels/corePanel";
-import "./panels/repository";
+import "./panels/_repository";
 import "./panels/settings";
 import "./panels/installed";
+import "./panels/repository";
 import "./panels/store";
 import "./components/HacsProgressbar";
 import "./misc/HacsError";
@@ -231,7 +232,11 @@ class HacsFrontendBase extends LitElement {
         </hacs-settings>
     ` : "")}
 
-    ${(this.route.path !== "/installed" && this.route.path !== "/settings" ? html`
+    ${(this.route.path.includes("/repository") ? html`
+        <hacs-repository .repository=${this._get_repository} .repositories=${this.repositories}></hacs-repository>
+    ` : "")}
+
+    ${(this.route.path !== "/installed" && this.route.path !== "/settings" && !this.route.path.includes("/repository") ? html`
         <hacs-store .store=${this._get_store} .repositories=${this.repositories}></hacs-store>
     ` : "")}
 
@@ -242,6 +247,10 @@ class HacsFrontendBase extends LitElement {
 
   private get _get_store() {
     return this.route.path.split("/")[1];
+  }
+
+  private get _get_repository() {
+    return this.route.path.split("/")[2];
   }
 
   locationChanged(e): void {

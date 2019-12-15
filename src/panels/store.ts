@@ -16,7 +16,7 @@ import "../components/HacsProgressbar"
 
 
 @customElement("hacs-store")
-export class HacsStoreBase extends LitElement {
+export class HacsStore extends LitElement {
     @property() public store!: string;
     @property() public repositories!: Repository[];
 
