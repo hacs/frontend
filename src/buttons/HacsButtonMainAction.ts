@@ -49,7 +49,7 @@ export class HacsButtonMainAction extends HacsRepositoryButton {
         }
         if (this.pathExists && !this.repository.installed) {
             if (window.confirm(
-                this.hass.localize("component.hacs.confirm.exsist", "item", this.repository.local_path)
+                this.hass.localize("component.hacs.confirm.exist", "item", this.repository.local_path)
                 + "\n" + this.hass.localize("component.hacs.confirm.overwrite")
                 + "\n" + this.hass.localize("component.hacs.confirm.continue")
             )) this.ExecuteAction()
