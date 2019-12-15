@@ -38,7 +38,7 @@ export class HacsSettings extends LitElement {
     }
     return html`
     <hacs-body>
-      <ha-card header="${localize("config.title")}">
+      <ha-card header="HACS (Home Assistant Community Store)">
         <div class="card-content">
           <p><b>${localize("common.version")}:</b> ${this.configuration.version}</p>
           <p><b>${localize("common.repositories")}:</b> ${this.repositories.length}</p>
