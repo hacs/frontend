@@ -13,26 +13,17 @@ import { HacsStyle } from "../style/hacs-style"
 
 import "../misc/CustomRepositories"
 import "../misc/HiddenRepositories"
-import "../components/HacsProgressbar"
 
 import { Configuration, Repository, Status } from "../types"
 
-@customElement("hacs-settings")
-export class HacsSettings extends LitElement {
+@customElement("hacs-panel-settings")
+export class HacsPanelSettings extends LitElement {
   @property() public hass!: HomeAssistant;
   @property() public repositories!: Repository[]
   @property() public configuration!: Configuration
   @property() public status!: Status
 
   render(): TemplateResult | void {
-    if (this.hass === undefined
-      || this.repositories === undefined
-      || this.configuration === undefined
-      || this.status === undefined) {
-      return html`
-        <hacs-progressbar></hacs-progressbar>
-      `
-    }
     return html`
 
     <ha-card header="${this.hass.localize("component.hacs.config.title")}">

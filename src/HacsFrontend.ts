@@ -9,13 +9,15 @@ import scrollToTarget from "./misc/ScrollToTarget";
 import "./panels/corePanel";
 import "./panels/repository";
 import "./panels/settings";
+import "./panels/installed";
+import "./panels/store";
 import "./components/HacsProgressbar";
 import "./misc/HacsError";
 import "./misc/HacsCritical";
 import { LovelaceConfig } from "./misc/LovelaceTypes";
 import { HacsStyle } from "./style/hacs-style";
 import {
-  Configuration, Repository, Route, Status, Critical, SelectedValue
+  Configuration, Repository, Route, Status, Critical, SelectedValue, LocationChangedEvent
 } from "./types";
 
 
@@ -103,6 +105,7 @@ class HacsFrontendBase extends LitElement {
   }
 
   protected firstUpdated() {
+    this.addEventListener('hacs-location-change', this.locationChanged)
     window.onpopstate = function () {
       window.location.reload();
     };
@@ -205,34 +208,45 @@ class HacsFrontendBase extends LitElement {
       </paper-tabs>
     </app-header>
 
-    <hacs-progressbar .status=${this.status}></hacs-progressbar>
+    <hacs-progressbar .active=${this.status.background_task == true}></hacs-progressbar>
     <slot></slot>
 
     <hacs-critical .hass=${this.hass} .critical=${this.critical}></hacs-critical>
     <hacs-error .hass=${this.hass}></hacs-error>
 
-    ${(this.panel !== "settings" ? html`
-      <hacs-panel
-        .hass=${this.hass}
-        .configuration=${this.configuration}
-        .repositories=${this.repositories}
-        .panel=${this.panel}
-        .route=${this.route}
-        .status=${this.status}
-        .repository_view=${this.repository_view}
-        .repository=${this.repository}
-        .lovelaceconfig=${this.lovelaceconfig}
-      >
-      </hacs-panel>`
-        : html`
-      <hacs-panel-settings
-        .hass=${this.hass}
-        .status=${this.status}
-        .configuration=${this.configuration}
-        .repositories=${this.repositories}>
-      </hacs-panel-settings>`)}
+    ${(this.route.path === "/installed" ? html`
+      <hacs-installed .repositories=${this.repositories}
+      .configuration=${this.configuration}
+      .status=${this.status}
+      ></hacs-installed>
+    ` : "")}
+
+    ${(this.route.path === "/settings" ? html`
+        <hacs-settings
+            .hass=${this.hass}
+            .repositories=${this.repositories}
+            .configuration=${this.configuration}
+            .status=${this.status}
+        >
+        </hacs-settings>
+    ` : "")}
+
+    ${(this.route.path !== "/installed" && this.route.path !== "/settings" ? html`
+        <hacs-store .store=${this._get_store} .repositories=${this.repositories}></hacs-store>
+    ` : "")}
+
+    <hacs-help-button></hacs-help-button>
 
     </app-header-layout>`;
+  }
+
+  private get _get_store() {
+    return this.route.path.split("/")[1];
+  }
+
+  locationChanged(e): void {
+    this.route = ((e as LocationChangedEvent).detail.value)
+    this.requestUpdate();
   }
 
   handlePageSelected(e: SelectedValue) {
@@ -241,7 +255,6 @@ class HacsFrontendBase extends LitElement {
     this.panel = newPage;
     this.route.path = `/${newPage}`;
     navigate(this, `${this.route.prefix}${this.route.path}`);
-    this.dispatchEvent(new CustomEvent('hacs-location-change', { detail: { value: this.route }, bubbles: true, composed: true }))
     scrollToTarget(
 
       this,

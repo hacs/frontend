@@ -3,7 +3,7 @@ import { HacsStyle } from "../style/hacs-style"
 
 @customElement("hacs-progressbar")
 export class HacsProgressbar extends LitElement {
-    @property() public active: boolean = false;
+    @property() public active: boolean = true;
 
     protected render(): TemplateResult | void {
         if (!this.active) return html``;

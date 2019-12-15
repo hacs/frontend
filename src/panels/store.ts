@@ -22,7 +22,7 @@ export class HacsStoreBase extends LitElement {
 
     protected render(): TemplateResult | void {
         if (this.repositories === undefined) return html`
-            <hacs-progressbar .active=${true}></hacs-progressbar>
+            <hacs-progressbar></hacs-progressbar>
         `
 
         return html`

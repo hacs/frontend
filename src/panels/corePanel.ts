@@ -92,7 +92,6 @@ export class HacsPanelStore extends LitElement {
       });
 
       return html`
-      <hacs-store .hass=${this.hass} .store=${this.panel} .repositories=${this.repositories}></hacs-store>
       <div class="store-top store-top-${this.panel}">
         <paper-input
           class="search-bar padder"
@@ -276,9 +275,6 @@ export class HacsPanelStore extends LitElement {
     return [
       HacsStyle,
       css`
-      hr {
-        width: 95%
-      }
       paper-item {
         border-radius: var(--ha-card-border-radius);
         background: var(--primary-background-color);
@@ -333,16 +329,6 @@ export class HacsPanelStore extends LitElement {
         display: none;
       }
 
-      ha-card.compact {
-        height: 80px !important;
-        white-space: nowrap !important;
-      }
-
-      paper-item.compact {
-        margin-bottom: 2px !important;
-        white-space: nowrap !important;
-      }
-
       ha-card {
         display: inline-flex;
       }
@@ -350,59 +336,6 @@ export class HacsPanelStore extends LitElement {
       .card-content, paper-item-body {
         width: 95%;
       }
-
-      .card-group {
-          margin-top: 24px;
-          width: 95%;
-          margin-left: 2.5%;
-        }
-
-        .card-group .title {
-          color: var(--primary-text-color);
-          margin-bottom: 12px;
-        }
-
-        .card-group .description {
-          font-size: 0.5em;
-          font-weight: 500;
-          margin-top: 4px;
-        }
-
-        .card-group ha-card {
-          --card-group-columns: 5;
-          width: calc((100% - 12px * var(--card-group-columns)) / var(--card-group-columns));
-          margin: 4px;
-          vertical-align: top;
-          height: 136px;
-        }
-
-        @media screen and (max-width: 2400px) and (min-width: 1801px) {
-          .card-group ha-card {
-            --card-group-columns: 4;
-          }
-        }
-
-        @media screen and (max-width: 1800px) and (min-width: 1201px) {
-          .card-group ha-card {
-            --card-group-columns: 3;
-          }
-        }
-
-        @media screen and (max-width: 1200px) and (min-width: 601px) {
-          .card-group ha-card {
-            --card-group-columns: 2;
-          }
-        }
-
-        @media screen and (max-width: 600px) and (min-width: 0) {
-          .card-group ha-card {
-            width: 100%;
-            margin: 4px 0;
-          }
-          .content {
-            padding: 0;
-          }
-        }
     `];
   }
 }
