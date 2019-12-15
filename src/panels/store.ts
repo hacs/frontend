@@ -181,6 +181,7 @@ export class HacsStore extends LitElement {
               }
               ha-card {
                 display: inline-flex;
+                cursor: pointer;
               }
               .padder {
                 padding-left: 8px;

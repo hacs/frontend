@@ -11,9 +11,9 @@ export class HacsButtonUninstall extends HacsRepositoryButton {
         const label = this.hass.localize('component.hacs.repository.uninstall');
         if (this.status.background_task) {
             return html`
-                <mwc-button disabled>
-                    ${label}
-                </mwc-button>
+            <mwc-button class="disabled-button" title="Uninstall is disabled while background tasks is running." @click=${this.disabledAction}>
+                ${label}
+            </mwc-button>
             `
         }
 
@@ -31,6 +31,10 @@ export class HacsButtonUninstall extends HacsRepositoryButton {
             --mdc-theme-primary: var(--google-red-500);
           }
         `]
+    }
+
+    disabledAction() {
+        window.alert("Uninstall is disabled while background tasks is running.")
     }
 
     RepositoryUnInstall() {

@@ -25,19 +25,22 @@ export class HacsButtonMainAction extends HacsRepositoryButton {
         const label = this.hass.localize(`component.hacs.repository.${this.repository.main_action.toLowerCase()}`)
         if (this.status.background_task) {
             return html`
-                <mwc-button disabled>
+                <mwc-button class="disabled-button" title="Installation/Upgrade is disabled while background tasks is running." @click=${this.disabledAction}>
                     ${label}
                 </mwc-button>
             `
         }
         return html`
-            <mwc-button
-            @click=${this.RepositoryInstall}>
+            <mwc-button @click=${this.RepositoryInstall}>
                 ${(this.repository.state == "installing"
                 ? html`<paper-spinner active></paper-spinner>`
                 : html`${label}`)}
             </mwc-button>
         `;
+    }
+
+    disabledAction() {
+        window.alert("Installation/Upgrade is disabled while background tasks is running.")
     }
 
     RepositoryInstall() {

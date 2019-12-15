@@ -145,6 +145,7 @@ export class HacsInstalled extends LitElement {
               }
               ha-card {
                 display: inline-flex;
+                cursor: pointer;
               }
               .grouptitle {
                 font-size: larger;

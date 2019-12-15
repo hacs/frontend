@@ -44,7 +44,6 @@ const baseHacsStyles = css`
         overflow: hidden;
     }
     ha-card {
-        cursor: pointer;
         margin: 8px;
     }
     ha-icon {
@@ -137,6 +136,12 @@ const baseHacsStyles = css`
       }
       .leftspace {
         margin-left: 8px !important;
+      }
+      .disabled-button {
+        --mdc-theme-primary: var(--disabled-text-color);
+      }
+      .uninstall-button {
+        --mdc-theme-primary: var(--google-red-500);
       }
 `
 
