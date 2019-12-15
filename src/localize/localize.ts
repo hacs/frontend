@@ -8,7 +8,7 @@ languages["no"] = no
 export function localize(source: string, string: string) {
 
     const section = string.split(".")[0]
-    const key = string.split(".")[0]
+    const key = string.split(".")[1]
 
     try {
         return languages[source][section][key]
