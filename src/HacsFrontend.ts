@@ -156,10 +156,14 @@ class HacsFrontendBase extends LitElement {
 
   protected render(): TemplateResult | void {
     // Handle access to root
-    if (this.panel === "" || this.panel === undefined) {
-      navigate(this, `/${this._rootPath}/installed`);
-      this.panel = "installed";
+    if (this.route.path === "" || this.route.path === undefined) {
+      navigate(this, `${this.route.prefix}/installed`);
       this.route.path = "/installed"
+      this.panel = this.route.path.split("/")[1]
+    }
+    if (this.panel === "" || this.panel === undefined) {
+      navigate(this, `${this.route.prefix}${this.route.path}`);
+      this.panel = this.route.path.split("/")[1]
     }
 
     if (this.repositories === undefined || this.configuration === undefined || this.status === undefined) {
@@ -217,15 +221,19 @@ class HacsFrontendBase extends LitElement {
     <hacs-error .hass=${this.hass}></hacs-error>
 
     ${(this.route.path === "/installed" ? html`
-      <hacs-installed .repositories=${this.repositories}
-      .configuration=${this.configuration}
-      .status=${this.status}
+      <hacs-installed
+          .hass=${this.hass}
+          .route=${this.route}
+          .repositories=${this.repositories}
+          .configuration=${this.configuration}
+          .status=${this.status}
       ></hacs-installed>
     ` : "")}
 
     ${(this.route.path === "/settings" ? html`
         <hacs-settings
             .hass=${this.hass}
+            .route=${this.route}
             .repositories=${this.repositories}
             .configuration=${this.configuration}
             .status=${this.status}
@@ -234,11 +242,25 @@ class HacsFrontendBase extends LitElement {
     ` : "")}
 
     ${(this.route.path.includes("/repository") ? html`
-        <hacs-repository .repository=${this._get_repository} .repositories=${this.repositories}></hacs-repository>
+        <hacs-repository
+          .repository=${this._get_repository}
+          .hass=${this.hass}
+          .route=${this.route}
+          .repositories=${this.repositories}
+          .configuration=${this.configuration}
+          .status=${this.status}
+        ></hacs-repository>
     ` : "")}
 
     ${(this.route.path !== "/installed" && this.route.path !== "/settings" && !this.route.path.includes("/repository") ? html`
-        <hacs-store .store=${this._get_store} .repositories=${this.repositories}></hacs-store>
+        <hacs-store
+          .store=${this._get_store}
+          .hass=${this.hass}
+          .route=${this.route}
+          .repositories=${this.repositories}
+          .configuration=${this.configuration}
+          .status=${this.status}
+        ></hacs-store>
     ` : "")}
 
     <hacs-help-button></hacs-help-button>
@@ -254,8 +276,9 @@ class HacsFrontendBase extends LitElement {
     return this.route.path.split("/")[2];
   }
 
-  locationChanged(e): void {
-    this.route = ((e as LocationChangedEvent).detail.value)
+  locationChanged(ev): void {
+    this.route = ((ev as LocationChangedEvent).detail.value)
+    navigate(this, `${this.route.prefix}${this.route.path}`);
     this.requestUpdate();
   }
 

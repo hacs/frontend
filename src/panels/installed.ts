@@ -7,9 +7,10 @@ import {
     css,
     property
 } from "lit-element";
+import { HomeAssistant } from "custom-card-helpers";
 
 import { HacsStyle } from "../style/hacs-style"
-import { Repository, Status, Configuration } from "../types"
+import { Repository, Status, Configuration, RepositoryCategories, AllCategories, Route } from "../types"
 
 import "../components/HacsBody"
 import "../components/HacsProgressbar"
@@ -17,7 +18,9 @@ import { LovelaceConfig } from "../misc/LovelaceTypes"
 import { AddedToLovelace } from "../misc/AddedToLovelace"
 
 @customElement("hacs-installed")
-export class HacsStoreBase extends LitElement {
+export class HacsInstalled extends LitElement {
+    @property() public hass!: HomeAssistant;
+    @property() public route!: Route;
     @property() public repositories!: Repository[];
     @property() public status!: Status;
     @property() public configuration!: Configuration;
@@ -39,7 +42,19 @@ export class HacsStoreBase extends LitElement {
 
 
     ShowRepository(ev) {
-        console.log(ev)
+        var RepoID: string
+
+        ev.composedPath().forEach((item: any) => {
+            if (item.RepoID) {
+                RepoID = item.RepoID;
+            }
+        })
+        this.route.path = `/repository/${RepoID}`
+        this.dispatchEvent(new CustomEvent('hacs-location-change', {
+            detail: { value: this.route },
+            bubbles: true,
+            composed: true
+        }));
     }
 
     render_card(repository: Repository) {
@@ -69,8 +84,17 @@ export class HacsStoreBase extends LitElement {
             <hacs-progressbar></hacs-progressbar>
         `
 
+        var categories: RepositoryCategories = { integrations: [], plugins: [], appdaemon_apps: [], python_scripts: [], themes: [] }
+
         var installed_repositories = this.repositories.filter(function (repository) {
-            if (repository.installed) return true;
+            if (repository.installed) {
+                if (repository.category === "integration") categories.integrations.push(repository);
+                if (repository.category === "plugin") categories.plugins.push(repository);
+                if (repository.category === "appdaemon") categories.appdaemon_apps.push(repository);
+                if (repository.category === "python_script") categories.python_scripts.push(repository);
+                if (repository.category === "theme") categories.themes.push(repository);
+                return true;
+            }
             return false;
         })
 
@@ -90,19 +114,22 @@ export class HacsStoreBase extends LitElement {
             return this.render_card(repository)
         }))}
             </div>
-            <i class="leftspace">
-                If you have many updates you can update all of them under the settings tab.
-            </i>
             <hr noshade>
             ` : "")}
-            ${(installed_repositories.length !== 0 ? html`
-            <div class="card-group">
-                ${(installed_repositories.sort((a, b) => (a.name, b.name) ? 1 : -1).map(repository => {
-            return this.render_card(repository)
-        }))}
-            </div>
 
-            ` : "")}
+            ${(AllCategories.map(category => {
+            if (categories[category] === undefined || categories[category].length === 0) return html``;
+            return html`
+                <div class="card-group">
+                    <div class="leftspace grouptitle">
+                    ${this.hass.localize(`component.hacs.common.${category}`)}
+                    </div>
+                    ${categories[category].map(repository => {
+                return this.render_card(repository)
+            })}
+                </div>
+                        `
+        }))}
         </hacs-body>
         `
     }

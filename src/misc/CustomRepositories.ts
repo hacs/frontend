@@ -86,10 +86,6 @@ export class CustomRepositories extends LitElement {
 
     static get styles(): CSSResultArray {
         return [HacsStyle, css`
-            ha-card {
-                width: 90%;
-                margin-left: 5%;
-            }
             .custom-repositories {
 
             }

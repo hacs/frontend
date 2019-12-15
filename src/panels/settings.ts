@@ -14,6 +14,7 @@ import { HacsStyle } from "../style/hacs-style"
 import "../misc/CustomRepositories"
 import "../misc/HiddenRepositories"
 import "../components/HacsProgressbar"
+import "../components/HacsBody"
 
 import { Configuration, Repository, Status } from "../types"
 
@@ -34,87 +35,89 @@ export class HacsSettings extends LitElement {
       `
     }
     return html`
-
-    <ha-card header="${this.hass.localize("component.hacs.config.title")}">
-      <div class="card-content">
-        <p><b>${this.hass.localize("component.hacs.common.version")}:</b> ${this.configuration.version}</p>
-        <p><b>${this.hass.localize("component.hacs.common.repositories")}:</b> ${this.repositories.length}</p>
-        <div class="version-available">
-        <ha-switch
-          .checked=${this.configuration.frontend_mode === "Table"}
-          @change=${this.SetFeStyle}
-        >${this.hass.localize(`component.hacs.settings.table_view`)}</ha-switch>
-        ${(this.configuration.experimental ? html`
+    <hacs-body>
+      <ha-card header="${this.hass.localize("component.hacs.config.title")}">
+        <div class="card-content">
+          <p><b>${this.hass.localize("component.hacs.common.version")}:</b> ${this.configuration.version}</p>
+          <p><b>${this.hass.localize("component.hacs.common.repositories")}:</b> ${this.repositories.length}</p>
+          <div class="version-available">
           <ha-switch
-            .checked=${this.configuration.frontend_compact}
-            @change=${this.SetFeCompact}
-          >${this.hass.localize(`component.hacs.settings.compact_mode`)}</ha-switch>
-        ` : "")}
+            .checked=${this.configuration.frontend_mode === "Table"}
+            @change=${this.SetFeStyle}
+          >${this.hass.localize(`component.hacs.settings.table_view`)}</ha-switch>
+          ${(this.configuration.experimental ? html`
+            <ha-switch
+              .checked=${this.configuration.frontend_compact}
+              @change=${this.SetFeCompact}
+            >${this.hass.localize(`component.hacs.settings.compact_mode`)}</ha-switch>
+          ` : "")}
 
-    </div>
       </div>
-      <div class="card-actions MobileGrid">
+        </div>
+        <div class="card-actions MobileGrid">
 
-      ${(this.status.reloading_data ? html`
-        <mwc-button  disabled>
-          <paper-spinner active></paper-spinner>
-        </mwc-button>
-      ` : html`
-      ${(this.status.background_task ? html`
-        <mwc-button disabled>
-          ${this.hass.localize(`component.hacs.settings.reload_data`)}
-        </mwc-button>
-      `: html`
-        <mwc-button @click=${this.UpgradeAll}>
-          ${this.hass.localize(`component.hacs.settings.reload_data`)}
-        </mwc-button>
-      `)}
-      `)}
-
-
-      ${(this.status.upgrading_all ? html`
+        ${(this.status.reloading_data ? html`
           <mwc-button  disabled>
             <paper-spinner active></paper-spinner>
           </mwc-button>
-      ` : html`
-      ${(this.status.background_task ? html`
-        <mwc-button disabled>
-          ${this.hass.localize(`component.hacs.settings.upgrade_all`)}
-        </mwc-button>
-      `: html`
-        <mwc-button @click=${this.UpgradeAll}>
-          ${this.hass.localize(`component.hacs.settings.upgrade_all`)}
-        </mwc-button>
-      `)}
-      `)}
+        ` : html`
+        ${(this.status.background_task ? html`
+          <mwc-button disabled>
+            ${this.hass.localize(`component.hacs.settings.reload_data`)}
+          </mwc-button>
+        `: html`
+          <mwc-button @click=${this.UpgradeAll}>
+            ${this.hass.localize(`component.hacs.settings.reload_data`)}
+          </mwc-button>
+        `)}
+        `)}
 
-      <a href="https://github.com/hacs/integration" target="_blank" rel="noreferrer">
-        <mwc-button >
-          ${this.hass.localize(`component.hacs.settings.hacs_repo`)}
-        </mwc-button>
-      </a>
 
-      <a href="https://github.com/hacs/integration/issues" target="_blank" rel="noreferrer">
-        <mwc-button >
-          ${this.hass.localize(`component.hacs.repository.open_issue`)}
-        </mwc-button>
-      </a>
-      </div>
-    </ha-card>
-    <hacs-custom-repositories
+        ${(this.status.upgrading_all ? html`
+            <mwc-button  disabled>
+              <paper-spinner active></paper-spinner>
+            </mwc-button>
+        ` : html`
+        ${(this.status.background_task ? html`
+          <mwc-button disabled>
+            ${this.hass.localize(`component.hacs.settings.upgrade_all`)}
+          </mwc-button>
+        `: html`
+          <mwc-button @click=${this.UpgradeAll}>
+            ${this.hass.localize(`component.hacs.settings.upgrade_all`)}
+          </mwc-button>
+        `)}
+        `)}
+
+        <a href="https://github.com/hacs/integration" target="_blank" rel="noreferrer">
+          <mwc-button >
+            ${this.hass.localize(`component.hacs.settings.hacs_repo`)}
+          </mwc-button>
+        </a>
+
+        <a href="https://github.com/hacs/integration/issues" target="_blank" rel="noreferrer">
+          <mwc-button >
+            ${this.hass.localize(`component.hacs.repository.open_issue`)}
+          </mwc-button>
+        </a>
+        </div>
+      </ha-card>
+      <hacs-custom-repositories
+        .hass=${this.hass}
+        .status=${this.status}
+        .configuration=${this.configuration}
+        .repositories=${this.repositories}
+      >
+      </hacs-custom-repositories>
+      <hacs-hidden-repositories
       .hass=${this.hass}
       .status=${this.status}
       .configuration=${this.configuration}
       .repositories=${this.repositories}
-    >
-    </hacs-custom-repositories>
-    <hacs-hidden-repositories
-    .hass=${this.hass}
-    .status=${this.status}
-    .configuration=${this.configuration}
-    .repositories=${this.repositories}
-    >
-    </hacs-hidden-repositories
+      >
+      </hacs-hidden-repositories>
+
+    </hacs-body>
           `;
   }
 
@@ -165,10 +168,6 @@ export class HacsSettings extends LitElement {
 
   static get styles(): CSSResultArray {
     return [HacsStyle, css`
-    ha-card {
-      width: 90%;
-      margin-left: 5%;
-    }
     ha-switch {
       margin-bottom: 8px;
     }

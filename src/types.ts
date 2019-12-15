@@ -80,3 +80,13 @@ export interface ValueChangedEvent {
 export interface LocationChangedEvent {
     detail?: { value: Route }
 }
+
+export interface RepositoryCategories {
+    integrations: Repository[];
+    plugins: Repository[];
+    appdaemon_apps: Repository[];
+    python_scripts: Repository[];
+    themes: Repository[];
+}
+
+export const AllCategories = ["integrations", "plugins", "appdaemon_apps", "python_scripts", "themes"]
