@@ -20,7 +20,6 @@ export class HacsStoreBase extends LitElement {
     @property() public store!: string;
     @property() public repositories!: Repository[];
 
-
     protected render(): TemplateResult | void {
         if (this.repositories === undefined) return html`
             <hacs-progressbar .active=${true}></hacs-progressbar>

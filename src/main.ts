@@ -10,6 +10,7 @@ import { HomeAssistant } from "custom-card-helpers";
 import { Route, LocationChangedEvent } from "./types";
 import './HacsFrontend'
 import "./components/buttons/HacsHelpButton";
+import "./panels/store"
 
 
 @customElement("hacs-frontend")
@@ -27,6 +28,9 @@ class HacsFrontend extends LitElement {
         this.addEventListener('hacs-location-change', this.locationChanged)
     }
 
+    private get _get_store() {
+        return this.route.path.split("/")[1];
+    }
 
     protected render(): TemplateResult | void {
         return html`
@@ -41,7 +45,7 @@ class HacsFrontend extends LitElement {
         ` : "")}
 
         ${(this.route.path !== "/installed" && this.route.path !== "/settings" ? html`
-            <h1>store</h1>
+        <hacs-store .store=${this._get_store} .repositories=${true}></hacs-store>
         ` : "")}
 
         <hacs-help-button></hacs-help-button>

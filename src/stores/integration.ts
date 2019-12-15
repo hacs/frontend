@@ -6,7 +6,7 @@ import {
     css
 } from "lit-element";
 
-import { HacsStoreBase } from '../panels/stores'
+import { HacsStoreBase } from '../panels/store'
 import { HacsStyle } from "../style/hacs-style"
 
 @customElement("hacs-integration_store")
