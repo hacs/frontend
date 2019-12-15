@@ -242,14 +242,14 @@ class HacsFrontendBase extends LitElement {
     ` : "")}
 
     ${(this.route.path.includes("/repository") ? html`
-        <hacs-repository
+        <hacs-panel-repository
           .repository=${this._get_repository}
           .hass=${this.hass}
           .route=${this.route}
           .repositories=${this.repositories}
           .configuration=${this.configuration}
           .status=${this.status}
-        ></hacs-repository>
+        ></hacs-panel-repository>
     ` : "")}
 
     ${(this.route.path !== "/installed" && this.route.path !== "/settings" && !this.route.path.includes("/repository") ? html`

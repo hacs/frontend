@@ -53,23 +53,6 @@ export class HacsPanelRepository extends LitElement {
   }
 
   render(): TemplateResult | void {
-    if (this.repository === undefined) {
-      return html`
-      <hacs-panel
-        .hass=${this.hass}
-        .configuration=${this.configuration}
-        .repositories=${this.repositories}
-        .panel=${this.panel}
-        .route=${this.route}
-        .status=${this.status}
-        .repository_view=${this.repository_view}
-        .repository=${this.repository}
-        .lovelaceconfig=${this.lovelaceconfig}
-      >
-      </hacs-panel>
-      `
-    }
-
     var _repository = this.repository;
     var _repositories = this.repositories.filter(function (repo) {
       return repo.id === _repository
@@ -195,13 +178,12 @@ export class HacsPanelRepository extends LitElement {
     } else {
       this.panel = this.repo.category
     }
-    navigate(this, `/${this._rootPath}/${this.panel}`)
-    this.requestUpdate();
-  }
-
-  private get _rootPath() {
-    if (this.route.prefix.split("/")[1] === undefined) return "hacs";
-    return this.route.prefix.split("/")[1];
+    this.route.path = `/${this.panel}`
+    this.dispatchEvent(new CustomEvent('hacs-location-change', {
+      detail: { value: this.route },
+      bubbles: true,
+      composed: true
+    }));
   }
 
 
