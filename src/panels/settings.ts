@@ -77,12 +77,12 @@ export class HacsSettings extends LitElement {
 
 
         ${(this.status.upgrading_all ? html`
-            <mwc-button  disabled>
+            <mwc-button class="disabled-button" title="${localize("confirm.bg_task")}" @click=${this.disabledAction}>
               <paper-spinner active></paper-spinner>
             </mwc-button>
         ` : html`
         ${(this.status.background_task ? html`
-          <mwc-button disabled>
+          <mwc-button class="disabled-button" title="${localize("confirm.bg_task")}" @click=${this.disabledAction}>
             ${localize(`settings.upgrade_all`)}
           </mwc-button>
         `: html`

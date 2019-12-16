@@ -10,12 +10,14 @@ import {
 import { HomeAssistant } from "custom-card-helpers";
 
 import { HacsStyle } from "../style/hacs-style"
-import { Repository, Status, Configuration, ValueChangedEvent, AllCategories, Route } from "../types"
+import { Repository, Status, Configuration, ValueChangedEvent, Route } from "../types"
 import { localize } from "../localize/localize"
 import "../components/HacsBody"
 import "../components/HacsProgressbar"
+import "../components/buttons/HacsButtonClearNew"
 import { LovelaceConfig } from "../misc/LovelaceTypes"
-import { AddedToLovelace } from "../misc/AddedToLovelace"
+
+import { OviewItemBuilder } from "../misc/OviewItemBuilder"
 
 
 @customElement("hacs-store")
@@ -30,58 +32,6 @@ export class HacsStore extends LitElement {
     @property() private search: string = "";
     @property() private sort: string = "name";
 
-    StatusAndDescription(repository: Repository): { status: string, description: string } {
-        var status = repository.status;
-        var description = repository.status_description;
-
-        if (repository.installed && !this.status.background_task) {
-            if (repository.category === "plugin" && !AddedToLovelace(repository, this.lovelaceconfig, this.status)) {
-                status = "not-loaded";
-                description = "Not loaded in lovelace";
-            }
-        }
-
-        return { status: status, description: description }
-    }
-
-
-    ShowRepository(ev) {
-        var RepoID: string
-
-        ev.composedPath().forEach((item: any) => {
-            if (item.RepoID) {
-                RepoID = item.RepoID;
-            }
-        })
-        this.route.path = `/repository/${RepoID}`
-        this.dispatchEvent(new CustomEvent('hacs-location-change', {
-            detail: { value: this.route },
-            bubbles: true,
-            composed: true
-        }));
-    }
-
-    render_card(repository: Repository) {
-        return html`
-        <ha-card @click="${this.ShowRepository}" .RepoID="${repository.id}"
-            class="${(this.configuration.frontend_compact ? "compact" : "")}">
-            <div class="card-content">
-            <div>
-            <ha-icon
-                icon=${(repository.new ? "mdi:new-box" : "mdi:cube")}
-                class="${this.StatusAndDescription(repository).status}"
-                title="${this.StatusAndDescription(repository).description}"
-                >
-            </ha-icon>
-            <div>
-                <div class="title">${repository.name}</div>
-                <div class="addition">${repository.description}</div>
-            </div>
-            </div>
-            </div>
-        </ha-card>
-        `;
-    }
 
     SortRepo(a: Repository, b: Repository): boolean {
 
@@ -111,15 +61,31 @@ export class HacsStore extends LitElement {
         if (this.repositories === undefined) return html`
             <hacs-progressbar></hacs-progressbar>
         `
+
+        const builder = new OviewItemBuilder(this.configuration, this.lovelaceconfig, this.status, this.route)
         var new_repositories = [];
 
         this.search = localStorage.getItem("hacs-search");
         this.sort = localStorage.getItem("hacs-sort");
 
         var repositories = this.repositories.filter(repository => {
+            // Hide hidden repos from the store
+            if (repository.hide) return false;
+
+            // Check contry restrictions
+            if (this.configuration.country !== "ALL" && repository.country !== undefined) {
+                if (this.configuration.country !== repository.country) return false;
+            }
+            // Check if repository category matches store
             if (repository.category === this.store) {
+
+                // Hide HACS from stores
                 if (repository.id === "172733314") return false;
+
+                // Is this new?
                 if (repository.new) new_repositories.push(repository);
+
+                // Search filter
                 if (this.search !== "") {
                     if (repository.name.toLowerCase().includes(this.search)) return true;
                     if (repository.description.toLowerCase().includes(this.search)) return true;
@@ -159,14 +125,17 @@ export class HacsStore extends LitElement {
                 ${localize("store.new_repositories")}
             </div>
                 ${(new_repositories.map(repository => {
-            return this.render_card(repository)
+            return builder.render(repository)
         }))}
+                <div class="card-group">
+                    <hacs-button-clear-new .hass=${this.hass} .category=${this.store}></hacs-button-clear-new>
+                </div>
             </div>
             <hr noshade>
             ` : "")}
 
                 <div class="card-group">
-                    ${repositories.sort((a, b) => (this.SortRepo(a, b)) ? 1 : -1).map(repository => { return this.render_card(repository) })}
+                    ${repositories.sort((a, b) => (this.SortRepo(a, b)) ? 1 : -1).map(repository => { return builder.render(repository) })}
                 </div>
         </hacs-body>
         `
