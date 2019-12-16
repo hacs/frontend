@@ -16,13 +16,15 @@
   },
   "homepage": "https://github.com/custom-components/hacs#readme",
   "dependencies": {
+    "alertifyjs": "^1.13.1",
     "card-tools": "github:thomasloven/card-tools",
     "custom-card-helpers": "^1.2.6",
+    "highlight.js": "^9.16.2",
     "lit-element": "^2.0.1",
     "marked": "^0.8.0",
+    "sweetalert": "^2.1.2",
     "xss": "^1.0.6",
-    "yaml": "^1.7.2",
-    "highlight.js": "^9.16.2"
+    "yaml": "^1.7.2"
   },
   "devDependencies": {
     "@babel/core": "^7.6.4",

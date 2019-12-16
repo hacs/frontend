@@ -2,6 +2,7 @@ import { customElement, CSSResultArray, css, TemplateResult, html } from "lit-el
 import { HacsStyle } from "../../style/hacs-style"
 import { HacsRepositoryButton } from "./HacsRepositoryButton"
 import { RepositoryWebSocketAction } from "../../misc/RepositoryWebSocketAction"
+import swal from 'sweetalert';
 
 import { localize } from "../../localize/localize"
 
@@ -13,7 +14,7 @@ export class HacsButtonUninstall extends HacsRepositoryButton {
         const label = localize('repository.uninstall');
         if (this.status.background_task) {
             return html`
-            <mwc-button class="disabled-button" title="Uninstall is disabled while background tasks is running." @click=${this.disabledAction}>
+            <mwc-button class="disabled-button" title="${localize("confirm.bg_task_uninstall")}" @click=${this.disabledAction}>
                 ${label}
             </mwc-button>
             `
@@ -36,13 +37,17 @@ export class HacsButtonUninstall extends HacsRepositoryButton {
     }
 
     disabledAction() {
-        window.alert("Uninstall is disabled while background tasks is running.")
+        swal(localize("confirm.bg_task_uninstall"), { buttons: [localize("confirm.ok")] })
     }
 
     RepositoryUnInstall() {
-        if (window.confirm(
-            localize("confirm.uninstall", "item", this.repository.name)
-        )) this.ExecuteAction()
+        swal(localize("confirm.uninstall", "{item}", this.repository.name), {
+            buttons: [localize("confirm.cancel"), localize("confirm.yes")]
+        }).then((value) => {
+            if (value !== null) {
+                this.ExecuteAction()
+            }
+        });
     }
 
     ExecuteAction() {

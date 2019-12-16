@@ -52,8 +52,6 @@ export function localize(string: string, search: string = undefined, replace: st
 
     if (tranlated === undefined) tranlated = languages["en"][section][key]
 
-    console.log(tranlated)
-
     if (search !== undefined && replace !== undefined) {
         tranlated = tranlated.replace(search, replace)
     }

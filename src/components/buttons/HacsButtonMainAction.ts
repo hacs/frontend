@@ -2,6 +2,8 @@ import { customElement, TemplateResult, html, property } from "lit-element";
 import { HacsRepositoryButton } from "./HacsRepositoryButton"
 import { RepositoryWebSocketAction } from "../../misc/RepositoryWebSocketAction"
 import { localize } from "../../localize/localize"
+import swal from 'sweetalert';
+
 
 @customElement("hacs-button-main-action")
 export class HacsButtonMainAction extends HacsRepositoryButton {
@@ -26,7 +28,7 @@ export class HacsButtonMainAction extends HacsRepositoryButton {
         const label = localize(`repository.${this.repository.main_action.toLowerCase()}`)
         if (this.status.background_task) {
             return html`
-                <mwc-button class="disabled-button" title="Installation/Upgrade is disabled while background tasks is running." @click=${this.disabledAction}>
+                <mwc-button class="disabled-button" title="${localize("confirm.bg_task_install")}" @click=${this.disabledAction}>
                     ${label}
                 </mwc-button>
             `
@@ -41,22 +43,20 @@ export class HacsButtonMainAction extends HacsRepositoryButton {
     }
 
     disabledAction() {
-        window.alert("Installation/Upgrade is disabled while background tasks is running.")
+        swal(localize("confirm.bg_task_install"), { buttons: [localize("confirm.ok")] })
     }
 
     RepositoryInstall() {
-        if (!this.repository.can_install) {
-            window.alert(
-                `This repository version requires Home Assistant version '${this.repository.homeassistant}' or newer`
-            );
-            return;
-        }
         if (this.pathExists && !this.repository.installed) {
-            if (window.confirm(
-                localize("confirm.exsist", "item", this.repository.local_path)
+            swal(localize("confirm.exsist", "{item}", this.repository.local_path)
                 + "\n" + localize("confirm.overwrite")
-                + "\n" + localize("confirm.continue")
-            )) this.ExecuteAction()
+                + "\n" + localize("confirm.continue"), {
+                buttons: [localize("confirm.cancel"), localize("confirm.yes")]
+            }).then((value) => {
+                if (value !== null) {
+                    this.ExecuteAction()
+                }
+            });
         } else this.ExecuteAction()
     }
 

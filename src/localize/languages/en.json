@@ -23,7 +23,13 @@
         "exsist": "{item} already exists",
         "overwrite": "Doing this will overwrite it.",
         "generic": "Are you sure?",
-        "continue": "Are you sure you want to continue?"
+        "continue": "Are you sure you want to continue?",
+        "ok": "OK",
+        "yes": "Yes",
+        "no": "No",
+        "cancel": "Cancel",
+        "bg_task_install": "Installation/Upgrade is disabled while background tasks is running.",
+        "bg_task_uninstall": "Uninstall is disabled while background tasks is running."
     },
     "repository": {
         "available": "Available",
