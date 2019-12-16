@@ -270,7 +270,7 @@ class HacsFrontendBase extends LitElement {
         </app-header>
 
         <hacs-progressbar
-          .active=${this.status.background_task == true}
+          .active=${this.status.background_task}
         ></hacs-progressbar>
         <slot></slot>
 
@@ -389,6 +389,12 @@ class HacsFrontendBase extends LitElement {
           z-index: 99;
           width: 150px;
           height: 150px;
+        }
+        hacs-progressbar {
+          top: 0;
+          position: sticky;
+          display: block;
+          z-index: 1337;
         }
       `
     ];

@@ -25,7 +25,7 @@ import { localize } from "../localize/localize";
 import { markdown } from "../markdown/markdown";
 import { GFM, HLJS } from "../markdown/styles";
 
-import "../misc/Authors";
+import "../misc/RepositoryAuthors";
 import "../misc/HacsRepositoryMenu";
 import "../components/buttons/HacsButtonOpenPlugin";
 import "../components/buttons/HacsButtonOpenRepository";
