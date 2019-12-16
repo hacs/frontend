@@ -93,9 +93,6 @@ export class HacsStore extends LitElement {
         // Hide HACS from stores
         if (repository.id === "172733314") return false;
 
-        // Is this new?
-        if (repository.new) new_repositories.push(repository);
-
         // Search filter
         if (this.search !== "") {
           if (repository.name.toLowerCase().includes(this.search.toLowerCase()))
@@ -126,6 +123,8 @@ export class HacsStore extends LitElement {
             return true;
           return false;
         }
+        // Is this new?
+        if (repository.new) new_repositories.push(repository);
         return true;
       }
       return false;
