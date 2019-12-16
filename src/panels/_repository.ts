@@ -28,7 +28,6 @@ import "../components/buttons/HacsButtonMainAction"
 import "../components/buttons/HacsButtonChangelog"
 import "../misc/RepositoryNote"
 import "../misc/RepositoryBannerNote"
-import "./corePanel"
 
 
 @customElement("hacs-panel-repository")
