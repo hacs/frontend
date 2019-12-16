@@ -17,6 +17,7 @@ import "../components/HacsProgressbar"
 import { LovelaceConfig } from "../misc/LovelaceTypes"
 import { AddedToLovelace } from "../misc/AddedToLovelace"
 import { localize } from "../localize/localize"
+import { OviewItemBuilder } from "../misc/OviewItemBuilder"
 
 @customElement("hacs-installed")
 export class HacsInstalled extends LitElement {
@@ -27,64 +28,11 @@ export class HacsInstalled extends LitElement {
     @property() public configuration!: Configuration;
     @property() public lovelaceconfig: LovelaceConfig;
 
-    StatusAndDescription(repository: Repository): { status: string, description: string } {
-        var status = repository.status;
-        var description = repository.status_description;
-
-        if (repository.installed && !this.status.background_task) {
-            if (repository.category === "plugin" && !AddedToLovelace(repository, this.lovelaceconfig, this.status)) {
-                status = "not-loaded";
-                description = "Not loaded in lovelace";
-            }
-        }
-
-        return { status: status, description: description }
-    }
-
-
-    ShowRepository(ev) {
-        var RepoID: string
-
-        ev.composedPath().forEach((item: any) => {
-            if (item.RepoID) {
-                RepoID = item.RepoID;
-            }
-        })
-        this.route.path = `/repository/${RepoID}`
-        this.dispatchEvent(new CustomEvent('hacs-location-change', {
-            detail: { value: this.route },
-            bubbles: true,
-            composed: true
-        }));
-    }
-
-    render_card(repository: Repository) {
-        return html`
-        <ha-card @click="${this.ShowRepository}" .RepoID="${repository.id}"
-            class="${(this.configuration.frontend_compact ? "compact" : "")}">
-            <div class="card-content">
-            <div>
-            <ha-icon
-                icon=${(repository.new ? "mdi:new-box" : "mdi:cube")}
-                class="${this.StatusAndDescription(repository).status}"
-                title="${this.StatusAndDescription(repository).description}"
-                >
-            </ha-icon>
-            <div>
-                <div class="title">${repository.name}</div>
-                <div class="addition">${repository.description}</div>
-            </div>
-            </div>
-            </div>
-        </ha-card>
-        `;
-    }
-
     protected render(): TemplateResult | void {
         if (this.repositories === undefined) return html`
             <hacs-progressbar></hacs-progressbar>
         `
-
+        const builder = new OviewItemBuilder(this.configuration, this.lovelaceconfig, this.status, this.route)
         var categories: RepositoryCategories = { integrations: [], plugins: [], appdaemon_apps: [], python_scripts: [], themes: [] }
 
         var installed_repositories = this.repositories.filter(function (repository) {
@@ -112,7 +60,7 @@ export class HacsInstalled extends LitElement {
             ${localize("store.pending_upgrades")}
             </div>
                 ${(updatable_repositories.sort((a, b) => (a.name, b.name) ? 1 : -1).map(repository => {
-            return this.render_card(repository)
+            return builder.render(repository)
         }))}
             </div>
             <hr noshade>
@@ -126,7 +74,7 @@ export class HacsInstalled extends LitElement {
                     ${localize(`common.${category}`)}
                     </div>
                     ${categories[category].sort((a, b) => (a.name, b.name) ? 1 : -1).map(repository => {
-                return this.render_card(repository)
+                return builder.render(repository)
             })}
                 </div>
                         `
@@ -149,6 +97,7 @@ export class HacsInstalled extends LitElement {
                 cursor: pointer;
               }
               .grouptitle {
+                margin-bottom: 12px;
                 font-size: larger;
               }
 

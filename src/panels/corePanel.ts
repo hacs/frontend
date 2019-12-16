@@ -277,19 +277,7 @@ export class HacsPanelStore extends LitElement {
     return [
       HacsStyle,
       css`
-      paper-item {
-        border-radius: var(--ha-card-border-radius);
-        background: var(--primary-background-color);
-        cursor: pointer;
-        margin-bottom: 12px;
-      }
-      paper-item.list {
-        margin-bottom: 24px;
-      }
-      paper-item:hover {
-        outline: 0;
-        background: var(--table-row-alternative-background-color);
-    }
+
 
     .padder {
       padding-left: 8px;
