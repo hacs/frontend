@@ -14,7 +14,7 @@ export class HacsButtonUninstall extends HacsRepositoryButton {
         const label = localize('repository.uninstall');
         if (this.status.background_task) {
             return html`
-            <mwc-button class="disabled-button" title="${localize("confirm.bg_task_uninstall")}" @click=${this.disabledAction}>
+            <mwc-button class="disabled-button" title="${localize("confirm.bg_task")}" @click=${this.disabledAction}>
                 ${label}
             </mwc-button>
             `
@@ -37,7 +37,7 @@ export class HacsButtonUninstall extends HacsRepositoryButton {
     }
 
     disabledAction() {
-        swal(localize("confirm.bg_task_uninstall"), { buttons: [localize("confirm.ok")] })
+        swal(localize("confirm.bg_task"), { buttons: [localize("confirm.ok")] })
     }
 
     RepositoryUnInstall() {
