@@ -71,7 +71,7 @@ export class OviewItemBuilder {
         <paper-item-body two-line>
           <div>
             ${repository.name}
-            ${repository.installed
+            ${this.route.path === "/installed"
               ? html`
                   <div class="MobileHide right flexy">
                     <div>${repository.installed_version}</div>
