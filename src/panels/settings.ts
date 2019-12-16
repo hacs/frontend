@@ -60,12 +60,12 @@ export class HacsSettings extends LitElement {
         <div class="card-actions MobileGrid">
 
         ${(this.status.reloading_data ? html`
-          <mwc-button  disabled>
+          <mwc-button  class="disabled-button" title="${localize("confirm.bg_task")}" @click=${this.disabledAction}>
             <paper-spinner active></paper-spinner>
           </mwc-button>
         ` : html`
         ${(this.status.background_task ? html`
-          <mwc-button disabled>
+          <mwc-button class="disabled-button" title="${localize("confirm.bg_task")}" @click=${this.disabledAction}>
             ${localize(`settings.reload_data`)}
           </mwc-button>
         `: html`
@@ -122,6 +122,9 @@ export class HacsSettings extends LitElement {
 
     </hacs-body>
           `;
+  }
+  disabledAction() {
+    swal(localize("confirm.bg_task"), { buttons: [localize("confirm.ok")] })
   }
 
   SetFeStyle() {

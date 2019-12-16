@@ -28,7 +28,7 @@ export class HacsButtonMainAction extends HacsRepositoryButton {
         const label = localize(`repository.${this.repository.main_action.toLowerCase()}`)
         if (this.status.background_task) {
             return html`
-                <mwc-button class="disabled-button" title="${localize("confirm.bg_task_install")}" @click=${this.disabledAction}>
+                <mwc-button class="disabled-button" title="${localize("confirm.bg_task")}" @click=${this.disabledAction}>
                     ${label}
                 </mwc-button>
             `
@@ -43,7 +43,7 @@ export class HacsButtonMainAction extends HacsRepositoryButton {
     }
 
     disabledAction() {
-        swal(localize("confirm.bg_task_install"), { buttons: [localize("confirm.ok")] })
+        swal(localize("confirm.bg_task"), { buttons: [localize("confirm.ok")] })
     }
 
     RepositoryInstall() {
