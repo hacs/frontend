@@ -52,19 +52,19 @@ const baseHacsStyles = css`
     float: left;
     color: var(--primary-text-color);
   }
-  ha-icon.installed {
+  .installed {
     color: var(--hacs-status-installed, #126e15);
   }
-  ha-icon.pending-upgrade {
+  .pending-upgrade {
     color: var(--hacs-status-pending-update, #ffab40);
   }
-  ha-icon.pending-restart {
+  .pending-restart {
     color: var(--hacs-status-pending-restart, var(--google-red-500));
   }
-  ha-icon.not-loaded {
+  .not-loaded {
     color: var(--hacs-status-not-loaded, var(--google-red-500));
   }
-  ha-icon.new {
+  .new {
     color: var(--hacs-badge-color, var(--primary-color));
   }
   .card-group {
@@ -147,6 +147,7 @@ const baseHacsStyles = css`
   paper-item {
     border-radius: var(--ha-card-border-radius);
     background: var(--primary-background-color);
+    display: block;
     cursor: pointer;
     margin-bottom: 12px;
   }
@@ -156,6 +157,15 @@ const baseHacsStyles = css`
   paper-item:hover {
     outline: 0;
     background: var(--table-row-alternative-background-color);
+  }
+  .right {
+    float: right;
+  }
+  .griddy {
+    display: grid;
+  }
+  .flexy {
+    display: flex;
   }
 `;
 

@@ -69,7 +69,25 @@ export class OviewItemBuilder {
           </ha-icon>
         </div>
         <paper-item-body two-line>
-          <div>${repository.name}</div>
+          <div>
+            ${repository.name}
+            ${repository.installed
+              ? html`
+                  <div class="MobileHide right flexy">
+                    <div>${repository.installed_version}</div>
+                    &nbsp; (
+                    <div
+                      class="${repository.pending_upgrade
+                        ? this.StatusAndDescription(repository).status
+                        : ""}"
+                    >
+                      ${repository.available_version}
+                    </div>
+                    )
+                  </div>
+                `
+              : ""}
+          </div>
           <div class="addition">${repository.description}</div>
         </paper-item-body>
       </paper-item>

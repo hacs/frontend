@@ -9,12 +9,12 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/custom-components/hacs.git"
+    "url": "git+https://github.com/hacs/frontend.git"
   },
   "bugs": {
-    "url": "https://github.com/custom-components/hacs/issues"
+    "url": "https://github.com/hacs/frontend/issues"
   },
-  "homepage": "https://github.com/custom-components/hacs#readme",
+  "homepage": "https://github.com/hacs/frontend#readme",
   "dependencies": {
     "alertifyjs": "^1.13.1",
     "card-tools": "github:thomasloven/card-tools",
