@@ -59,7 +59,7 @@ export class HacsButtonMainAction extends HacsRepositoryButton {
   RepositoryInstall() {
     if (this.pathExists && !this.repository.installed) {
       swal(
-        localize("confirm.exsist", "{item}", this.repository.local_path) +
+        localize("confirm.exist", "{item}", this.repository.local_path) +
           "\n" +
           localize("confirm.overwrite") +
           "\n" +
