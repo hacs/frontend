@@ -6,7 +6,7 @@ import {
 import { load_lovelace } from "card-tools/src/hass";
 import { navigate } from "./misc/navigate";
 import scrollToTarget from "./misc/ScrollToTarget";
-import "./panels/_repository";
+import "./panels/repository";
 import "./panels/settings";
 import "./panels/installed";
 import "./panels/repository";
