@@ -90,6 +90,6 @@
         "placeholder_search": "Please enter a search term...",
         "clear_new": "Clear all new repositories",
         "new_repositories": "New Repositories",
-        "pending_upgrades": "Pending Upgrades"
+        "pending_upgrades": "Pending upgrades"
     }
 }
