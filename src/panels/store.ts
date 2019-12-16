@@ -48,7 +48,7 @@ export class HacsStore extends LitElement {
     }
 
     DoSearch(ev) {
-        this.search = ev.composedPath()[0].value.toLowerCase();
+        this.search = ev.composedPath()[0].value;
         localStorage.setItem("hacs-search", this.search);
     };
 
@@ -87,11 +87,11 @@ export class HacsStore extends LitElement {
 
                 // Search filter
                 if (this.search !== "") {
-                    if (repository.name.toLowerCase().includes(this.search)) return true;
-                    if (repository.description.toLowerCase().includes(this.search)) return true;
-                    if (repository.full_name.toLowerCase().includes(this.search)) return true;
-                    if (String(repository.authors).toLowerCase().includes(this.search)) return true;
-                    if (String(repository.topics).toLowerCase().includes(this.search)) return true;
+                    if (repository.name.toLowerCase().includes(this.search.toLowerCase())) return true;
+                    if (repository.description.toLowerCase().includes(this.search.toLowerCase())) return true;
+                    if (repository.full_name.toLowerCase().includes(this.search.toLowerCase())) return true;
+                    if (String(repository.authors).toLowerCase().includes(this.search.toLowerCase())) return true;
+                    if (String(repository.topics).toLowerCase().includes(this.search.toLowerCase())) return true;
                     return false;
                 }
                 return true
