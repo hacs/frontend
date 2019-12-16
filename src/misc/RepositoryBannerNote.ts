@@ -4,6 +4,7 @@ import { Repository, Configuration, Status } from "../types";
 import { AddedToLovelace } from "./AddedToLovelace"
 import { HomeAssistant } from "custom-card-helpers";
 import { LovelaceConfig } from "../misc/LovelaceTypes"
+import { localize } from "../localize/localize"
 import "../components/buttons/HacsButtonAddToLovelace"
 
 @customElement("hacs-repository-banner-note")
@@ -22,10 +23,8 @@ export class RepositoryBannerNote extends LitElement {
 
         if (this.repository.status == "pending-restart") {
             type = "alert";
-            title = "Restart pending"
-            message = `
-            You need to restart Home Assistant.
-            `
+            title = localize("repository_banner.restart_pending")
+            message = localize("repository_banner.restart")
         }
 
         else if (this.repository.category == "plugin") {
@@ -34,10 +33,8 @@ export class RepositoryBannerNote extends LitElement {
 
                 if (!loaded) {
                     type = "warning";
-                    title = "Not Loaded"
-                    message = `
-                    This plugin is not added to your Lovelace resources.
-                    `
+                    title = localize("repository_banner.not_loaded")
+                    message = localize("repository_banner.plugin_not_loaded")
                 }
             }
         }

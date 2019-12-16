@@ -29,7 +29,9 @@
         "no": "No",
         "cancel": "Cancel",
         "bg_task_install": "Installation/Upgrade is disabled while background tasks is running.",
-        "bg_task_uninstall": "Uninstall is disabled while background tasks is running."
+        "bg_task_uninstall": "Uninstall is disabled while background tasks is running.",
+        "upgrade_all": "This will upgrade all of these repositores, make sure that you have read the release notes for all of them before proceeding.",
+        "no_upgrades": "No upgrades pending"
     },
     "repository": {
         "available": "Available",
@@ -62,7 +64,6 @@
     "repository_banner": {
         "not_loaded": "Not loaded",
         "restart_pending": "Restart pending",
-        "integration_not_loaded": "This integration is not loaded in Home Assistant.",
         "plugin_not_loaded": "This plugin is not added to your Lovelace resources.",
         "restart": "You need to restart Home Assistant."
     },

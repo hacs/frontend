@@ -17,6 +17,7 @@ import "../components/HacsProgressbar"
 import "../components/HacsBody"
 
 import { localize } from "../localize/localize"
+import swal from 'sweetalert';
 
 import { Configuration, Repository, Status } from "../types"
 
@@ -68,7 +69,7 @@ export class HacsSettings extends LitElement {
             ${localize(`settings.reload_data`)}
           </mwc-button>
         `: html`
-          <mwc-button @click=${this.UpgradeAll}>
+          <mwc-button @click=${this.ReloadData}>
             ${localize(`settings.reload_data`)}
           </mwc-button>
         `)}
@@ -151,19 +152,23 @@ export class HacsSettings extends LitElement {
         elements.push(element)
     });
     if (elements.length > 0) {
-      var msg = "This will upgrade all of these repositores, make sure that you have read the release notes for all of them before proceeding."
-      msg += "\n"
-      msg += "\n"
+      var msg = localize(`confirm.upgrade_all`) + "\n\n"
       elements.forEach(element => {
-        msg += `${element.name} ${element.installed_version} -> ${element.available_version}\n`
+        msg += `${element.name}: ${element.installed_version} -> ${element.available_version}\n`
       });
-      if (!window.confirm(msg)) return;
-      this.hass.connection.sendMessage({
-        type: "hacs/settings",
-        action: "upgrade_all"
+      swal(msg, {
+        buttons: [localize("confirm.cancel"), localize("confirm.yes")]
+      }).then((value) => {
+        if (value !== null) {
+          this.hass.connection.sendMessage({
+            type: "hacs/settings",
+            action: "upgrade_all"
+          });
+        }
       });
+
     } else {
-      window.alert("No upgrades pending")
+      swal(localize(`confirm.no_upgrades`), { buttons: [localize("confirm.ok")] })
     }
 
   }

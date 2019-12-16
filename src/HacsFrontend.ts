@@ -246,6 +246,7 @@ class HacsFrontendBase extends LitElement {
           .repository=${this._get_repository}
           .hass=${this.hass}
           .route=${this.route}
+          .lovelaceconfig=${this.lovelaceconfig}
           .repositories=${this.repositories}
           .configuration=${this.configuration}
           .status=${this.status}

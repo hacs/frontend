@@ -54,6 +54,7 @@ export class HacsPanelRepository extends LitElement {
 
   render(): TemplateResult | void {
     var _repository = this.repository;
+    console.log(this.lovelaceconfig)
     var _repositories = this.repositories.filter(function (repo) {
       return repo.id === _repository
     });

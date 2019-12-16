@@ -1,7 +1,7 @@
 import { LitElement, customElement, property, CSSResultArray, css, TemplateResult, html } from "lit-element";
 import { HacsStyle } from "../style/hacs-style"
 import { HomeAssistant } from "custom-card-helpers";
-
+import swal from 'sweetalert';
 import { Configuration, Repository, Status } from "../types"
 import { RepositoryWebSocketAction } from "../misc/RepositoryWebSocketAction"
 
@@ -17,11 +17,15 @@ export class CustomRepositories extends LitElement {
     @property() public configuration!: Configuration;
 
     Delete(ev) {
-        if (!window.confirm(
-            this.hass.localize(
-                "component.hacs.confirm.delete", "item", ev.composedPath()[3].innerText))) return;
-        var repo = ev.composedPath()[4].repoID
-        RepositoryWebSocketAction(this.hass, repo, "delete")
+        swal(this.hass.localize(
+            "component.hacs.confirm.delete", "{item}", ev.composedPath()[3].innerText), {
+            buttons: [localize("confirm.cancel"), localize("confirm.yes")]
+        }).then((value) => {
+            if (value !== null) {
+                var repo = ev.composedPath()[4].repoID
+                RepositoryWebSocketAction(this.hass, repo, "delete")
+            }
+        });
     }
 
     Save(ev) {
