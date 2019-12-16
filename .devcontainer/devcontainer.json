@@ -1,27 +1,30 @@
 // See https://aka.ms/vscode-remote/devcontainer.json for format details.
 {
-	"name": "HACS Frontend",
-	"dockerFile": "DockerFile",
-	"context": "..",
-	"appPort": [
-		"5000:5000"
-	],
-	"postCreateCommand": "npm install; npm run postinstall",
-	"runArgs": [
-		"-v",
-		"${env:HOME}${env:USERPROFILE}/.ssh:/tmp/.ssh" // This is added so you can push from inside the container
-	],
-	"extensions": [
-		"github.vscode-pull-request-github",
-		"tabnine.tabnine-vscode"
-	],
-	"settings": {
-		"files.eol": "\n",
-		"editor.tabSize": 4,
-		"terminal.integrated.shell.linux": "/bin/bash",
-		"editor.formatOnPaste": false,
-		"editor.formatOnSave": true,
-		"editor.formatOnType": true,
-		"files.trimTrailingWhitespace": true
-	}
+  "name": "HACS Frontend",
+  "dockerFile": "DockerFile",
+  "context": "..",
+  "appPort": ["5000:5000"],
+  "postCreateCommand": "npm install; npm run postinstall",
+  "runArgs": [
+    "-v",
+    "${env:HOME}${env:USERPROFILE}/.ssh:/tmp/.ssh" // This is added so you can push from inside the container
+  ],
+  "extensions": [
+    "github.vscode-pull-request-github",
+    "tabnine.tabnine-vscode",
+    "dbaeumer.vscode-eslint",
+    "ms-vscode.vscode-typescript-tslint-plugin",
+    "esbenp.prettier-vscode",
+    "bierner.lit-html",
+    "runem.lit-plugin"
+  ],
+  "settings": {
+    "files.eol": "\n",
+    "editor.tabSize": 2,
+    "terminal.integrated.shell.linux": "/bin/bash",
+    "editor.formatOnPaste": false,
+    "editor.formatOnSave": true,
+    "editor.formatOnType": true,
+    "files.trimTrailingWhitespace": true
+  }
 }

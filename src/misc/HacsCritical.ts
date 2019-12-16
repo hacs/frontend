@@ -1,34 +1,43 @@
-import { LitElement, customElement, CSSResultArray, css, TemplateResult, html, property } from "lit-element";
-import { HacsStyle } from "../style/hacs-style"
+import {
+  LitElement,
+  customElement,
+  CSSResultArray,
+  css,
+  TemplateResult,
+  html,
+  property
+} from "lit-element";
+import { HacsStyle } from "../style/hacs-style";
 import { HomeAssistant } from "custom-card-helpers";
-import { Critical } from "../types"
+import { Critical } from "../types";
 
 @customElement("hacs-critical")
 export class HacsCritical extends LitElement {
-    @property() public hass!: HomeAssistant;
-    @property() public critical!: Critical[];
+  @property({ type: Array }) public critical!: Critical[];
+  @property({ type: Object }) public hass!: HomeAssistant;
 
-    async Acknowledge(ev) {
-        var repository = ev.composedPath()[3].repository
-        const resp = await this.hass.connection.sendMessagePromise({
-            type: "hacs/critical",
-            repository: repository
-        })
-        this.critical = (resp as any).data
-    }
+  async Acknowledge(ev) {
+    var repository = ev.composedPath()[3].repository;
+    const resp = await this.hass.connection.sendMessagePromise({
+      type: "hacs/critical",
+      repository: repository
+    });
+    this.critical = (resp as any).data;
+  }
 
-    protected render(): TemplateResult | void {
-        if (this.critical === undefined) return html``
+  protected render(): TemplateResult | void {
+    if (this.critical === undefined) return html``;
 
-        var _critical: Critical[] = []
+    var _critical: Critical[] = [];
 
-        this.critical.forEach(element => {
-            if (!element.acknowledged) _critical.push(element)
-        });
+    this.critical.forEach(element => {
+      if (!element.acknowledged) _critical.push(element);
+    });
 
-        return html`
-            ${_critical.map(repo =>
-            html`
+    return html`
+      ${_critical.map(
+        repo =>
+          html`
             <ha-card header="Critical Issue!" class="alert">
                 <div class="card-content">
                     The repository "${repo.repository}" has been flagged as a critical repository.</br>
@@ -52,20 +61,26 @@ export class HacsCritical extends LitElement {
                     </a>
                 </div>
             </ha-card>`
-        )}
-            `;
-    }
+      )}
+    `;
+  }
 
-    static get styles(): CSSResultArray {
-        return [HacsStyle, css`
-            ha-card {
-                width: 90%;
-                margin-left: 5%;
-            }
-            .alert {
-                background-color: var(--hacs-status-pending-restart, var(--google-red-500));
-                color: var(--text-primary-color);
-            }
-        `]
-    }
+  static get styles(): CSSResultArray {
+    return [
+      HacsStyle,
+      css`
+        ha-card {
+          width: 90%;
+          margin-left: 5%;
+        }
+        .alert {
+          background-color: var(
+            --hacs-status-pending-restart,
+            var(--google-red-500)
+          );
+          color: var(--text-primary-color);
+        }
+      `
+    ];
+  }
 }
