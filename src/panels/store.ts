@@ -112,9 +112,9 @@ export class HacsStore extends LitElement {
             </paper-input>
             <paper-dropdown-menu @value-changed="${this.SetSortKey}" class="sort padder" label="Sort">
             <paper-listbox slot="dropdown-content" selected="${this.sort}" attr-for-selected="key">
-                <paper-item key="name">Name</paper-item>
-                <paper-item key="stars">Stars</paper-item>
-                <paper-item key="status">Status</paper-item>
+                <paper-item key="name">${localize("store.name")}</paper-item>
+                <paper-item key="stars">${localize("store.stars")}</paper-item>
+                <paper-item key="status">${localize("store.status")}</paper-item>
             </paper-listbox>
             </paper-dropdown-menu>
             </div>
