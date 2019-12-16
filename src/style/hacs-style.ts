@@ -33,10 +33,12 @@ const baseHacsStyles = css`
     white-space: nowrap;
     text-overflow: ellipsis;
     overflow: hidden;
+    width: calc(100% - 48px) !important;
   }
   .addition {
     color: var(--secondary-text-color);
     position: relative;
+    width: 100% !important;
     height: auto;
     line-height: 1.2em;
     text-overflow: ellipsis;
@@ -144,6 +146,9 @@ const baseHacsStyles = css`
   .uninstall-button {
     --mdc-theme-primary: var(--google-red-500);
   }
+  .red-button {
+    --mdc-theme-primary: var(--google-red-500);
+  }
   paper-item {
     border-radius: var(--ha-card-border-radius);
     background: var(--primary-background-color);
@@ -167,6 +172,9 @@ const baseHacsStyles = css`
   .flexy {
     display: flex;
   }
+  .flowroot {
+    display: flow-root;
+  }
 `;
 
 const mobileHacsStyles = css`
@@ -176,7 +184,7 @@ const mobileHacsStyles = css`
     }
     .MobileGrid {
       display: grid !important;
-      text-align: center !important;
+      text-align: center;
       position: initial !important;
       width: 100% !important;
       padding-left: 0px !important;

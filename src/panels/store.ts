@@ -246,6 +246,9 @@ export class HacsStore extends LitElement {
           display: flex;
           max-width: 100%;
         }
+        .card-content {
+          width: calc(100% - 32px) !important;
+        }
       `
     ];
   }

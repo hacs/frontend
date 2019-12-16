@@ -43,10 +43,8 @@ export class OviewItemBuilder {
               title="${this.StatusAndDescription(repository).description}"
             >
             </ha-icon>
-            <div>
-              <div class="title">${repository.name}</div>
-              <div class="addition">${repository.description}</div>
-            </div>
+            <div class="title">${repository.name}</div>
+            <div class="addition">${repository.description}</div>
           </div>
         </div>
       </ha-card>

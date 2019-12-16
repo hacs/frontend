@@ -56,7 +56,7 @@ export class HacsButtonUninstall extends HacsRepositoryButton {
   }
 
   disabledAction() {
-    swal(localize("confirm.bg_task"), { buttons: [localize("confirm.ok")] });
+    swal(localize("confirm.bg_task"));
   }
 
   RepositoryUnInstall() {

@@ -92,7 +92,14 @@ export class HacsRepositoryMenu extends LitElement {
         }
         paper-menu-button {
           float: right;
-          top: -65px;
+          top: -68px;
+        }
+        paper-item {
+          display: flex;
+          background-color: var(
+            --paper-listbox-background-color,
+            var(--primary-background-color)
+          );
         }
       `
     ];

@@ -107,21 +107,28 @@ export class HacsPanelRepository extends LitElement {
         >
         </hacs-repository-banner-note>
 
-        <ha-card header="${this.repo.name}">
+        <ha-card>
+          <div class="repotitle">
+            ${this.repo.name}
+          </div>
           <hacs-repository-menu
             .hass=${this.hass}
             .repository=${this.repo}
           ></hacs-repository-menu>
 
           <div class="card-content">
-            <div class="description addition">
+            <div class="description">
               ${this.repo.description}
             </div>
 
-            <div class="information MobileGrid">
+            <div class="information">
+              <hacs-authors
+                .hass=${this.hass}
+                .authors=${this.repo.authors}
+              ></hacs-authors>
               ${this.repo.installed
                 ? html`
-                    <div class="version installed">
+                    <div class="version-installed">
                       <b>${localize(`repository.installed`)}: </b> ${this.repo
                         .installed_version}
                     </div>
@@ -167,10 +174,6 @@ export class HacsPanelRepository extends LitElement {
                     </div>
                   `}
             </div>
-            <hacs-authors
-              .hass=${this.hass}
-              .authors=${this.repo.authors}
-            ></hacs-authors>
           </div>
 
           <div class="card-actions MobileGrid">
@@ -271,10 +274,25 @@ export class HacsPanelRepository extends LitElement {
           height: 150px;
         }
         paper-dropdown-menu {
-          width: 80%;
+          width: 50%;
+        }
+        @media screen and (max-width: 600px) and (min-width: 0) {
+          paper-dropdown-menu {
+            width: 100%;
+          }
+        }
+        paper-item {
+          display: flex;
+          background-color: var(
+            --paper-listbox-background-color,
+            var(--primary-background-color)
+          );
         }
         .description {
           padding-bottom: 16px;
+          width: 100%;
+          color: var(--secondary-text-color);
+          text-align: left !important;
         }
         .version {
           padding-bottom: 8px;
@@ -284,7 +302,7 @@ export class HacsPanelRepository extends LitElement {
           width: 40%;
         }
         .information {
-          width: 60%;
+          width: 100%;
         }
         .additional {
           margin-bottom: 108px;
@@ -307,6 +325,14 @@ export class HacsPanelRepository extends LitElement {
         .link-icon {
           color: var(--dark-primary-color);
           margin-right: 8px;
+        }
+        .repotitle {
+          padding: 24px 24px 24px 18px;
+          width: calc(100% - (24px + 4px + 24px + 56px));
+          font-size: 1.5em;
+          white-space: nowrap;
+          text-overflow: ellipsis;
+          overflow: hidden;
         }
       `
     ];

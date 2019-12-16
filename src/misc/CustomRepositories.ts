@@ -25,16 +25,9 @@ export class CustomRepositories extends LitElement {
   @property({ type: Object }) public status!: Status;
 
   Delete(ev) {
-    swal(
-      this.hass.localize(
-        "component.hacs.confirm.delete",
-        "{item}",
-        ev.composedPath()[3].innerText
-      ),
-      {
-        buttons: [localize("confirm.cancel"), localize("confirm.yes")]
-      }
-    ).then(value => {
+    swal(localize("confirm.delete", "{item}", ev.composedPath()[3].innerText), {
+      buttons: [localize("confirm.cancel"), localize("confirm.yes")]
+    }).then(value => {
       if (!isnullorempty(value)) {
         var repo = ev.composedPath()[4].repoID;
         RepositoryWebSocketAction(this.hass, repo, "delete");
@@ -43,8 +36,14 @@ export class CustomRepositories extends LitElement {
   }
 
   Save(ev) {
-    var category = ev.composedPath()[2].children[1].selectedItem.category;
+    var selected = ev.composedPath()[2].children[1].selectedItem;
+    if (selected === undefined) {
+      swal(localize("settings.missing_category"));
+      return;
+    }
+    var category = selected.category;
     var repo = ev.composedPath()[2].children[0].value;
+    swal(repo);
     RepositoryWebSocketAction(this.hass, repo, "add", category);
   }
 
@@ -157,6 +156,13 @@ export class CustomRepositories extends LitElement {
           .save {
             padding-bottom: 64px;
           }
+        }
+        paper-item {
+          display: flex;
+          background-color: var(
+            --paper-listbox-background-color,
+            var(--primary-background-color)
+          );
         }
       `
     ];

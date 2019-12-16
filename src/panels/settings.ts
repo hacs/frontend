@@ -118,7 +118,10 @@ export class HacsSettings extends LitElement {
                         </mwc-button>
                       `
                     : html`
-                        <mwc-button @click=${this.UpgradeAll}>
+                        <mwc-button
+                          class="red-button"
+                          @click=${this.UpgradeAll}
+                        >
                           ${localize(`settings.upgrade_all`)}
                         </mwc-button>
                       `}
@@ -163,7 +166,7 @@ export class HacsSettings extends LitElement {
     `;
   }
   disabledAction() {
-    swal(localize("confirm.bg_task"), { buttons: [localize("confirm.ok")] });
+    swal(localize("confirm.bg_task"));
   }
 
   SetFeStyle() {
@@ -201,6 +204,7 @@ export class HacsSettings extends LitElement {
       elements.forEach(element => {
         msg += `${element.name}: ${element.installed_version} -> ${element.available_version}\n`;
       });
+      msg += `\n${localize("confirm.continue")}`;
       swal(msg, {
         buttons: [localize("confirm.cancel"), localize("confirm.yes")]
       }).then(value => {

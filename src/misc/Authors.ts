@@ -19,7 +19,7 @@ export class Authors extends LitElement {
   protected render(): TemplateResult | void {
     if (String(this.authors.length) === "0") return html``;
     return html`
-      <div class="MobileGrid">
+      <div>
         <p>
           <b>${localize("repository.authors")}: </b>
 
