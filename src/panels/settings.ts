@@ -121,18 +121,14 @@ export class HacsSettings extends LitElement {
                       `}
                 `}
 
-            <a
-              href="https://github.com/hacs/integration"
-              target="_blank"
-              rel="noreferrer"
-            >
+            <a href="https://github.com/hacs" target="_blank" rel="noreferrer">
               <mwc-button>
                 ${localize(`settings.hacs_repo`)}
               </mwc-button>
             </a>
 
             <a
-              href="https://github.com/hacs/integration/issues"
+              href="https://hacs.xyz/docs/issues"
               target="_blank"
               rel="noreferrer"
             >
