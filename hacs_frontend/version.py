@@ -1,1 +1,1 @@
-VERSION="VERSION",
+VERSION="version",
