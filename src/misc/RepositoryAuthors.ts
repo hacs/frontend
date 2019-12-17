@@ -18,24 +18,27 @@ export class Authors extends LitElement {
 
   protected render(): TemplateResult | void {
     if (String(this.authors.length) === "0") return html``;
+    let authors = [];
+    const seperateElement = document.createElement("div");
+    seperateElement.className = "seperator";
+    seperateElement.innerText = ",";
+    this.authors.forEach(author => {
+      const authorElement = document.createElement("a");
+      authorElement.href = `https://github.com/${author.replace("@", "")}`;
+      authorElement.target = "_blank";
+      authorElement.className = "author";
+      authorElement.innerText = author.replace("@", "");
+      authors.push(authorElement);
+      authors.push(seperateElement);
+    });
+    authors.pop();
     return html`
       <div>
         <p>
+        <div class="authors">
           <b>${localize("repository.authors")}: </b>
-
-          ${this.authors.map(
-            author =>
-              html`
-                <a
-                  href="https://github.com/${author.replace("@", "")}"
-                  target="_blank"
-                  rel="noreferrer"
-                  class="autors"
-                >
-                  ${author.replace("@", "")}
-                </a>
-              `
-          )}
+          ${authors}
+          </div>
         </p>
       </div>
     `;
@@ -45,8 +48,12 @@ export class Authors extends LitElement {
     return [
       HacsStyle,
       css`
-        .autors {
+        .author {
           color: var(--link-text-color, var(--accent-color));
+          margin-left: 4px;
+        }
+        .authors {
+          display: flex;
         }
       `
     ];
