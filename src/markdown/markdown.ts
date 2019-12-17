@@ -5,6 +5,7 @@ import emoji from "node-emoji";
 import hljs_ from "highlight.js/lib/highlight";
 import yaml_ from "highlight.js/lib/languages/yaml";
 import { GFM, HLJS } from "./styles";
+import { Repository } from "../types";
 
 hljs_.registerLanguage("yaml", yaml_);
 
@@ -26,8 +27,11 @@ marked.setOptions({
 });
 
 export class markdown {
-  static html(input: string): TemplateResult | void {
+  static html(input: string, repo: Repository): TemplateResult | void {
+    // Convert emoji short codes to real emojis
     input = emoji.emojify(input);
+
+    // Handle convertion to raw GitHub URL
     input = input.replace(
       /(https:\/\/github\.com\/.*.\/blob*.[^\s]+)/g,
       function(x) {
@@ -38,6 +42,17 @@ export class markdown {
         return url;
       }
     );
+
+    // Handle relative links
+    input = input.replace(/\!\[*.*\]\(\w*\.\w*\)/g, function(x) {
+      let url = x
+        .replace(
+          "(",
+          `(https://raw.githubusercontent.com/${repo.full_name}/master/`
+        )
+        .replace("/blob/", "/");
+      return url;
+    });
     const content = document.createElement("div");
     content.innerHTML = filterXSS(marked(input));
     content.style.cssText = `${GFM} ${HLJS}`;

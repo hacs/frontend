@@ -214,7 +214,7 @@ export class HacsPanelRepository extends LitElement {
                     <style>
                       ${GFM} ${HLJS}
                     </style>
-                    ${markdown.html(this.repo.additional_info || "")}
+                    ${markdown.html(this.repo.additional_info || "", this.repo)}
                   </div>
                   <hacs-repository-note
                     .hass=${this.hass}
