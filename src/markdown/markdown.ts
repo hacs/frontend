@@ -28,6 +28,16 @@ marked.setOptions({
 export class markdown {
   static html(input: string): TemplateResult | void {
     input = emoji.emojify(input);
+    input = input.replace(
+      /(https:\/\/github\.com\/.*.\/blob*.[^\s]+)/g,
+      function(x) {
+        let url = x
+          .split(" ")[0]
+          .replace("https://github.com/", "https://raw.githubusercontent.com/")
+          .replace("/blob/", "/");
+        return url;
+      }
+    );
     const content = document.createElement("div");
     content.innerHTML = filterXSS(marked(input));
     content.style.cssText = `${GFM} ${HLJS}`;
