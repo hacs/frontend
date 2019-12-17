@@ -62,6 +62,11 @@ export class CustomRepositories extends LitElement {
     var category = selected.category;
     var repo = ev.composedPath()[2].children[0].value;
     RepositoryWebSocketAction(this.hass, repo, "add", category);
+    swal(
+      localize("settings.adding_new_repo", "{repo}", repo) +
+        "\n" +
+        localize("settings.adding_new_repo_category", "{category}", category)
+    );
   }
 
   ShowRepository(ev: {

@@ -70,6 +70,8 @@
   "settings": {
     "add_custom_repository": "ADD CUSTOM REPOSITORY",
     "category": "Category",
+    "adding_new_repo": "Adding new repository '{repo}'",
+    "adding_new_repo_category": "With category '{category}'.",
     "compact_mode": "Compact mode",
     "custom_repositories": "CUSTOM REPOSITORIES",
     "missing_category": "You need to select a category",
