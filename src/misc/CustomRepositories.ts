@@ -107,8 +107,14 @@ export class CustomRepositories extends LitElement {
                             .RepoFullName=${repo.full_name}
                           >
                             <paper-item>
-                              <div @click=${this.ShowRepository} class="link">
-                                [${repo.category}] ${repo.full_name}
+                              <div
+                                @click=${this.ShowRepository}
+                                class="link flexy"
+                              >
+                                <div class="MobileHide">
+                                  [${repo.category}]&nbsp;
+                                </div>
+                                ${repo.full_name}
                               </div>
                               ${repo.installed
                                 ? html`

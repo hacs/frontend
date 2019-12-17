@@ -91,7 +91,7 @@ export class HacsPanelRepository extends LitElement {
             <ha-icon icon="mdi:arrow-left"></ha-icon>
             ${localize(`repository.back_to`)} ${back}
           </mwc-button>
-          ${this.repo.state == "other"
+          ${this.repo.state === "other"
             ? html`
                 <div class="loader"><paper-spinner active></paper-spinner></div>
               `
@@ -206,22 +206,25 @@ export class HacsPanelRepository extends LitElement {
             ></hacs-button-uninstall>
           </div>
         </ha-card>
-
-        <ha-card class="additional">
-          <div class="card-content">
-            <div class="more_info markdown-body">
-              <style>
-                ${GFM} ${HLJS}
-              </style>
-              ${markdown.html(this.repo.additional_info || "")}
-            </div>
-            <hacs-repository-note
-              .hass=${this.hass}
-              .configuration=${this.configuration}
-              .repository=${this.repo}
-            ></hacs-repository-note>
-          </div>
-        </ha-card>
+        ${this.repo.state !== "other"
+          ? html`
+              <ha-card class="additional">
+                <div class="card-content">
+                  <div class="more_info markdown-body">
+                    <style>
+                      ${GFM} ${HLJS}
+                    </style>
+                    ${markdown.html(this.repo.additional_info || "")}
+                  </div>
+                  <hacs-repository-note
+                    .hass=${this.hass}
+                    .configuration=${this.configuration}
+                    .repository=${this.repo}
+                  ></hacs-repository-note>
+                </div>
+              </ha-card>
+            `
+          : ""}
       </hacs-body>
     `;
   }
