@@ -244,6 +244,7 @@ export class HacsStore extends LitElement {
 
         .store-top {
           display: flex;
+          margin-top: -12px;
           max-width: 100%;
         }
         .card-content {
