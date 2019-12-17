@@ -267,8 +267,18 @@ class HacsFrontendBase extends LitElement {
         </app-header>
 
         <hacs-progressbar
-          .active=${this.status.background_task}
+          .active=${this.status.background_task || this.status.disabled}
         ></hacs-progressbar>
+        ${this.status.disabled
+          ? html`
+              <ha-card header="Disabled!">
+                <div class="card-content">
+                  HACS is disabled! </br> Check your log <b>file</b> for more
+                  details.
+                </div>
+              </ha-card>
+            `
+          : ""}
         <slot></slot>
 
         <hacs-critical
