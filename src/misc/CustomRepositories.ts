@@ -94,7 +94,9 @@ export class CustomRepositories extends LitElement {
         <div class="card-content">
           <div class="custom-repositories-list">
             ${this.status.background_task
-              ? html``
+              ? html`
+                  <i class="addition">${localize("settings.bg_task_custom")}</i>
+                `
               : html`
                   ${this.custom
                     .sort((a, b) => (a.full_name > b.full_name ? 1 : -1))

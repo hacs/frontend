@@ -74,6 +74,7 @@
     "custom_repositories": "CUSTOM REPOSITORIES",
     "missing_category": "You need to select a category",
     "hidden_repositories": "hidden repositories",
+    "bg_task_custom": "Custom repositories are hidden while background tasks is running.",
     "unhide": "unhide",
     "delete": "Delete",
     "display": "Display",
