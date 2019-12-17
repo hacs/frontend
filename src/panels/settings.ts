@@ -58,15 +58,11 @@ export class HacsSettings extends LitElement {
                 @change=${this.SetFeStyle}
                 >${localize(`settings.table_view`)}</ha-switch
               >
-              ${this.configuration.experimental
-                ? html`
-                    <ha-switch
-                      .checked=${this.configuration.frontend_compact}
-                      @change=${this.SetFeCompact}
-                      >${localize(`settings.compact_mode`)}</ha-switch
-                    >
-                  `
-                : ""}
+              <ha-switch
+                .checked=${this.configuration.frontend_compact}
+                @change=${this.SetFeCompact}
+                >${localize(`settings.compact_mode`)}</ha-switch
+              >
             </div>
           </div>
           <div class="card-actions MobileGrid">
