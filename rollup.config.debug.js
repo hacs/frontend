@@ -5,10 +5,12 @@ import babel from "rollup-plugin-babel";
 import json from "@rollup/plugin-json";
 import gzipPlugin from "rollup-plugin-gzip";
 
+const version = "VERSION";
+
 export default {
   input: ["src/main.ts"],
   output: {
-    file: "hacs_frontend/debug.js",
+    file: `hacs_frontend/debug${!dev ? "_" + version : ""}.js`,
     format: "es"
   },
   plugins: [

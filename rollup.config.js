@@ -9,6 +9,8 @@ import gzipPlugin from "rollup-plugin-gzip";
 
 const dev = process.env.ROLLUP_WATCH;
 
+const version = "VERSION";
+
 const serveopts = {
   contentBase: ["./hacs_frontend"],
   host: "0.0.0.0",
@@ -36,7 +38,7 @@ export default [
   {
     input: ["src/main.ts"],
     output: {
-      dir: "hacs_frontend",
+      file: `hacs_frontend/main${!dev ? "_" + version : ""}.js`,
       format: "es"
     },
     plugins: [...plugins]
