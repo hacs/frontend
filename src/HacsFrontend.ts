@@ -214,8 +214,16 @@ class HacsFrontendBase extends LitElement {
               .hass="${this.hass}"
               .narrow="${this.narrow}"
             ></ha-menu-button>
-            <div main-title>
+            <div main-title class="fulltitle">
               Home Assistant Community Store
+              ${this._rootPath === "hacs_dev"
+                ? html`
+                    (DEVELOPMENT)
+                  `
+                : ""}
+            </div>
+            <div main-title class="mobiletitle">
+              HACS
               ${this._rootPath === "hacs_dev"
                 ? html`
                     (DEVELOPMENT)
@@ -395,6 +403,21 @@ class HacsFrontendBase extends LitElement {
           position: sticky;
           display: block;
           z-index: 1337;
+        }
+        .fulltitle {
+          display: block;
+        }
+        .mobiletitle {
+          display: none;
+        }
+        @media screen and (max-width: 612px) and (min-width: 0) {
+          .fulltitle {
+            display: none;
+          }
+          .mobiletitle {
+            display: block;
+            margin-left: 24px;
+          }
         }
       `
     ];
