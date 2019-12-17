@@ -10,7 +10,7 @@ const version = "VERSION";
 export default {
   input: ["src/main.ts"],
   output: {
-    file: `hacs_frontend/debug${!dev ? "_" + version : ""}.js`,
+    file: `hacs_frontend/debug_${version}.js`,
     format: "es"
   },
   plugins: [
