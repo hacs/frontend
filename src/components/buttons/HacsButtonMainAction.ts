@@ -9,10 +9,14 @@ export class HacsButtonMainAction extends HacsRepositoryButton {
   @property() private pathExists: boolean = false;
 
   protected firstUpdated() {
+    let path: string = this.repository.local_path;
+    if (this.repository.category === "theme") {
+      path = `${path}/${this.repository.file_name}`;
+    }
     this.hass.connection
       .sendMessagePromise({
         type: "hacs/check_path",
-        path: this.repository.local_path
+        path: path
       })
       .then(
         resp => {

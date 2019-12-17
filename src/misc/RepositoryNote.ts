@@ -21,11 +21,14 @@ export class RepositoryNote extends LitElement {
   @property({ type: Object }) public repository!: Repository;
 
   protected render(): TemplateResult | void {
+    let path: string = this.repository.local_path;
+    if (this.repository.category === "theme") {
+      path = `${path}/${this.repository.file_name}`;
+    }
     return html`
       <div class="repository-note">
         <p>
-          ${localize(`repository.note_installed`)}
-          '${this.repository.local_path}'
+          ${localize(`repository.note_installed`)} '${path}'
           ${this.repository.category === "appdaemon"
             ? html`
                 , ${localize(`repository.note_${this.repository.category}`)}
