@@ -293,6 +293,7 @@ export class HacsPanelRepository extends LitElement {
         }
         .description {
           width: 100%;
+          margin-bottom: 8px;
           color: var(--secondary-text-color);
           text-align: left !important;
         }
