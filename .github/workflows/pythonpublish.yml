@@ -47,11 +47,11 @@ jobs:
           sed -i 's|refs/heads/||' ./hacs_frontend/version.py
           sed -i 's|refs/tags/||' ./hacs_frontend/version.py
 
-          sed -i '/VERSION/${{ github.ref }}/' ./rollup.config.js
+          sed -i 's/VERSION/${{ github.ref }}/g' ./rollup.config.js
           sed -i 's|refs/heads/||' ./rollup.config.js
           sed -i 's|refs/tags/||' ./rollup.config.js
 
-          sed -i '/VERSION/${{ github.ref }}/' ./rollup.config.debug.js
+          sed -i 's/VERSION/${{ github.ref }}/g' ./rollup.config.debug.js
           sed -i 's|refs/heads/||' ./rollup.config.debug.js
           sed -i 's|refs/tags/||' ./rollup.config.debug.js
 
