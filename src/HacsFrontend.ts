@@ -311,7 +311,7 @@ class HacsFrontendBase extends LitElement {
             `
           : this.route.path.includes("/repository")
           ? html`
-              <hacs-panel-repository
+              <hacs-repository
                 .repository=${this._get_repository}
                 .hass=${this.hass}
                 .route=${this.route}
@@ -319,7 +319,7 @@ class HacsFrontendBase extends LitElement {
                 .repositories=${this.repositories}
                 .configuration=${this.configuration}
                 .status=${this.status}
-              ></hacs-panel-repository>
+              ></hacs-repository>
             `
           : html`
               <hacs-store

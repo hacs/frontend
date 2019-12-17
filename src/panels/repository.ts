@@ -36,8 +36,8 @@ import "../components/HacsBody";
 import "../misc/RepositoryNote";
 import "../misc/RepositoryBannerNote";
 
-@customElement("hacs-panel-repository")
-export class HacsPanelRepository extends LitElement {
+@customElement("hacs-repository")
+export class HacsRepository extends LitElement {
   @property({ type: Array }) public repositories!: Repository[];
   @property({ type: Boolean }) public repository_view = false;
   @property({ type: Object }) private repo: Repository;
@@ -283,6 +283,9 @@ export class HacsPanelRepository extends LitElement {
           paper-dropdown-menu {
             width: 100%;
           }
+          .getBack {
+            margin-top: 0px !important;
+          }
         }
         paper-item {
           display: flex;
@@ -311,6 +314,7 @@ export class HacsPanelRepository extends LitElement {
           margin-bottom: 108px;
         }
         .getBack {
+          margin-top: -12px;
           margin-bottom: 4px;
           margin-left: 5%;
         }
