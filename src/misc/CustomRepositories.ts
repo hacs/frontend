@@ -14,7 +14,7 @@ import { localize } from "../localize/localize";
 import { RepositoryWebSocketAction } from "../misc/RepositoryWebSocketAction";
 import { HacsStyle } from "../style/hacs-style";
 import { isnullorempty } from "../tools";
-import { Configuration, Repository, Status } from "../types";
+import { Configuration, Repository, Status, Route } from "../types";
 
 @customElement("hacs-custom-repositories")
 export class CustomRepositories extends LitElement {
@@ -23,16 +23,34 @@ export class CustomRepositories extends LitElement {
   @property({ type: Object }) public configuration!: Configuration;
   @property({ type: Object }) public hass!: HomeAssistant;
   @property({ type: Object }) public status!: Status;
+  @property({ type: Object }) public route!: Route;
 
   Delete(ev) {
-    swal(localize("confirm.delete", "{item}", ev.composedPath()[3].innerText), {
+    let RepoID: string;
+    let RepoFullName: string;
+    ev.composedPath().forEach((item: any) => {
+      if (item.RepoID) {
+        RepoID = item.RepoID;
+        RepoFullName = item.RepoFullName;
+      }
+    });
+    swal(localize("confirm.delete", "{item}", RepoFullName), {
       buttons: [localize("confirm.cancel"), localize("confirm.yes")]
     }).then(value => {
       if (!isnullorempty(value)) {
-        var repo = ev.composedPath()[4].repoID;
-        RepositoryWebSocketAction(this.hass, repo, "delete");
+        RepositoryWebSocketAction(this.hass, RepoID, "delete");
       }
     });
+  }
+
+  DeleteInstalled(ev) {
+    let RepoFullName: string;
+    ev.composedPath().forEach((item: any) => {
+      if (item.RepoFullName) {
+        RepoFullName = item.RepoFullName;
+      }
+    });
+    swal(localize("confirm.delete_installed", "{item}", RepoFullName));
   }
 
   Save(ev) {
@@ -43,8 +61,26 @@ export class CustomRepositories extends LitElement {
     }
     var category = selected.category;
     var repo = ev.composedPath()[2].children[0].value;
-    swal(repo);
     RepositoryWebSocketAction(this.hass, repo, "add", category);
+  }
+
+  ShowRepository(ev: {
+    composedPath: () => { forEach: (arg0: (item: any) => void) => void };
+  }) {
+    let RepoID: string;
+    ev.composedPath().forEach((item: any) => {
+      if (item.RepoID) {
+        RepoID = item.RepoID;
+      }
+    });
+    this.route.path = `/repository/${RepoID}`;
+    this.dispatchEvent(
+      new CustomEvent("hacs-location-change", {
+        detail: { value: this.route },
+        bubbles: true,
+        composed: true
+      })
+    );
   }
 
   protected render(): TemplateResult | void {
@@ -65,15 +101,32 @@ export class CustomRepositories extends LitElement {
                     .map(
                       repo =>
                         html`
-                          <div class="row" .repoID=${repo.id}>
+                          <div
+                            class="row"
+                            .RepoID=${repo.id}
+                            .RepoFullName=${repo.full_name}
+                          >
                             <paper-item>
-                              ${repo.full_name}
-                              <ha-icon
-                                title="${localize("settings.delete")}"
-                                class="listicon"
-                                icon="mdi:delete"
-                                @click=${this.Delete}
-                              ></ha-icon>
+                              <div @click=${this.ShowRepository} class="link">
+                                [${repo.category}] ${repo.full_name}
+                              </div>
+                              ${repo.installed
+                                ? html`
+                                    <ha-icon
+                                      title="${localize("settings.delete")}"
+                                      class="listicon disabled"
+                                      icon="mdi:delete"
+                                      @click=${this.DeleteInstalled}
+                                    ></ha-icon>
+                                  `
+                                : html`
+                                    <ha-icon
+                                      title="${localize("settings.delete")}"
+                                      class="listicon"
+                                      icon="mdi:delete"
+                                      @click=${this.Delete}
+                                    ></ha-icon>
+                                  `}
                             </paper-item>
                           </div>
                         `

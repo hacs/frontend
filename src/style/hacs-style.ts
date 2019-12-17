@@ -149,6 +149,11 @@ const baseHacsStyles = css`
   .red-button {
     --mdc-theme-primary: var(--google-red-500);
   }
+  .link {
+    color: var(--link-color, var(--accent-color));
+    font-weight: 600;
+    text-decoration: none;
+  }
   paper-item {
     border-radius: var(--ha-card-border-radius);
     background: var(--primary-background-color);

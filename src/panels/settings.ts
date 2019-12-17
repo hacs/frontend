@@ -19,7 +19,7 @@ import "../components/HacsBody";
 import { localize } from "../localize/localize";
 import swal from "sweetalert";
 
-import { Configuration, Repository, Status } from "../types";
+import { Configuration, Repository, Status, Route } from "../types";
 
 @customElement("hacs-settings")
 export class HacsSettings extends LitElement {
@@ -27,6 +27,7 @@ export class HacsSettings extends LitElement {
   @property({ type: Object }) public configuration!: Configuration;
   @property({ type: Object }) public hass!: HomeAssistant;
   @property({ type: Object }) public status!: Status;
+  @property({ type: Object }) public route!: Route;
 
   render(): TemplateResult | void {
     if (
@@ -118,10 +119,7 @@ export class HacsSettings extends LitElement {
                         </mwc-button>
                       `
                     : html`
-                        <mwc-button
-                          class="red-button"
-                          @click=${this.UpgradeAll}
-                        >
+                        <mwc-button @click=${this.UpgradeAll}>
                           ${localize(`settings.upgrade_all`)}
                         </mwc-button>
                       `}
@@ -151,6 +149,7 @@ export class HacsSettings extends LitElement {
         <hacs-custom-repositories
           .hass=${this.hass}
           .status=${this.status}
+          .route=${this.route}
           .configuration=${this.configuration}
           .repositories=${this.repositories}
         >
