@@ -8,6 +8,7 @@ import {
   LovelaceConfig
 } from "../types";
 import { AddedToLovelace } from "../misc/AddedToLovelace";
+import emoji from "node-emoji";
 
 export class OviewItemBuilder {
   configuration: Configuration;
@@ -44,7 +45,9 @@ export class OviewItemBuilder {
             >
             </ha-icon>
             <div class="title">${repository.name}</div>
-            <div class="addition">${repository.description}</div>
+            <div class="addition">
+              ${emoji.emojify(repository.description || "")}
+            </div>
           </div>
         </div>
       </ha-card>
@@ -86,7 +89,9 @@ export class OviewItemBuilder {
                 `
               : ""}
           </div>
-          <div class="addition">${repository.description}</div>
+          <div class="addition">
+            ${emoji.emojify(repository.description || "")}
+          </div>
         </paper-item-body>
       </paper-item>
     `;

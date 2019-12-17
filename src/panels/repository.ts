@@ -21,7 +21,7 @@ import {
   LovelaceConfig
 } from "../types";
 import { localize } from "../localize/localize";
-
+import emoji from "node-emoji";
 import { markdown } from "../markdown/markdown";
 import { GFM, HLJS } from "../markdown/styles";
 
@@ -118,7 +118,7 @@ export class HacsPanelRepository extends LitElement {
 
           <div class="card-content">
             <div class="description">
-              ${this.repo.description}
+              ${emoji.emojify(this.repo.description || "")}
             </div>
 
             <div class="information">
@@ -292,7 +292,6 @@ export class HacsPanelRepository extends LitElement {
           );
         }
         .description {
-          padding-bottom: 16px;
           width: 100%;
           color: var(--secondary-text-color);
           text-align: left !important;
