@@ -53,7 +53,12 @@ export class markdown {
       return url;
     });
     const content = document.createElement("div");
-    content.innerHTML = filterXSS(marked(input));
+    content.innerHTML = filterXSS(
+      marked(input).replace(
+        '<a href="http',
+        '<a target="_blank" rel="noreferrer" href="http'
+      )
+    );
     content.style.cssText = `${GFM} ${HLJS}`;
     return html`
       ${content}
