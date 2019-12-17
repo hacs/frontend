@@ -206,7 +206,7 @@ export class HacsPanelRepository extends LitElement {
             ></hacs-button-uninstall>
           </div>
         </ha-card>
-        ${this.repo.state !== "other"
+        ${this.repo.updated_info
           ? html`
               <ha-card class="additional">
                 <div class="card-content">
