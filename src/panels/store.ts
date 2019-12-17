@@ -8,7 +8,7 @@ import {
   property
 } from "lit-element";
 import { HomeAssistant } from "custom-card-helpers";
-
+import { HACS } from "../Hacs";
 import { HacsStyle } from "../style/hacs-style";
 import {
   Repository,
@@ -18,10 +18,6 @@ import {
   Route,
   LovelaceConfig
 } from "../types";
-import { localize } from "../localize/localize";
-import "../components/HacsBody";
-import "../components/HacsProgressbar";
-import "../components/buttons/HacsButtonClearNew";
 
 import { OviewItemBuilder } from "../misc/OviewItemBuilder";
 
@@ -29,6 +25,7 @@ import { OviewItemBuilder } from "../misc/OviewItemBuilder";
 export class HacsStore extends LitElement {
   @property({ type: Array }) public repositories!: Repository[];
   @property({ type: Object }) public configuration!: Configuration;
+  @property({ type: Object }) public hacs!: HACS;
   @property({ type: Object }) public hass!: HomeAssistant;
   @property({ type: Object }) public lovelaceconfig: LovelaceConfig;
   @property({ type: Object }) public route!: Route;
@@ -138,7 +135,7 @@ export class HacsStore extends LitElement {
             type="text"
             id="Search"
             @input=${this.DoSearch}
-            placeholder="  ${localize("store.placeholder_search")}."
+            placeholder="  ${this.hacs.localize("store.placeholder_search")}."
             autofocus
             .value=${this.search}
           >
@@ -162,9 +159,15 @@ export class HacsStore extends LitElement {
               selected="${this.sort}"
               attr-for-selected="key"
             >
-              <paper-item key="name">${localize("store.name")}</paper-item>
-              <paper-item key="stars">${localize("store.stars")}</paper-item>
-              <paper-item key="status">${localize("store.status")}</paper-item>
+              <paper-item key="name"
+                >${this.hacs.localize("store.name")}</paper-item
+              >
+              <paper-item key="stars"
+                >${this.hacs.localize("store.stars")}</paper-item
+              >
+              <paper-item key="status"
+                >${this.hacs.localize("store.status")}</paper-item
+              >
             </paper-listbox>
           </paper-dropdown-menu>
         </div>
@@ -173,7 +176,7 @@ export class HacsStore extends LitElement {
           ? html`
               <div class="card-group">
                 <div class="leftspace grouptitle">
-                  ${localize("store.new_repositories")}
+                  ${this.hacs.localize("store.new_repositories")}
                 </div>
                 ${new_repositories.map(repository => {
                   return builder.render(repository);

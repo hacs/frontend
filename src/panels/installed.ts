@@ -8,7 +8,7 @@ import {
   property
 } from "lit-element";
 import { HomeAssistant } from "custom-card-helpers";
-
+import { HACS } from "../Hacs";
 import { HacsStyle } from "../style/hacs-style";
 import {
   Repository,
@@ -20,15 +20,13 @@ import {
   LovelaceConfig
 } from "../types";
 
-import "../components/HacsBody";
-import "../components/HacsProgressbar";
-import { localize } from "../localize/localize";
 import { OviewItemBuilder } from "../misc/OviewItemBuilder";
 
 @customElement("hacs-installed")
 export class HacsInstalled extends LitElement {
   @property({ type: Array }) public repositories!: Repository[];
   @property({ type: Object }) public configuration!: Configuration;
+  @property({ type: Object }) public hacs!: HACS;
   @property({ type: Object }) public hass!: HomeAssistant;
   @property({ type: Object }) public lovelaceconfig: LovelaceConfig;
   @property({ type: Object }) public route!: Route;
@@ -82,7 +80,7 @@ export class HacsInstalled extends LitElement {
           ? html`
               <div class="card-group">
                 <div class="leftspace grouptitle">
-                  ${localize("store.pending_upgrades")}
+                  ${this.hacs.localize("store.pending_upgrades")}
                 </div>
                 ${updatable_repositories
                   .sort((a, b) => ((a.name, b.name) ? 1 : -1))
@@ -102,7 +100,7 @@ export class HacsInstalled extends LitElement {
           return html`
             <div class="card-group">
               <div class="leftspace grouptitle">
-                ${localize(`common.${category}`)}
+                ${this.hacs.localize(`common.${category}`)}
               </div>
               ${categories[category]
                 .sort((a, b) => ((a.name, b.name) ? 1 : -1))

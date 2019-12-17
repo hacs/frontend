@@ -11,7 +11,7 @@ import swal from "sweetalert";
 import { HomeAssistant } from "custom-card-helpers";
 
 import { localize } from "../localize/localize";
-import { RepositoryWebSocketAction } from "../misc/RepositoryWebSocketAction";
+import { RepositoryWebSocketAction } from "../tools";
 import { HacsStyle } from "../style/hacs-style";
 import { isnullorempty } from "../tools";
 import { Configuration, Repository, Status, Route } from "../types";

@@ -11,7 +11,7 @@ import { HacsStyle } from "../style/hacs-style";
 import { HomeAssistant } from "custom-card-helpers";
 
 import { Repository } from "../types";
-import { RepositoryWebSocketAction } from "./RepositoryWebSocketAction";
+import { RepositoryWebSocketAction } from "../tools";
 import { localize } from "../localize/localize";
 
 @customElement("hacs-hidden-repositories")

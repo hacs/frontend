@@ -9,8 +9,8 @@ import {
 } from "lit-element";
 import { HomeAssistant } from "custom-card-helpers";
 import { HacsStyle } from "../style/hacs-style";
-
-import { RepositoryWebSocketAction } from "../misc/RepositoryWebSocketAction";
+import { HACS } from "../Hacs";
+import { RepositoryWebSocketAction } from "../tools";
 
 import {
   Configuration,
@@ -20,21 +20,10 @@ import {
   ValueChangedEvent,
   LovelaceConfig
 } from "../types";
-import { localize } from "../localize/localize";
+
 import emoji from "node-emoji";
 import { markdown } from "../markdown/markdown";
 import { GFM, HLJS } from "../markdown/styles";
-
-import "../misc/RepositoryAuthors";
-import "../misc/HacsRepositoryMenu";
-import "../components/buttons/HacsButtonOpenPlugin";
-import "../components/buttons/HacsButtonOpenRepository";
-import "../components/buttons/HacsButtonUninstall";
-import "../components/buttons/HacsButtonMainAction";
-import "../components/buttons/HacsButtonChangelog";
-import "../components/HacsBody";
-import "../misc/RepositoryNote";
-import "../misc/RepositoryBannerNote";
 
 @customElement("hacs-repository")
 export class HacsRepository extends LitElement {
@@ -42,6 +31,7 @@ export class HacsRepository extends LitElement {
   @property({ type: Boolean }) public repository_view = false;
   @property({ type: Object }) private repo: Repository;
   @property({ type: Object }) public configuration!: Configuration;
+  @property({ type: Object }) public hacs!: HACS;
   @property({ type: Object }) public hass!: HomeAssistant;
   @property({ type: Object }) public lovelaceconfig: LovelaceConfig;
   @property({ type: Object }) public route!: Route;
@@ -74,14 +64,14 @@ export class HacsRepository extends LitElement {
       `;
 
     if (this.repo.installed) {
-      var back = localize(`common.installed`);
+      var back = this.hacs.localize(`common.installed`);
     } else {
       if (this.repo.category === "appdaemon") {
         var FE_cat = "appdaemon_apps";
       } else {
         FE_cat = `${this.repo.category}s`;
       }
-      var back = localize(`common.${FE_cat}`);
+      var back = this.hacs.localize(`common.${FE_cat}`);
     }
 
     return html`
@@ -89,7 +79,7 @@ export class HacsRepository extends LitElement {
         <div class="getBack">
           <mwc-button @click=${this.GoBackToStore} title="${back}">
             <ha-icon icon="mdi:arrow-left"></ha-icon>
-            ${localize(`repository.back_to`)} ${back}
+            ${this.hacs.localize(`repository.back_to`)} ${back}
           </mwc-button>
           ${this.repo.state === "other"
             ? html`
@@ -129,24 +119,24 @@ export class HacsRepository extends LitElement {
               ${this.repo.installed
                 ? html`
                     <div class="version-installed">
-                      <b>${localize(`repository.installed`)}: </b> ${this.repo
-                        .installed_version}
+                      <b>${this.hacs.localize(`repository.installed`)}: </b>
+                      ${this.repo.installed_version}
                     </div>
                   `
                 : ""}
               ${String(this.repo.releases.length) === "0"
                 ? html`
                     <div class="version-available">
-                      <b>${localize(`repository.available`)}: </b> ${this.repo
-                        .available_version}
+                      <b>${this.hacs.localize(`repository.available`)}: </b>
+                      ${this.repo.available_version}
                     </div>
                   `
                 : html`
                     <div class="version-available">
                       <paper-dropdown-menu
                         @value-changed="${this.SetVersion}"
-                        label="${localize(`repository.available`)}:
-                     (${localize(`repository.newest`)}: ${this.repo
+                        label="${this.hacs.localize(`repository.available`)}:
+                     (${this.hacs.localize(`repository.newest`)}: ${this.repo
                           .releases[0]})"
                       >
                         <paper-listbox

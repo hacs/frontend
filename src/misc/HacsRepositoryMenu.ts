@@ -7,7 +7,7 @@ import {
   LitElement,
   property
 } from "lit-element";
-import { RepositoryWebSocketAction } from "./RepositoryWebSocketAction";
+import { RepositoryWebSocketAction } from "../tools";
 import { Repository } from "../types";
 import { HacsStyle } from "../style/hacs-style";
 import { HomeAssistant } from "custom-card-helpers";

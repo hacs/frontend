@@ -14,7 +14,7 @@ import { localize } from "../../localize/localize";
 export class HacsButtonAddToLovelace extends HacsRepositoryButton {
   @property({ type: Object }) public configuration: Configuration;
   @property({ type: Object }) public lovelaceconfig: LovelaceConfig;
-  protected render(): TemplateResult | void {
+  render(): TemplateResult | void {
     if (!this.repository.installed) return html``;
     if (this.repository.javascript_type === null) return html``;
 

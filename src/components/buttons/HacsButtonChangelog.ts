@@ -1,6 +1,6 @@
 import { customElement, TemplateResult, html } from "lit-element";
 import { HacsRepositoryButton } from "./HacsRepositoryButton";
-import { RepositoryWebSocketAction } from "../../misc/RepositoryWebSocketAction";
+import { RepositoryWebSocketAction } from "../../tools";
 
 import { localize } from "../../localize/localize";
 

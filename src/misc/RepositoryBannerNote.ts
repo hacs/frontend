@@ -12,7 +12,17 @@ import { Repository, Configuration, Status, LovelaceConfig } from "../types";
 import { AddedToLovelace } from "./AddedToLovelace";
 import { HomeAssistant } from "custom-card-helpers";
 import { localize } from "../localize/localize";
-import "../components/buttons/HacsButtonAddToLovelace";
+
+interface HACard extends HTMLElement {
+  header?: string;
+}
+
+interface AddedToLovelace extends HTMLElement {
+  hass?: HomeAssistant;
+  configuration?: Configuration;
+  lovelaceconfig?: LovelaceConfig;
+  repository?: Repository;
+}
 
 @customElement("hacs-repository-banner-note")
 export class RepositoryBannerNote extends LitElement {
@@ -47,30 +57,34 @@ export class RepositoryBannerNote extends LitElement {
         }
       }
     }
-    if (message.length == 0) return html``;
-    if (this.repository.category !== "plugin")
-      return html`
-        <ha-card header="${title}" class="${type}">
-          <div class="card-content">
-            ${message}
-          </div>
-        </ha-card>
-      `;
+    if (message.length === 0) return html``;
+
+    const wrapper: HACard = document.createElement("ha-card");
+    wrapper.className = type;
+    wrapper.header = title;
+
+    const content = document.createElement("div");
+    content.className = "card-content";
+    content.innerText = message;
+    wrapper.appendChild(content);
+
+    if (this.repository.category === "plugin") {
+      const actions = document.createElement("div");
+      actions.className = "card-actions";
+
+      const addedToLovelace: AddedToLovelace = document.createElement(
+        "hacs-button-add-to-lovelace"
+      );
+      addedToLovelace.hass = this.hass;
+      addedToLovelace.configuration = this.configuration;
+      addedToLovelace.repository = this.repository;
+      addedToLovelace.lovelaceconfig = this.lovelaceconfig;
+      actions.appendChild(addedToLovelace);
+      wrapper.appendChild(actions);
+    }
+
     return html`
-      <ha-card header="${title}" class="${type}">
-        <div class="card-content">
-          ${message}
-        </div>
-        <div class="card-actions">
-          <hacs-button-add-to-lovelace
-            .hass=${this.hass}
-            .configuration=${this.configuration}
-            .repository=${this.repository}
-            .lovelaceconfig=${this.lovelaceconfig}
-          >
-          </hacs-button-add-to-lovelace>
-        </div>
-      </ha-card>
+      ${wrapper}
     `;
   }
 

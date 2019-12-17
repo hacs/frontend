@@ -7,7 +7,7 @@ import {
 } from "lit-element";
 import { HacsStyle } from "../../style/hacs-style";
 import { HacsRepositoryButton } from "./HacsRepositoryButton";
-import { RepositoryWebSocketAction } from "../../misc/RepositoryWebSocketAction";
+import { RepositoryWebSocketAction } from "../../tools";
 import swal from "sweetalert";
 
 import { localize } from "../../localize/localize";

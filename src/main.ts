@@ -6,13 +6,15 @@ import {
   property
 } from "lit-element";
 import { HomeAssistant } from "custom-card-helpers";
+import { Hacs, HACS } from "./Hacs";
 
 import { Route } from "./types";
-import "./HacsFrontend";
+import "./LoadUIElements";
 
 @customElement("hacs-frontend")
 class HacsFrontend extends LitElement {
   @property({ type: Boolean }) public narrow!: boolean;
+  @property({ type: Object }) public hacs!: HACS;
   @property({ type: Object }) public hass!: HomeAssistant;
   @property({ type: Object }) public route!: Route;
 
@@ -38,8 +40,12 @@ class HacsFrontend extends LitElement {
 
   protected render(): TemplateResult | void {
     this.setModalCSS();
+    if (this.hacs === undefined) {
+      this.hacs = new Hacs();
+    }
     return html`
       <hacs-frontendbase
+        .hacs=${this.hacs}
         .hass=${this.hass}
         .route=${this.route}
         .narrow=${this.narrow}

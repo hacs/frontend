@@ -12,8 +12,6 @@ import { HacsStyle } from "../style/hacs-style";
 import { HomeAssistant } from "custom-card-helpers";
 import { localize } from "../localize/localize";
 
-import "./LoveLaceHint";
-
 @customElement("hacs-repository-note")
 export class RepositoryNote extends LitElement {
   @property({ type: Object }) public configuration!: Configuration;

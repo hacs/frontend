@@ -9,19 +9,7 @@ import {
   property,
   TemplateResult
 } from "lit-element";
-import { load_lovelace } from "card-tools/src/hass";
-import { navigate, scrollToTarget } from "./tools";
-import "./panels/repository";
-import "./panels/settings";
-import "./panels/installed";
-import "./panels/store";
-
-import "./components/HacsProgressbar";
-import "./components/buttons/HacsHelpButton";
-
-import "./misc/HacsError";
-import "./misc/HacsCritical";
-
+import { HACS } from "./Hacs";
 import { HacsStyle } from "./style/hacs-style";
 
 import {
@@ -35,7 +23,7 @@ import {
   LovelaceConfig
 } from "./types";
 
-import { localize } from "./localize/localize";
+import { load_lovelace } from "card-tools/src/hass";
 
 @customElement("hacs-frontendbase")
 class HacsFrontendBase extends LitElement {
@@ -44,6 +32,7 @@ class HacsFrontendBase extends LitElement {
   @property({ type: Boolean }) public narrow!: boolean;
   @property({ type: Boolean }) public repository_view: boolean = false;
   @property({ type: Object }) public configuration!: Configuration;
+  @property({ type: Object }) public hacs!: HACS;
   @property({ type: Object }) public hass!: HomeAssistant;
   @property({ type: Object }) public lovelaceconfig: LovelaceConfig;
   @property({ type: Object }) public route!: Route;
@@ -179,12 +168,12 @@ class HacsFrontendBase extends LitElement {
   protected render(): TemplateResult | void {
     // Handle access to root
     if (this.route.path === "" || this.route.path === undefined) {
-      navigate(this, `${this.route.prefix}/installed`);
+      this.hacs.navigate(this, `${this.route.prefix}/installed`);
       this.route.path = "/installed";
       this.panel = this.route.path.split("/")[1];
     }
     if (this.panel === "" || this.panel === undefined) {
-      navigate(this, `${this.route.prefix}${this.route.path}`);
+      this.hacs.navigate(this, `${this.route.prefix}${this.route.path}`);
       this.panel = this.route.path.split("/")[1];
     }
 
@@ -238,41 +227,41 @@ class HacsFrontendBase extends LitElement {
             @iron-activate=${this.handlePageSelected}
           >
             <paper-tab page-name="installed"
-              >${localize(`common.installed`)}</paper-tab
+              >${this.hacs.localize(`common.installed`)}</paper-tab
             >
 
             <paper-tab page-name="integration"
-              >${localize(`common.integrations`)}</paper-tab
+              >${this.hacs.localize(`common.integrations`)}</paper-tab
             >
 
             <paper-tab page-name="plugin"
-              >${localize(`common.plugins`)}</paper-tab
+              >${this.hacs.localize(`common.plugins`)}</paper-tab
             >
 
             ${this.configuration.appdaemon
               ? html`
                   <paper-tab page-name="appdaemon">
-                    ${localize(`common.appdaemon_apps`)}
+                    ${this.hacs.localize(`common.appdaemon_apps`)}
                   </paper-tab>
                 `
               : ""}
             ${this.configuration.python_script
               ? html`
                   <paper-tab page-name="python_script">
-                    ${localize(`common.python_scripts`)}
+                    ${this.hacs.localize(`common.python_scripts`)}
                   </paper-tab>
                 `
               : ""}
             ${this.configuration.theme
               ? html`
                   <paper-tab page-name="theme">
-                    ${localize(`common.themes`)}
+                    ${this.hacs.localize(`common.themes`)}
                   </paper-tab>
                 `
               : ""}
 
             <paper-tab page-name="settings"
-              >${localize("common.settings")}</paper-tab
+              >${this.hacs.localize("common.settings")}</paper-tab
             >
           </paper-tabs>
         </app-header>
@@ -283,14 +272,16 @@ class HacsFrontendBase extends LitElement {
         <slot></slot>
 
         <hacs-critical
+          .hacs=${this.hacs}
           .hass=${this.hass}
           .critical=${this.critical}
         ></hacs-critical>
-        <hacs-error .hass=${this.hass}></hacs-error>
+        <hacs-error .hacs=${this.hacs} .hass=${this.hass}></hacs-error>
 
         ${this.route.path === "/installed"
           ? html`
               <hacs-installed
+                .hacs=${this.hacs}
                 .hass=${this.hass}
                 .route=${this.route}
                 .repositories=${this.repositories}
@@ -301,6 +292,7 @@ class HacsFrontendBase extends LitElement {
           : this.route.path === "/settings"
           ? html`
               <hacs-settings
+                .hacs=${this.hacs}
                 .hass=${this.hass}
                 .route=${this.route}
                 .repositories=${this.repositories}
@@ -312,6 +304,7 @@ class HacsFrontendBase extends LitElement {
           : this.route.path.includes("/repository")
           ? html`
               <hacs-repository
+                .hacs=${this.hacs}
                 .repository=${this._get_repository}
                 .hass=${this.hass}
                 .route=${this.route}
@@ -323,6 +316,7 @@ class HacsFrontendBase extends LitElement {
             `
           : html`
               <hacs-store
+                .hacs=${this.hacs}
                 .store=${this._get_store}
                 .hass=${this.hass}
                 .route=${this.route}
@@ -347,7 +341,7 @@ class HacsFrontendBase extends LitElement {
 
   locationChanged(ev): void {
     this.route = (ev as LocationChangedEvent).detail.value;
-    navigate(this, `${this.route.prefix}${this.route.path}`);
+    this.hacs.navigate(this, `${this.route.prefix}${this.route.path}`);
     this.requestUpdate();
   }
 
@@ -356,8 +350,8 @@ class HacsFrontendBase extends LitElement {
     const newPage = e.detail.selected;
     this.panel = newPage;
     this.route.path = `/${newPage}`;
-    navigate(this, `${this.route.prefix}${this.route.path}`);
-    scrollToTarget(
+    this.hacs.navigate(this, `${this.route.prefix}${this.route.path}`);
+    this.hacs.scrollToTarget(
       this,
       // @ts-ignore
       this.shadowRoot!.querySelector("app-header-layout").header.scrollTarget

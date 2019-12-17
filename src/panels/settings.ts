@@ -10,13 +10,8 @@ import {
 
 import { HomeAssistant } from "custom-card-helpers";
 import { HacsStyle } from "../style/hacs-style";
+import { HACS } from "../Hacs";
 
-import "../misc/CustomRepositories";
-import "../misc/HiddenRepositories";
-import "../components/HacsProgressbar";
-import "../components/HacsBody";
-
-import { localize } from "../localize/localize";
 import swal from "sweetalert";
 
 import { Configuration, Repository, Status, Route } from "../types";
@@ -25,6 +20,7 @@ import { Configuration, Repository, Status, Route } from "../types";
 export class HacsSettings extends LitElement {
   @property({ type: Array }) public repositories!: Repository[];
   @property({ type: Object }) public configuration!: Configuration;
+  @property({ type: Object }) public hacs!: HACS;
   @property({ type: Object }) public hass!: HomeAssistant;
   @property({ type: Object }) public status!: Status;
   @property({ type: Object }) public route!: Route;
@@ -45,23 +41,23 @@ export class HacsSettings extends LitElement {
         <ha-card header="HACS (Home Assistant Community Store)">
           <div class="card-content">
             <p>
-              <b>${localize("common.version")}:</b> ${this.configuration
-                .version}
+              <b>${this.hacs.localize("common.version")}:</b> ${this
+                .configuration.version}
             </p>
             <p>
-              <b>${localize("common.repositories")}:</b> ${this.repositories
-                .length}
+              <b>${this.hacs.localize("common.repositories")}:</b> ${this
+                .repositories.length}
             </p>
             <div class="version-available">
               <ha-switch
                 .checked=${this.configuration.frontend_mode === "Table"}
                 @change=${this.SetFeStyle}
-                >${localize(`settings.table_view`)}</ha-switch
+                >${this.hacs.localize(`settings.table_view`)}</ha-switch
               >
               <ha-switch
                 .checked=${this.configuration.frontend_compact}
                 @change=${this.SetFeCompact}
-                >${localize(`settings.compact_mode`)}</ha-switch
+                >${this.hacs.localize(`settings.compact_mode`)}</ha-switch
               >
             </div>
           </div>
@@ -70,7 +66,7 @@ export class HacsSettings extends LitElement {
               ? html`
                   <mwc-button
                     class="disabled-button"
-                    title="${localize("confirm.bg_task")}"
+                    title="${this.hacs.localize("confirm.bg_task")}"
                     @click=${this.disabledAction}
                   >
                     <paper-spinner active></paper-spinner>
@@ -81,15 +77,15 @@ export class HacsSettings extends LitElement {
                     ? html`
                         <mwc-button
                           class="disabled-button"
-                          title="${localize("confirm.bg_task")}"
+                          title="${this.hacs.localize("confirm.bg_task")}"
                           @click=${this.disabledAction}
                         >
-                          ${localize(`settings.reload_data`)}
+                          ${this.hacs.localize(`settings.reload_data`)}
                         </mwc-button>
                       `
                     : html`
                         <mwc-button @click=${this.ReloadData}>
-                          ${localize(`settings.reload_data`)}
+                          ${this.hacs.localize(`settings.reload_data`)}
                         </mwc-button>
                       `}
                 `}
@@ -97,7 +93,7 @@ export class HacsSettings extends LitElement {
               ? html`
                   <mwc-button
                     class="disabled-button"
-                    title="${localize("confirm.bg_task")}"
+                    title="${this.hacs.localize("confirm.bg_task")}"
                     @click=${this.disabledAction}
                   >
                     <paper-spinner active></paper-spinner>
@@ -108,22 +104,22 @@ export class HacsSettings extends LitElement {
                     ? html`
                         <mwc-button
                           class="disabled-button"
-                          title="${localize("confirm.bg_task")}"
+                          title="${this.hacs.localize("confirm.bg_task")}"
                           @click=${this.disabledAction}
                         >
-                          ${localize(`settings.upgrade_all`)}
+                          ${this.hacs.localize(`settings.upgrade_all`)}
                         </mwc-button>
                       `
                     : html`
                         <mwc-button @click=${this.UpgradeAll}>
-                          ${localize(`settings.upgrade_all`)}
+                          ${this.hacs.localize(`settings.upgrade_all`)}
                         </mwc-button>
                       `}
                 `}
 
             <a href="https://github.com/hacs" target="_blank" rel="noreferrer">
               <mwc-button>
-                ${localize(`settings.hacs_repo`)}
+                ${this.hacs.localize(`settings.hacs_repo`)}
               </mwc-button>
             </a>
 
@@ -133,7 +129,7 @@ export class HacsSettings extends LitElement {
               rel="noreferrer"
             >
               <mwc-button>
-                ${localize(`repository.open_issue`)}
+                ${this.hacs.localize(`repository.open_issue`)}
               </mwc-button>
             </a>
           </div>
@@ -157,7 +153,7 @@ export class HacsSettings extends LitElement {
     `;
   }
   disabledAction() {
-    swal(localize("confirm.bg_task"));
+    swal(this.hacs.localize("confirm.bg_task"));
   }
 
   SetFeStyle() {
@@ -191,13 +187,16 @@ export class HacsSettings extends LitElement {
       if (element.pending_upgrade) elements.push(element);
     });
     if (elements.length > 0) {
-      var msg = localize(`confirm.upgrade_all`) + "\n\n";
+      var msg = this.hacs.localize(`confirm.upgrade_all`) + "\n\n";
       elements.forEach(element => {
         msg += `${element.name}: ${element.installed_version} -> ${element.available_version}\n`;
       });
-      msg += `\n${localize("confirm.continue")}`;
+      msg += `\n${this.hacs.localize("confirm.continue")}`;
       swal(msg, {
-        buttons: [localize("confirm.cancel"), localize("confirm.yes")]
+        buttons: [
+          this.hacs.localize("confirm.cancel"),
+          this.hacs.localize("confirm.yes")
+        ]
       }).then(value => {
         if (value !== null) {
           this.hass.connection.sendMessage({
@@ -207,8 +206,8 @@ export class HacsSettings extends LitElement {
         }
       });
     } else {
-      swal(localize(`confirm.no_upgrades`), {
-        buttons: [localize("confirm.ok")]
+      swal(this.hacs.localize(`confirm.no_upgrades`), {
+        buttons: [this.hacs.localize("confirm.ok")]
       });
     }
   }
