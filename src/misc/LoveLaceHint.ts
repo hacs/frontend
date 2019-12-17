@@ -20,21 +20,22 @@ export class LoveLaceHint extends LitElement {
   @property({ type: Object }) public repository!: Repository;
 
   protected render(): TemplateResult | void {
+    const pluginpath = `${this.repository.full_name.split("/")[1]}/${
+      this.repository.file_name
+    }`;
+    const plugintype = `${
+      this.repository.javascript_type !== undefined
+        ? this.repository.javascript_type
+        : localize(`repository.lovelace_no_js_type`)
+    }`;
     return html`
       <div class="lovelace-hint markdown-body">
         <p class="example-title">
           ${localize(`repository.lovelace_instruction`)}:
         </p>
         <pre id="LovelaceExample" class="yaml">
-  - url: /community_plugin/${this.repository.full_name.split("/")[1]}/${this
-            .repository.file_name}
-    type: ${this.repository.javascript_type !== undefined
-            ? html`
-                ${this.repository.javascript_type}
-              `
-            : html`
-                ${localize(`repository.lovelace_no_js_type`)}
-              `}</pre
+  - url: /community_plugin/${pluginpath}
+    type: ${plugintype}</pre
         >
 
         <paper-icon-button
