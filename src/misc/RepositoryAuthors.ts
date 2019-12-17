@@ -46,7 +46,7 @@ export class Authors extends LitElement {
       HacsStyle,
       css`
         .autors {
-          color: var(--link-color, var(--accent-color));
+          color: var(--link-text-color, var(--accent-color));
         }
       `
     ];

@@ -361,7 +361,7 @@ const GFM2 = css`
   }
 
   .markdown-body a {
-    color: var(--link-color, var(--accent-color));
+    color: var(--link-text-color, var(--accent-color));
     font-weight: 600;
     text-decoration: none;
   }
@@ -967,7 +967,7 @@ export const GFM3 = css`
   .markdown-body :checked + .radio-label {
     position: relative;
     z-index: 1;
-    border-color: var(--link-color, var(--accent-color));
+    border-color: var(--link-text-color, var(--accent-color));
   }
 
   .markdown-body

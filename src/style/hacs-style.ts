@@ -13,7 +13,7 @@ const baseHacsStyles = css`
   }
   a {
     text-decoration: none;
-    color: var(--link-color, var(--accent-color));
+    color: var(--link-text-color, var(--accent-color));
   }
   h1 {
     font-family: var(--paper-font-title_-_font-family);
@@ -150,7 +150,7 @@ const baseHacsStyles = css`
     --mdc-theme-primary: var(--google-red-500);
   }
   .link {
-    color: var(--link-color, var(--accent-color));
+    color: var(--link-text-color, var(--accent-color));
     font-weight: 600;
     text-decoration: none;
   }
