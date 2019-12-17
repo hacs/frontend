@@ -43,7 +43,7 @@ jobs:
           sed -i 's|refs/heads/||' ./setup.py
           sed -i 's|refs/tags/||' ./setup.py
 
-          sed -i '/version/${{ github.ref }}/' ./hacs_frontend/version.py
+          sed -i 's|version|${{ github.ref }}|g' ./hacs_frontend/version.py
           sed -i 's|refs/heads/||' ./hacs_frontend/version.py
           sed -i 's|refs/tags/||' ./hacs_frontend/version.py
 
