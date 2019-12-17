@@ -23,38 +23,33 @@ export class RepositoryNote extends LitElement {
     if (this.repository.category === "theme") {
       path = `${path}/${this.repository.file_name}`;
     }
-    return html`
-      <div class="repository-note">
-        <p>
-          ${localize(`repository.note_installed`)} '${path}'
-          ${this.repository.category === "appdaemon"
-            ? html`
-                , ${localize(`repository.note_${this.repository.category}`)}
-              `
-            : ""}
-          ${this.repository.category === "integration"
-            ? html`
-                , ${localize(`repository.note_${this.repository.category}`)}
-              `
-            : ""}
-          ${this.repository.category === "plugin"
-            ? html`
-                , ${localize(`repository.note_${this.repository.category}`)}
-              `
-            : ""}
-          .
-        </p>
 
-        ${this.repository.category === "plugin"
-          ? html`
-              <hacs-lovelace-hint
-                .hass=${this.hass}
-                .configuration=${this.configuration}
-                .repository=${this.repository}
-              ></hacs-lovelace-hint>
-            `
-          : ""}
-      </div>
+    const Note = document.createElement("div");
+    Note.className = "repository-note";
+
+    const p = document.createElement("p");
+    p.innerText = `${localize(`repository.note_installed`)} '${path}'`;
+    if (
+      ["appdaemon", "integration", "plugin"].includes(this.repository.category)
+    ) {
+      p.innerText += `, ${localize(
+        `repository.note_${this.repository.category}`
+      )}.`;
+    }
+
+    Note.appendChild(p);
+
+    if (this.repository.category === "plugin")
+      p.innerHTML += `
+        <hacs-lovelace-hint
+          .hass=${this.hass}
+          .configuration=${this.configuration}
+          .repository=${this.repository}
+        ></hacs-lovelace-hint>
+      `;
+
+    return html`
+      ${Note}
     `;
   }
 
