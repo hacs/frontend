@@ -36,7 +36,6 @@ export class markdown {
       /(https:\/\/github\.com\/.*.\/blob*.[^\s]+)/g,
       function(x) {
         let url = x
-          .split(" ")[0]
           .replace("https://github.com/", "https://raw.githubusercontent.com/")
           .replace("/blob/", "/");
         return url;
