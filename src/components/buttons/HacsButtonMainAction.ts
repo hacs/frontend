@@ -62,8 +62,12 @@ export class HacsButtonMainAction extends HacsRepositoryButton {
 
   RepositoryInstall() {
     if (this.pathExists && !this.repository.installed) {
+      let path: string = this.repository.local_path;
+      if (this.repository.category === "theme") {
+        path = `${path}/${this.repository.file_name}`;
+      }
       swal(
-        localize("confirm.exist", "{item}", this.repository.local_path) +
+        localize("confirm.exist", "{item}", path) +
           "\n" +
           localize("confirm.overwrite") +
           "\n" +
