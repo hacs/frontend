@@ -109,7 +109,7 @@ export class HacsPanelRepository extends LitElement {
 
         <ha-card>
           <div class="repotitle">
-            ${this.repo.name}
+            ${emoji.emojify(this.repo.name || "")}
           </div>
           <hacs-repository-menu
             .hass=${this.hass}

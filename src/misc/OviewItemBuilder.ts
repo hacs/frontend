@@ -44,7 +44,7 @@ export class OviewItemBuilder {
               title="${this.StatusAndDescription(repository).description}"
             >
             </ha-icon>
-            <div class="title">${repository.name}</div>
+            <div class="title">${emoji.emojify(repository.name || "")}</div>
             <div class="addition">
               ${emoji.emojify(repository.description || "")}
             </div>
@@ -71,7 +71,7 @@ export class OviewItemBuilder {
         </div>
         <paper-item-body two-line>
           <div>
-            ${repository.name}
+            ${emoji.emojify(repository.name || "")}
             ${this.route.path === "/installed"
               ? html`
                   <div class="MobileHide right flexy">
