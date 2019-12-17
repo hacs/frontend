@@ -106,7 +106,7 @@ export class CustomRepositories extends LitElement {
                             .RepoID=${repo.id}
                             .RepoFullName=${repo.full_name}
                           >
-                            <paper-item>
+                            <paper-item class="customlistitem">
                               <div
                                 @click=${this.ShowRepository}
                                 class="link flexy"
@@ -154,7 +154,7 @@ export class CustomRepositories extends LitElement {
             <paper-listbox slot="dropdown-content" selected="-1">
               ${this.configuration.categories.map(
                 category => html`
-                  <paper-item .category=${category}>
+                  <paper-item class="categoryitem" .category=${category}>
                     ${localize(`common.${category}`)}
                   </paper-item>
                 `
@@ -216,12 +216,16 @@ export class CustomRepositories extends LitElement {
             padding-bottom: 64px;
           }
         }
-        paper-item {
+        paper-item.categoryitem {
           display: flex;
           background-color: var(
             --paper-listbox-background-color,
             var(--primary-background-color)
           );
+        }
+
+        paper-item.customlistitem {
+          display: flex;
         }
       `
     ];
