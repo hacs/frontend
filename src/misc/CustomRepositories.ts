@@ -142,38 +142,41 @@ export class CustomRepositories extends LitElement {
                 `}
           </div>
         </div>
+        ${this.status.background_task
+          ? ""
+          : html`
+              <div class="card-actions">
+                <paper-input
+                  class="inputfield MobileGrid"
+                  placeholder=${localize("settings.add_custom_repository")}
+                  type="text"
+                ></paper-input>
+                <paper-dropdown-menu
+                  class="category MobileGrid"
+                  label="${localize(`settings.category`)}"
+                >
+                  <paper-listbox slot="dropdown-content" selected="-1">
+                    ${this.configuration.categories.map(
+                      category => html`
+                        <paper-item class="categoryitem" .category=${category}>
+                          ${localize(`common.${category}`)}
+                        </paper-item>
+                      `
+                    )}
+                  </paper-listbox>
+                </paper-dropdown-menu>
 
-        <div class="card-actions">
-          <paper-input
-            class="inputfield MobileGrid"
-            placeholder=${localize("settings.add_custom_repository")}
-            type="text"
-          ></paper-input>
-          <paper-dropdown-menu
-            class="category MobileGrid"
-            label="${localize(`settings.category`)}"
-          >
-            <paper-listbox slot="dropdown-content" selected="-1">
-              ${this.configuration.categories.map(
-                category => html`
-                  <paper-item class="categoryitem" .category=${category}>
-                    ${localize(`common.${category}`)}
-                  </paper-item>
-                `
-              )}
-            </paper-listbox>
-          </paper-dropdown-menu>
-
-          <div class="save">
-            <ha-icon
-              title="${localize("settings.save")}"
-              icon="mdi:content-save"
-              class="saveicon MobileGrid"
-              @click=${this.Save}
-            >
-            </ha-icon>
-          </div>
-        </div>
+                <div class="save">
+                  <ha-icon
+                    title="${localize("settings.save")}"
+                    icon="mdi:content-save"
+                    class="saveicon MobileGrid"
+                    @click=${this.Save}
+                  >
+                  </ha-icon>
+                </div>
+              </div>
+            `}
       </ha-card>
     `;
   }
