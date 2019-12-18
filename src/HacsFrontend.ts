@@ -238,21 +238,21 @@ class HacsFrontendBase extends LitElement {
               >${this.hacs.localize(`common.plugins`)}</paper-tab
             >
 
-            ${this.configuration.appdaemon
+            ${this.configuration.categories.includes("appdaemon")
               ? html`
                   <paper-tab page-name="appdaemon">
                     ${this.hacs.localize(`common.appdaemon_apps`)}
                   </paper-tab>
                 `
               : ""}
-            ${this.configuration.python_script
+            ${this.configuration.categories.includes("python_script")
               ? html`
                   <paper-tab page-name="python_script">
                     ${this.hacs.localize(`common.python_scripts`)}
                   </paper-tab>
                 `
               : ""}
-            ${this.configuration.theme
+            ${this.configuration.categories.includes("theme")
               ? html`
                   <paper-tab page-name="theme">
                     ${this.hacs.localize(`common.themes`)}
