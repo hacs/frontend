@@ -10,19 +10,7 @@ export const step = html`
     prosess will hopefully help you understand what HACS is and what it does.
   </p>
   <p>To start off here are a few usefull links</p>
-  <li>
-    <a target="_blank" rel="noreferrer" href="https://hacs.xyz/"
-      >HACS Documentation</a
-    >
-  </li>
-  <li>
-    <a target="_blank" rel="noreferrer" href="https://github.com/hacs"
-      >HACS @ GitHub</a
-    >
-  </li>
-  <li>
-    <a target="_blank" rel="noreferrer" href="https://discord.gg/apgchf8"
-      >HACS @ Discord</a
-    >
-  </li>
+  <li><hacs-link url="https://hacs.xyz/">HACS Documentation</hacs-link></li>
+  <li><hacs-link url="https://github.com/hacs">HACS @ GitHub</hacs-link></li>
+  <li><hacs-link url="https://discord.gg/apgchf8">HACS @ Discord</hacs-link></li>
 `;

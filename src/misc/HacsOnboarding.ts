@@ -50,15 +50,25 @@ export class HacsOnboarding extends LitElement {
         <hacs-body>
           <ha-card>
             <div class="card-content">
-              ${this.step === 0 ? onboarding0 : ""}
-              ${this.step === 1 ? onboarding1 : ""}
-              ${this.step === 2 ? onboarding2 : ""}
-              ${this.step === 3 ? onboarding3 : ""}
-              ${this.step === 4 ? onboarding4 : ""}
-              ${this.step === 5 ? onboarding5 : ""}
-              ${this.step === 6 ? onboarding6 : ""}
-              ${this.step === 7 ? onboarding7 : ""}
-              ${this.step === 8 ? onboarding8 : ""}
+              ${this.step === 0
+                ? onboarding0
+                : this.step === 1
+                ? onboarding1
+                : this.step === 2
+                ? onboarding2
+                : this.step === 3
+                ? onboarding3
+                : this.step === 4
+                ? onboarding4
+                : this.step === 5
+                ? onboarding5
+                : this.step === 6
+                ? onboarding6
+                : this.step === 7
+                ? onboarding7
+                : this.step === 8
+                ? onboarding8
+                : (this.step = -1)}
             </div>
             <div class="card-actions">
               <mwc-button
