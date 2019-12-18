@@ -195,6 +195,16 @@ class HacsFrontendBase extends LitElement {
 
     const page = this.panel;
 
+    if (!this.configuration.onboarding_done) {
+      return html`
+        <hacs-onboarding
+          .hacs=${this.hacs}
+          .hass=${this.hass}
+          .narrow=${this.narrow}
+        ></hacs-onboarding>
+      `;
+    }
+
     return html`
       <app-header-layout has-scrolling-region>
         <app-header slot="header" fixed>

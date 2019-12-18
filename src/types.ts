@@ -17,6 +17,7 @@ export interface Configuration {
   frontend_mode: string;
   frontend_compact: boolean;
   country: string;
+  onboarding_done: boolean;
   version: string;
   experimental: boolean;
   categories: [string];

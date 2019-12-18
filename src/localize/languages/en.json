@@ -14,7 +14,8 @@
     "settings": "settings",
     "theme": "Theme",
     "themes": "Themes",
-    "version": "Version"
+    "version": "Version",
+    "continue": "Continue"
   },
   "confirm": {
     "add_to_lovelace": "Are you sure you want to add this to your Lovelace resources?",

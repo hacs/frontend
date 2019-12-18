@@ -19,6 +19,7 @@ import "./components/HacsProgressbar";
 import "./misc/CustomRepositories";
 import "./misc/HacsCritical";
 import "./misc/HacsError";
+import "./misc/HacsOnboarding";
 import "./misc/HacsRepositoryMenu";
 import "./misc/HiddenRepositories";
 import "./misc/LoveLaceHint";
