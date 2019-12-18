@@ -195,7 +195,7 @@ class HacsFrontendBase extends LitElement {
 
     const page = this.panel;
 
-    if (!this.configuration.onboarding_done) {
+    if (!this.configuration.onboarding_done || false) {
       return html`
         <hacs-onboarding
           .hacs=${this.hacs}

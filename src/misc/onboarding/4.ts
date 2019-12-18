@@ -1,8 +1,8 @@
 import { html } from "lit-element";
 
-export const step_1 = html`
+export const step = html`
   <h1>
-    Introduction
+    Introduction 4
   </h1>
   <hr />
   <p>

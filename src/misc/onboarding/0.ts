@@ -1,13 +1,13 @@
 import { html } from "lit-element";
 
-export const step_0 = html`
+export const step = html`
   <h1>
     Welcome to HACS!👋
   </h1>
   <hr />
   <p>
-    This onboarding prosess will hopefully help you understand what HACS is and
-    what it does.
+    Congratulations! you have sucessfully installed HACS 🎉 </br> This onboarding
+    prosess will hopefully help you understand what HACS is and what it does.
   </p>
   <p>To start off here are a few usefull links</p>
   <li>

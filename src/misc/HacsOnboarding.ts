@@ -12,8 +12,15 @@ import { HacsStyle } from "../style/hacs-style";
 
 import { HACS } from "../Hacs";
 
-import { step_0 } from "./onboarding/step0";
-import { step_1 } from "./onboarding/step1";
+import { step as onboarding0 } from "./onboarding/0";
+import { step as onboarding1 } from "./onboarding/1";
+import { step as onboarding2 } from "./onboarding/2";
+import { step as onboarding3 } from "./onboarding/3";
+import { step as onboarding4 } from "./onboarding/4";
+import { step as onboarding5 } from "./onboarding/5";
+import { step as onboarding6 } from "./onboarding/6";
+import { step as onboarding7 } from "./onboarding/7";
+import { step as onboarding8 } from "./onboarding/8";
 
 @customElement("hacs-onboarding")
 export class HacsOnboarding extends LitElement {
@@ -43,7 +50,15 @@ export class HacsOnboarding extends LitElement {
         <hacs-body>
           <ha-card>
             <div class="card-content">
-              ${this.step === 0 ? step_0 : ""} ${this.step === 1 ? step_1 : ""}
+              ${this.step === 0 ? onboarding0 : ""}
+              ${this.step === 1 ? onboarding1 : ""}
+              ${this.step === 2 ? onboarding2 : ""}
+              ${this.step === 3 ? onboarding3 : ""}
+              ${this.step === 4 ? onboarding4 : ""}
+              ${this.step === 5 ? onboarding5 : ""}
+              ${this.step === 6 ? onboarding6 : ""}
+              ${this.step === 7 ? onboarding7 : ""}
+              ${this.step === 8 ? onboarding8 : ""}
             </div>
             <div class="card-actions">
               <mwc-button
