@@ -122,6 +122,7 @@ class HacsFrontendBase extends LitElement {
 
   protected firstUpdated() {
     this.addEventListener("hacs-location-change", this.locationChanged);
+    this.addEventListener("hacs-onboarding-done", this.onboardingDone);
     window.onpopstate = function() {
       window.location.reload();
     };
@@ -362,6 +363,15 @@ class HacsFrontendBase extends LitElement {
   locationChanged(ev): void {
     this.route = (ev as LocationChangedEvent).detail.value;
     this.hacs.navigate(this, `${this.route.prefix}${this.route.path}`);
+    this.requestUpdate();
+  }
+
+  onboardingDone(): void {
+    this.configuration.onboarding_done = true;
+    this.hass.connection.sendMessage({
+      type: "hacs/settings",
+      action: "onboarding_done"
+    });
     this.requestUpdate();
   }
 

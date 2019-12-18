@@ -47,5 +47,4 @@ export const step = html`
   That's fine for developers/authors, but how about users?</br>
   The nice part for users is that most of the custom extentions for Home Assistant now are in HACS, which makes it super easy to find, install and upgrade.
   </p>
-  <p>The next few sections of this onboarding will touch on what the differnt extention types are.</p>
 `;

@@ -13,4 +13,6 @@ export const step = html`
   <li><hacs-link url="https://hacs.xyz/">HACS Documentation</hacs-link></li>
   <li><hacs-link url="https://github.com/hacs">HACS @ GitHub</hacs-link></li>
   <li><hacs-link url="https://discord.gg/apgchf8">HACS @ Discord</hacs-link></li>
+  </br>
+  <p><b>NB!: You will only see this onboarding one time so take your time to read all of it.</b></p>
 `;
