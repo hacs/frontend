@@ -76,7 +76,7 @@ export class HacsInstalled extends LitElement {
 
     return html`
       <hacs-body>
-        ${updatable_repositories.length !== 0
+        ${updatable_repositories.length !== 0 && !this.status.startup
           ? html`
               <div class="card-group">
                 <div class="leftspace grouptitle">

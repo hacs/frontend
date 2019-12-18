@@ -127,6 +127,7 @@ export class OviewItemBuilder {
     repository: Repository
   ): { status: string; description: string } {
     var status = repository.status;
+    if (this.status.startup && repository.installed) status = "installed";
     var description = repository.status_description;
 
     if (repository.installed && !this.status.background_task) {
