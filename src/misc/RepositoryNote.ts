@@ -12,6 +12,12 @@ import { HacsStyle } from "../style/hacs-style";
 import { HomeAssistant } from "custom-card-helpers";
 import { localize } from "../localize/localize";
 
+interface LoveLaceHint extends HTMLElement {
+  hass?: HomeAssistant;
+  configuration?: Configuration;
+  repository?: Repository;
+}
+
 @customElement("hacs-repository-note")
 export class RepositoryNote extends LitElement {
   @property({ type: Object }) public configuration!: Configuration;
@@ -39,14 +45,13 @@ export class RepositoryNote extends LitElement {
 
     Note.appendChild(p);
 
-    if (this.repository.category === "plugin")
-      p.innerHTML += `
-        <hacs-lovelace-hint
-          .hass=${this.hass}
-          .configuration=${this.configuration}
-          .repository=${this.repository}
-        ></hacs-lovelace-hint>
-      `;
+    if (this.repository.category === "plugin") {
+      const LLHint: LoveLaceHint = document.createElement("hacs-lovelace-hint");
+      LLHint.hass = this.hass;
+      LLHint.configuration = this.configuration;
+      LLHint.repository = this.repository;
+      Note.appendChild(LLHint);
+    }
 
     return html`
       ${Note}
