@@ -1,9 +1,7 @@
 import { html } from "lit-element";
 
 export const step = html`
-  <h1>
-    Introduction 5
-  </h1>
+  <h1>Plugin (Lovelace elements)</h1>
   <hr />
   <p>
     Intro

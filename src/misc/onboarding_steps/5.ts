@@ -2,7 +2,7 @@ import { html } from "lit-element";
 
 export const step = html`
   <h1>
-    Introduction 6
+    python_scripts
   </h1>
   <hr />
   <p>
