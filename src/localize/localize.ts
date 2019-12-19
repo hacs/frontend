@@ -1,3 +1,4 @@
+import * as da from "./languages/da.json";
 import * as de from "./languages/de.json";
 import * as el from "./languages/el.json";
 import * as en from "./languages/en.json";
@@ -16,6 +17,7 @@ import * as sv from "./languages/sv.json";
 import * as zh_Hans from "./languages/zh-Hans.json";
 
 var languages = {
+  da: da,
   de: de,
   el: el,
   en: en,
