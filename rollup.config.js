@@ -6,10 +6,9 @@ import { terser } from "rollup-plugin-terser";
 import serve from "rollup-plugin-serve";
 import json from "@rollup/plugin-json";
 import gzipPlugin from "rollup-plugin-gzip";
+import { version } from "./version";
 
 const dev = process.env.ROLLUP_WATCH;
-
-const version = "VERSION";
 
 const serveopts = {
   contentBase: ["./hacs_frontend"],

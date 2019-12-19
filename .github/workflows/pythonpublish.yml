@@ -47,13 +47,9 @@ jobs:
           sed -i 's|refs/heads/||' ./hacs_frontend/version.py
           sed -i 's|refs/tags/||' ./hacs_frontend/version.py
 
-          sed -i 's|VERSION|${{ github.ref }}|g' ./rollup.config.js
+          sed -i 's|master|${{ github.ref }}|g' ./version.js
           sed -i 's|refs/heads/||' ./rollup.config.js
           sed -i 's|refs/tags/||' ./rollup.config.js
-
-          sed -i 's|VERSION|${{ github.ref }}|g' ./rollup.config.debug.js
-          sed -i 's|refs/heads/||' ./rollup.config.debug.js
-          sed -i 's|refs/tags/||' ./rollup.config.debug.js
 
       - name: Install dependencies
         run: |

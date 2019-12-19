@@ -4,8 +4,7 @@ import typescript from "rollup-plugin-typescript2";
 import babel from "rollup-plugin-babel";
 import json from "@rollup/plugin-json";
 import gzipPlugin from "rollup-plugin-gzip";
-
-const version = "VERSION";
+import { version } from "./version";
 
 export default {
   input: ["src/main.ts"],

@@ -11,6 +11,7 @@ import {
 import { HomeAssistant } from "custom-card-helpers";
 import { HacsStyle } from "../style/hacs-style";
 import { HACS } from "../Hacs";
+import { version } from "../../version";
 
 import swal from "sweetalert";
 
@@ -41,12 +42,18 @@ export class HacsSettings extends LitElement {
         <ha-card header="HACS (Home Assistant Community Store)">
           <div class="card-content">
             <p>
-              <b>${this.hacs.localize("common.version")}:</b> ${this
-                .configuration.version}
+              <b>Integration ${this.hacs
+                .localize("common.version")
+                .toLocaleLowerCase()}:</b> ${this.configuration.version}
+            </br>
+              <b>Frontend ${this.hacs
+                .localize("common.version")
+                .toLocaleLowerCase()}:</b> ${version}
             </p>
             <p>
-              <b>${this.hacs.localize("common.repositories")}:</b> ${this
-                .repositories.length}
+              <b>${this.hacs.localize("common.repositories")}:</b> ${
+      this.repositories.length
+    }
             </p>
             <div class="version-available">
               <ha-switch
@@ -62,60 +69,64 @@ export class HacsSettings extends LitElement {
             </div>
           </div>
           <div class="card-actions MobileGrid">
-            ${this.status.reloading_data
-              ? html`
-                  <mwc-button
-                    class="disabled-button"
-                    title="${this.hacs.localize("confirm.bg_task")}"
-                    @click=${this.disabledAction}
-                  >
-                    <paper-spinner active></paper-spinner>
-                  </mwc-button>
-                `
-              : html`
-                  ${this.status.background_task
-                    ? html`
-                        <mwc-button
-                          class="disabled-button"
-                          title="${this.hacs.localize("confirm.bg_task")}"
-                          @click=${this.disabledAction}
-                        >
-                          ${this.hacs.localize(`settings.reload_data`)}
-                        </mwc-button>
-                      `
-                    : html`
-                        <mwc-button @click=${this.ReloadData}>
-                          ${this.hacs.localize(`settings.reload_data`)}
-                        </mwc-button>
-                      `}
-                `}
-            ${this.status.upgrading_all
-              ? html`
-                  <mwc-button
-                    class="disabled-button"
-                    title="${this.hacs.localize("confirm.bg_task")}"
-                    @click=${this.disabledAction}
-                  >
-                    <paper-spinner active></paper-spinner>
-                  </mwc-button>
-                `
-              : html`
-                  ${this.status.background_task
-                    ? html`
-                        <mwc-button
-                          class="disabled-button"
-                          title="${this.hacs.localize("confirm.bg_task")}"
-                          @click=${this.disabledAction}
-                        >
-                          ${this.hacs.localize(`settings.upgrade_all`)}
-                        </mwc-button>
-                      `
-                    : html`
-                        <mwc-button @click=${this.UpgradeAll}>
-                          ${this.hacs.localize(`settings.upgrade_all`)}
-                        </mwc-button>
-                      `}
-                `}
+            ${
+              this.status.reloading_data
+                ? html`
+                    <mwc-button
+                      class="disabled-button"
+                      title="${this.hacs.localize("confirm.bg_task")}"
+                      @click=${this.disabledAction}
+                    >
+                      <paper-spinner active></paper-spinner>
+                    </mwc-button>
+                  `
+                : html`
+                    ${this.status.background_task
+                      ? html`
+                          <mwc-button
+                            class="disabled-button"
+                            title="${this.hacs.localize("confirm.bg_task")}"
+                            @click=${this.disabledAction}
+                          >
+                            ${this.hacs.localize(`settings.reload_data`)}
+                          </mwc-button>
+                        `
+                      : html`
+                          <mwc-button @click=${this.ReloadData}>
+                            ${this.hacs.localize(`settings.reload_data`)}
+                          </mwc-button>
+                        `}
+                  `
+            }
+            ${
+              this.status.upgrading_all
+                ? html`
+                    <mwc-button
+                      class="disabled-button"
+                      title="${this.hacs.localize("confirm.bg_task")}"
+                      @click=${this.disabledAction}
+                    >
+                      <paper-spinner active></paper-spinner>
+                    </mwc-button>
+                  `
+                : html`
+                    ${this.status.background_task
+                      ? html`
+                          <mwc-button
+                            class="disabled-button"
+                            title="${this.hacs.localize("confirm.bg_task")}"
+                            @click=${this.disabledAction}
+                          >
+                            ${this.hacs.localize(`settings.upgrade_all`)}
+                          </mwc-button>
+                        `
+                      : html`
+                          <mwc-button @click=${this.UpgradeAll}>
+                            ${this.hacs.localize(`settings.upgrade_all`)}
+                          </mwc-button>
+                        `}
+                  `
+            }
 
             <a href="https://github.com/hacs" target="_blank" rel="noreferrer">
               <mwc-button>
