@@ -48,18 +48,18 @@ export function localize(
     .replace(/['"]+/g, "")
     .replace("-", "_");
 
-  var tranlated: string;
+  var translated: string;
 
   try {
-    tranlated = languages[lang][section][key];
+    translated = languages[lang][section][key];
   } catch (e) {
-    tranlated = languages["en"][section][key];
+    translated = languages["en"][section][key];
   }
 
-  if (tranlated === undefined) tranlated = languages["en"][section][key];
+  if (translated === undefined) translated = languages["en"][section][key];
 
   if (search !== undefined && replace !== undefined) {
-    tranlated = tranlated.replace(search, replace);
+    translated = translated.replace(search, replace);
   }
-  return tranlated;
+  return translated;
 }
