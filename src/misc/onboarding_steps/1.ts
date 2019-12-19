@@ -10,11 +10,11 @@ export const step = html`
     that so....
   </p>
   <p>
-    HACS works as a distrubution platfrom for extentions to Home Assistant that
+    HACS works as a distribution platform for extensions to Home Assistant that
     is not part of core Home Assistant.
   </p>
   <p>
-    Extentions in this context are (when you use HACS, these extention types will be referd to as "categories"):
+    Extensions in this context are (when you use HACS, these extension types will be referred to as "categories"):
   </p>
   <li>Custom integrations (custom_components)</li>
   <li>
@@ -39,12 +39,12 @@ export const step = html`
     >
   </li>
   <p>
-    Having HACS as a distrubution platfrom allows the developer(s)/author(s) of
-    these extentions to reach a broader audience and allows for fast deployment
+    Having HACS as a distribution platform allows the developer(s)/author(s) of
+    these extensions to reach a broader audience and allows for fast deployment
     of new versions.
   </p>
   <p>
   That's fine for developers/authors, but how about users?</br>
-  The nice part for users is that most of the custom extentions for Home Assistant now are in HACS, which makes it super easy to find, install and upgrade.
+  The nice part for users is that most of the custom extensions for Home Assistant now are in HACS, which makes it super easy to find, install and upgrade.
   </p>
 `;
