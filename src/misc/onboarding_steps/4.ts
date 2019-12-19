@@ -6,10 +6,10 @@ export const step = html`
   </h1>
   <hr />
   <p>
-    Automation is at the core of Home Assistant, and parts of HACS can also be
+    Automation is at the core of Home Assistant, and parts of HACS may also be
     automated.
   </p>
-  <p>For examples on what you can automate have a look at these examples:</p>
+  <p>Some examples on what can be automated:</p>
   <li>
     <hacs-link
       url="https://hacs.xyz/docs/basic/automation#new-repositories-added"
