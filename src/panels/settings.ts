@@ -175,9 +175,23 @@ export class HacsSettings extends LitElement {
   }
 
   ReloadData() {
-    this.hass.connection.sendMessage({
-      type: "hacs/settings",
-      action: "reload_data"
+    swal(
+      `${this.hacs.localize(`confirm.reload_data`)}\n${this.hacs.localize(
+        "confirm.continue"
+      )}`,
+      {
+        buttons: [
+          this.hacs.localize("confirm.cancel"),
+          this.hacs.localize("confirm.yes")
+        ]
+      }
+    ).then(value => {
+      if (value !== null) {
+        this.hass.connection.sendMessage({
+          type: "hacs/settings",
+          action: "reload_data"
+        });
+      }
     });
   }
 
