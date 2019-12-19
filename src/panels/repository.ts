@@ -117,6 +117,30 @@ export class HacsRepository extends LitElement {
                 .hass=${this.hass}
                 .authors=${this.repo.authors}
               ></hacs-authors>
+              ${!this.hacs.isnullorempty(this.repo.stars)
+                ? html`
+                    <div class="stars">
+                      <b>GitHub ${this.hacs.localize(`store.stars`)}: </b>
+                      ${this.repo.stars}
+                    </div>
+                  `
+                : ""}
+              ${!this.hacs.isnullorempty(this.repo.downloads)
+                ? html`
+                    <div class="downloads">
+                      <b>Downloads: </b>
+                      ${this.repo.downloads}
+                    </div>
+                  `
+                : ""}
+              ${!this.hacs.isnullorempty(this.repo.last_updated)
+                ? html`
+                    <div class="last_updated">
+                      <b>${this.hacs.localize(`store.last_updated`)}: </b>
+                      ${this.repo.last_updated} (UTC)
+                    </div>
+                  `
+                : ""}
               ${this.repo.installed
                 ? html`
                     <div class="version-installed">
@@ -133,7 +157,7 @@ export class HacsRepository extends LitElement {
                     </div>
                   `
                 : html`
-                    <div class="version-available">
+                    <div class="version-available-dropdown">
                       <paper-dropdown-menu
                         @value-changed="${this.SetVersion}"
                         label="${this.hacs.localize(`repository.available`)}:
@@ -294,6 +318,11 @@ export class HacsRepository extends LitElement {
         .version {
           padding-bottom: 8px;
         }
+        .version-installed,
+        .version-available {
+          margin-top: 12px;
+        }
+
         .options {
           float: right;
           width: 40%;

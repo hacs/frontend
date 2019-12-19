@@ -46,6 +46,7 @@ export interface Repository {
   default_branch: string;
   description: string;
   domain: string;
+  downloads: number;
   file_name: string;
   full_name: string;
   hide: boolean;
