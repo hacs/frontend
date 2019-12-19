@@ -6,9 +6,9 @@ export const step = html`
   </h1>
   <hr />
   <p>
-    The first time you start Home Assistant with HACS enabled it needs to get the information about every repository it knows.</br> it is important that you let it finish this before you restart Home Assistant, if your restart before it's finished it needs to start over.
+    The first time you start Home Assistant with HACS enabled it needs to get information about every repository it knows.</br> It is important that you let it finish this process before you restart Home Assistant, if you restart before it's finished it will need to start over.
   </p>
-  <p>When it's done you will no longer see the progressbar.</p>
+  <p>When it's done you will no longer see the progress bar.</p>
   <hacs-progressbar .active=${true}></hacs-progressbar>
-  <p>This prosess can take several minuttes depending on your system and network.</p>
+  <p>This process can take several minutes depending on your system and network.</p>
 `;
