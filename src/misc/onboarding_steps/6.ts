@@ -13,25 +13,25 @@ export const step = html`
     pull requests are reviewed.
   </p>
   <p>
-    While you have read trough this onboarding section HACS has started to get
-    information about the repositories it knows, so you will allready now see
+    While you have read trough this onboarding section, HACS has started to get
+    information about the repositories it knows, so you will already now see
     items in under the store pages.
   </p>
   <p>
-    If you have issues/sugestions regaring HACS report that on
+    If you have issues/suggestions regarding HACS, report them here: 
     <hacs-link url="https://hacs.xyz/docs/issues">GitHub</hacs-link>
   </p>
   <p>
-    If you have questions regaring HACS please join the
+    If you have questions regarding HACS please join the
     <hacs-link url="https://discord.gg/apgchf8">Discord server</hacs-link>
   </p>
 
   </br>
-  <p>If you find this custom integration usefull please consider supporting me(<hacs-link
+  <p>If you find this custom integration useful please consider supporting me(<hacs-link
       url="https://github.com/ludeeus"
       >@ludeeus</hacs-link
     >)
-    <hacs-link url="https://github.com/sponsors/ludeeus">by sposoring me on GitHub❤️</hacs-link>
+    <hacs-link url="https://github.com/sponsors/ludeeus">by sponsoring me on GitHub❤️</hacs-link>
     or
     <hacs-link url="https://buymeacoffee.com/ludeeus">buying me ☕️/🍺</hacs-link>
     </p>
