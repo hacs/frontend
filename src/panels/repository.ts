@@ -131,7 +131,7 @@ export class HacsRepository extends LitElement {
               ${!this.hacs.isnullorempty(this.repo.downloads)
                 ? html`
                     <div class="downloads">
-                      <b>Downloads: </b>
+                      <b>${this.hacs.localize(`repository.downloads`)}: </b>
                       ${this.repo.downloads}
                     </div>
                   `
