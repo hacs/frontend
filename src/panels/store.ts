@@ -32,18 +32,32 @@ export class HacsStore extends LitElement {
   @property({ type: Object }) public status!: Status;
   @property() public store!: string;
   @property() private search: string = "";
-  @property() private sort: string = "name";
+  @property() private sort: string = "name-desc";
 
   SortRepo(a: Repository, b: Repository): boolean {
-    if (this.sort === "stars") return a.stars < b.stars;
-    if (this.sort === "status") return a.status < b.status;
+    const sorttype = this.sort.split("-")[1];
+    const sortkey = this.sort.split("-")[0];
+    if (sorttype === "desc") {
+      if (sortkey === "stars") return a.stars < b.stars;
+      if (sortkey === "last_updated") {
+        return Date.parse(a.last_updated) < Date.parse(b.last_updated);
+      }
 
-    return a[this.sort] > b[this.sort];
+      return a[sortkey] > b[sortkey];
+    } else {
+      if (sortkey === "stars") return a.stars > b.stars;
+      if (sortkey === "last_updated") {
+        return Date.parse(a.last_updated) > Date.parse(b.last_updated);
+      }
+
+      return a[sortkey] < b[sortkey];
+    }
   }
 
   SetSortKey(ev: ValueChangedEvent) {
-    if (ev.detail.value.length === 0) return;
-    this.sort = ev.detail.value.replace(" ", "_").toLowerCase();
+    const attr = ((ev as any).detail.item as HTMLElement).getAttribute("key");
+    if (attr.length === 0) return;
+    this.sort = attr;
     localStorage.setItem("hacs-sort", this.sort);
   }
 
@@ -73,6 +87,7 @@ export class HacsStore extends LitElement {
 
     this.search = localStorage.getItem("hacs-search");
     this.sort = localStorage.getItem("hacs-sort");
+    console.log(this.sort);
 
     var repositories = this.repositories.filter(repository => {
       // Hide hidden repos from the store
@@ -150,7 +165,7 @@ export class HacsStore extends LitElement {
               : ""}
           </paper-input>
           <paper-dropdown-menu
-            @value-changed="${this.SetSortKey}"
+            @iron-select="${this.SetSortKey}"
             class="sort padder"
             label="Sort"
           >
@@ -159,14 +174,35 @@ export class HacsStore extends LitElement {
               selected="${this.sort}"
               attr-for-selected="key"
             >
-              <paper-item key="name"
-                >${this.hacs.localize("store.name")}</paper-item
+              <paper-item key="last_updated-desc"
+                >${this.hacs.localize(
+                  "store.last_updated"
+                )}&nbsp;(${this.hacs.localize("store.descending")})</paper-item
               >
-              <paper-item key="stars"
-                >${this.hacs.localize("store.stars")}</paper-item
+              <paper-item key="last_updated-asc"
+                >${this.hacs.localize(
+                  "store.last_updated"
+                )}&nbsp;(${this.hacs.localize("store.ascending")})</paper-item
               >
-              <paper-item key="status"
-                >${this.hacs.localize("store.status")}</paper-item
+              <paper-item key="name-desc"
+                >${this.hacs.localize("store.name")}&nbsp;(${this.hacs.localize(
+                  "store.descending"
+                )})</paper-item
+              >
+              <paper-item key="name-asc"
+                >${this.hacs.localize("store.name")}&nbsp;(${this.hacs.localize(
+                  "store.ascending"
+                )})</paper-item
+              >
+              <paper-item key="stars-desc"
+                >${this.hacs.localize(
+                  "store.stars"
+                )}&nbsp;(${this.hacs.localize("store.descending")})</paper-item
+              >
+              <paper-item key="stars-asc"
+                >${this.hacs.localize(
+                  "store.stars"
+                )}&nbsp;(${this.hacs.localize("store.ascending")})</paper-item
               >
             </paper-listbox>
           </paper-dropdown-menu>

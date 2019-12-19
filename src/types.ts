@@ -4,23 +4,23 @@ export interface Route {
 }
 
 export interface Status {
-  startup: boolean;
   background_task: boolean;
-  upgrading_all: boolean;
-  reloading_data: boolean;
   disabled: boolean;
   lovelace_mode: "storeage" | "yaml";
+  reloading_data: boolean;
+  startup: boolean;
+  upgrading_all: boolean;
 }
 
 export interface Configuration {
-  dev: string;
-  frontend_mode: string;
-  frontend_compact: boolean;
+  categories: [string];
   country: string;
+  dev: string;
+  experimental: boolean;
+  frontend_compact: boolean;
+  frontend_mode: string;
   onboarding_done: boolean;
   version: string;
-  experimental: boolean;
-  categories: [string];
 }
 
 export interface Critical {
@@ -35,40 +35,41 @@ export interface SelectedValue {
 }
 
 export interface Repository {
-  homeassistant: string;
+  additional_info: string;
+  authors: [string];
+  available_version: string;
+  beta: boolean;
   can_install: boolean;
-  domain: string;
   category: string;
   country: string;
-  description: string;
-  hide: boolean;
-  id: string;
-  installed: boolean;
-  name: string;
-  status_description: string;
-  status: string;
-  state: string;
-  new: string;
-  additional_info: string;
-  info: string;
-  updated_info: boolean;
-  beta: boolean;
-  stars: number;
-  version_or_commit: string;
   custom: boolean;
-  installed_version: string;
-  available_version: string;
-  main_action: string;
-  pending_upgrade: boolean;
-  javascript_type: string;
-  full_name: string;
+  default_branch: string;
+  description: string;
+  domain: string;
   file_name: string;
+  full_name: string;
+  hide: boolean;
+  homeassistant: string;
+  id: string;
+  info: string;
+  installed_version: string;
+  installed: boolean;
+  javascript_type: string;
+  last_updated: string;
   local_path: string;
-  authors: [string];
-  topics: [string];
+  main_action: string;
+  name: string;
+  new: string;
+  pending_upgrade: boolean;
   releases: [string];
   selected_tag: string;
-  default_branch: string;
+  stars: number;
+  state: string;
+  status_description: string;
+  status: string;
+  topics: [string];
+  updated_info: boolean;
+  version_or_commit: string;
 }
 
 export interface ValueChangedEvent {
@@ -80,9 +81,9 @@ export interface LocationChangedEvent {
 }
 
 export interface RepositoryCategories {
+  appdaemon_apps: Repository[];
   integrations: Repository[];
   plugins: Repository[];
-  appdaemon_apps: Repository[];
   python_scripts: Repository[];
   themes: Repository[];
 }
@@ -96,22 +97,22 @@ export const AllCategories = [
 ];
 
 export interface LovelaceConfig {
-  title?: string;
-  views: LovelaceViewConfig[];
   background?: string;
   resources?: LovelaceResourceConfig[];
+  title?: string;
+  views: LovelaceViewConfig[];
 }
 
 export interface LovelaceViewConfig {
-  index?: number;
-  title?: string;
+  background?: string;
   badges?: Array<string | LovelaceBadgeConfig>;
   cards?: LovelaceCardConfig[];
-  path?: string;
   icon?: string;
-  theme?: string;
+  index?: number;
   panel?: boolean;
-  background?: string;
+  path?: string;
+  theme?: string;
+  title?: string;
   visible?: boolean | ShowViewConfig[];
 }
 

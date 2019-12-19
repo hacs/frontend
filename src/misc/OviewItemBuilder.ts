@@ -44,7 +44,9 @@ export class OviewItemBuilder {
               title="${this.StatusAndDescription(repository).description}"
             >
             </ha-icon>
-            <div class="title">${emoji.emojify(repository.name || "")}</div>
+            <div class="title">
+              ${emoji.emojify(repository.name || "")}
+            </div>
             <div class="addition">
               ${emoji.emojify(repository.description || "")}
             </div>

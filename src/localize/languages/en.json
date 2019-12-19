@@ -91,7 +91,10 @@
     "upgrade_all": "Upgrade all"
   },
   "store": {
+    "ascending": "ascending",
     "clear_new": "Clear all new repositories",
+    "descending": "descending",
+    "last_updated": "Last updated",
     "name": "Name",
     "new_repositories": "New Repositories",
     "pending_upgrades": "Pending upgrades",

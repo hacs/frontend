@@ -127,7 +127,7 @@ class HacsFrontendBase extends LitElement {
       window.location.reload();
     };
     localStorage.setItem("hacs-search", "");
-    localStorage.setItem("hacs-sort", "name");
+    localStorage.setItem("hacs-sort", "name-desc");
     this.panel = this._page;
     this.getRepositories();
     this.getConfig();
