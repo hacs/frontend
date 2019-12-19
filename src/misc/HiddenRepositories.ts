@@ -66,9 +66,12 @@ export class HiddenRepositories extends LitElement {
     return [
       HacsStyle,
       css`
-        ha-card {
-          width: 90%;
-          margin-left: 5%;
+        paper-item {
+          display: flex;
+          background-color: var(
+            --paper-listbox-background-color,
+            var(--primary-background-color)
+          );
         }
         .listicon {
           color: var(--primary-color);

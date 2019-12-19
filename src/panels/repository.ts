@@ -103,6 +103,7 @@ export class HacsRepository extends LitElement {
           </div>
           <hacs-repository-menu
             .hass=${this.hass}
+            .route=${this.route}
             .repository=${this.repo}
           ></hacs-repository-menu>
 

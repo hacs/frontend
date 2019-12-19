@@ -8,7 +8,7 @@ import {
   property
 } from "lit-element";
 import { RepositoryWebSocketAction } from "../tools";
-import { Repository } from "../types";
+import { Repository, Route } from "../types";
 import { HacsStyle } from "../style/hacs-style";
 import { HomeAssistant } from "custom-card-helpers";
 import { localize } from "../localize/localize";
@@ -17,6 +17,7 @@ import { localize } from "../localize/localize";
 export class HacsRepositoryMenu extends LitElement {
   @property({ type: Object }) public hass!: HomeAssistant;
   @property({ type: Object }) public repository!: Repository;
+  @property({ type: Object }) public route!: Route;
 
   protected render(): TemplateResult | void {
     return html`
@@ -141,5 +142,13 @@ export class HacsRepositoryMenu extends LitElement {
     } else {
       RepositoryWebSocketAction(this.hass, this.repository.id, "hide");
     }
+    this.route.path = `/${this.repository.category}`;
+    this.dispatchEvent(
+      new CustomEvent("hacs-location-change", {
+        detail: { value: this.route },
+        bubbles: true,
+        composed: true
+      })
+    );
   }
 }
