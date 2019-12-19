@@ -48,8 +48,12 @@ jobs:
           sed -i 's|refs/tags/||' ./hacs_frontend/version.py
 
           sed -i 's|master|${{ github.ref }}|g' ./version.js
-          sed -i 's|refs/heads/||' ./rollup.config.js
-          sed -i 's|refs/tags/||' ./rollup.config.js
+          sed -i 's|refs/heads/||' ./version.js
+          sed -i 's|refs/tags/||' ./version.js
+
+          cat ./setup.py
+          cat ./hacs_frontend/version.py
+          cat ./version.js
 
       - name: Install dependencies
         run: |
