@@ -83,7 +83,9 @@ export class HacsInstalled extends LitElement {
                   ${this.hacs.localize("store.pending_upgrades")}
                 </div>
                 ${updatable_repositories
-                  .sort((a, b) => ((a.name, b.name) ? 1 : -1))
+                  .sort((a: Repository, b: Repository) =>
+                    a.name > b.name ? 1 : -1
+                  )
                   .map(repository => {
                     return builder.render(repository);
                   })}
@@ -103,7 +105,9 @@ export class HacsInstalled extends LitElement {
                 ${this.hacs.localize(`common.${category}`)}
               </div>
               ${categories[category]
-                .sort((a, b) => ((a.name, b.name) ? 1 : -1))
+                .sort((a: Repository, b: Repository) =>
+                  a.name > b.name ? 1 : -1
+                )
                 .map(repository => {
                   return builder.render(repository);
                 })}
