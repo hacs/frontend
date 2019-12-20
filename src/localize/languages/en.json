@@ -103,5 +103,20 @@
     "sort": "sort",
     "stars": "Stars",
     "status": "Status"
+  },
+  "time": {
+    "ago": "ago",
+    "day": "day",
+    "days": "days",
+    "hour": "hour",
+    "hours": "hours",
+    "minute": "minute",
+    "minutes": "minutes",
+    "month": "month",
+    "months": "months",
+    "second": "second",
+    "seconds": "seconds",
+    "year": "year",
+    "years": "years"
   }
 }

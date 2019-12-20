@@ -140,7 +140,9 @@ export class HacsRepository extends LitElement {
                 ? html`
                     <div class="last_updated">
                       <b>${this.hacs.localize(`store.last_updated`)}: </b>
-                      ${this.repo.last_updated} (UTC)
+                      ${this.hacs.timeDifference(
+                        Date.parse(this.repo.last_updated)
+                      )}
                     </div>
                   `
                 : ""}
@@ -180,7 +182,7 @@ export class HacsRepository extends LitElement {
                                 >
                               `
                           )}
-                          ${this.repo.full_name !== "hacs/integration"
+                          ${!this.repo.hide_default_branch
                             ? html`
                                 <paper-item value="${this.repo.default_branch}"
                                   >${this.repo.default_branch}</paper-item
@@ -229,9 +231,6 @@ export class HacsRepository extends LitElement {
               <ha-card class="additional">
                 <div class="card-content">
                   <div class="more_info markdown-body">
-                    <style>
-                      ${GFM} ${HLJS}
-                    </style>
                     ${markdown.html(this.repo.additional_info || "", this.repo)}
                   </div>
                   <hacs-repository-note
@@ -278,6 +277,8 @@ export class HacsRepository extends LitElement {
 
   static get styles(): CSSResultArray {
     return [
+      GFM,
+      HLJS,
       HacsStyle,
       css`
         .loader {
