@@ -50,6 +50,7 @@ export interface Repository {
   file_name: string;
   full_name: string;
   hide: boolean;
+  hide_default_branch: boolean;
   homeassistant: string;
   id: string;
   info: string;

@@ -87,7 +87,6 @@ export class HacsStore extends LitElement {
 
     this.search = localStorage.getItem("hacs-search");
     this.sort = localStorage.getItem("hacs-sort");
-    console.log(this.sort);
 
     var repositories = this.repositories.filter(repository => {
       // Hide hidden repos from the store
