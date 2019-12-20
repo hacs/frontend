@@ -12,8 +12,8 @@ import "./components/buttons/HacsButtonMainAction";
 import "./components/buttons/HacsButtonOpenPlugin";
 import "./components/buttons/HacsButtonOpenRepository";
 import "./components/buttons/HacsButtonUninstall";
-import "./components/buttons/HacsHelpButton";
 import "./components/HacsBody";
+import "./components/HacsFab";
 import "./components/HacsLink";
 import "./components/HacsProgressbar";
 

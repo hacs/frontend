@@ -350,7 +350,7 @@ class HacsFrontendBase extends LitElement {
               ></hacs-store>
             `}
 
-        <hacs-help-button></hacs-help-button>
+        <hacs-fab .hacs=${this.hacs}></hacs-fab>
       </app-header-layout>
     `;
   }

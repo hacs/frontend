@@ -4,6 +4,7 @@
     "appdaemon": "AppDaemon",
     "background_task": "Background task running, this page will reload when it's done.",
     "continue": "Continue",
+    "documentation": "Documentation",
     "installed": "installed",
     "integration": "Integration",
     "integrations": "Integrations",
