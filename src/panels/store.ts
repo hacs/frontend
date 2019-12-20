@@ -213,9 +213,11 @@ export class HacsStore extends LitElement {
                 <div class="leftspace grouptitle">
                   ${this.hacs.localize("store.new_repositories")}
                 </div>
-                ${new_repositories.map(repository => {
-                  return builder.render(repository);
-                })}
+                ${new_repositories
+                  .sort((a, b) => (this.SortRepo(a, b) ? 1 : -1))
+                  .map(repository => {
+                    return builder.render(repository);
+                  })}
                 <div class="card-group">
                   <hacs-button-clear-new
                     .hass=${this.hass}
