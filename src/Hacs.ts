@@ -13,7 +13,7 @@ import {
 } from "./tools";
 
 export interface HACS {
-  timeDifference(previous: any): string;
+  RelativeTimeSince(target: any): string;
   emojify(string: string): string;
   localize?(string: string, search?: string, replace?: string): string;
   scrollToTarget(element: any, target: any): void;
@@ -49,7 +49,7 @@ export class Hacs {
   ): void {
     RepositoryWebSocketAction(hass, repository, Action, Data);
   };
-  timeDifference(previous: any): string {
+  RelativeTimeSince(target: any): string {
     const current: any = new Date();
 
     const msPerMinute = 60 * 1000;
@@ -58,35 +58,52 @@ export class Hacs {
     const msPerMonth = msPerDay * 30;
     const msPerYear = msPerDay * 365;
 
-    const elapsed = current - previous;
+    const elapsed = current - target;
+
+    var value: number;
 
     if (elapsed < msPerMinute) {
-      return (
-        Math.round(elapsed / 1000) +
-        ` ${this.localize("time.seconds")} ${this.localize("time.ago")}`
-      );
+      value = Math.round(elapsed / 1000);
+      return `${
+        value === 1 ? this.localize(`time.one`) : value
+      } ${this.localize(
+        `time.second${value === 1 ? "" : "s"}`
+      )} ${this.localize(`time.ago`)}`;
     } else if (elapsed < msPerHour) {
-      return (
-        Math.round(elapsed / msPerMinute) +
-        ` ${this.localize("time.minutes")} ${this.localize("time.ago")}`
-      );
+      value = Math.round(elapsed / msPerMinute);
+      return `${
+        value === 1 ? this.localize(`time.one`) : value
+      } ${this.localize(
+        `time.minute${value === 1 ? "" : "s"}`
+      )} ${this.localize(`time.ago`)}`;
     } else if (elapsed < msPerDay) {
-      return (
-        Math.round(elapsed / msPerHour) +
-        ` ${this.localize("time.hours")} ${this.localize("time.ago")}`
-      );
+      value = Math.round(elapsed / msPerHour);
+      return `${
+        value === 1 ? this.localize(`time.one`) : value
+      } ${this.localize(`time.hour${value === 1 ? "" : "s"}`)} ${this.localize(
+        `time.ago`
+      )}`;
     } else if (elapsed < msPerMonth) {
-      return `${Math.round(elapsed / msPerDay)} ${this.localize(
-        "time.days"
-      )} ${this.localize("time.ago")}`;
+      value = Math.round(elapsed / msPerDay);
+      return `${
+        value === 1 ? this.localize(`time.one`) : value
+      } ${this.localize(`time.day${value === 1 ? "" : "s"}`)} ${this.localize(
+        `time.ago`
+      )}`;
     } else if (elapsed < msPerYear) {
-      return `${Math.round(elapsed / msPerMonth)} ${this.localize(
-        "time.months"
-      )} ${this.localize("time.ago")}`;
+      value = Math.round(elapsed / msPerMonth);
+      return `${
+        value === 1 ? this.localize(`time.one`) : value
+      } ${this.localize(`time.month${value === 1 ? "" : "s"}`)} ${this.localize(
+        `time.ago`
+      )}`;
     } else {
-      return `${Math.round(elapsed / msPerYear)} ${this.localize(
-        "time.years"
-      )} ${this.localize("time.ago")}`;
+      value = Math.round(elapsed / msPerYear);
+      return `${
+        value === 1 ? this.localize(`time.one`) : value
+      } ${this.localize(`time.year${value === 1 ? "" : "s"}`)} ${this.localize(
+        `time.ago`
+      )}`;
     }
   }
 }

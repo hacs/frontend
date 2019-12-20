@@ -140,7 +140,7 @@ export class HacsRepository extends LitElement {
                 ? html`
                     <div class="last_updated">
                       <b>${this.hacs.localize(`store.last_updated`)}: </b>
-                      ${this.hacs.timeDifference(
+                      ${this.hacs.RelativeTimeSince(
                         Date.parse(this.repo.last_updated)
                       )}
                     </div>
