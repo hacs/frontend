@@ -50,6 +50,7 @@ export class HacsFab extends LitElement {
     )
       location = "stores";
     window.open(`${base}${location}`, "Help", "noreferrer");
+    this.extended = false;
   }
 
   static get styles(): CSSResultArray {
