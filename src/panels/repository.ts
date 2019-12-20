@@ -174,21 +174,21 @@ export class HacsRepository extends LitElement {
                           selected="${this.repo.selected_tag}"
                           attr-for-selected="value"
                         >
-                          ${this.repo.releases.map(
-                            release =>
-                              html`
-                                <paper-item value="${release}"
-                                  >${release}</paper-item
-                                >
-                              `
-                          )}
-                          ${!this.repo.hide_default_branch
-                            ? html`
+                          ${this.repo.releases.map(release => {
+                            return html`
+                              <paper-item value="${release}"
+                                >${release}</paper-item
+                              >
+                            `;
+                          })}
+                          ${this.repo.full_name === "hacs/integration" ||
+                          this.repo.hide_default_branch
+                            ? ""
+                            : html`
                                 <paper-item value="${this.repo.default_branch}"
                                   >${this.repo.default_branch}</paper-item
                                 >
-                              `
-                            : ""}
+                              `}
                         </paper-listbox>
                       </paper-dropdown-menu>
                     </div>
