@@ -65,7 +65,7 @@ export class OviewItemBuilder {
       >
         <div class="icon">
           <ha-icon
-            icon="mdi:new-box"
+            icon=${repository.new ? "mdi:new-box" : "mdi:cube"}
             class="${this.StatusAndDescription(repository).status}"
             title="${this.StatusAndDescription(repository).description}"
           >
