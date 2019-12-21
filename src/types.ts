@@ -6,7 +6,7 @@ export interface Route {
 export interface Status {
   background_task: boolean;
   disabled: boolean;
-  lovelace_mode: "storeage" | "yaml";
+  lovelace_mode: "storage" | "yaml";
   reloading_data: boolean;
   startup: boolean;
   manage_mode: boolean;

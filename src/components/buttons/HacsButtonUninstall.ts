@@ -9,7 +9,7 @@ import { HacsStyle } from "../../style/hacs-style";
 import { HacsRepositoryButton } from "./HacsRepositoryButton";
 import { RepositoryWebSocketAction } from "../../tools";
 import swal from "sweetalert";
-
+import { LovelaceConfig, LovelaceResourceConfig } from "../../types";
 import { localize } from "../../localize/localize";
 
 @customElement("hacs-button-uninstall")
@@ -76,6 +76,41 @@ export class HacsButtonUninstall extends HacsRepositoryButton {
       "set_state",
       "uninstalling"
     );
+    if (
+      this.repository.category === "plugin" &&
+      this.status.lovelace_mode === "storage"
+    ) {
+      this.RepositoryRemoveFromLovelace();
+    }
     RepositoryWebSocketAction(this.hass, this.repository.id, "uninstall");
+  }
+  RepositoryRemoveFromLovelace() {
+    this.hass.connection
+      .sendMessagePromise({
+        type: "lovelace/config",
+        force: false
+      })
+      .then(resp => {
+        const currentConfig = resp as LovelaceConfig;
+        const url = `/community_plugin/${
+          this.repository.full_name.split("/")[1]
+        }/${this.repository.file_name}`;
+
+        if (currentConfig.resources) {
+          console.log(currentConfig.resources);
+          const resources: LovelaceResourceConfig[] = currentConfig.resources.filter(
+            (element: LovelaceResourceConfig) => {
+              if (element.url === url) {
+                return false;
+              } else return true;
+            }
+          );
+          currentConfig.resources = resources;
+          this.hass.callWS({
+            type: "lovelace/config/save",
+            config: currentConfig
+          });
+        }
+      });
   }
 }
