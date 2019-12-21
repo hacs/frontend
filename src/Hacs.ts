@@ -5,6 +5,7 @@ Instead common functions/objects are stored in the Hacs class.
 import { HomeAssistant } from "custom-card-helpers";
 import { localize } from "./localize/localize";
 import emoji from "node-emoji";
+import { markdown } from "./markdown/markdown";
 import {
   navigate,
   scrollToTarget,
@@ -19,6 +20,7 @@ export interface HACS {
   scrollToTarget(element: any, target: any): void;
   navigate?(_node: any, path: string): any;
   isnullorempty?(test: any): boolean;
+  markdown?(input: string): any;
 }
 
 export class Hacs {
@@ -36,6 +38,10 @@ export class Hacs {
 
   navigate = (_node: any, path: string) => {
     navigate(_node, path);
+  };
+
+  markdown = function(input: string): any {
+    return markdown.convert(input);
   };
 
   isnullorempty = function(test: any): boolean {
