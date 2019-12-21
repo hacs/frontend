@@ -26,6 +26,7 @@ class HacsFrontend extends LitElement {
     style.innerHTML = `
             .swal-modal {
                 background-color: var(--primary-background-color) !important;
+                text-align: left;
             }
             .swal-text {
                 color: var(--primary-text-color) !important;
@@ -34,6 +35,9 @@ class HacsFrontend extends LitElement {
                 background-color: var(--primary-color) !important;
                 color: var(--primary-text-color) !important;
             }
+            .swal-text:first-child {
+              margin: 16px 0px 0px 8px;
+          }
           `;
     element.appendChild(style);
   }

@@ -9,12 +9,18 @@ import {
 } from "lit-element";
 import { HacsStyle } from "../style/hacs-style";
 import { HACS } from "../Hacs";
+import { Repository, Status, Configuration } from "../types";
+
+import { AboutHacs } from "../misc/AboutHacs";
 
 import swal from "sweetalert";
 
 @customElement("hacs-menu")
 export class HacsMenu extends LitElement {
   @property({ type: Object }) public hacs!: HACS;
+  @property({ type: Object }) public configuration!: Configuration;
+  @property({ type: Object }) public status!: Status;
+  @property({ type: Array }) public repositories!: Repository[];
   protected render(): TemplateResult | void {
     return html`
       <paper-menu-button
@@ -48,7 +54,14 @@ export class HacsMenu extends LitElement {
   }
 
   openAbout() {
-    swal("About");
+    swal({
+      buttons: [false],
+      content: AboutHacs(
+        this.hacs,
+        this.repositories,
+        this.configuration
+      ) as any
+    });
   }
 
   openHelp() {
