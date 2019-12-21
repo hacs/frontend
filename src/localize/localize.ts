@@ -4,7 +4,7 @@ import * as el from "./languages/el.json";
 import * as en from "./languages/en.json";
 import * as es from "./languages/es.json";
 import * as fr from "./languages/fr.json";
-import * as ha from "./languages/ha.json";
+import * as hu from "./languages/hu.json";
 import * as it from "./languages/it.json";
 import * as nb from "./languages/nb.json";
 import * as nl from "./languages/nl.json";
@@ -24,7 +24,7 @@ var languages = {
   en: en,
   es: es,
   fr: fr,
-  ha: ha,
+  hu: hu,
   it: it,
   nb: nb,
   nl: nl,
