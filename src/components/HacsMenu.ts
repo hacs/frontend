@@ -76,7 +76,8 @@ export class HacsMenu extends LitElement {
               ${this.hacs.localize(`repository.open_issue`)}
             </paper-item>
           </a>
-          ${!this.location.includes("settings")
+          ${!this.location.includes("settings") &&
+          !this.location.includes("repository")
             ? html`
                 <paper-item>
                   <ha-switch
