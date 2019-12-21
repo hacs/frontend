@@ -285,7 +285,6 @@ class HacsFrontendBase extends LitElement {
                     </paper-tab>
                   `
                 : ""}
-
               <paper-tab page-name="settings"
                 >${this.hacs.localize("common.settings")}</paper-tab
               >
@@ -441,6 +440,10 @@ class HacsFrontendBase extends LitElement {
         }
         paper-tab {
           cursor: pointer;
+        }
+
+        .margin {
+          width: 20%;
         }
         hacs-progressbar {
           top: 0;
