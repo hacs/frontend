@@ -34,7 +34,12 @@ export class HacsRepositoryMenu extends LitElement {
           slot="dropdown-trigger"
           role="button"
         ></paper-icon-button>
-        <paper-listbox slot="dropdown-content" role="listbox" tabindex="0">
+        <paper-listbox
+          slot="dropdown-content"
+          role="listbox"
+          tabindex="0"
+          dir="rtl"
+        >
           <paper-item @click=${this.RepositoryReload}>
             ${localize(`repository.update_information`)}
           </paper-item>
@@ -62,7 +67,6 @@ export class HacsRepositoryMenu extends LitElement {
             target="_blank"
           >
             <paper-item>
-              <ha-icon class="link-icon" icon="mdi:open-in-new"></ha-icon>
               ${localize(`repository.open_issue`)}
             </paper-item>
           </a>
@@ -74,7 +78,6 @@ export class HacsRepositoryMenu extends LitElement {
             target="_blank"
           >
             <paper-item>
-              <ha-icon class="link-icon" icon="mdi:open-in-new"></ha-icon>
               ${localize(`repository.flag_this`)}
             </paper-item>
           </a>
@@ -96,6 +99,7 @@ export class HacsRepositoryMenu extends LitElement {
           top: -68px;
         }
         paper-item {
+          color: var(--primary-text-color);
           display: flex;
           background-color: var(
             --paper-listbox-background-color,

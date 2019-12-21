@@ -174,6 +174,7 @@ export class HacsStore extends LitElement {
               class="list"
               selected="${this.sort}"
               attr-for-selected="key"
+              dir="rtl"
             >
               <paper-item class="listitem" key="last_updated-desc"
                 >${this.hacs.localize(

@@ -12,7 +12,7 @@ import { HacsStyle } from "../style/hacs-style";
 import { HACS } from "../Hacs";
 import { Repository, Status, Configuration } from "../types";
 
-import { AboutHacs } from "../misc/AboutHacs";
+import { AboutHacs } from "./AboutHacs";
 
 import swal from "sweetalert";
 
