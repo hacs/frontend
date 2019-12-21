@@ -117,6 +117,7 @@ export class CustomRepositories extends LitElement {
                               <div
                                 @click=${this.ShowRepository}
                                 class="link flexy"
+                                title="${localize("settings.open_repository")}"
                               >
                                 <div class="MobileHide">
                                   [${repo.category}]&nbsp;

@@ -90,6 +90,7 @@
     "hacs_repo": "HACS repo",
     "hidden_repositories": "hidden repositories",
     "missing_category": "You need to select a category",
+    "open_repository": "Open repository",
     "reload_data": "Reload data",
     "save": "Save",
     "table_view": "Table view",

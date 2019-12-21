@@ -68,10 +68,6 @@ export class HiddenRepositories extends LitElement {
       css`
         paper-item {
           display: flex;
-          background-color: var(
-            --paper-listbox-background-color,
-            var(--primary-background-color)
-          );
         }
         .listicon {
           color: var(--primary-color);
