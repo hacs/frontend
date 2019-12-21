@@ -298,10 +298,13 @@ class HacsFrontendBase extends LitElement {
         ></hacs-progressbar>
         ${this.status.disabled
           ? html`
-              <ha-card header="Disabled!">
+              <ha-card header="${this.hacs
+                .localize("common.disabled")
+                .toUpperCase()}!">
                 <div class="card-content">
-                  HACS is disabled! </br> Check your log <b>file</b> for more
-                  details.
+                  ${this.hacs.localize(
+                    "common.hacs_is_disabled"
+                  )}! </br> ${this.hacs.localize("common.check_log_file")}
                 </div>
               </ha-card>
             `
