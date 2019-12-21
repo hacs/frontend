@@ -145,6 +145,7 @@ const baseHacsStyles = css`
   }
   .uninstall-button {
     --mdc-theme-primary: var(--google-red-500);
+    color: var(--google-red-500);
   }
   .red-button {
     --mdc-theme-primary: var(--google-red-500);

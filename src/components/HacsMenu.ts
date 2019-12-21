@@ -55,7 +55,7 @@ export class HacsMenu extends LitElement {
 
           ${this.location.includes("installed")
             ? html`
-                <paper-item @click=${this.UpgradeAll}>
+                <paper-item @click=${this.UpgradeAll} class="uninstall-button">
                   ${this.hacs.localize("settings.upgrade_all")}
                 </paper-item>
               `
