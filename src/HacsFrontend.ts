@@ -212,74 +212,78 @@ class HacsFrontendBase extends LitElement {
     return html`
       <app-header-layout has-scrolling-region>
         <app-header slot="header" fixed>
-          <app-toolbar>
-            <ha-menu-button
-              .hass="${this.hass}"
-              .narrow="${this.narrow}"
-            ></ha-menu-button>
-            <div main-title class="fulltitle">
-              Home Assistant Community Store
-              ${this._rootPath === "hacs_dev"
+          <div id="contentContainer">
+            <app-toolbar>
+              <ha-menu-button
+                .hass="${this.hass}"
+                .narrow="${this.narrow}"
+              ></ha-menu-button>
+              <div main-title class="fulltitle">
+                Home Assistant Community Store
+                ${this._rootPath === "hacs_dev"
+                  ? html`
+                      (DEVELOPMENT)
+                    `
+                  : ""}
+              </div>
+              <div main-title class="mobiletitle">
+                HACS
+                ${this._rootPath === "hacs_dev"
+                  ? html`
+                      (DEVELOPMENT)
+                    `
+                  : ""}
+              </div>
+              <hacs-menu .hacs=${this.hacs} .status=${this.status}></hacs-menu>
+            </app-toolbar>
+
+            <paper-tabs
+              scrollable
+              autoselect
+              class="tabs"
+              attr-for-selected="page-name"
+              .selected=${page}
+              @iron-activate=${this.handlePageSelected}
+            >
+              <paper-tab page-name="installed"
+                >${this.hacs.localize(`common.installed`)}</paper-tab
+              >
+
+              <paper-tab page-name="integration"
+                >${this.hacs.localize(`common.integrations`)}</paper-tab
+              >
+
+              <paper-tab page-name="plugin"
+                >${this.hacs.localize(`common.plugins`)}</paper-tab
+              >
+
+              ${this.configuration.categories.includes("appdaemon")
                 ? html`
-                    (DEVELOPMENT)
+                    <paper-tab page-name="appdaemon">
+                      ${this.hacs.localize(`common.appdaemon_apps`)}
+                    </paper-tab>
                   `
                 : ""}
-            </div>
-            <div main-title class="mobiletitle">
-              HACS
-              ${this._rootPath === "hacs_dev"
+              ${this.configuration.categories.includes("python_script")
                 ? html`
-                    (DEVELOPMENT)
+                    <paper-tab page-name="python_script">
+                      ${this.hacs.localize(`common.python_scripts`)}
+                    </paper-tab>
                   `
                 : ""}
-            </div>
-            <hacs-menu .hacs=${this.hacs} .status=${this.status}></hacs-menu>
-          </app-toolbar>
-          <paper-tabs
-            scrollable
-            autoselect
-            attr-for-selected="page-name"
-            .selected=${page}
-            @iron-activate=${this.handlePageSelected}
-          >
-            <paper-tab page-name="installed"
-              >${this.hacs.localize(`common.installed`)}</paper-tab
-            >
+              ${this.configuration.categories.includes("theme")
+                ? html`
+                    <paper-tab page-name="theme">
+                      ${this.hacs.localize(`common.themes`)}
+                    </paper-tab>
+                  `
+                : ""}
 
-            <paper-tab page-name="integration"
-              >${this.hacs.localize(`common.integrations`)}</paper-tab
-            >
-
-            <paper-tab page-name="plugin"
-              >${this.hacs.localize(`common.plugins`)}</paper-tab
-            >
-
-            ${this.configuration.categories.includes("appdaemon")
-              ? html`
-                  <paper-tab page-name="appdaemon">
-                    ${this.hacs.localize(`common.appdaemon_apps`)}
-                  </paper-tab>
-                `
-              : ""}
-            ${this.configuration.categories.includes("python_script")
-              ? html`
-                  <paper-tab page-name="python_script">
-                    ${this.hacs.localize(`common.python_scripts`)}
-                  </paper-tab>
-                `
-              : ""}
-            ${this.configuration.categories.includes("theme")
-              ? html`
-                  <paper-tab page-name="theme">
-                    ${this.hacs.localize(`common.themes`)}
-                  </paper-tab>
-                `
-              : ""}
-
-            <paper-tab page-name="settings"
-              >${this.hacs.localize("common.settings")}</paper-tab
-            >
-          </paper-tabs>
+              <paper-tab page-name="settings"
+                >${this.hacs.localize("common.settings")}</paper-tab
+              >
+            </paper-tabs>
+          </div>
         </app-header>
 
         <hacs-progressbar
@@ -295,62 +299,62 @@ class HacsFrontendBase extends LitElement {
               </ha-card>
             `
           : ""}
-        <slot></slot>
+        <hacs-body>
+          <hacs-critical
+            .hacs=${this.hacs}
+            .hass=${this.hass}
+            .critical=${this.critical}
+          ></hacs-critical>
+          <hacs-error .hacs=${this.hacs} .hass=${this.hass}></hacs-error>
 
-        <hacs-critical
-          .hacs=${this.hacs}
-          .hass=${this.hass}
-          .critical=${this.critical}
-        ></hacs-critical>
-        <hacs-error .hacs=${this.hacs} .hass=${this.hass}></hacs-error>
-
-        ${this.route.path === "/installed"
-          ? html`
-              <hacs-installed
-                .hacs=${this.hacs}
-                .hass=${this.hass}
-                .route=${this.route}
-                .repositories=${this.repositories}
-                .configuration=${this.configuration}
-                .status=${this.status}
-              ></hacs-installed>
-            `
-          : this.route.path === "/settings"
-          ? html`
-              <hacs-settings
-                .hacs=${this.hacs}
-                .hass=${this.hass}
-                .route=${this.route}
-                .repositories=${this.repositories}
-                .configuration=${this.configuration}
-                .status=${this.status}
-              >
-              </hacs-settings>
-            `
-          : this.route.path.includes("/repository")
-          ? html`
-              <hacs-repository
-                .hacs=${this.hacs}
-                .repository=${this._get_repository}
-                .hass=${this.hass}
-                .route=${this.route}
-                .lovelaceconfig=${this.lovelaceconfig}
-                .repositories=${this.repositories}
-                .configuration=${this.configuration}
-                .status=${this.status}
-              ></hacs-repository>
-            `
-          : html`
-              <hacs-store
-                .hacs=${this.hacs}
-                .store=${this._get_store}
-                .hass=${this.hass}
-                .route=${this.route}
-                .repositories=${this.repositories}
-                .configuration=${this.configuration}
-                .status=${this.status}
-              ></hacs-store>
-            `}
+          ${this.route.path === "/installed"
+            ? html`
+                <hacs-installed
+                  .hacs=${this.hacs}
+                  .hass=${this.hass}
+                  .route=${this.route}
+                  .repositories=${this.repositories}
+                  .configuration=${this.configuration}
+                  .status=${this.status}
+                ></hacs-installed>
+              `
+            : this.route.path === "/settings"
+            ? html`
+                <hacs-settings
+                  .hacs=${this.hacs}
+                  .hass=${this.hass}
+                  .route=${this.route}
+                  .repositories=${this.repositories}
+                  .configuration=${this.configuration}
+                  .status=${this.status}
+                >
+                </hacs-settings>
+              `
+            : this.route.path.includes("/repository")
+            ? html`
+                <hacs-repository
+                  .hacs=${this.hacs}
+                  .repository=${this._get_repository}
+                  .hass=${this.hass}
+                  .route=${this.route}
+                  .lovelaceconfig=${this.lovelaceconfig}
+                  .repositories=${this.repositories}
+                  .configuration=${this.configuration}
+                  .status=${this.status}
+                ></hacs-repository>
+              `
+            : html`
+                <hacs-store
+                  .hacs=${this.hacs}
+                  .store=${this._get_store}
+                  .hass=${this.hass}
+                  .route=${this.route}
+                  .repositories=${this.repositories}
+                  .configuration=${this.configuration}
+                  .status=${this.status}
+                ></hacs-store>
+              `}
+        </hacs-body>
       </app-header-layout>
     `;
   }
@@ -424,6 +428,9 @@ class HacsFrontendBase extends LitElement {
           z-index: 99;
           width: 150px;
           height: 150px;
+        }
+        paper-tab {
+          cursor: pointer;
         }
         hacs-progressbar {
           top: 0;

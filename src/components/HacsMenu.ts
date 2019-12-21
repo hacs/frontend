@@ -38,7 +38,6 @@ export class HacsMenu extends LitElement {
           <paper-item @click=${this.openHelp}
             >${this.hacs.localize("common.documentation")}
           </paper-item>
-          <paper-item disabled></paper-item>
 
           <paper-item @click=${this.openAbout}
             >${this.hacs.localize("common.about")}

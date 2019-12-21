@@ -9,8 +9,7 @@ export const navStyle = css`
     line-height: var(--paper-font-body1_-_line-height);
   }
 
-  app-header-layout,
-  ha-app-layout {
+  app-header-layout {
     background-color: var(--primary-background-color);
   }
 
@@ -32,5 +31,12 @@ export const navStyle = css`
   app-toolbar ha-paper-icon-button-arrow-prev + [main-title],
   app-toolbar paper-icon-button + [main-title] {
     margin-left: 24px;
+  }
+  .tabs {
+    position: relative;
+    z-index: -1;
+  }
+  div#contentContainer {
+    z-index: -2;
   }
 `;
