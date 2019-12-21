@@ -171,35 +171,36 @@ export class HacsStore extends LitElement {
           >
             <paper-listbox
               slot="dropdown-content"
+              class="list"
               selected="${this.sort}"
               attr-for-selected="key"
             >
-              <paper-item key="last_updated-desc"
+              <paper-item class="listitem" key="last_updated-desc"
                 >${this.hacs.localize(
                   "store.last_updated"
                 )}&nbsp;(${this.hacs.localize("store.descending")})</paper-item
               >
-              <paper-item key="last_updated-asc"
+              <paper-item class="listitem" key="last_updated-asc"
                 >${this.hacs.localize(
                   "store.last_updated"
                 )}&nbsp;(${this.hacs.localize("store.ascending")})</paper-item
               >
-              <paper-item key="name-desc"
+              <paper-item class="listitem" key="name-desc"
                 >${this.hacs.localize("store.name")}&nbsp;(${this.hacs.localize(
                   "store.descending"
                 )})</paper-item
               >
-              <paper-item key="name-asc"
+              <paper-item class="listitem" key="name-asc"
                 >${this.hacs.localize("store.name")}&nbsp;(${this.hacs.localize(
                   "store.ascending"
                 )})</paper-item
               >
-              <paper-item key="stars-desc"
+              <paper-item class="listitem" key="stars-desc"
                 >${this.hacs.localize(
                   "store.stars"
                 )}&nbsp;(${this.hacs.localize("store.descending")})</paper-item
               >
-              <paper-item key="stars-asc"
+              <paper-item class="listitem" key="stars-asc"
                 >${this.hacs.localize(
                   "store.stars"
                 )}&nbsp;(${this.hacs.localize("store.ascending")})</paper-item
@@ -290,6 +291,13 @@ export class HacsStore extends LitElement {
         }
         .card-content {
           width: calc(100% - 32px) !important;
+        }
+        paper-item.listitem {
+          display: flex;
+          background-color: var(
+            --paper-listbox-background-color,
+            var(--primary-background-color)
+          );
         }
       `
     ];
