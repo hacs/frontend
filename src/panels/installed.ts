@@ -38,6 +38,7 @@ export class HacsInstalled extends LitElement {
         <hacs-progressbar></hacs-progressbar>
       `;
     const builder = new OviewItemBuilder(
+      this.hass,
       this.configuration,
       this.lovelaceconfig,
       this.status,
@@ -128,7 +129,7 @@ export class HacsInstalled extends LitElement {
           width: 100%;
         }
         ha-card {
-          display: inline-flex;
+          display: inline-block;
           cursor: pointer;
         }
         .grouptitle {

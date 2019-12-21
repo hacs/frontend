@@ -1,5 +1,5 @@
 import { html } from "lit-element";
-
+import { HomeAssistant } from "custom-card-helpers";
 import {
   Configuration,
   Repository,
@@ -11,6 +11,7 @@ import { AddedToLovelace } from "../misc/AddedToLovelace";
 import emoji from "node-emoji";
 
 export class OviewItemBuilder {
+  hass: HomeAssistant;
   configuration: Configuration;
   lovelaceconfig: LovelaceConfig;
   status: Status;
@@ -18,11 +19,13 @@ export class OviewItemBuilder {
   dispatchEvent: any;
 
   constructor(
+    hass: HomeAssistant,
     configuration: Configuration,
     lovelaceconfig: LovelaceConfig,
     status: Status,
     route: Route
   ) {
+    this.hass = hass;
     this.configuration = configuration;
     this.lovelaceconfig = lovelaceconfig;
     this.status = status;

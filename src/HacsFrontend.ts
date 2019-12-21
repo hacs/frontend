@@ -235,6 +235,7 @@ class HacsFrontendBase extends LitElement {
                   : ""}
               </div>
               <hacs-menu
+                .location=${window.location.pathname}
                 .hacs=${this.hacs}
                 .hass=${this.hass}
                 .configuration=${this.configuration}

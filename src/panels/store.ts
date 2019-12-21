@@ -78,6 +78,7 @@ export class HacsStore extends LitElement {
       `;
 
     const builder = new OviewItemBuilder(
+      this.hass,
       this.configuration,
       this.lovelaceconfig,
       this.status,
@@ -250,7 +251,7 @@ export class HacsStore extends LitElement {
           width: 100%;
         }
         ha-card {
-          display: inline-flex;
+          display: inline-block;
           cursor: pointer;
         }
         .padder {

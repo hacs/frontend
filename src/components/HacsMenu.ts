@@ -18,6 +18,7 @@ import swal from "sweetalert";
 
 @customElement("hacs-menu")
 export class HacsMenu extends LitElement {
+  @property() public location!: string;
   @property({ type: Object }) public hacs!: HACS;
   @property({ type: Object }) public hass!: HomeAssistant;
   @property({ type: Object }) public configuration!: Configuration;
@@ -52,9 +53,13 @@ export class HacsMenu extends LitElement {
             ${this.hacs.localize("settings.reload_data")}
           </paper-item>
 
-          <paper-item @click=${this.UpgradeAll}>
-            ${this.hacs.localize("settings.upgrade_all")}
-          </paper-item>
+          ${this.location.includes("installed")
+            ? html`
+                <paper-item @click=${this.UpgradeAll}>
+                  ${this.hacs.localize("settings.upgrade_all")}
+                </paper-item>
+              `
+            : ""}
 
           <a href="https://github.com/hacs" target="_blank" rel="noreferrer">
             <paper-item>
@@ -71,20 +76,25 @@ export class HacsMenu extends LitElement {
               ${this.hacs.localize(`repository.open_issue`)}
             </paper-item>
           </a>
-          <paper-item>
-            <ha-switch
-              .checked=${this.configuration.frontend_mode === "Table"}
-              @change=${this.SetFeStyle}
-              ><div class="switch-text">Table</div></ha-switch
-            >
-          </paper-item>
-          <paper-item>
-            <ha-switch
-              .checked=${this.configuration.frontend_compact}
-              @change=${this.SetFeCompact}
-              ><div class="switch-text">Compact</div>
-            </ha-switch>
-          </paper-item>
+          ${!this.location.includes("settings")
+            ? html`
+                <paper-item>
+                  <ha-switch
+                    .checked=${this.configuration.frontend_mode === "Table"}
+                    @change=${this.SetFeStyle}
+                    ><div class="switch-text">Table</div></ha-switch
+                  >
+                </paper-item>
+                <paper-item>
+                  <ha-switch
+                    .checked=${this.configuration.frontend_compact}
+                    @change=${this.SetFeCompact}
+                    ><div class="switch-text">Compact</div>
+                  </ha-switch>
+                </paper-item>
+              `
+            : ""}
+
           <paper-item @click=${this.openAbout}
             >${this.hacs.localize("common.about")}
           </paper-item>

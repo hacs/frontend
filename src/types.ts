@@ -9,6 +9,7 @@ export interface Status {
   lovelace_mode: "storeage" | "yaml";
   reloading_data: boolean;
   startup: boolean;
+  manage_mode: boolean;
   upgrading_all: boolean;
 }
 
