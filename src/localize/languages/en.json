@@ -1,5 +1,6 @@
 {
   "common": {
+    "about": "About",
     "appdaemon_apps": "AppDaemon Apps",
     "appdaemon": "AppDaemon",
     "background_task": "Background task running, this page will reload when it's done.",

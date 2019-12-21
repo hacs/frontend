@@ -13,8 +13,8 @@ import "./components/buttons/HacsButtonOpenPlugin";
 import "./components/buttons/HacsButtonOpenRepository";
 import "./components/buttons/HacsButtonUninstall";
 import "./components/HacsBody";
-import "./components/HacsFab";
 import "./components/HacsLink";
+import "./components/HacsMenu";
 import "./components/HacsProgressbar";
 
 import "./misc/CustomRepositories";

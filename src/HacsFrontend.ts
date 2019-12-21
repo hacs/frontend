@@ -233,6 +233,7 @@ class HacsFrontendBase extends LitElement {
                   `
                 : ""}
             </div>
+            <hacs-menu .hacs=${this.hacs} .status=${this.status}></hacs-menu>
           </app-toolbar>
           <paper-tabs
             scrollable
@@ -349,8 +350,6 @@ class HacsFrontendBase extends LitElement {
                 .status=${this.status}
               ></hacs-store>
             `}
-
-        <hacs-fab .hacs=${this.hacs}></hacs-fab>
       </app-header-layout>
     `;
   }

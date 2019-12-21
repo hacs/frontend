@@ -195,7 +195,7 @@ const mobileHacsStyles = css`
       padding-left: 0px !important;
       padding-right: 0px !important;
     }
-    hacs-fab {
+    hacs-menu {
       display: none;
     }
   }
