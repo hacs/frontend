@@ -7,7 +7,6 @@ import {
 } from "lit-element";
 import { HomeAssistant } from "custom-card-helpers";
 import { Hacs, HACS } from "./Hacs";
-
 import { Route } from "./types";
 import "./LoadUIElements";
 
