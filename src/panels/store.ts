@@ -290,13 +290,6 @@ export class HacsStore extends LitElement {
         .card-content {
           width: calc(100% - 32px) !important;
         }
-        paper-item {
-          display: flex;
-          background-color: var(
-            --paper-listbox-background-color,
-            var(--primary-background-color)
-          );
-        }
       `
     ];
   }
