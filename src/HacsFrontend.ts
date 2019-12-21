@@ -237,6 +237,7 @@ class HacsFrontendBase extends LitElement {
           </app-toolbar>
           <paper-tabs
             scrollable
+            autoselect
             attr-for-selected="page-name"
             .selected=${page}
             @iron-activate=${this.handlePageSelected}

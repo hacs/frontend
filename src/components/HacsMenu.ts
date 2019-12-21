@@ -14,12 +14,10 @@ import swal from "sweetalert";
 
 @customElement("hacs-menu")
 export class HacsMenu extends LitElement {
-  @property() private extended: boolean = true;
   @property({ type: Object }) public hacs!: HACS;
   protected render(): TemplateResult | void {
     return html`
       <paper-menu-button
-        no-animations
         horizontal-align="right"
         role="group"
         aria-haspopup="true"
@@ -31,12 +29,18 @@ export class HacsMenu extends LitElement {
           slot="dropdown-trigger"
           role="button"
         ></paper-icon-button>
-        <paper-listbox slot="dropdown-content" role="listbox" tabindex="0">
-          <paper-item @click=${this.openHelp} class="text"
+        <paper-listbox
+          slot="dropdown-content"
+          role="listbox"
+          tabindex="0"
+          dir="rtl"
+        >
+          <paper-item @click=${this.openHelp}
             >${this.hacs.localize("common.documentation")}
           </paper-item>
+          <paper-item disabled></paper-item>
 
-          <paper-item @click=${this.openAbout} class="text"
+          <paper-item @click=${this.openAbout}
             >${this.hacs.localize("common.about")}
           </paper-item>
         </paper-listbox>
@@ -58,7 +62,6 @@ export class HacsMenu extends LitElement {
     )
       location = "stores";
     window.open(`${base}${location}`, "Help", "noreferrer");
-    this.extended = false;
   }
 
   static get styles(): CSSResultArray {
