@@ -199,14 +199,20 @@ export class HacsMenu extends LitElement {
 
   openHelp() {
     const base = "https://hacs.xyz/docs/navigation/";
+    const fallback = "https://hacs.xyz/docs/basic/getting_started/";
     var location = window.location.pathname.split("/")[2];
+    if (this.hacs.isnullorempty(location)) {
+      window.open(fallback, "Documentation", "noreferrer");
+      return;
+    }
+
     if (
       ["integration", "plugin", "appdaemon", "python_script", "theme"].includes(
         location
       )
     )
       location = "stores";
-    window.open(`${base}${location}`, "Help", "noreferrer");
+    window.open(`${base}${location}`, "Documentation", "noreferrer");
   }
 
   static get styles(): CSSResultArray {
