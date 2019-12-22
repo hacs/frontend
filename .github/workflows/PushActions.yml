@@ -82,7 +82,8 @@ jobs:
 
       - name: Discord notification
         env:
-          DISCORD_WEBHOOK: "https://discordapp.com/api/webhooks/636183377220730880/WA71A3QwHQJ4FLHVzPvu-dqCHhuFEKPuUbcsb3lXeeqRgdOqekIB7gT8eBFnaNNQ0xne"
+          DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
+          DISCORD_USERNAME: DeployBot
         uses: Ilshidur/action-discord@0.0.2
         with:
-          args: "Version [$ts](https://pypi.org/project/hacs-frontend/$ts/) of HACS frontend are now pushed to PyPi."
+          args: "New version of HACS frontend are now pushed to [PyPi](https://pypi.org/project/hacs-frontend)."
