@@ -1,4 +1,4 @@
-name: "Push"
+name: "Push actions"
 
 on:
   push:
@@ -19,6 +19,7 @@ jobs:
 
   deploy:
     runs-on: ubuntu-latest
+    name: Deploy to PyPi
     needs: build_frontend
     steps:
       - uses: actions/checkout@v1
@@ -53,9 +54,9 @@ jobs:
       - name: "Set version number"
         run: |
           export ts=$(date "+%Y%m%d%H%M%S")
-          sed -i '/version=/c\version=$ts,' ./setup.py
-          sed -i 's|master|$ts|g' ./hacs_frontend/version.py
-          sed -i 's|master|$ts|g' ./version.js
+          sed -i '/version=/c\version=${ts},' ./setup.py
+          sed -i 's|master|${ts}|g' ./hacs_frontend/version.py
+          sed -i 's|master|${ts}|g' ./version.js
 
           cat ./setup.py
           cat ./hacs_frontend/version.py

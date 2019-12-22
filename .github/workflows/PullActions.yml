@@ -1,4 +1,4 @@
-name: "Pull"
+name: "Pull actions"
 
 on:
   pull_request:
@@ -7,7 +7,7 @@ on:
 
 jobs:
   build_frontend:
-    name: Build
+    name: Build Frontend
     runs-on: ubuntu-latest
 
     steps:
