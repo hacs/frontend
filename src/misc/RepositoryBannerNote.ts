@@ -13,7 +13,7 @@ import { AddedToLovelace } from "./AddedToLovelace";
 import { HomeAssistant } from "custom-card-helpers";
 import { localize } from "../localize/localize";
 
-interface HACard extends HTMLElement {
+interface CustomHACard extends HTMLElement {
   header?: string;
 }
 
@@ -59,7 +59,7 @@ export class RepositoryBannerNote extends LitElement {
     }
     if (message.length === 0) return html``;
 
-    const wrapper: HACard = document.createElement("ha-card");
+    const wrapper: CustomHACard = document.createElement("ha-card");
     wrapper.className = type;
     wrapper.header = title;
 

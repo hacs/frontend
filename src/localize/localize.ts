@@ -17,32 +17,32 @@ import * as sl from "./languages/sl.json";
 import * as sv from "./languages/sv.json";
 import * as zh_Hans from "./languages/zh-Hans.json";
 
-var languages = {
-  da: da,
-  de: de,
-  el: el,
-  en: en,
-  es: es,
-  fr: fr,
-  hu: hu,
-  it: it,
-  nb: nb,
-  nl: nl,
-  nn: nn,
-  pl: pl,
-  pt_BR: pt_BR,
-  ro: ro,
-  ru: ru,
-  sl: sl,
-  sv: sv,
-  zh_Hans: zh_Hans
-};
-
 export function localize(
   string: string,
   search: string = undefined,
   replace: string = undefined
 ) {
+  const languages = {
+    da: da,
+    de: de,
+    el: el,
+    en: en,
+    es: es,
+    fr: fr,
+    hu: hu,
+    it: it,
+    nb: nb,
+    nl: nl,
+    nn: nn,
+    pl: pl,
+    pt_BR: pt_BR,
+    ro: ro,
+    ru: ru,
+    sl: sl,
+    sv: sv,
+    zh_Hans: zh_Hans
+  };
+
   const section = string.split(".")[0];
   const key = string.split(".")[1];
 

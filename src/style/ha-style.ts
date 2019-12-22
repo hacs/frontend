@@ -1,6 +1,6 @@
 import { css } from "lit-element";
 
-export const haStyle = css`
+export const _haStyle = css`
   :host {
     @apply --paper-font-body1;
   }

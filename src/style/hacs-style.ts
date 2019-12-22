@@ -1,7 +1,7 @@
 import { CSSResultArray, css } from "lit-element";
 
-import { haStyle } from "./ha-style";
-import { navStyle } from "./nav-style";
+import { _haStyle } from "./ha-style";
+import { _navStyle } from "./nav-style";
 
 const baseHacsStyles = css`
   :root {
@@ -200,8 +200,8 @@ const mobileHacsStyles = css`
 `;
 
 export const HacsStyle: CSSResultArray = [
-  haStyle,
-  navStyle,
+  _haStyle,
+  _navStyle,
   baseHacsStyles,
   mobileHacsStyles
 ];

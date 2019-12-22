@@ -15,12 +15,11 @@ logger.info(obj)
 
 */
 
-const name = "HACS";
-
 export class Logger {
   section?: string;
   prefix?: string;
   constructor(section: string) {
+    const name = "HACS";
     this.section = section;
     if (section === undefined) this.prefix = name;
     else this.prefix = `${name}.${section}`;

@@ -1,6 +1,6 @@
 import { css } from "lit-element";
 
-export const navStyle = css`
+export const _navStyle = css`
   :host {
     font-family: var(--paper-font-body1_-_font-family);
     -webkit-font-smoothing: var(--paper-font-body1_-_-webkit-font-smoothing);
