@@ -3,10 +3,13 @@ import { HacsRepositoryButton } from "./HacsRepositoryButton";
 import { RepositoryWebSocketAction } from "../../tools";
 import { localize } from "../../localize/localize";
 import swal from "sweetalert";
+import { Logger } from "../../misc/Logger";
 
 @customElement("hacs-button-main-action")
 export class HacsButtonMainAction extends HacsRepositoryButton {
   @property() private pathExists: boolean = false;
+
+  logger = new Logger("main_action");
 
   protected firstUpdated() {
     let path: string = this.repository.local_path;
@@ -23,7 +26,8 @@ export class HacsButtonMainAction extends HacsRepositoryButton {
           this.pathExists = resp["exist"];
         },
         err => {
-          console.error("[hacs/check_path] Message failed!", err);
+          this.logger.error("(hacs/check_path) Message failed!");
+          this.logger.error(err);
         }
       );
   }

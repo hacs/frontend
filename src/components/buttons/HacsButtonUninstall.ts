@@ -97,7 +97,6 @@ export class HacsButtonUninstall extends HacsRepositoryButton {
         }/${this.repository.file_name}`;
 
         if (currentConfig.resources) {
-          console.log(currentConfig.resources);
           const resources: LovelaceResourceConfig[] = currentConfig.resources.filter(
             (element: LovelaceResourceConfig) => {
               if (element.url === url) {

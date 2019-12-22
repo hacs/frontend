@@ -10,10 +10,15 @@ import {
 
 import { localize } from "../../localize/localize";
 
+import { Logger } from "../../misc/Logger";
+
 @customElement("hacs-button-add-to-lovelace")
 export class HacsButtonAddToLovelace extends HacsRepositoryButton {
   @property({ type: Object }) public configuration: Configuration;
   @property({ type: Object }) public lovelaceconfig: LovelaceConfig;
+
+  logger = new Logger("add_to_lovelace");
+
   render(): TemplateResult | void {
     if (!this.repository.installed) return html``;
     if (this.repository.javascript_type === null) return html``;
@@ -58,7 +63,7 @@ export class HacsButtonAddToLovelace extends HacsRepositoryButton {
               });
             },
             err => {
-              console.error(err);
+              this.logger.error(err);
             }
           );
       }

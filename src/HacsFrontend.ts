@@ -24,6 +24,7 @@ import {
 } from "./types";
 
 import { load_lovelace } from "card-tools/src/hass";
+import { Logger } from "./misc/Logger";
 
 @customElement("hacs-frontendbase")
 class HacsFrontendBase extends LitElement {
@@ -40,6 +41,8 @@ class HacsFrontendBase extends LitElement {
   @property() public panel!: string;
   @property() public repository: string;
 
+  logger = new Logger("frontend");
+
   public getRepositories(): void {
     this.hass.connection
       .sendMessagePromise({
@@ -51,7 +54,8 @@ class HacsFrontendBase extends LitElement {
           this.requestUpdate();
         },
         err => {
-          console.error("[hacs/repositories] Message failed!", err);
+          this.logger.error("(hacs/repositories) Message failed!");
+          this.logger.error(err);
         }
       );
   }
@@ -67,7 +71,8 @@ class HacsFrontendBase extends LitElement {
           this.requestUpdate();
         },
         err => {
-          console.error("[hacs/config] Message failed!", err);
+          this.logger.error("(hacs/config) Message failed!");
+          this.logger.error(err);
         }
       );
   }
@@ -83,7 +88,8 @@ class HacsFrontendBase extends LitElement {
           this.requestUpdate();
         },
         err => {
-          console.error("[hacs/get_critical] Message failed!", err);
+          this.logger.error("(hacs/get_critical) Message failed!");
+          this.logger.error(err);
         }
       );
   }
@@ -99,7 +105,8 @@ class HacsFrontendBase extends LitElement {
           this.requestUpdate();
         },
         err => {
-          console.error("[hacs/status] Message failed!", err);
+          this.logger.error("(hacs/status) Message failed!");
+          this.logger.error(err);
         }
       );
   }
