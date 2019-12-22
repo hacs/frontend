@@ -54,9 +54,9 @@ jobs:
       - name: "Set version number"
         run: |
           export ts=$(date "+%Y%m%d%H%M%S")
-          sed -i '/version=/c\version=${ts},' ./setup.py
-          sed -i 's|master|${ts}|g' ./hacs_frontend/version.py
-          sed -i 's|master|${ts}|g' ./version.js
+          sed -i "s/master/$ts/" ./setup.py
+          sed -i "s/master/$ts/" ./hacs_frontend/version.py
+          sed -i "s/master/$ts/" ./version.js
 
           cat ./setup.py
           cat ./hacs_frontend/version.py
@@ -85,4 +85,4 @@ jobs:
           DISCORD_WEBHOOK: "https://discordapp.com/api/webhooks/636183377220730880/WA71A3QwHQJ4FLHVzPvu-dqCHhuFEKPuUbcsb3lXeeqRgdOqekIB7gT8eBFnaNNQ0xne"
         uses: Ilshidur/action-discord@0.0.2
         with:
-          args: "Version $ts of HACS frontend are now pushed to PyPi."
+          args: "Version [$ts](https://pypi.org/project/hacs-frontend/$ts/) of HACS frontend are now pushed to PyPi."
