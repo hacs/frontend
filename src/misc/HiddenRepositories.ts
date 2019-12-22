@@ -9,24 +9,22 @@ import {
 } from "lit-element";
 import { HacsStyle } from "../style/hacs-style";
 import { HomeAssistant } from "custom-card-helpers";
-
+import { HACS } from "../Hacs";
 import { Repository } from "../types";
-import { RepositoryWebSocketAction } from "../tools";
-import { localize } from "../localize/localize";
 
 @customElement("hacs-hidden-repositories")
 export class HiddenRepositories extends LitElement {
-  @property({ type: Array }) public repositories!: Repository[];
   @property({ type: Array }) public _hidden!: Repository[];
+  @property({ type: Object }) public hacs!: HACS;
   @property({ type: Object }) public hass!: HomeAssistant;
 
   UnHide(ev) {
     var repo = ev.composedPath()[4].repoID;
-    RepositoryWebSocketAction(this.hass, repo, "unhide");
+    this.hacs.RepositoryWebSocketAction(this.hass, repo, "unhide");
   }
 
   protected render(): TemplateResult | void {
-    this._hidden = this.repositories.filter(function(repo) {
+    this._hidden = this.hacs.repositories.filter(function(repo) {
       return repo.hide;
     });
 
@@ -34,7 +32,9 @@ export class HiddenRepositories extends LitElement {
 
     return html`
       <ha-card
-        header="${localize("settings.hidden_repositories").toUpperCase()}"
+        header="${this.hacs
+          .localize("settings.hidden_repositories")
+          .toUpperCase()}"
       >
         <div class="card-content">
           <div class="custom-repositories-list">
@@ -46,7 +46,7 @@ export class HiddenRepositories extends LitElement {
                     <div class="row" .repoID=${repo.id}>
                       <paper-item>
                         <ha-icon
-                          title="${localize("settings.unhide")}"
+                          title="${this.hacs.localize("settings.unhide")}"
                           class="listicon"
                           icon="mdi:restore"
                           @click=${this.UnHide}

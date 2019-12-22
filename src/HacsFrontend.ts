@@ -9,7 +9,7 @@ import {
   property,
   TemplateResult
 } from "lit-element";
-import { HACS } from "./Hacs";
+import { HACS, Hacs } from "./Hacs";
 import { HacsStyle } from "./style/hacs-style";
 
 import {
@@ -29,19 +29,27 @@ import { Logger } from "./misc/Logger";
 @customElement("hacs-frontendbase")
 class HacsFrontendBase extends LitElement {
   @property({ type: Array }) public critical!: Critical[];
-  @property({ type: Array }) public repositories!: Repository[];
+  @property({ type: Array }) private repositories!: Repository[];
   @property({ type: Boolean }) public narrow!: boolean;
   @property({ type: Boolean }) public repository_view: boolean = false;
-  @property({ type: Object }) public configuration!: Configuration;
+  @property({ type: Object }) private configuration!: Configuration;
   @property({ type: Object }) public hacs!: HACS;
   @property({ type: Object }) public hass!: HomeAssistant;
   @property({ type: Object }) public lovelaceconfig: LovelaceConfig;
   @property({ type: Object }) public route!: Route;
-  @property({ type: Object }) public status!: Status;
+  @property({ type: Object }) private status!: Status;
   @property() public panel!: string;
   @property() public repository: string;
 
   logger = new Logger("frontend");
+
+  private _recreatehacs() {
+    this.hacs = new Hacs();
+    this.hacs.configuration = this.configuration;
+    this.hacs.status = this.status;
+    this.hacs.repositories = this.repositories;
+    this.requestUpdate();
+  }
 
   public getRepositories(): void {
     this.hass.connection
@@ -51,7 +59,7 @@ class HacsFrontendBase extends LitElement {
       .then(
         resp => {
           this.repositories = resp as Repository[];
-          this.requestUpdate();
+          this._recreatehacs();
         },
         err => {
           this.logger.error("(hacs/repositories) Message failed!");
@@ -68,7 +76,7 @@ class HacsFrontendBase extends LitElement {
       .then(
         resp => {
           this.configuration = resp as Configuration;
-          this.requestUpdate();
+          this._recreatehacs();
         },
         err => {
           this.logger.error("(hacs/config) Message failed!");
@@ -85,7 +93,7 @@ class HacsFrontendBase extends LitElement {
       .then(
         resp => {
           this.critical = resp as Critical[];
-          this.requestUpdate();
+          this._recreatehacs();
         },
         err => {
           this.logger.error("(hacs/get_critical) Message failed!");
@@ -102,7 +110,7 @@ class HacsFrontendBase extends LitElement {
       .then(
         resp => {
           this.status = resp as Status;
-          this.requestUpdate();
+          this._recreatehacs();
         },
         err => {
           this.logger.error("(hacs/status) Message failed!");
@@ -329,6 +337,7 @@ class HacsFrontendBase extends LitElement {
                   .hacs=${this.hacs}
                   .hass=${this.hass}
                   .route=${this.route}
+                  .lovelaceconfig=${this.lovelaceconfig}
                   .repositories=${this.repositories}
                   .configuration=${this.configuration}
                   .status=${this.status}
@@ -340,9 +349,6 @@ class HacsFrontendBase extends LitElement {
                   .hacs=${this.hacs}
                   .hass=${this.hass}
                   .route=${this.route}
-                  .repositories=${this.repositories}
-                  .configuration=${this.configuration}
-                  .status=${this.status}
                 >
                 </hacs-settings>
               `

@@ -13,7 +13,15 @@ import {
   RepositoryWebSocketAction
 } from "./tools";
 
+import { Configuration, Repository, Status } from "./types";
+
 export interface HACS {
+  RepositoryWebSocketAction(
+    hass: HomeAssistant,
+    repository: string,
+    action: string,
+    data?: any
+  );
   RelativeTimeSince(target: any): string;
   emojify(string: string): string;
   localize?(string: string, search?: string, replace?: string): string;
@@ -21,9 +29,17 @@ export interface HACS {
   navigate?(_node: any, path: string): any;
   isnullorempty?(test: any): boolean;
   markdown?(input: string): any;
+  set_configuration?(configuration: Configuration): void;
+  configuration: Configuration;
+  repositories: Repository[];
+  status: Status;
 }
 
 export class Hacs {
+  configuration: Configuration;
+  repositories: Repository[];
+  status: Status;
+
   localize = function(str: string, s?: string, r?: string): string {
     return localize(str, s, r);
   };
@@ -50,10 +66,10 @@ export class Hacs {
   RepositoryWebSocketAction = function(
     hass: HomeAssistant,
     repository: string,
-    Action: string,
-    Data?: any
+    action: string,
+    data?: any
   ): void {
-    RepositoryWebSocketAction(hass, repository, Action, Data);
+    RepositoryWebSocketAction(hass, repository, action, data);
   };
   RelativeTimeSince(target: any): string {
     const current: any = new Date();

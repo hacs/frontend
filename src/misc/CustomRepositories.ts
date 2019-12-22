@@ -10,19 +10,15 @@ import {
 import swal from "sweetalert";
 import { HomeAssistant } from "custom-card-helpers";
 
-import { localize } from "../localize/localize";
-import { RepositoryWebSocketAction } from "../tools";
 import { HacsStyle } from "../style/hacs-style";
-import { isnullorempty } from "../tools";
-import { Configuration, Repository, Status, Route } from "../types";
+import { HACS } from "../Hacs";
+import { Route, Repository } from "../types";
 
 @customElement("hacs-custom-repositories")
 export class CustomRepositories extends LitElement {
+  @property({ type: Object }) public hacs!: HACS;
   @property({ type: Array }) public custom!: Repository[];
-  @property({ type: Array }) public repositories!: Repository[];
-  @property({ type: Object }) public configuration!: Configuration;
   @property({ type: Object }) public hass!: HomeAssistant;
-  @property({ type: Object }) public status!: Status;
   @property({ type: Object }) public route!: Route;
 
   Delete(ev) {
@@ -34,11 +30,14 @@ export class CustomRepositories extends LitElement {
         RepoFullName = item.RepoFullName;
       }
     });
-    swal(localize("confirm.delete", "{item}", RepoFullName), {
-      buttons: [localize("confirm.no"), localize("confirm.yes")]
+    swal(this.hacs.localize("confirm.delete", "{item}", RepoFullName), {
+      buttons: [
+        this.hacs.localize("confirm.no"),
+        this.hacs.localize("confirm.yes")
+      ]
     }).then(value => {
-      if (!isnullorempty(value)) {
-        RepositoryWebSocketAction(this.hass, RepoID, "delete");
+      if (!this.hacs.isnullorempty(value)) {
+        this.hacs.RepositoryWebSocketAction(this.hass, RepoID, "delete");
       }
     });
   }
@@ -50,22 +49,28 @@ export class CustomRepositories extends LitElement {
         RepoFullName = item.RepoFullName;
       }
     });
-    swal(localize("confirm.delete_installed", "{item}", RepoFullName));
+    swal(
+      this.hacs.localize("confirm.delete_installed", "{item}", RepoFullName)
+    );
   }
 
   Save(ev) {
     var selected = ev.composedPath()[2].children[1].selectedItem;
     if (selected === undefined) {
-      swal(localize("settings.missing_category"));
+      swal(this.hacs.localize("settings.missing_category"));
       return;
     }
     var category = selected.category;
     var repo = ev.composedPath()[2].children[0].value;
-    RepositoryWebSocketAction(this.hass, repo, "add", category);
+    this.hacs.RepositoryWebSocketAction(this.hass, repo, "add", category);
     swal(
-      localize("settings.adding_new_repo", "{repo}", repo) +
+      this.hacs.localize("settings.adding_new_repo", "{repo}", repo) +
         "\n" +
-        localize("settings.adding_new_repo_category", "{category}", category)
+        this.hacs.localize(
+          "settings.adding_new_repo_category",
+          "{category}",
+          category
+        )
     );
   }
 
@@ -89,18 +94,20 @@ export class CustomRepositories extends LitElement {
   }
 
   protected render(): TemplateResult | void {
-    this.custom = this.repositories.filter(function(repo) {
+    this.custom = this.hacs.repositories.filter(function(repo) {
       if (!repo.custom) return false;
       return true;
     });
 
     return html`
-      <ha-card header="${localize("settings.custom_repositories")}">
+      <ha-card header="${this.hacs.localize("settings.custom_repositories")}">
         <div class="card-content">
           <div class="custom-repositories-list">
-            ${this.status.background_task
+            ${this.hacs.status.background_task
               ? html`
-                  <i class="addition">${localize("settings.bg_task_custom")}</i>
+                  <i class="addition"
+                    >${this.hacs.localize("settings.bg_task_custom")}</i
+                  >
                 `
               : html`
                   ${this.custom
@@ -117,7 +124,9 @@ export class CustomRepositories extends LitElement {
                               <div
                                 @click=${this.ShowRepository}
                                 class="link flexy"
-                                title="${localize("settings.open_repository")}"
+                                title="${this.hacs.localize(
+                                  "settings.open_repository"
+                                )}"
                               >
                                 <div class="MobileHide">
                                   [${repo.category}]&nbsp;
@@ -127,7 +136,9 @@ export class CustomRepositories extends LitElement {
                               ${repo.installed
                                 ? html`
                                     <ha-icon
-                                      title="${localize("settings.delete")}"
+                                      title="${this.hacs.localize(
+                                        "settings.delete"
+                                      )}"
                                       class="listicon disabled"
                                       icon="mdi:delete"
                                       @click=${this.DeleteInstalled}
@@ -135,7 +146,9 @@ export class CustomRepositories extends LitElement {
                                   `
                                 : html`
                                     <ha-icon
-                                      title="${localize("settings.delete")}"
+                                      title="${this.hacs.localize(
+                                        "settings.delete"
+                                      )}"
                                       class="listicon"
                                       icon="mdi:delete"
                                       @click=${this.Delete}
@@ -148,24 +161,26 @@ export class CustomRepositories extends LitElement {
                 `}
           </div>
         </div>
-        ${this.status.background_task
+        ${this.hacs.status.background_task
           ? ""
           : html`
               <div class="card-actions">
                 <paper-input
                   class="inputfield MobileGrid"
-                  placeholder=${localize("settings.add_custom_repository")}
+                  placeholder=${this.hacs.localize(
+                    "settings.add_custom_repository"
+                  )}
                   type="text"
                 ></paper-input>
                 <paper-dropdown-menu
                   class="category MobileGrid"
-                  label="${localize(`settings.category`)}"
+                  label="${this.hacs.localize(`settings.category`)}"
                 >
                   <paper-listbox slot="dropdown-content" selected="-1">
-                    ${this.configuration.categories.map(
+                    ${this.hacs.configuration.categories.map(
                       category => html`
                         <paper-item class="categoryitem" .category=${category}>
-                          ${localize(`common.${category}`)}
+                          ${this.hacs.localize(`common.${category}`)}
                         </paper-item>
                       `
                     )}
@@ -174,7 +189,7 @@ export class CustomRepositories extends LitElement {
 
                 <div class="save">
                   <ha-icon
-                    title="${localize("settings.save")}"
+                    title="${this.hacs.localize("settings.save")}"
                     icon="mdi:content-save"
                     class="saveicon MobileGrid"
                     @click=${this.Save}
