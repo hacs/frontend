@@ -1,16 +1,13 @@
-name: "Frontend"
+name: "Pull"
 
 on:
-  push:
-    branches: 
-      - master
   pull_request:
-    branches: 
+    branches:
       - master
 
 jobs:
   build_frontend:
-    name: Test build
+    name: Build
     runs-on: ubuntu-latest
 
     steps:
