@@ -84,18 +84,18 @@ export class Hacs {
   ): void {
     RepositoryWebSocketAction(hass, repository, action, data);
   };
-  RelativeTimeSince(target: any): string {
-    const current: any = new Date();
-
-    const msPerMinute = 60 * 1000;
-    const msPerHour = msPerMinute * 60;
-    const msPerDay = msPerHour * 24;
-    const msPerMonth = msPerDay * 30;
-    const msPerYear = msPerDay * 365;
-
-    const elapsed = current - target;
-
+  RelativeTimeSince(input: any): string {
+    let current: number = new Date().getTime();
+    let target: number = Date.parse(input);
     var value: number;
+
+    const msPerMinute: number = 60 * 1000;
+    const msPerHour: number = msPerMinute * 60;
+    const msPerDay: number = msPerHour * 24;
+    const msPerMonth: number = msPerDay * 30;
+    const msPerYear: number = msPerDay * 365;
+
+    const elapsed: number = current - target;
 
     if (elapsed < msPerMinute) {
       value = Math.round(elapsed / 1000);
