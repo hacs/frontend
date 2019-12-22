@@ -72,5 +72,6 @@ export function isnullorempty(test: any): boolean {
   if (test === null) return true;
   if (test === "") return true;
   if (test === 0) return true;
+  if (String(test).length === 0) return true;
   return false;
 }

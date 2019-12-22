@@ -18,12 +18,7 @@ export class HacsSettings extends LitElement {
   @property({ type: Object }) public route!: Route;
 
   render(): TemplateResult | void {
-    if (
-      this.hass === undefined ||
-      this.hacs.repositories === undefined ||
-      this.hacs.configuration === undefined ||
-      this.hacs.status === undefined
-    ) {
+    if (this.hass === undefined || this.hacs === undefined) {
       return html`
         <hacs-progressbar></hacs-progressbar>
       `;

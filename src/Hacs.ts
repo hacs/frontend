@@ -6,6 +6,7 @@ import { HomeAssistant } from "custom-card-helpers";
 import { localize } from "./localize/localize";
 import emoji from "node-emoji";
 import { markdown } from "./markdown/markdown";
+import { Logger } from "./misc/Logger";
 import {
   navigate,
   scrollToTarget,
@@ -16,6 +17,7 @@ import {
 import { Configuration, Repository, Status } from "./types";
 
 export interface HACS {
+  logger: any;
   RepositoryWebSocketAction(
     hass: HomeAssistant,
     repository: string,
@@ -36,9 +38,20 @@ export interface HACS {
 }
 
 export class Hacs {
-  configuration: Configuration;
-  repositories: Repository[];
-  status: Status;
+  configuration!: Configuration;
+  repositories!: Repository[];
+  status!: Status;
+  logger = new Logger();
+
+  constructor(
+    configuration: Configuration,
+    repositories: Repository[],
+    status: Status
+  ) {
+    this.configuration = configuration;
+    this.repositories = repositories;
+    this.status = status;
+  }
 
   localize = function(str: string, s?: string, r?: string): string {
     return localize(str, s, r);

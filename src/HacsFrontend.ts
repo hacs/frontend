@@ -29,25 +29,30 @@ import { Logger } from "./misc/Logger";
 @customElement("hacs-frontendbase")
 class HacsFrontendBase extends LitElement {
   @property({ type: Array }) public critical!: Critical[];
-  @property({ type: Array }) private repositories!: Repository[];
   @property({ type: Boolean }) public narrow!: boolean;
   @property({ type: Boolean }) public repository_view: boolean = false;
-  @property({ type: Object }) private configuration!: Configuration;
   @property({ type: Object }) public hacs!: HACS;
   @property({ type: Object }) public hass!: HomeAssistant;
   @property({ type: Object }) public lovelaceconfig: LovelaceConfig;
   @property({ type: Object }) public route!: Route;
-  @property({ type: Object }) private status!: Status;
   @property() public panel!: string;
   @property() public repository: string;
 
   logger = new Logger("frontend");
+  status: Status;
+  configuration: Configuration;
+  repositories: Repository[];
 
-  private _recreatehacs() {
-    this.hacs = new Hacs();
-    this.hacs.configuration = this.configuration;
-    this.hacs.status = this.status;
-    this.hacs.repositories = this.repositories;
+  private _recreatehacs(): void {
+    var configuration = this.configuration;
+    var repositories = this.repositories;
+    var status = this.status;
+    if (this.hacs.isnullorempty(configuration))
+      configuration = this.hacs.configuration;
+    if (this.hacs.isnullorempty(repositories))
+      repositories = this.hacs.repositories;
+    if (this.hacs.isnullorempty(status)) status = this.hacs.status;
+    this.hacs = new Hacs(configuration, repositories, status);
     this.requestUpdate();
   }
 
@@ -138,6 +143,7 @@ class HacsFrontendBase extends LitElement {
   protected firstUpdated() {
     this.addEventListener("hacs-location-change", this.locationChanged);
     this.addEventListener("hacs-onboarding-done", this.onboardingDone);
+    this.addEventListener("hacs-recreate", this._recreatehacs);
     window.onpopstate = function() {
       window.location.reload();
     };

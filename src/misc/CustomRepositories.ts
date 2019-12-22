@@ -94,6 +94,13 @@ export class CustomRepositories extends LitElement {
   }
 
   protected render(): TemplateResult | void {
+    if (this.hacs.repositories === undefined) {
+      this.dispatchEvent(
+        new CustomEvent("hacs-recreate", { bubbles: true, composed: true })
+      );
+      return html``;
+    }
+
     this.custom = this.hacs.repositories.filter(function(repo) {
       if (!repo.custom) return false;
       return true;

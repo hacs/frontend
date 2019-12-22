@@ -43,7 +43,7 @@ class HacsFrontend extends LitElement {
   protected render(): TemplateResult | void {
     this.setModalCSS();
     if (this.hacs === undefined) {
-      this.hacs = new Hacs();
+      this.hacs = new Hacs(undefined, undefined, undefined);
     }
     return html`
       <hacs-frontendbase

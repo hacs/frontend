@@ -18,23 +18,23 @@ logger.info(obj)
 export class Logger {
   section?: string;
   prefix?: string;
-  constructor(section: string) {
+  constructor(section?: string) {
     const name = "HACS";
     this.section = section;
     if (section === undefined) this.prefix = name;
     else this.prefix = `${name}.${section}`;
   }
 
-  info(content: string | Object) {
+  info(content: string | Object, object?: Object) {
     if (content instanceof Object) console.log(`[${this.prefix}] `, content);
-    else console.log(`[${this.prefix}] ${content}`);
+    else console.log(`[${this.prefix}] ${content}`, object || "");
   }
-  warning(content: string | Object) {
+  warning(content: string | Object, object?: Object) {
     if (content instanceof Object) console.warn(`[${this.prefix}] `, content);
-    else console.warn(`[${this.prefix}] ${content}`);
+    else console.warn(`[${this.prefix}] ${content}`, object || "");
   }
-  error(content: string | Object) {
+  error(content: string | Object, object?: Object) {
     if (content instanceof Object) console.error(`[${this.prefix}] `, content);
-    else console.error(`[${this.prefix}] ${content}`);
+    else console.error(`[${this.prefix}] ${content}`, object || "");
   }
 }

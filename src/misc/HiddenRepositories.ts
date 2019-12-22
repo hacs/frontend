@@ -24,6 +24,13 @@ export class HiddenRepositories extends LitElement {
   }
 
   protected render(): TemplateResult | void {
+    if (this.hacs.repositories === undefined) {
+      this.dispatchEvent(
+        new CustomEvent("hacs-recreate", { bubbles: true, composed: true })
+      );
+      return html``;
+    }
+
     this._hidden = this.hacs.repositories.filter(function(repo) {
       return repo.hide;
     });
