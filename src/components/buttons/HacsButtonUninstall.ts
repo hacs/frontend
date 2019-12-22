@@ -61,7 +61,7 @@ export class HacsButtonUninstall extends HacsRepositoryButton {
 
   RepositoryUnInstall() {
     swal(localize("confirm.uninstall", "{item}", this.repository.name), {
-      buttons: [localize("confirm.cancel"), localize("confirm.yes")]
+      buttons: [localize("confirm.no"), localize("confirm.yes")]
     }).then(value => {
       if (value !== null) {
         this.ExecuteAction();

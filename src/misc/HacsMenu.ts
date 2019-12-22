@@ -137,7 +137,7 @@ export class HacsMenu extends LitElement {
       )}`,
       {
         buttons: [
-          this.hacs.localize("confirm.cancel"),
+          this.hacs.localize("confirm.no"),
           this.hacs.localize("confirm.yes")
         ]
       }
@@ -168,7 +168,7 @@ export class HacsMenu extends LitElement {
       msg += `\n${this.hacs.localize("confirm.continue")}`;
       swal(msg, {
         buttons: [
-          this.hacs.localize("confirm.cancel"),
+          this.hacs.localize("confirm.no"),
           this.hacs.localize("confirm.yes")
         ]
       }).then(value => {

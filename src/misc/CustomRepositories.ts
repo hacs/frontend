@@ -35,7 +35,7 @@ export class CustomRepositories extends LitElement {
       }
     });
     swal(localize("confirm.delete", "{item}", RepoFullName), {
-      buttons: [localize("confirm.cancel"), localize("confirm.yes")]
+      buttons: [localize("confirm.no"), localize("confirm.yes")]
     }).then(value => {
       if (!isnullorempty(value)) {
         RepositoryWebSocketAction(this.hass, RepoID, "delete");

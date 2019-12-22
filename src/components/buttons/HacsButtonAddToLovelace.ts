@@ -32,7 +32,7 @@ export class HacsButtonAddToLovelace extends HacsRepositoryButton {
 
   RepositoryAddToLovelace() {
     swal(localize("confirm.add_to_lovelace"), {
-      buttons: [localize("confirm.cancel"), localize("confirm.yes")]
+      buttons: [localize("confirm.no"), localize("confirm.yes")]
     }).then(value => {
       if (value !== null) {
         this.hass.connection

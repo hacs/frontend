@@ -77,7 +77,7 @@ export class HacsButtonMainAction extends HacsRepositoryButton {
           "\n" +
           localize("confirm.continue"),
         {
-          buttons: [localize("confirm.cancel"), localize("confirm.yes")]
+          buttons: [localize("confirm.no"), localize("confirm.yes")]
         }
       ).then(value => {
         if (value !== null) {
