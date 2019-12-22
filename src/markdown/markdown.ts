@@ -57,11 +57,11 @@ export class markdown {
     });
     const content = document.createElement("div");
     content.innerHTML = filterXSS(marked(input)).replace(
-      /\<a href="http\w:\/\/.*.\">.*.\<\/a>/g,
+      /\<a href="http\w:\/\/.*.\">.*.\<\/a>\W/g,
       function(x) {
         return x
-          .replace("<a href=", "<hacs-link url=")
-          .replace("</a>", "</hacs-link>");
+          .replace(/<a href=/gm, "<hacs-link url=")
+          .replace(/<\/a>/gm, "</hacs-link>");
       }
     );
     content.style.cssText = `${GFM} ${HLJS}`;
