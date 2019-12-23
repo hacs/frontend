@@ -16,6 +16,7 @@ export class HacsError extends LitElement {
   @property({ type: Object }) public error: {
     message: string;
     action: string;
+    exception?: string;
   } = undefined;
 
   clearError() {
@@ -43,7 +44,20 @@ export class HacsError extends LitElement {
     return html`
             <ha-card header="An error ocoured while prosessing" class="alert">
                 <div class="card-content">
-                    ${message} </br>
+                  ${
+                    this.error.exception !== undefined
+                      ? html`
+                          <b>Exception: </b> ${this.error.exception} </br>
+                        `
+                      : ""
+                  }
+                  ${
+                    this.error.exception !== undefined
+                      ? html`
+                          <b>Message: </b>
+                        `
+                      : ""
+                  }${this.error.message} </br>
                     ${additional}
                 </div>
             <div class="card-actions">
