@@ -33,7 +33,7 @@ export class HacsInstalled extends LitElement {
   @property({ type: Object }) public status!: Status;
 
   protected render(): TemplateResult | void {
-    if (this.repositories === undefined || this.lovelaceconfig === undefined)
+    if (this.repositories === undefined)
       return html`
         <hacs-progressbar></hacs-progressbar>
       `;
