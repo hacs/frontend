@@ -37,6 +37,6 @@ export const _navStyle = css`
     z-index: -1;
   }
   div#contentContainer {
-    z-index: -2;
+    z-index: 0;
   }
 `;
