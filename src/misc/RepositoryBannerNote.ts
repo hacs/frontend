@@ -8,7 +8,7 @@ import {
   property
 } from "lit-element";
 import { HacsStyle } from "../style/hacs-style";
-import { Repository, Configuration, Status, LovelaceConfig } from "../types";
+import { RepositoryData, Configuration, Status, LovelaceConfig } from "../types";
 import { AddedToLovelace } from "./AddedToLovelace";
 import { HomeAssistant } from "custom-card-helpers";
 import { localize } from "../localize/localize";
@@ -21,7 +21,7 @@ interface AddedToLovelace extends HTMLElement {
   hass?: HomeAssistant;
   configuration?: Configuration;
   lovelaceconfig?: LovelaceConfig;
-  repository?: Repository;
+  repository?: RepositoryData;
 }
 
 @customElement("hacs-repository-banner-note")
@@ -29,7 +29,7 @@ export class RepositoryBannerNote extends LitElement {
   @property({ type: Object }) public configuration: Configuration;
   @property({ type: Object }) public hass!: HomeAssistant;
   @property({ type: Object }) public lovelaceconfig: LovelaceConfig;
-  @property({ type: Object }) public repository!: Repository;
+  @property({ type: Object }) public repository!: RepositoryData;
   @property({ type: Object }) public status!: Status;
 
   protected render(): TemplateResult | void {

@@ -2,7 +2,7 @@ import { html } from "lit-element";
 import { HomeAssistant } from "custom-card-helpers";
 import {
   Configuration,
-  Repository,
+  RepositoryData,
   Status,
   Route,
   LovelaceConfig
@@ -32,7 +32,7 @@ export class OviewItemBuilder {
     this.route = route;
   }
 
-  render_card(repository: Repository) {
+  render_card(repository: RepositoryData) {
     return html`
       <ha-card
         @click="${this.ShowRepository}"
@@ -59,7 +59,7 @@ export class OviewItemBuilder {
     `;
   }
 
-  render_list_line(repository: Repository) {
+  render_list_line(repository: RepositoryData) {
     return html`
       <paper-item
         .RepoID=${repository.id}
@@ -102,7 +102,7 @@ export class OviewItemBuilder {
     `;
   }
 
-  render(repository: Repository) {
+  render(repository: RepositoryData) {
     if (this.configuration.frontend_mode === "Grid")
       return this.render_card(repository);
     return this.render_list_line(repository);
@@ -129,7 +129,7 @@ export class OviewItemBuilder {
   }
 
   StatusAndDescription(
-    repository: Repository
+    repository: RepositoryData
   ): { status: string; description: string } {
     var status = repository.status;
     if (this.status.startup && repository.installed) status = "installed";

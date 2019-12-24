@@ -12,12 +12,12 @@ import { HomeAssistant } from "custom-card-helpers";
 
 import { HacsStyle } from "../style/hacs-style";
 import { HACS } from "../Hacs";
-import { Route, Repository } from "../types";
+import { Route, RepositoryData } from "../types";
 
 @customElement("hacs-custom-repositories")
 export class CustomRepositories extends LitElement {
   @property({ type: Object }) public hacs!: HACS;
-  @property({ type: Array }) public custom!: Repository[];
+  @property({ type: Array }) public custom!: RepositoryData[];
   @property({ type: Object }) public hass!: HomeAssistant;
   @property({ type: Object }) public route!: Route;
 

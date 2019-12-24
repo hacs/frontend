@@ -14,7 +14,7 @@ import {
   RepositoryWebSocketAction
 } from "./tools";
 
-import { Configuration, Repository, Status } from "./types";
+import { Configuration, RepositoryData, Status } from "./types";
 
 export interface HACS {
   logger: any;
@@ -33,19 +33,19 @@ export interface HACS {
   markdown?(input: string): any;
   set_configuration?(configuration: Configuration): void;
   configuration: Configuration;
-  repositories: Repository[];
+  repositories: RepositoryData[];
   status: Status;
 }
 
 export class Hacs {
   configuration!: Configuration;
-  repositories!: Repository[];
+  repositories!: RepositoryData[];
   status!: Status;
   logger = new Logger();
 
   constructor(
     configuration: Configuration,
-    repositories: Repository[],
+    repositories: RepositoryData[],
     status: Status
   ) {
     this.configuration = configuration;

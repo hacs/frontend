@@ -7,7 +7,7 @@ import {
   html,
   property
 } from "lit-element";
-import { Configuration, Repository } from "../types";
+import { Configuration, RepositoryData } from "../types";
 import { HacsStyle } from "../style/hacs-style";
 import { HomeAssistant } from "custom-card-helpers";
 import { localize } from "../localize/localize";
@@ -15,14 +15,14 @@ import { localize } from "../localize/localize";
 interface LoveLaceHint extends HTMLElement {
   hass?: HomeAssistant;
   configuration?: Configuration;
-  repository?: Repository;
+  repository?: RepositoryData;
 }
 
 @customElement("hacs-repository-note")
 export class RepositoryNote extends LitElement {
   @property({ type: Object }) public configuration!: Configuration;
   @property({ type: Object }) public hass!: HomeAssistant;
-  @property({ type: Object }) public repository!: Repository;
+  @property({ type: Object }) public repository!: RepositoryData;
 
   protected render(): TemplateResult | void {
     let path: string = this.repository.local_path;

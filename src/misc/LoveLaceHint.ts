@@ -7,7 +7,7 @@ import {
   html,
   property
 } from "lit-element";
-import { Configuration, Repository } from "../types";
+import { Configuration, RepositoryData } from "../types";
 import { HacsStyle } from "../style/hacs-style";
 import { HomeAssistant } from "custom-card-helpers";
 import { localize } from "../localize/localize";
@@ -17,7 +17,7 @@ import { GFM } from "../markdown/styles";
 export class LoveLaceHint extends LitElement {
   @property({ type: Object }) public configuration!: Configuration;
   @property({ type: Object }) public hass!: HomeAssistant;
-  @property({ type: Object }) public repository!: Repository;
+  @property({ type: Object }) public repository!: RepositoryData;
 
   protected render(): TemplateResult | void {
     const pluginpath = `${this.repository.full_name.split("/")[1]}/${

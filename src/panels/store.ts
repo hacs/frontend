@@ -11,7 +11,7 @@ import { HomeAssistant } from "custom-card-helpers";
 import { HACS } from "../Hacs";
 import { HacsStyle } from "../style/hacs-style";
 import {
-  Repository,
+  RepositoryData,
   Status,
   Configuration,
   ValueChangedEvent,
@@ -23,7 +23,7 @@ import { OviewItemBuilder } from "../misc/OviewItemBuilder";
 
 @customElement("hacs-store")
 export class HacsStore extends LitElement {
-  @property({ type: Array }) public repositories!: Repository[];
+  @property({ type: Array }) public repositories!: RepositoryData[];
   @property({ type: Object }) public configuration!: Configuration;
   @property({ type: Object }) public hacs!: HACS;
   @property({ type: Object }) public hass!: HomeAssistant;
@@ -34,7 +34,7 @@ export class HacsStore extends LitElement {
   @property() private search: string = "";
   @property() private sort: string = "name-desc";
 
-  SortRepo(a: Repository, b: Repository): boolean {
+  SortRepo(a: RepositoryData, b: RepositoryData): boolean {
     const sorttype = this.sort.split("-")[1];
     const sortkey = this.sort.split("-")[0];
     if (sorttype === "desc") {

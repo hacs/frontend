@@ -14,7 +14,7 @@ import { RepositoryWebSocketAction } from "../tools";
 
 import {
   Configuration,
-  Repository,
+  RepositoryData,
   Route,
   Status,
   ValueChangedEvent,
@@ -27,9 +27,9 @@ import { GFM, HLJS } from "../markdown/styles";
 
 @customElement("hacs-repository")
 export class HacsRepository extends LitElement {
-  @property({ type: Array }) public repositories!: Repository[];
+  @property({ type: Array }) public repositories!: RepositoryData[];
   @property({ type: Boolean }) public repository_view = false;
-  @property({ type: Object }) private repo: Repository;
+  @property({ type: Object }) private repo: RepositoryData;
   @property({ type: Object }) public configuration!: Configuration;
   @property({ type: Object }) public hacs!: HACS;
   @property({ type: Object }) public hass!: HomeAssistant;

@@ -10,11 +10,11 @@ import {
 import { HacsStyle } from "../style/hacs-style";
 import { HomeAssistant } from "custom-card-helpers";
 import { HACS } from "../Hacs";
-import { Repository } from "../types";
+import { RepositoryData } from "../types";
 
 @customElement("hacs-hidden-repositories")
 export class HiddenRepositories extends LitElement {
-  @property({ type: Array }) public _hidden!: Repository[];
+  @property({ type: Array }) public _hidden!: RepositoryData[];
   @property({ type: Object }) public hacs!: HACS;
   @property({ type: Object }) public hass!: HomeAssistant;
 

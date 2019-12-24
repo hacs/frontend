@@ -1,12 +1,12 @@
 import {
-  Repository,
+  RepositoryData,
   Status,
   LovelaceConfig,
   LovelaceResourceConfig
 } from "../types";
 
 export function AddedToLovelace(
-  repository: Repository,
+  repository: RepositoryData,
   lovelaceconfig: LovelaceConfig,
   status: Status
 ): boolean {

@@ -14,7 +14,7 @@ import { HacsStyle } from "./style/hacs-style";
 
 import {
   Configuration,
-  Repository,
+  RepositoryData,
   Route,
   Status,
   Critical,
@@ -41,7 +41,7 @@ class HacsFrontendBase extends LitElement {
   logger = new Logger("frontend");
   status: Status;
   configuration: Configuration;
-  repositories: Repository[];
+  repositories: RepositoryData[];
 
   private _recreatehacs(): void {
     var configuration = this.configuration;
@@ -63,7 +63,7 @@ class HacsFrontendBase extends LitElement {
       })
       .then(
         resp => {
-          this.repositories = resp as Repository[];
+          this.repositories = resp as RepositoryData[];
           this._recreatehacs();
         },
         err => {

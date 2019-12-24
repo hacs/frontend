@@ -1,10 +1,10 @@
-import { Repository, Configuration } from "../types";
+import { RepositoryData, Configuration } from "../types";
 import { HACS } from "../Hacs";
 import { version as frontend_version } from "../../version.js";
 
 export function AboutHacs(
   hacs: HACS,
-  repositories: Repository[],
+  repositories: RepositoryData[],
   configuration: Configuration
 ): HTMLElement {
   const content = document.createElement("div");

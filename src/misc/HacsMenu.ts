@@ -10,7 +10,7 @@ import {
 import { HomeAssistant } from "custom-card-helpers";
 import { HacsStyle } from "../style/hacs-style";
 import { HACS } from "../Hacs";
-import { Repository, Status, Configuration } from "../types";
+import { RepositoryData, Status, Configuration } from "../types";
 
 import { AboutHacs } from "./AboutHacs";
 
@@ -23,7 +23,7 @@ export class HacsMenu extends LitElement {
   @property({ type: Object }) public hass!: HomeAssistant;
   @property({ type: Object }) public configuration!: Configuration;
   @property({ type: Object }) public status!: Status;
-  @property({ type: Array }) public repositories!: Repository[];
+  @property({ type: Array }) public repositories!: RepositoryData[];
 
   protected render(): TemplateResult | void {
     return html`
@@ -156,7 +156,7 @@ export class HacsMenu extends LitElement {
       this.disabledAction();
       return;
     }
-    var elements: Repository[] = [];
+    var elements: RepositoryData[] = [];
     this.repositories.forEach(element => {
       if (element.pending_upgrade) elements.push(element);
     });

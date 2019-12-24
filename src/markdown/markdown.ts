@@ -5,7 +5,7 @@ import emoji from "node-emoji";
 import hljs_ from "highlight.js/lib/highlight";
 import yaml_ from "highlight.js/lib/languages/yaml";
 import { GFM, HLJS } from "./styles";
-import { Repository } from "../types";
+import { RepositoryData } from "../types";
 
 hljs_.registerLanguage("yaml", yaml_);
 
@@ -30,7 +30,7 @@ export class markdown {
   static convert(input: string): string {
     return marked(input);
   }
-  static html(input: string, repo: Repository): TemplateResult | void {
+  static html(input: string, repo: RepositoryData): TemplateResult | void {
     // Convert emoji short codes to real emojis
     input = emoji.emojify(input);
 

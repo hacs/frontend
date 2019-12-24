@@ -35,7 +35,7 @@ export interface SelectedValue {
   detail: { selected: string };
 }
 
-export interface Repository {
+export interface RepositoryData {
   additional_info: string;
   authors: [string];
   available_version: string;
@@ -84,11 +84,11 @@ export interface LocationChangedEvent {
 }
 
 export interface RepositoryCategories {
-  appdaemon_apps: Repository[];
-  integrations: Repository[];
-  plugins: Repository[];
-  python_scripts: Repository[];
-  themes: Repository[];
+  appdaemon_apps: RepositoryData[];
+  integrations: RepositoryData[];
+  plugins: RepositoryData[];
+  python_scripts: RepositoryData[];
+  themes: RepositoryData[];
 }
 
 export const AllCategories = [

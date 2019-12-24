@@ -11,7 +11,7 @@ import { HomeAssistant } from "custom-card-helpers";
 import { HACS } from "../Hacs";
 import { HacsStyle } from "../style/hacs-style";
 import {
-  Repository,
+  RepositoryData,
   Status,
   Configuration,
   RepositoryCategories,
@@ -24,7 +24,7 @@ import { OviewItemBuilder } from "../misc/OviewItemBuilder";
 
 @customElement("hacs-installed")
 export class HacsInstalled extends LitElement {
-  @property({ type: Array }) public repositories!: Repository[];
+  @property({ type: Array }) public repositories!: RepositoryData[];
   @property({ type: Object }) public configuration!: Configuration;
   @property({ type: Object }) public hacs!: HACS;
   @property({ type: Object }) public hass!: HomeAssistant;
@@ -84,7 +84,7 @@ export class HacsInstalled extends LitElement {
                   ${this.hacs.localize("store.pending_upgrades")}
                 </div>
                 ${updatable_repositories
-                  .sort((a: Repository, b: Repository) =>
+                  .sort((a: RepositoryData, b: RepositoryData) =>
                     a.name > b.name ? 1 : -1
                   )
                   .map(repository => {
@@ -106,7 +106,7 @@ export class HacsInstalled extends LitElement {
                 ${this.hacs.localize(`common.${category}`)}
               </div>
               ${categories[category]
-                .sort((a: Repository, b: Repository) =>
+                .sort((a: RepositoryData, b: RepositoryData) =>
                   a.name > b.name ? 1 : -1
                 )
                 .map(repository => {
