@@ -43,12 +43,13 @@ const AwesomePlugins = [
   commonjs(),
   typescript(),
   json(opts_json),
-  minify(),
   babel(opts_babel),
-  cleanup(opts_cleanup),
+  !isdev && minify(),
+  !isdev && terser(),
+  !isdev && cleanup(opts_cleanup),
+  isdev && sizes(),
   isdev && sizes(opts_sizes),
   isdev && dev(opts_dev),
-  !isdev && terser(),
   !isdev && gzipPlugin()
 ];
 
