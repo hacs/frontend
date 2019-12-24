@@ -56,11 +56,11 @@ jobs:
           export ts=$(date "+%Y%m%d%H%M%S")
           sed -i "s/master/$ts/" ./setup.py
           sed -i "s/master/$ts/" ./hacs_frontend/version.py
-          sed -i "s/master/$ts/" ./version.js
+          sed -i "s/master/$ts/" ./src/version.ts
 
           cat ./setup.py
           cat ./hacs_frontend/version.py
-          cat ./version.js
+          cat ./src/version.ts
 
       - name: Install dependencies
         run: |
