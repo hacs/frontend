@@ -46,6 +46,7 @@
     "rollup-plugin-typescript2": "^0.24.3",
     "rollup": "^1.24.0",
     "sweetalert": "^2.1.2",
+    "typescript": "^3.6.4",
     "xss": "^1.0.6"
   }
 }
