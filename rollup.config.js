@@ -1,5 +1,4 @@
 import { terser } from "rollup-plugin-terser";
-import { version } from "./version";
 import babel from "rollup-plugin-babel";
 import cleanup from "rollup-plugin-cleanup";
 import commonjs from "rollup-plugin-commonjs";
@@ -57,7 +56,7 @@ export default [
   {
     input: ["src/main.ts"],
     output: {
-      file: `hacs_frontend/main${!isdev ? "_" + version : ""}.js`,
+      file: `hacs_frontend/main.js`,
       format: "es"
     },
     plugins: [...AwesomePlugins]

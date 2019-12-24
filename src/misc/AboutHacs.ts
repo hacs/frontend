@@ -1,6 +1,6 @@
 import { RepositoryData, Configuration } from "../types";
 import { HACS } from "../Hacs";
-import { version as frontend_version } from "../../version.js";
+import { version as frontend_version } from "../version.js";
 
 export function AboutHacs(
   hacs: HACS,
