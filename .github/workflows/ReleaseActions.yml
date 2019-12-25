@@ -6,21 +6,9 @@ on:
       - "*"
 
 jobs:
-  build_frontend:
-    name: Test build
-    runs-on: ubuntu-latest
-
-    steps:
-      - uses: actions/checkout@v1
-      - name: Install dependencies
-        run: npm install
-      - name: Build
-        run: npm run build
-
   deploy:
     runs-on: ubuntu-latest
     name: Deploy to PyPi
-    needs: build_frontend
     steps:
       - uses: actions/checkout@v1
       - name: Set up Python

@@ -19,12 +19,12 @@ jobs:
 
   cut_release:
     runs-on: ubuntu-latest
-    name: Cut Github release
+    name: Create a new GitHub release
     needs: build_frontend
     steps:
       - name: Install dependencies
         run: |
-          python3 -m pip install -U setuptools wheel
-          python3 -m pip install -U reporeleaser
+          pip3 install -U setuptools wheel
+          pip3 install reporeleaser
       - name: Crete release
-        run: python3 -m reporeleaser --test --token ${{ secrets.GITHUB_TOKEN }} --repo reporeleaser --release $(date "+%Y%m%d%H%M%S") --hide_footer
+        run: reporeleaser --test --token ${{ secrets.GITHUB_TOKEN }} --repo reporeleaser --release $(date "+%Y%m%d%H%M%S") --hide_footer
