@@ -11,6 +11,7 @@ import { HomeAssistant } from "custom-card-helpers";
 import { HacsStyle } from "../style/hacs-style";
 import { HACS } from "../Hacs";
 import { RepositoryWebSocketAction } from "../tools";
+import { version } from "../version";
 
 import {
   Configuration,
@@ -141,6 +142,16 @@ export class HacsRepository extends LitElement {
                     <div class="last_updated">
                       <b>${this.hacs.localize(`store.last_updated`)}: </b>
                       ${this.hacs.RelativeTimeSince(this.repo.last_updated)}
+                    </div>
+                  `
+                : ""}
+              ${this.repo.full_name === "hacs/integration"
+                ? html`
+                    <div class="frontend-version">
+                      <b
+                        >${this.hacs.localize(`repository.frontend_version`)}:
+                      </b>
+                      ${version}
                     </div>
                   `
                 : ""}
