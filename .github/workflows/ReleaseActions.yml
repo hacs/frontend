@@ -1,7 +1,7 @@
 name: "Release actions"
 
 on:
-  tags:
+  tag:
 
 jobs:
   build_frontend:
