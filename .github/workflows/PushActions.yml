@@ -27,6 +27,6 @@ jobs:
           pip3 install -U setuptools wheel
           git clone https://github.com/ludeeus/reporeleaser.git
           cd reporeleaser
-          python3 setup.py development
+          python3 setup.py develop
       - name: Crete release
         run: reporeleaser --test --token ${{ secrets.GITHUB_TOKEN }} --repo hacs/frontend --release $(date "+%Y%m%d%H%M%S") --hide_footer
