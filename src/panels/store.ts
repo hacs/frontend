@@ -96,7 +96,7 @@ export class HacsStore extends LitElement {
       // Check contry restrictions
       if (
         this.configuration.country !== "ALL" &&
-        repository.country !== undefined
+        !this.hacs.isnullorempty(repository.country)
       ) {
         if (this.configuration.country !== repository.country) return false;
       }
