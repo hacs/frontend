@@ -22,10 +22,13 @@ jobs:
     name: Create a new GitHub release
     needs: build_frontend
     steps:
+      - name: Set up Python 3.6
+        uses: actions/setup-python@v1
+        with:
+          python-version: 3.6
       - name: Install dependencies
         run: |
           pip3 install -U setuptools wheel
           pip3 install reporeleaser
-          cd /usr/local/lib/python3.6/dist-packages/reporeleaser
       - name: Crete release
         run: reporeleaser --test --token ${{ secrets.GITHUB_TOKEN }} --repo hacs/frontend --release $(date "+%Y%m%d%H%M%S") --hide_footer
