@@ -3,6 +3,7 @@ name: "Release actions"
 on:
   push:
     tags:
+      - "*"
 
 jobs:
   build_frontend:
@@ -54,7 +55,7 @@ jobs:
         run: |
           export version=${{ github.ref }}
           sed -i "s|master|${version##*/}|" ./setup.py
-          sed -i "s/master|${version##*/}|" ./hacs_frontend/version.py
+          sed -i "s|master|${version##*/}|" ./hacs_frontend/version.py
           sed -i "s|master|${version##*/}|" ./src/version.ts
 
           cat ./setup.py
