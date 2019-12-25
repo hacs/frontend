@@ -31,4 +31,4 @@ jobs:
           pip3 install -U setuptools wheel
           pip3 install reporeleaser
       - name: Crete release
-        run: reporeleaser --token ${{ secrets.PAT }} --repo hacs/frontend --release $(date "+%Y%m%d%H%M%S") --hide_footer
+        run: reporeleaser --token ${{ secrets.PAT }} --repo hacs/frontend --release $(date "+%Y%m%d%H%M%S") --hide_footer --show_sha --hide_full_changelog
