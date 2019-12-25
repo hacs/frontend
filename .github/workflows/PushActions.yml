@@ -25,6 +25,6 @@ jobs:
       - name: Install dependencies
         run: |
           pip3 install -U setuptools wheel
-          pip3 install reporeleaser
+          pip3 install reporeleaser --user
       - name: Crete release
-        run: reporeleaser --test --token ${{ secrets.GITHUB_TOKEN }} --repo reporeleaser --release $(date "+%Y%m%d%H%M%S") --hide_footer
+        run: reporeleaser --test --token ${{ secrets.GITHUB_TOKEN }} --repo hacs/frontend --release $(date "+%Y%m%d%H%M%S") --hide_footer
