@@ -27,4 +27,4 @@ jobs:
           python3 -m pip install -U setuptools wheel
           python3 -m pip install -U reporeleaser
       - name: Crete release
-        run: reporeleaser --test --token ${{ secrets.GITHUB_TOKEN }} --repo reporeleaser --release $(date "+%Y%m%d%H%M%S") --hide_footer
+        run: python3 -m reporeleaser --test --token ${{ secrets.GITHUB_TOKEN }} --repo reporeleaser --release $(date "+%Y%m%d%H%M%S") --hide_footer
