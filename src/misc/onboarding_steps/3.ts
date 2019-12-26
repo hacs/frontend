@@ -11,4 +11,5 @@ export const step = html`
   <p>When it's done you will no longer see the progress bar.</p>
   <hacs-progressbar .active=${true}></hacs-progressbar>
   <p>This process can take several minutes depending on your system and network.</p>
+  <p>Again this processbar is just an example, you can click "Continue" now.</p>
 `;
