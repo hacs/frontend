@@ -13,7 +13,7 @@ export const step = html`
     pull requests are reviewed.
   </p>
   <p>
-    While you have read trough this onboarding section, HACS has started to get
+    While you have read through this onboarding section, HACS has started to get
     information about the repositories it knows, so you will already now see
     items in under the store pages.
   </p>
