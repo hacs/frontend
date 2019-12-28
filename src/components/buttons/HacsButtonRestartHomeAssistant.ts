@@ -1,15 +1,15 @@
 import { customElement, TemplateResult, html, property } from "lit-element";
 import swal from "sweetalert";
-import { HomeAssistant } from "custom-card-helpers";
 
 import { HacsRepositoryButton } from "./HacsRepositoryButton";
 import { HACS } from "../../Hacs";
+import { Route } from "../../types";
 import { localize } from "../../localize/localize";
 
 @customElement("hacs-button-restart-home-assistant")
 export class HacsButtonRestartHomeAssistant extends HacsRepositoryButton {
   @property({ type: Object }) public hacs!: HACS;
-  @property({ type: Object }) public hass!: HomeAssistant;
+  @property({ type: Object }) public route!: Route;
 
   render(): TemplateResult | void {
     if (!this.repository.installed) return html``;
@@ -19,6 +19,18 @@ export class HacsButtonRestartHomeAssistant extends HacsRepositoryButton {
         ${this.hacs.localize("repository.restart_home_assistant")}
       </mwc-button>
     `;
+  }
+
+  GoToIntegrations() {
+    this.route.prefix = `/config`;
+    this.route.path = `/integrations/dashboard`;
+    this.dispatchEvent(
+      new CustomEvent("hacs-location-change", {
+        detail: { value: this.route, force: true },
+        bubbles: true,
+        composed: true
+      })
+    );
   }
 
   RestartHomeAssistant() {

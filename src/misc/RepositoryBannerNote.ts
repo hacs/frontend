@@ -12,6 +12,7 @@ import {
   RepositoryData,
   Configuration,
   Status,
+  Route,
   LovelaceConfig
 } from "../types";
 import { HACS } from "../Hacs";
@@ -27,6 +28,7 @@ interface RestartHomeAssistant extends HTMLElement {
   hacs?: HACS;
   hass?: HomeAssistant;
   repository?: RepositoryData;
+  route?: Route;
 }
 
 interface AddedToLovelace extends HTMLElement {
@@ -43,6 +45,7 @@ export class RepositoryBannerNote extends LitElement {
   @property({ type: Object }) public hass!: HomeAssistant;
   @property({ type: Object }) public lovelaceconfig: LovelaceConfig;
   @property({ type: Object }) public repository!: RepositoryData;
+  @property({ type: Object }) public route!: Route;
   @property({ type: Object }) public status!: Status;
 
   protected render(): TemplateResult | void {
@@ -107,6 +110,7 @@ export class RepositoryBannerNote extends LitElement {
       restartHomeAssistant.hacs = this.hacs;
       restartHomeAssistant.hass = this.hass;
       restartHomeAssistant.repository = this.repository;
+      restartHomeAssistant.route = this.route;
       actions.appendChild(restartHomeAssistant);
       wrapper.appendChild(actions);
     }

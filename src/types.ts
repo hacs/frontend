@@ -80,7 +80,7 @@ export interface ValueChangedEvent {
 }
 
 export interface LocationChangedEvent {
-  detail?: { value: Route };
+  detail?: { value: Route; force?: boolean };
 }
 
 export interface RepositoryCategories {

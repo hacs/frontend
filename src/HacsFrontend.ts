@@ -397,8 +397,10 @@ class HacsFrontendBase extends LitElement {
 
   locationChanged(ev): void {
     this.route = (ev as LocationChangedEvent).detail.value;
+    const force = (ev as LocationChangedEvent).detail.force;
     this.hacs.navigate(this, `${this.route.prefix}${this.route.path}`);
-    this.requestUpdate();
+    if (force) window.location.reload();
+    else this.requestUpdate();
   }
 
   onboardingDone(): void {
