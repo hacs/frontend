@@ -100,33 +100,45 @@ export class Hacs {
     if (elapsed < msPerMinute) {
       value = Math.round(elapsed / 1000);
       return `${
-        value === 1 ? this.localize(`time.one_second_ago`) : value
-      } ${this.localize("time.x_seconds_ago", "{x}", String(value))}`;
+        value === 1
+          ? this.localize(`time.one_second_ago`)
+          : this.localize("time.x_seconds_ago", "{x}", String(value))
+      }`;
     } else if (elapsed < msPerHour) {
       value = Math.round(elapsed / msPerMinute);
       return `${
-        value === 1 ? this.localize(`time.one_minute_ago`) : value
-      } ${this.localize("time.x_minutes_ago", "{x}", String(value))}`;
+        value === 1
+          ? this.localize(`time.one_minute_ago`)
+          : this.localize("time.x_minutes_ago", "{x}", String(value))
+      }`;
     } else if (elapsed < msPerDay) {
       value = Math.round(elapsed / msPerHour);
       return `${
-        value === 1 ? this.localize(`time.one_hour_ago`) : value
-      } ${this.localize("time.x_hours_ago", "{x}", String(value))}`;
+        value === 1
+          ? this.localize(`time.one_hour_ago`)
+          : this.localize("time.x_hours_ago", "{x}", String(value))
+      }`;
     } else if (elapsed < msPerMonth) {
       value = Math.round(elapsed / msPerDay);
       return `${
-        value === 1 ? this.localize(`time.one_day_ago`) : value
-      } ${this.localize("time.x_days_ago", "{x}", String(value))}`;
+        value === 1
+          ? this.localize(`time.one_day_ago`)
+          : this.localize("time.x_days_ago", "{x}", String(value))
+      }`;
     } else if (elapsed < msPerYear) {
       value = Math.round(elapsed / msPerMonth);
       return `${
-        value === 1 ? this.localize(`time.one_month_ago`) : value
-      } ${this.localize("time.x_months_ago", "{x}", String(value))}`;
+        value === 1
+          ? this.localize(`time.one_month_ago`)
+          : this.localize("time.x_months_ago", "{x}", String(value))
+      }`;
     } else {
       value = Math.round(elapsed / msPerYear);
       return `${
-        value === 1 ? this.localize(`time.one_year_ago`) : value
-      } ${this.localize("time.x_years_ago", "{x}", String(value))}`;
+        value === 1
+          ? this.localize(`time.one_year_ago`)
+          : this.localize("time.x_years_ago", "{x}", String(value))
+      }`;
     }
   }
 }
