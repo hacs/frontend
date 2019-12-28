@@ -121,10 +121,7 @@ export class HacsRepository extends LitElement {
               ${!this.hacs.isnullorempty(this.repo.stars)
                 ? html`
                     <div class="stars">
-                      <b
-                        >GitHub
-                        ${this.hacs.localize(`store.stars`).toLowerCase()}:
-                      </b>
+                      <b>${this.hacs.localize(`repository.github_stars`)}: </b>
                       ${this.repo.stars}
                     </div>
                   `

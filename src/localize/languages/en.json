@@ -50,6 +50,7 @@
     "downloads": "Downloads",
     "flag_this": "Flag this",
     "frontend_version": "Frontend version",
+    "github_stars": "GitHub stars",
     "hide_beta": "Hide beta",
     "hide": "Hide",
     "install": "Install",
@@ -114,19 +115,17 @@
     "status": "Status"
   },
   "time": {
-    "ago": "ago",
-    "day": "day",
-    "days": "days",
-    "hour": "hour",
-    "hours": "hours",
-    "minute": "minute",
-    "minutes": "minutes",
-    "month": "month",
-    "months": "months",
-    "one": "One",
-    "second": "second",
-    "seconds": "seconds",
-    "year": "year",
-    "years": "years"
+    "one_day_ago": "one day ago",
+    "one_hour_ago": "one hour ago",
+    "one_minute_ago": "one minute ago",
+    "one_month_ago": "one month ago",
+    "one_second_ago": "one second ago",
+    "one_year_ago": "one year ago",
+    "x_days_ago": "{x} days ago",
+    "x_hours_ago": "{x} hours ago",
+    "x_minutes_ago": "{x} minutes ago",
+    "x_months_ago": "{x} months ago",
+    "x_seconds_ago": "{x} seconds ago",
+    "x_years_ago": "{x} years ago"
   }
 }
