@@ -8,13 +8,25 @@ import {
   property
 } from "lit-element";
 import { HacsStyle } from "../style/hacs-style";
-import { RepositoryData, Configuration, Status, LovelaceConfig } from "../types";
+import {
+  RepositoryData,
+  Configuration,
+  Status,
+  LovelaceConfig
+} from "../types";
+import { HACS } from "../Hacs";
 import { AddedToLovelace } from "./AddedToLovelace";
 import { HomeAssistant } from "custom-card-helpers";
 import { localize } from "../localize/localize";
 
 interface CustomHACard extends HTMLElement {
   header?: string;
+}
+
+interface RestartHomeAssistant extends HTMLElement {
+  hacs?: HACS;
+  hass?: HomeAssistant;
+  repository?: RepositoryData;
 }
 
 interface AddedToLovelace extends HTMLElement {
@@ -26,6 +38,7 @@ interface AddedToLovelace extends HTMLElement {
 
 @customElement("hacs-repository-banner-note")
 export class RepositoryBannerNote extends LitElement {
+  @property({ type: Object }) public hacs!: HACS;
   @property({ type: Object }) public configuration: Configuration;
   @property({ type: Object }) public hass!: HomeAssistant;
   @property({ type: Object }) public lovelaceconfig: LovelaceConfig;
@@ -80,6 +93,21 @@ export class RepositoryBannerNote extends LitElement {
       addedToLovelace.repository = this.repository;
       addedToLovelace.lovelaceconfig = this.lovelaceconfig;
       actions.appendChild(addedToLovelace);
+      wrapper.appendChild(actions);
+    } else if (
+      this.repository.status == "pending-restart" &&
+      this.repository.category == "integration"
+    ) {
+      const actions = document.createElement("div");
+      actions.className = "card-actions";
+
+      const restartHomeAssistant: RestartHomeAssistant = document.createElement(
+        "hacs-button-restart-home-assistant"
+      );
+      restartHomeAssistant.hacs = this.hacs;
+      restartHomeAssistant.hass = this.hass;
+      restartHomeAssistant.repository = this.repository;
+      actions.appendChild(restartHomeAssistant);
       wrapper.appendChild(actions);
     }
 

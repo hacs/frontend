@@ -11,6 +11,7 @@ import "./components/buttons/HacsButtonClearNew";
 import "./components/buttons/HacsButtonMainAction";
 import "./components/buttons/HacsButtonOpenPlugin";
 import "./components/buttons/HacsButtonOpenRepository";
+import "./components/buttons/HacsButtonRestartHomeAssistant";
 import "./components/buttons/HacsButtonUninstall";
 import "./components/HacsBody";
 import "./components/HacsLink";

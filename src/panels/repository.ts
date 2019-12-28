@@ -90,6 +90,7 @@ export class HacsRepository extends LitElement {
         </div>
 
         <hacs-repository-banner-note
+          .hacs=${this.hacs}
           .hass=${this.hass}
           .status=${this.status}
           .repository=${this.repo}
