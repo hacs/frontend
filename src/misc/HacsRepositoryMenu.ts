@@ -113,14 +113,18 @@ export class HacsRepositoryMenu extends LitElement {
   RepositoryReload() {
     this.dispatchEvent(
       new CustomEvent("hacs-repository-action", {
-        detail: { repo: this.repository, action: "set_state", data: "other" },
+        detail: {
+          repo: this.repository.id,
+          action: "set_state",
+          data: "other"
+        },
         bubbles: true,
         composed: true
       })
     );
     this.dispatchEvent(
       new CustomEvent("hacs-repository-action", {
-        detail: { repo: this.repository, action: "update" },
+        detail: { repo: this.repository.id, action: "update" },
         bubbles: true,
         composed: true
       })
@@ -130,7 +134,11 @@ export class HacsRepositoryMenu extends LitElement {
   RepositoryBeta() {
     this.dispatchEvent(
       new CustomEvent("hacs-repository-action", {
-        detail: { repo: this.repository, action: "set_state", data: "other" },
+        detail: {
+          repo: this.repository.id,
+          action: "set_state",
+          data: "other"
+        },
         bubbles: true,
         composed: true
       })
@@ -138,7 +146,7 @@ export class HacsRepositoryMenu extends LitElement {
     if (this.repository.beta) {
       this.dispatchEvent(
         new CustomEvent("hacs-repository-action", {
-          detail: { repo: this.repository, action: "hide_beta" },
+          detail: { repo: this.repository.id, action: "hide_beta" },
           bubbles: true,
           composed: true
         })
@@ -146,7 +154,7 @@ export class HacsRepositoryMenu extends LitElement {
     } else {
       this.dispatchEvent(
         new CustomEvent("hacs-repository-action", {
-          detail: { repo: this.repository, action: "show_beta" },
+          detail: { repo: this.repository.id, action: "show_beta" },
           bubbles: true,
           composed: true
         })
@@ -164,7 +172,7 @@ export class HacsRepositoryMenu extends LitElement {
     if (this.repository.hide) {
       this.dispatchEvent(
         new CustomEvent("hacs-repository-action", {
-          detail: { repo: this.repository, action: "unhide" },
+          detail: { repo: this.repository.id, action: "unhide" },
           bubbles: true,
           composed: true
         })
@@ -172,7 +180,7 @@ export class HacsRepositoryMenu extends LitElement {
     } else {
       this.dispatchEvent(
         new CustomEvent("hacs-repository-action", {
-          detail: { repo: this.repository, action: "hide" },
+          detail: { repo: this.repository.id, action: "hide" },
           bubbles: true,
           composed: true
         })
