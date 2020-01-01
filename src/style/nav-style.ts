@@ -16,10 +16,10 @@ export const _navStyle = css`
   app-header,
   app-toolbar,
   paper-tabs {
-    background-color: var(--primary-color);
+    background-color: var(--app-header-background-color, var(--primary-color));
+    color: var(--app-header-text-color, var(--text-primary-color, white));
     font-weight: 400;
     text-transform: uppercase;
-    color: var(--text-primary-color, white);
   }
 
   paper-tabs {

@@ -12,9 +12,9 @@ export const _haStyle = css`
 
   app-header,
   app-toolbar {
-    background-color: var(--primary-color);
+    background-color: var(--app-header-background-color, var(--primary-color));
     font-weight: 400;
-    color: var(--text-primary-color, white);
+    color: var(--app-header-text-color, var(--text-primary-color, white));
   }
 
   app-toolbar ha-menu-button + [main-title],
