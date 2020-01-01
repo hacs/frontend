@@ -23,7 +23,7 @@ export class CustomRepositories extends LitElement {
 
   protected update(changedProperties: PropertyValues): void {
     super.update(changedProperties);
-    console.log(changedProperties);
+    if (this.hacs.configuration.debug) this.hacs.logger.info(changedProperties);
   }
 
   shouldUpdate(changedProperties: PropertyValues) {
@@ -125,10 +125,9 @@ export class CustomRepositories extends LitElement {
         RepoID = item.RepoID;
       }
     });
-    this.route.path = `/repository/${RepoID}`;
     this.dispatchEvent(
       new CustomEvent("hacs-location-change", {
-        detail: { value: this.route },
+        detail: { value: `repository/${RepoID}` },
         bubbles: true,
         composed: true
       })
@@ -142,7 +141,8 @@ export class CustomRepositories extends LitElement {
       );
       return html``;
     }
-    console.log(`Render! ${new Date()}`);
+    if (this.hacs.configuration.debug)
+      this.hacs.logger.info(`Render! ${new Date()}`);
     return html`
       <ha-card header="${this.hacs.localize("settings.custom_repositories")}">
         <div class="card-content">

@@ -7,6 +7,7 @@ import {
   html,
   LitElement,
   property,
+  PropertyValues,
   TemplateResult
 } from "lit-element";
 import { HACS, Hacs } from "./Hacs";
@@ -36,10 +37,54 @@ class HacsFrontendBase extends LitElement {
   @property({ type: Object }) public hass!: HomeAssistant;
   @property({ type: Object }) public lovelaceconfig: LovelaceConfig;
   @property({ type: Object }) public route!: Route;
-  @property() public panel!: string;
-  @property() public repository: string;
 
-  logger = new Logger("frontend");
+  public logger = new Logger();
+
+  attributeChangedCallback(name, oldVal, newVal) {
+    console.log("attribute change: ", name, newVal);
+    super.attributeChangedCallback(name, oldVal, newVal);
+  }
+
+  protected update(changedProperties: PropertyValues): void {
+    super.update(changedProperties);
+    this.hacs.logger.info(changedProperties);
+  }
+
+  public connectedCallback() {
+    /* I have no idea why this is done, but without it shit breaks */
+    super.connectedCallback();
+
+    /* Create the HACS object */
+    this.hacs = new Hacs(this.configuration, this.repositories, this.status);
+
+    /* Add handlers for custom HACS browser events */
+    this.addEventListener("hacs-location-change", this.locationChanged);
+    this.addEventListener("hacs-repository-action", this.RepositoryAction);
+    this.addEventListener("hacs-onboarding-done", this.onboardingDone);
+    this.addEventListener("hacs-recreate", this._recreatehacs);
+    this.addEventListener("hacs-force-reload", this._reload);
+
+    /* "steal" Lovelace elements */
+    load_lovelace();
+
+    /* Backend event subscription */
+    this.hass.connection.subscribeEvents(() => this.getConfig(), "hacs/config");
+    this.hass.connection.subscribeEvents(() => this.getStatus(), "hacs/status");
+    this.hass.connection.subscribeEvents(e => this._reload(e), "hacs/reload");
+    this.hass.connection.subscribeEvents(
+      () => this.getRepos(),
+      "hacs/repository"
+    );
+    this.hass.connection.subscribeEvents(
+      () => this.getLovelaceConfig(),
+      "lovelace_updated"
+    );
+
+    /* Reset local storage */
+    localStorage.setItem("hacs-search", "");
+    localStorage.setItem("hacs-sort", "name-desc");
+  }
+
   status: Status;
   configuration: Configuration;
   repositories: RepositoryData[];
@@ -58,7 +103,7 @@ class HacsFrontendBase extends LitElement {
   }
 
   private RepositoryAction(ev): void {
-    console.log(ev.detail);
+    if (this.configuration.debug) this.hacs.logger.info(ev.detail);
     const evdata: RepositoryActionData = ev.detail;
     this.hacs.RepositoryWebSocketAction(
       this.hass,
@@ -68,7 +113,7 @@ class HacsFrontendBase extends LitElement {
     );
   }
 
-  public getRepositories(): void {
+  public getRepos(): void {
     this.hass.connection
       .sendMessagePromise({
         type: "hacs/repositories"
@@ -153,48 +198,14 @@ class HacsFrontendBase extends LitElement {
   }
 
   protected firstUpdated() {
-    this.addEventListener("hacs-location-change", this.locationChanged);
-    this.addEventListener("hacs-repository-action", this.RepositoryAction);
-    this.addEventListener("hacs-onboarding-done", this.onboardingDone);
-    this.addEventListener("hacs-recreate", this._recreatehacs);
-    this.addEventListener("hacs-force-reload", this._reload);
     window.onpopstate = function() {
       window.location.reload();
     };
-    localStorage.setItem("hacs-search", "");
-    localStorage.setItem("hacs-sort", "name-desc");
-    this.panel = this._page;
-    this.getRepositories();
+    this.getRepos();
     this.getConfig();
     this.getStatus();
     this.getCritical();
     this.getLovelaceConfig();
-
-    if (/repository\//i.test(this.route.path)) {
-      // How fun, this is a repository!
-      this.repository_view = true;
-      this.repository = this.route.path.split("/")[2];
-    } else this.repository_view = false;
-
-    // "steal" LL elements
-    load_lovelace();
-
-    // Event subscription
-    this.hass.connection.subscribeEvents(
-      () => this.getRepositories(),
-      "hacs/repository"
-    );
-
-    this.hass.connection.subscribeEvents(() => this.getConfig(), "hacs/config");
-
-    this.hass.connection.subscribeEvents(() => this.getStatus(), "hacs/status");
-
-    this.hass.connection.subscribeEvents(e => this._reload(e), "hacs/reload");
-
-    this.hass.connection.subscribeEvents(
-      () => this.getLovelaceConfig(),
-      "lovelace_updated"
-    );
   }
 
   _reload(e: any) {
@@ -208,11 +219,6 @@ class HacsFrontendBase extends LitElement {
     if (this.route.path === "" || this.route.path === undefined) {
       this.hacs.navigate(this, `${this.route.prefix}/installed`);
       this.route.path = "/installed";
-      this.panel = this.route.path.split("/")[1];
-    }
-    if (this.panel === "" || this.panel === undefined) {
-      this.hacs.navigate(this, `${this.route.prefix}${this.route.path}`);
-      this.panel = this.route.path.split("/")[1];
     }
 
     if (
@@ -224,14 +230,6 @@ class HacsFrontendBase extends LitElement {
         <div class="loader"><paper-spinner active></paper-spinner></div>
       `;
     }
-
-    if (/repository\//i.test(this.route.path)) {
-      this.repository_view = true;
-      this.repository = this.route.path.split("/")[2];
-      this.panel = "repository";
-    } else this.repository_view = false;
-
-    const page = this.panel;
 
     if (
       (!this.configuration.onboarding_done && !this.status.disabled) ||
@@ -286,7 +284,7 @@ class HacsFrontendBase extends LitElement {
               autoselect
               class="tabs"
               attr-for-selected="page-name"
-              .selected=${page}
+              .selected=${this._activeTab}
               @iron-activate=${this.handlePageSelected}
             >
               <paper-tab page-name="installed"
@@ -411,12 +409,18 @@ class HacsFrontendBase extends LitElement {
     return this.route.path.split("/")[2];
   }
 
-  locationChanged(ev): void {
-    this.route = (ev as LocationChangedEvent).detail.value;
+  locationChanged(ev: any): void {
+    if (this.configuration.debug) this.hacs.logger.info(ev.type, ev.detail);
+    this.route.path = `/${(ev as LocationChangedEvent).detail.value}`;
     const force = (ev as LocationChangedEvent).detail.force;
     this.hacs.navigate(this, `${this.route.prefix}${this.route.path}`);
     if (force) window.location.reload();
     else this.requestUpdate();
+    this.hacs.scrollToTarget(
+      this,
+      // @ts-ignore
+      this.shadowRoot!.querySelector("app-header-layout").header.scrollTarget
+    );
   }
 
   onboardingDone(): void {
@@ -429,19 +433,16 @@ class HacsFrontendBase extends LitElement {
   }
 
   handlePageSelected(e: SelectedValue) {
-    this.repository_view = false;
-    const newPage = e.detail.selected;
-    this.panel = newPage;
-    this.route.path = `/${newPage}`;
-    this.hacs.navigate(this, `${this.route.prefix}${this.route.path}`);
-    this.hacs.scrollToTarget(
-      this,
-      // @ts-ignore
-      this.shadowRoot!.querySelector("app-header-layout").header.scrollTarget
+    this.dispatchEvent(
+      new CustomEvent("hacs-location-change", {
+        detail: { value: e.detail.selected },
+        bubbles: true,
+        composed: true
+      })
     );
   }
 
-  private get _page() {
+  private get _activeTab() {
     if (this.route.path.split("/")[1] === undefined) return "installed";
     return this.route.path.split("/")[1];
   }

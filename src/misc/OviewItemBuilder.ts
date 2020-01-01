@@ -118,10 +118,9 @@ export class OviewItemBuilder {
         RepoID = item.RepoID;
       }
     });
-    this.route.path = `/repository/${RepoID}`;
     this.dispatchEvent(
       new CustomEvent("hacs-location-change", {
-        detail: { value: this.route },
+        detail: { value: `repository/${RepoID}` },
         bubbles: true,
         composed: true
       })

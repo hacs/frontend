@@ -32,7 +32,6 @@ export class RepositoryBannerNote extends LitElement {
     let banner: HacsBanner;
 
     if (this.repository.category === "integration") {
-      console.log(this.repository);
       if (this.repository.first_install && this.repository.config_flow) {
         banner = document.createElement(
           "hacs-repository-banner-integration-first-install"

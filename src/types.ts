@@ -20,6 +20,7 @@ export interface Configuration {
   categories: [string];
   country: string;
   dev: string;
+  debug: boolean;
   experimental: boolean;
   frontend_compact: boolean;
   frontend_mode: string;

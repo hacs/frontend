@@ -146,10 +146,9 @@ export class HacsRepositoryMenu extends LitElement {
     } else {
       RepositoryWebSocketAction(this.hass, this.repository.id, "hide");
     }
-    this.route.path = `/${this.repository.category}`;
     this.dispatchEvent(
       new CustomEvent("hacs-location-change", {
-        detail: { value: this.route },
+        detail: { value: this.repository.category },
         bubbles: true,
         composed: true
       })

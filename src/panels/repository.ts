@@ -273,10 +273,9 @@ export class HacsRepository extends LitElement {
     } else {
       this.panel = this.repo.category;
     }
-    this.route.path = `/${this.panel}`;
     this.dispatchEvent(
       new CustomEvent("hacs-location-change", {
-        detail: { value: this.route },
+        detail: { value: this.panel },
         bubbles: true,
         composed: true
       })
