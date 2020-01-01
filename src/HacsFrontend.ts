@@ -9,7 +9,7 @@ import {
   property,
   TemplateResult
 } from "lit-element";
-import { HACS, Hacs } from "./Hacs";
+import { HACS } from "./Hacs";
 import { HacsStyle } from "./style/hacs-style";
 
 import {
@@ -52,7 +52,9 @@ class HacsFrontendBase extends LitElement {
     if (this.hacs.isnullorempty(repositories))
       repositories = this.hacs.repositories;
     if (this.hacs.isnullorempty(status)) status = this.hacs.status;
-    this.hacs = new Hacs(configuration, repositories, status);
+    this.hacs.configuration = configuration;
+    this.hacs.repositories = repositories;
+    this.hacs.status = status;
     this.requestUpdate();
   }
 
@@ -144,6 +146,7 @@ class HacsFrontendBase extends LitElement {
     this.addEventListener("hacs-location-change", this.locationChanged);
     this.addEventListener("hacs-onboarding-done", this.onboardingDone);
     this.addEventListener("hacs-recreate", this._recreatehacs);
+    this.addEventListener("hacs-force-reload", this._reload);
     window.onpopstate = function() {
       window.location.reload();
     };
@@ -184,7 +187,9 @@ class HacsFrontendBase extends LitElement {
   }
 
   _reload(e: any) {
-    window.location.reload(e.data.force);
+    const force =
+      (e.data && e.data.force) || (e.detail && e.detail.force) || false;
+    window.location.reload(force);
   }
 
   protected render(): TemplateResult | void {

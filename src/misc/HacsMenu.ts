@@ -53,6 +53,10 @@ export class HacsMenu extends LitElement {
             ${this.hacs.localize("settings.reload_data")}
           </paper-item>
 
+          <paper-item @click=${this.ReloadWindow}>
+            ${this.hacs.localize("settings.reload_window")}
+          </paper-item>
+
           ${this.location.includes("installed")
             ? html`
                 <paper-item @click=${this.UpgradeAll} class="uninstall-button">
@@ -124,6 +128,16 @@ export class HacsMenu extends LitElement {
         this.configuration.frontend_compact
       ).toLocaleLowerCase()}`
     });
+  }
+
+  ReloadWindow() {
+    this.dispatchEvent(
+      new CustomEvent("hacs-force-reload", {
+        detail: { force: true },
+        bubbles: true,
+        composed: true
+      })
+    );
   }
 
   ReloadData() {
