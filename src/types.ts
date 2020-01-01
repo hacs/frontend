@@ -1,3 +1,6 @@
+import { HomeAssistant } from "custom-card-helpers";
+import { HACS } from "./Hacs";
+
 export interface Route {
   path: string;
   prefix: string;
@@ -42,6 +45,7 @@ export interface RepositoryData {
   beta: boolean;
   can_install: boolean;
   category: string;
+  config_flow: boolean;
   country: string;
   custom: boolean;
   default_branch: string;
@@ -49,6 +53,7 @@ export interface RepositoryData {
   domain: string;
   downloads: number;
   file_name: string;
+  first_install: boolean;
   full_name: string;
   hide: boolean;
   hide_default_branch: boolean;
@@ -80,7 +85,7 @@ export interface ValueChangedEvent {
 }
 
 export interface LocationChangedEvent {
-  detail?: { value: Route };
+  detail?: { value: Route; force?: boolean };
 }
 
 export interface RepositoryCategories {
@@ -138,4 +143,14 @@ export interface LovelaceCardConfig {
 export interface LovelaceResourceConfig {
   type: "css" | "js" | "module" | "html";
   url: string;
+}
+
+export interface HacsBanner extends HTMLElement {
+  hacs?: HACS;
+  hass?: HomeAssistant;
+  repository?: RepositoryData;
+  configuration?: Configuration;
+  route?: Route;
+  lovelaceconfig?: LovelaceConfig;
+  status?: Status;
 }

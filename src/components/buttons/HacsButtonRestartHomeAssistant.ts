@@ -1,19 +1,23 @@
-import { customElement, TemplateResult, html, property } from "lit-element";
+import {
+  customElement,
+  css,
+  CSSResultArray,
+  TemplateResult,
+  html,
+  property
+} from "lit-element";
 import swal from "sweetalert";
-import { HomeAssistant } from "custom-card-helpers";
 
 import { HacsRepositoryButton } from "./HacsRepositoryButton";
 import { HACS } from "../../Hacs";
-import { localize } from "../../localize/localize";
+import { Route } from "../../types";
 
 @customElement("hacs-button-restart-home-assistant")
 export class HacsButtonRestartHomeAssistant extends HacsRepositoryButton {
   @property({ type: Object }) public hacs!: HACS;
-  @property({ type: Object }) public hass!: HomeAssistant;
+  @property({ type: Object }) public route!: Route;
 
   render(): TemplateResult | void {
-    if (!this.repository.installed) return html``;
-
     return html`
       <mwc-button @click=${this.RestartHomeAssistant}>
         ${this.hacs.localize("repository.restart_home_assistant")}
@@ -21,13 +25,26 @@ export class HacsButtonRestartHomeAssistant extends HacsRepositoryButton {
     `;
   }
 
+  static get styles(): CSSResultArray {
+    return [
+      css`
+        mwc-button {
+          --mdc-theme-primary: var(--google-red-500);
+        }
+      `
+    ];
+  }
+
   RestartHomeAssistant() {
-    swal(localize("confirm.restart_home_assistant"), {
-      buttons: [localize("confirm.no"), localize("confirm.yes")]
+    swal(this.hacs.localize("confirm.restart_home_assistant"), {
+      buttons: [
+        this.hacs.localize("confirm.no"),
+        this.hacs.localize("confirm.yes")
+      ]
     }).then(value => {
       if (value !== null) {
         this.hass.callService("homeassistant", "restart");
-        swal(localize("confirm.home_assistant_is_restarting"));
+        swal(this.hacs.localize("confirm.home_assistant_is_restarting"));
       }
     });
   }

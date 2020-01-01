@@ -223,14 +223,14 @@ export class CustomRepositories extends LitElement {
           bottom: 5px;
         }
         .saveicon {
-          color: var(--primary-color);
+          color: var(--hacs-badge-color, --accent-color);
           position: absolute;
           right: 0;
           bottom: 24px;
           cursor: pointer;
         }
         .listicon {
-          color: var(--primary-color);
+          color: var(--hacs-badge-color, --accent-color);
           right: 0px;
           position: absolute;
           cursor: pointer;

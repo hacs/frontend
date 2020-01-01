@@ -77,7 +77,7 @@ export class HiddenRepositories extends LitElement {
           display: flex;
         }
         .listicon {
-          color: var(--primary-color);
+          color: var(--hacs-badge-color, --accent-color);
           left: 0px;
         }
       `

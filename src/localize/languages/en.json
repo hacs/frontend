@@ -53,6 +53,7 @@
     "flag_this": "Flag this",
     "frontend_version": "Frontend version",
     "github_stars": "GitHub stars",
+    "goto_integrations": "Go to integrations",
     "hide_beta": "Hide beta",
     "hide": "Hide",
     "install": "Install",
@@ -76,6 +77,8 @@
     "upgrade": "Update"
   },
   "repository_banner": {
+    "config_flow": "This integration supports config_flow, that means that you now can go to the integration section of your UI to configure it.",
+    "no_restart_required": "No restart required",
     "not_loaded": "Not loaded",
     "plugin_not_loaded": "This plugin is not added to your Lovelace resources.",
     "restart_pending": "Restart pending",

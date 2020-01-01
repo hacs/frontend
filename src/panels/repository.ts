@@ -94,6 +94,7 @@ export class HacsRepository extends LitElement {
           .hass=${this.hass}
           .status=${this.status}
           .repository=${this.repo}
+          .route=${this.route}
           .lovelaceconfig=${this.lovelaceconfig}
           .configuration=${this.configuration}
         >
