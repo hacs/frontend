@@ -111,26 +111,46 @@ export class HacsRepositoryMenu extends LitElement {
   }
 
   RepositoryReload() {
-    RepositoryWebSocketAction(
-      this.hass,
-      this.repository.id,
-      "set_state",
-      "other"
+    this.dispatchEvent(
+      new CustomEvent("hacs-repository-action", {
+        detail: { repo: this.repository, action: "set_state", data: "other" },
+        bubbles: true,
+        composed: true
+      })
     );
-    RepositoryWebSocketAction(this.hass, this.repository.id, "update");
+    this.dispatchEvent(
+      new CustomEvent("hacs-repository-action", {
+        detail: { repo: this.repository, action: "update" },
+        bubbles: true,
+        composed: true
+      })
+    );
   }
 
   RepositoryBeta() {
-    RepositoryWebSocketAction(
-      this.hass,
-      this.repository.id,
-      "set_state",
-      "other"
+    this.dispatchEvent(
+      new CustomEvent("hacs-repository-action", {
+        detail: { repo: this.repository, action: "set_state", data: "other" },
+        bubbles: true,
+        composed: true
+      })
     );
     if (this.repository.beta) {
-      RepositoryWebSocketAction(this.hass, this.repository.id, "hide_beta");
+      this.dispatchEvent(
+        new CustomEvent("hacs-repository-action", {
+          detail: { repo: this.repository, action: "hide_beta" },
+          bubbles: true,
+          composed: true
+        })
+      );
     } else {
-      RepositoryWebSocketAction(this.hass, this.repository.id, "show_beta");
+      this.dispatchEvent(
+        new CustomEvent("hacs-repository-action", {
+          detail: { repo: this.repository, action: "show_beta" },
+          bubbles: true,
+          composed: true
+        })
+      );
     }
   }
 
@@ -142,9 +162,21 @@ export class HacsRepositoryMenu extends LitElement {
       "other"
     );
     if (this.repository.hide) {
-      RepositoryWebSocketAction(this.hass, this.repository.id, "unhide");
+      this.dispatchEvent(
+        new CustomEvent("hacs-repository-action", {
+          detail: { repo: this.repository, action: "unhide" },
+          bubbles: true,
+          composed: true
+        })
+      );
     } else {
-      RepositoryWebSocketAction(this.hass, this.repository.id, "hide");
+      this.dispatchEvent(
+        new CustomEvent("hacs-repository-action", {
+          detail: { repo: this.repository, action: "hide" },
+          bubbles: true,
+          composed: true
+        })
+      );
     }
     this.dispatchEvent(
       new CustomEvent("hacs-location-change", {

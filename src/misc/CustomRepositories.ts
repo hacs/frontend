@@ -100,7 +100,7 @@ export class CustomRepositories extends LitElement {
     var repo = ev.composedPath()[2].children[0].value;
     this.dispatchEvent(
       new CustomEvent("hacs-repository-action", {
-        detail: { repo: repo, action: "add", category: category },
+        detail: { repo: repo, action: "add", data: category },
         bubbles: true,
         composed: true
       })

@@ -40,14 +40,9 @@ class HacsFrontendBase extends LitElement {
 
   public logger = new Logger();
 
-  attributeChangedCallback(name, oldVal, newVal) {
-    console.log("attribute change: ", name, newVal);
-    super.attributeChangedCallback(name, oldVal, newVal);
-  }
-
   protected update(changedProperties: PropertyValues): void {
     super.update(changedProperties);
-    this.hacs.logger.info(changedProperties);
+    this.hacs.logger.info("Changed properties", changedProperties);
   }
 
   public connectedCallback() {
@@ -109,7 +104,7 @@ class HacsFrontendBase extends LitElement {
       this.hass,
       evdata.repo,
       evdata.action,
-      evdata.category
+      evdata.data
     );
   }
 

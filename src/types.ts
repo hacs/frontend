@@ -159,5 +159,5 @@ export interface HacsBanner extends HTMLElement {
 export interface RepositoryActionData {
   repo: string;
   action: string;
-  category?: string;
+  data?: string;
 }

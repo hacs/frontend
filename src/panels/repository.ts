@@ -5,6 +5,7 @@ import {
   TemplateResult,
   html,
   css,
+  PropertyValues,
   property
 } from "lit-element";
 import { HomeAssistant } from "custom-card-helpers";
@@ -37,28 +38,56 @@ export class HacsRepository extends LitElement {
   @property({ type: Object }) public lovelaceconfig: LovelaceConfig;
   @property({ type: Object }) public route!: Route;
   @property({ type: Object }) public status!: Status;
-  @property() public panel: string;
-  @property() public repository!: string;
+  public repository!: string;
+  private panel: string;
+
+  protected update(changedProperties: PropertyValues): void {
+    super.update(changedProperties);
+    if (this.hacs.configuration.debug) this.hacs.logger.info(changedProperties);
+  }
+
+  shouldUpdate(changedProperties: PropertyValues) {
+    changedProperties.forEach((_oldValue, propName) => {
+      if (propName === "repositories") {
+        const _repository = this.repository;
+        const _repositories = this.repositories.filter(function(repo) {
+          return repo.id === _repository;
+        });
+        const repo = _repositories[0];
+
+        if (!this.repo || JSON.stringify(repo) !== JSON.stringify(this.repo)) {
+          console.error("Setting repo");
+          this.repo = repo;
+        }
+      }
+    });
+    return changedProperties.has("repo");
+  }
 
   protected firstUpdated() {
     if (this.repo === undefined || !this.repo.updated_info) {
-      RepositoryWebSocketAction(
-        this.hass,
-        this.repository,
-        "set_state",
-        "other"
+      this.dispatchEvent(
+        new CustomEvent("hacs-repository-action", {
+          detail: {
+            repo: this.repository,
+            action: "set_state",
+            data: "other"
+          },
+          bubbles: true,
+          composed: true
+        })
       );
-      RepositoryWebSocketAction(this.hass, this.repository, "update");
+      this.dispatchEvent(
+        new CustomEvent("hacs-repository-action", {
+          detail: { repo: this.repository, action: "update" },
+          bubbles: true,
+          composed: true
+        })
+      );
     }
   }
 
   render(): TemplateResult | void {
-    var _repository = this.repository;
-    var _repositories = this.repositories.filter(function(repo) {
-      return repo.id === _repository;
-    });
-    this.repo = _repositories[0];
-
     if (this.repo === undefined)
       return html`
         <div class="loader"><paper-spinner active></paper-spinner></div>
@@ -172,7 +201,7 @@ export class HacsRepository extends LitElement {
                 : html`
                     <div class="version-available-dropdown">
                       <paper-dropdown-menu
-                        @value-changed="${this.SetVersion}"
+                        @value-changed="${this.setRepositoryVersion}"
                         label="${this.hacs.localize(`repository.available`)}:
                      (${this.hacs.localize(`repository.newest`)}: ${this.repo
                           .releases[0]})"
@@ -254,14 +283,25 @@ export class HacsRepository extends LitElement {
     `;
   }
 
-  SetVersion(e: ValueChangedEvent) {
+  protected setRepositoryVersion(e: ValueChangedEvent) {
     if (e.detail.value.length > 0) {
-      RepositoryWebSocketAction(this.hass, this.repo.id, "set_state", "other");
-      RepositoryWebSocketAction(
-        this.hass,
-        this.repo.id,
-        "set_version",
-        e.detail.value
+      this.dispatchEvent(
+        new CustomEvent("hacs-repository-action", {
+          detail: { repo: this.repository, action: "set_state", data: "other" },
+          bubbles: true,
+          composed: true
+        })
+      );
+      this.dispatchEvent(
+        new CustomEvent("hacs-repository-action", {
+          detail: {
+            repo: this.repository,
+            action: "set_version",
+            data: e.detail.value
+          },
+          bubbles: true,
+          composed: true
+        })
       );
     }
   }
