@@ -9,7 +9,7 @@ import {
   property,
   TemplateResult
 } from "lit-element";
-import { HACS } from "./Hacs";
+import { HACS, Hacs } from "./Hacs";
 import { HacsStyle } from "./style/hacs-style";
 
 import {
@@ -20,7 +20,8 @@ import {
   Critical,
   SelectedValue,
   LocationChangedEvent,
-  LovelaceConfig
+  LovelaceConfig,
+  RepositoryActionData
 } from "./types";
 
 import { load_lovelace } from "card-tools/src/hass";
@@ -52,10 +53,19 @@ class HacsFrontendBase extends LitElement {
     if (this.hacs.isnullorempty(repositories))
       repositories = this.hacs.repositories;
     if (this.hacs.isnullorempty(status)) status = this.hacs.status;
-    this.hacs.configuration = configuration;
-    this.hacs.repositories = repositories;
-    this.hacs.status = status;
+    this.hacs = new Hacs(configuration, repositories, status);
     this.requestUpdate();
+  }
+
+  private RepositoryAction(ev): void {
+    console.log(ev.detail);
+    const evdata: RepositoryActionData = ev.detail;
+    this.hacs.RepositoryWebSocketAction(
+      this.hass,
+      evdata.repo,
+      evdata.action,
+      evdata.category
+    );
   }
 
   public getRepositories(): void {
@@ -144,6 +154,7 @@ class HacsFrontendBase extends LitElement {
 
   protected firstUpdated() {
     this.addEventListener("hacs-location-change", this.locationChanged);
+    this.addEventListener("hacs-repository-action", this.RepositoryAction);
     this.addEventListener("hacs-onboarding-done", this.onboardingDone);
     this.addEventListener("hacs-recreate", this._recreatehacs);
     this.addEventListener("hacs-force-reload", this._reload);

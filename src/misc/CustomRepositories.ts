@@ -2,13 +2,13 @@ import {
   LitElement,
   customElement,
   property,
+  PropertyValues,
   CSSResultArray,
   css,
   TemplateResult,
   html
 } from "lit-element";
 import swal from "sweetalert";
-import { HomeAssistant } from "custom-card-helpers";
 
 import { HacsStyle } from "../style/hacs-style";
 import { HACS } from "../Hacs";
@@ -17,9 +17,39 @@ import { Route, RepositoryData } from "../types";
 @customElement("hacs-custom-repositories")
 export class CustomRepositories extends LitElement {
   @property({ type: Object }) public hacs!: HACS;
-  @property({ type: Array }) public custom!: RepositoryData[];
-  @property({ type: Object }) public hass!: HomeAssistant;
   @property({ type: Object }) public route!: Route;
+  @property({ type: Boolean }) private background_task: boolean = true;
+  @property({ type: Array }) private custom!: RepositoryData[];
+
+  protected update(changedProperties: PropertyValues): void {
+    super.update(changedProperties);
+    console.log(changedProperties);
+  }
+
+  shouldUpdate(changedProperties: PropertyValues) {
+    changedProperties.forEach((_oldValue, propName) => {
+      if (propName === "hacs") {
+        this.background_task = this.hacs.status.background_task;
+        const customrepositories = this.getCustomRepositories();
+        if (!this.custom || this.custom.length !== customrepositories.length) {
+          this.custom = customrepositories;
+        }
+      }
+    });
+    return (
+      changedProperties.has("custom") ||
+      changedProperties.has("background_task")
+    );
+  }
+
+  getCustomRepositories(): RepositoryData[] {
+    return this.hacs.repositories
+      .sort((a, b) => (a.full_name > b.full_name ? 1 : -1))
+      .filter(repo => {
+        if (repo.custom) return true;
+        else return false;
+      });
+  }
 
   Delete(ev) {
     let RepoID: string;
@@ -37,7 +67,13 @@ export class CustomRepositories extends LitElement {
       ]
     }).then(value => {
       if (!this.hacs.isnullorempty(value)) {
-        this.hacs.RepositoryWebSocketAction(this.hass, RepoID, "delete");
+        this.dispatchEvent(
+          new CustomEvent("hacs-repository-action", {
+            detail: { repo: RepoID, action: "delete" },
+            bubbles: true,
+            composed: true
+          })
+        );
       }
     });
   }
@@ -62,7 +98,13 @@ export class CustomRepositories extends LitElement {
     }
     var category = selected.category;
     var repo = ev.composedPath()[2].children[0].value;
-    this.hacs.RepositoryWebSocketAction(this.hass, repo, "add", category);
+    this.dispatchEvent(
+      new CustomEvent("hacs-repository-action", {
+        detail: { repo: repo, action: "add", category: category },
+        bubbles: true,
+        composed: true
+      })
+    );
     swal(
       this.hacs.localize("settings.adding_new_repo", "{repo}", repo) +
         "\n" +
@@ -100,26 +142,20 @@ export class CustomRepositories extends LitElement {
       );
       return html``;
     }
-
-    this.custom = this.hacs.repositories.filter(function(repo) {
-      if (!repo.custom) return false;
-      return true;
-    });
-
+    console.log(`Render! ${new Date()}`);
     return html`
       <ha-card header="${this.hacs.localize("settings.custom_repositories")}">
         <div class="card-content">
           <div class="custom-repositories-list">
-            ${this.hacs.status.background_task
+            ${this.background_task
               ? html`
                   <i class="addition"
                     >${this.hacs.localize("settings.bg_task_custom")}</i
                   >
                 `
               : html`
-                  ${this.custom
-                    .sort((a, b) => (a.full_name > b.full_name ? 1 : -1))
-                    .map(
+                  ${this.custom &&
+                    this.custom.map(
                       repo =>
                         html`
                           <div

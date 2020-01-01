@@ -8,7 +8,6 @@ import {
   html
 } from "lit-element";
 import { HacsStyle } from "../style/hacs-style";
-import { HomeAssistant } from "custom-card-helpers";
 import { HACS } from "../Hacs";
 import { RepositoryData } from "../types";
 
@@ -16,11 +15,16 @@ import { RepositoryData } from "../types";
 export class HiddenRepositories extends LitElement {
   @property({ type: Array }) public _hidden!: RepositoryData[];
   @property({ type: Object }) public hacs!: HACS;
-  @property({ type: Object }) public hass!: HomeAssistant;
 
   UnHide(ev) {
     var repo = ev.composedPath()[4].repoID;
-    this.hacs.RepositoryWebSocketAction(this.hass, repo, "unhide");
+    this.dispatchEvent(
+      new CustomEvent("hacs-repository-action", {
+        detail: { repo: repo, action: "unhide" },
+        bubbles: true,
+        composed: true
+      })
+    );
   }
 
   protected render(): TemplateResult | void {

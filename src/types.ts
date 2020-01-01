@@ -154,3 +154,9 @@ export interface HacsBanner extends HTMLElement {
   lovelaceconfig?: LovelaceConfig;
   status?: Status;
 }
+
+export interface RepositoryActionData {
+  repo: string;
+  action: string;
+  category?: string;
+}
