@@ -5,7 +5,8 @@ import {
   css,
   TemplateResult,
   html,
-  property
+  property,
+  query
 } from "lit-element";
 import { Configuration, RepositoryData } from "../types";
 import { HacsStyle } from "../style/hacs-style";
@@ -18,6 +19,7 @@ export class LoveLaceHint extends LitElement {
   @property({ type: Object }) public configuration!: Configuration;
   @property({ type: Object }) public hass!: HomeAssistant;
   @property({ type: Object }) public repository!: RepositoryData;
+  @query("#LovelaceExample") private hint!: any;
 
   protected render(): TemplateResult | void {
     const pluginpath = `${this.repository.full_name.split("/")[1]}/${
@@ -41,6 +43,7 @@ export class LoveLaceHint extends LitElement {
         <paper-icon-button
           title="${localize(`repository.lovelace_copy_example`)}"
           icon="mdi:content-copy"
+          id="CopyLLExample"
           @click="${this.CopyToLovelaceExampleToClipboard}"
           role="button"
         ></paper-icon-button>
@@ -48,15 +51,8 @@ export class LoveLaceHint extends LitElement {
     `;
   }
 
-  CopyToLovelaceExampleToClipboard(ev: any) {
-    var LLConfig = ev.composedPath()[4].children[0].children[1].innerText;
-
-    document.addEventListener("copy", (e: ClipboardEvent) => {
-      e.clipboardData.setData("text/plain", LLConfig);
-      e.preventDefault();
-      document.removeEventListener("copy", null);
-    });
-    document.execCommand("copy");
+  CopyToLovelaceExampleToClipboard() {
+    navigator.clipboard.writeText(this.hint.innerText);
   }
   static get styles(): CSSResultArray {
     return [
