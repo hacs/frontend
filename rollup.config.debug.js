@@ -8,7 +8,7 @@ export default {
   input: ["src/main.ts"],
   output: {
     file: `hacs_frontend/debug.js`,
-    format: "es"
+    format: "iife"
   },
   plugins: [nodeResolve({}), commonjs(), typescript(), json(), gzipPlugin()]
 };

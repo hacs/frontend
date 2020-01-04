@@ -16,9 +16,7 @@ const opts_json = {
   preferConst: true
 };
 
-const opts_terser = {
-  mangle: false
-};
+const opts_terser = {};
 
 const opts_dev = {
   dirs: ["hacs_frontend"],
@@ -53,7 +51,7 @@ export default [
     input: ["src/main.ts"],
     output: {
       file: `hacs_frontend/main.js`,
-      format: "es"
+      format: "iife"
     },
     plugins: [...AwesomePlugins]
   }
