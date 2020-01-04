@@ -42,7 +42,6 @@
     "rollup-plugin-node-resolve": "^5.2.0",
     "rollup-plugin-progress": "^1.1.1",
     "rollup-plugin-sizes": "^1.0.1",
-    "rollup-plugin-terser": "^5.1.2",
     "rollup-plugin-typescript2": "^0.24.3",
     "rollup": "^1.24.0",
     "sweetalert": "^2.1.2",

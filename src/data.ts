@@ -166,7 +166,6 @@ export const getConfiguration = async (hass: HomeAssistant) => {
   const response = await hass.connection.sendMessagePromise<Configuration>({
     type: "hacs/config"
   });
-  console.log(response);
   return response;
 };
 
@@ -174,7 +173,6 @@ export const getRepositories = async (hass: HomeAssistant) => {
   const response = await hass.connection.sendMessagePromise<RepositoryData[]>({
     type: "hacs/repositories"
   });
-  console.log(response);
   return response;
 };
 
@@ -182,7 +180,6 @@ export const getCritical = async (hass: HomeAssistant) => {
   const response = await hass.connection.sendMessagePromise<Critical[]>({
     type: "hacs/get_critical"
   });
-  console.log(response);
   return response;
 };
 
@@ -190,7 +187,6 @@ export const getStatus = async (hass: HomeAssistant) => {
   const response = await hass.connection.sendMessagePromise<Status>({
     type: "hacs/status"
   });
-  console.log(response);
   return response;
 };
 
@@ -199,7 +195,6 @@ export const getLovelaceConfiguration = async (hass: HomeAssistant) => {
     const response = await hass.connection.sendMessagePromise<LovelaceConfig>({
       type: "lovelace/config"
     });
-    console.log(response);
     return response;
   } catch (e) {
     return e;
