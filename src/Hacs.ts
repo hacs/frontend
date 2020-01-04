@@ -14,7 +14,7 @@ import {
   RepositoryWebSocketAction
 } from "./tools";
 
-import { Configuration, RepositoryData, Status } from "./types";
+import { Configuration, RepositoryData, Status } from "./data";
 
 export interface HACS {
   logger: any;

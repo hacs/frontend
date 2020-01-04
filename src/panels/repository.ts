@@ -11,7 +11,6 @@ import {
 import { HomeAssistant } from "custom-card-helpers";
 import { HacsStyle } from "../style/hacs-style";
 import { HACS } from "../Hacs";
-import { RepositoryWebSocketAction } from "../tools";
 import { version } from "../version";
 
 import {
@@ -21,7 +20,7 @@ import {
   Status,
   ValueChangedEvent,
   LovelaceConfig
-} from "../types";
+} from "../data";
 
 import emoji from "node-emoji";
 import { markdown } from "../markdown/markdown";
@@ -56,7 +55,6 @@ export class HacsRepository extends LitElement {
         const repo = _repositories[0];
 
         if (!this.repo || JSON.stringify(repo) !== JSON.stringify(this.repo)) {
-          console.error("Setting repo");
           this.repo = repo;
         }
       }

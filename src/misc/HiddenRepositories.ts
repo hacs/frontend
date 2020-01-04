@@ -9,7 +9,7 @@ import {
 } from "lit-element";
 import { HacsStyle } from "../style/hacs-style";
 import { HACS } from "../Hacs";
-import { RepositoryData } from "../types";
+import { RepositoryData } from "../data";
 
 @customElement("hacs-hidden-repositories")
 export class HiddenRepositories extends LitElement {

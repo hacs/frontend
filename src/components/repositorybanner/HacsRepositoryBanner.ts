@@ -12,7 +12,7 @@ import {
   Status,
   Route,
   LovelaceConfig
-} from "../../types";
+} from "../../data";
 import { HACS } from "../../Hacs";
 import { HomeAssistant } from "custom-card-helpers";
 

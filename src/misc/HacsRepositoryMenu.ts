@@ -7,8 +7,7 @@ import {
   LitElement,
   property
 } from "lit-element";
-import { RepositoryWebSocketAction } from "../tools";
-import { RepositoryData, Route } from "../types";
+import { RepositoryData, Route } from "../data";
 import { HacsStyle } from "../style/hacs-style";
 import { HomeAssistant } from "custom-card-helpers";
 import { localize } from "../localize/localize";
@@ -163,11 +162,16 @@ export class HacsRepositoryMenu extends LitElement {
   }
 
   RepositoryHide() {
-    RepositoryWebSocketAction(
-      this.hass,
-      this.repository.id,
-      "set_state",
-      "other"
+    this.dispatchEvent(
+      new CustomEvent("hacs-repository-action", {
+        detail: {
+          repo: this.repository.id,
+          action: "set_state",
+          data: "other"
+        },
+        bubbles: true,
+        composed: true
+      })
     );
     if (this.repository.hide) {
       this.dispatchEvent(

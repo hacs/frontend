@@ -7,7 +7,7 @@ import {
 } from "lit-element";
 
 import { HACS } from "../Hacs";
-import { Route } from "../types";
+import { Route } from "../data";
 
 @customElement("hacs-settings")
 export class HacsSettings extends LitElement {

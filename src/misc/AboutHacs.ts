@@ -1,4 +1,4 @@
-import { RepositoryData, Configuration } from "../types";
+import { RepositoryData, Configuration } from "../data";
 import { HACS } from "../Hacs";
 import { version as frontend_version } from "../version.js";
 

@@ -10,7 +10,7 @@ import swal from "sweetalert";
 
 import { HacsRepositoryButton } from "./HacsRepositoryButton";
 import { HACS } from "../../Hacs";
-import { Route } from "../../types";
+import { Route } from "../../data";
 
 @customElement("hacs-button-restart-home-assistant")
 export class HacsButtonRestartHomeAssistant extends HacsRepositoryButton {

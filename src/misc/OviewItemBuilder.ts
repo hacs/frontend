@@ -6,7 +6,7 @@ import {
   Status,
   Route,
   LovelaceConfig
-} from "../types";
+} from "../data";
 import { AddedToLovelace } from "../misc/AddedToLovelace";
 import emoji from "node-emoji";
 

@@ -22,8 +22,13 @@ import {
   SelectedValue,
   LocationChangedEvent,
   LovelaceConfig,
-  RepositoryActionData
-} from "./types";
+  RepositoryActionData,
+  getConfiguration,
+  getRepositories,
+  getStatus,
+  getCritical,
+  getLovelaceConfiguration
+} from "./data";
 
 import { load_lovelace } from "card-tools/src/hass";
 import { Logger } from "./misc/Logger";
@@ -63,15 +68,21 @@ class HacsFrontendBase extends LitElement {
     load_lovelace();
 
     /* Backend event subscription */
-    this.hass.connection.subscribeEvents(() => this.getConfig(), "hacs/config");
-    this.hass.connection.subscribeEvents(() => this.getStatus(), "hacs/status");
+    this.hass.connection.subscribeEvents(
+      () => this.updateProperty("configuration"),
+      "hacs/config"
+    );
+    this.hass.connection.subscribeEvents(
+      () => this.updateProperty("status"),
+      "hacs/status"
+    );
     this.hass.connection.subscribeEvents(e => this._reload(e), "hacs/reload");
     this.hass.connection.subscribeEvents(
-      () => this.getRepos(),
+      () => this.updateProperty("repositories"),
       "hacs/repository"
     );
     this.hass.connection.subscribeEvents(
-      () => this.getLovelaceConfig(),
+      () => this.updateProperty("lovelaceconfig"),
       "lovelace_updated"
     );
 
@@ -108,99 +119,47 @@ class HacsFrontendBase extends LitElement {
     );
   }
 
-  public getRepos(): void {
-    this.hass.connection
-      .sendMessagePromise({
-        type: "hacs/repositories"
-      })
-      .then(
-        resp => {
-          this.repositories = resp as RepositoryData[];
-          this._recreatehacs();
-        },
-        err => {
-          this.logger.error("(hacs/repositories) Message failed!");
-          this.logger.error(err);
-        }
-      );
-  }
-
-  public getConfig(): void {
-    this.hass.connection
-      .sendMessagePromise({
-        type: "hacs/config"
-      })
-      .then(
-        resp => {
-          this.configuration = resp as Configuration;
-          this._recreatehacs();
-        },
-        err => {
-          this.logger.error("(hacs/config) Message failed!");
-          this.logger.error(err);
-        }
-      );
-  }
-
-  public getCritical(): void {
-    this.hass.connection
-      .sendMessagePromise({
-        type: "hacs/get_critical"
-      })
-      .then(
-        resp => {
-          this.critical = resp as Critical[];
-          this._recreatehacs();
-        },
-        err => {
-          this.logger.error("(hacs/get_critical) Message failed!");
-          this.logger.error(err);
-        }
-      );
-  }
-
-  public getStatus(): void {
-    this.hass.connection
-      .sendMessagePromise({
-        type: "hacs/status"
-      })
-      .then(
-        resp => {
-          this.status = resp as Status;
-          this._recreatehacs();
-        },
-        err => {
-          this.logger.error("(hacs/status) Message failed!");
-          this.logger.error(err);
-        }
-      );
-  }
-
-  public getLovelaceConfig(): void {
-    this.hass.connection
-      .sendMessagePromise({
-        type: "lovelace/config",
-        force: false
-      })
-      .then(
-        resp => {
-          this.lovelaceconfig = resp as LovelaceConfig;
-        },
-        () => {
-          this.lovelaceconfig = undefined;
-        }
-      );
-  }
-
-  protected firstUpdated() {
+  protected async firstUpdated() {
     window.onpopstate = function() {
       window.location.reload();
     };
-    this.getRepos();
-    this.getConfig();
-    this.getStatus();
-    this.getCritical();
-    this.getLovelaceConfig();
+    const [
+      repositories,
+      configuration,
+      status,
+      critical,
+      lovelaceconfig
+    ] = await Promise.all([
+      getRepositories(this.hass),
+      getConfiguration(this.hass),
+      getStatus(this.hass),
+      getCritical(this.hass),
+      getLovelaceConfiguration(this.hass)
+    ]);
+    this.repositories = repositories;
+    this.configuration = configuration;
+    this.status = status;
+    this.critical = critical;
+    this.lovelaceconfig = lovelaceconfig;
+  }
+
+  private async updateProperty(
+    property:
+      | "repositories"
+      | "configuration"
+      | "status"
+      | "critical"
+      | "lovelaceconfig"
+  ) {
+    if (property === "repositories")
+      this.repositories = await getRepositories(this.hass);
+    else if (property === "configuration")
+      this.configuration = await getConfiguration(this.hass);
+    else if (property === "status") this.status = await getStatus(this.hass);
+    else if (property === "critical")
+      this.critical = await getCritical(this.hass);
+    else if (property === "lovelaceconfig")
+      this.lovelaceconfig = await getLovelaceConfiguration(this.hass);
   }
 
   _reload(e: any) {
@@ -406,7 +365,13 @@ class HacsFrontendBase extends LitElement {
 
   locationChanged(ev: any): void {
     if (this.configuration.debug) this.hacs.logger.info(ev.type, ev.detail);
-    this.route.path = `/${(ev as LocationChangedEvent).detail.value}`;
+    const new_path = `${(ev as LocationChangedEvent).detail.value}`;
+    if (new_path.startsWith("/")) {
+      this.route.prefix = new_path;
+      this.route.path = "";
+    } else {
+      this.route.path = `/${(ev as LocationChangedEvent).detail.value}`;
+    }
     const force = (ev as LocationChangedEvent).detail.force;
     this.hacs.navigate(this, `${this.route.prefix}${this.route.path}`);
     if (force) window.location.reload();

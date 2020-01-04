@@ -5,7 +5,7 @@ Instead common functions/objects are stored in the Repository class.
 import { HomeAssistant } from "custom-card-helpers";
 import { RepositoryWebSocketAction } from "./tools";
 
-import { RepositoryData } from "./types";
+import { RepositoryData } from "./data";
 
 export interface Repository {
   data: RepositoryData;

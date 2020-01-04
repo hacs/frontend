@@ -9,7 +9,7 @@ import { HacsStyle } from "../../style/hacs-style";
 import { HacsRepositoryButton } from "./HacsRepositoryButton";
 import { RepositoryWebSocketAction } from "../../tools";
 import swal from "sweetalert";
-import { LovelaceConfig, LovelaceResourceConfig } from "../../types";
+import { LovelaceConfig, LovelaceResourceConfig } from "../../data";
 import { localize } from "../../localize/localize";
 
 @customElement("hacs-button-uninstall")

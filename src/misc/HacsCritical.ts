@@ -9,7 +9,7 @@ import {
 } from "lit-element";
 import { HacsStyle } from "../style/hacs-style";
 import { HomeAssistant } from "custom-card-helpers";
-import { Critical } from "../types";
+import { Critical } from "../data";
 
 @customElement("hacs-critical")
 export class HacsCritical extends LitElement {

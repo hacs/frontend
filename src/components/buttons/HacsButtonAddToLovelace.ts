@@ -6,7 +6,7 @@ import {
   Configuration,
   LovelaceConfig,
   LovelaceResourceConfig
-} from "../../types";
+} from "../../data";
 
 import { localize } from "../../localize/localize";
 

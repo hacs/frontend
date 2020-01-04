@@ -12,7 +12,7 @@ import swal from "sweetalert";
 
 import { HacsStyle } from "../style/hacs-style";
 import { HACS } from "../Hacs";
-import { Route, RepositoryData } from "../types";
+import { Route, RepositoryData } from "../data";
 
 @customElement("hacs-custom-repositories")
 export class CustomRepositories extends LitElement {
@@ -141,8 +141,6 @@ export class CustomRepositories extends LitElement {
       );
       return html``;
     }
-    if (this.hacs.configuration.debug)
-      this.hacs.logger.info(`Render! ${new Date()}`);
     return html`
       <ha-card header="${this.hacs.localize("settings.custom_repositories")}">
         <div class="card-content">

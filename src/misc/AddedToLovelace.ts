@@ -3,7 +3,7 @@ import {
   Status,
   LovelaceConfig,
   LovelaceResourceConfig
-} from "../types";
+} from "../data";
 
 export function AddedToLovelace(
   repository: RepositoryData,

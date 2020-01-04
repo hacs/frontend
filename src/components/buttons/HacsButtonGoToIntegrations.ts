@@ -2,7 +2,6 @@ import { customElement, TemplateResult, html, property } from "lit-element";
 
 import { HacsRepositoryButton } from "./HacsRepositoryButton";
 import { HACS } from "../../Hacs";
-import { Route } from "../../types";
 
 @customElement("hacs-button-goto-integrations")
 export class HacsButtonGoToIntegrations extends HacsRepositoryButton {
@@ -19,7 +18,7 @@ export class HacsButtonGoToIntegrations extends HacsRepositoryButton {
   GoToIntegrations() {
     this.dispatchEvent(
       new CustomEvent("hacs-location-change", {
-        detail: { value: "integrations/dashboard" },
+        detail: { value: "/config/integrations/dashboard", force: true },
         bubbles: true,
         composed: true
       })

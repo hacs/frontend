@@ -6,7 +6,7 @@ import {
   property
 } from "lit-element";
 import { HomeAssistant } from "custom-card-helpers";
-import { Route } from "./types";
+import { Route } from "./data";
 import "./LoadUIElements";
 
 @customElement("hacs-frontend")

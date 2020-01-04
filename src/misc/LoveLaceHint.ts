@@ -8,7 +8,7 @@ import {
   property,
   query
 } from "lit-element";
-import { Configuration, RepositoryData } from "../types";
+import { Configuration, RepositoryData } from "../data";
 import { HacsStyle } from "../style/hacs-style";
 import { HomeAssistant } from "custom-card-helpers";
 import { localize } from "../localize/localize";

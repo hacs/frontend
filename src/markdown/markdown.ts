@@ -5,7 +5,7 @@ import emoji from "node-emoji";
 import hljs_ from "highlight.js/lib/highlight";
 import yaml_ from "highlight.js/lib/languages/yaml";
 import { GFM, HLJS } from "./styles";
-import { RepositoryData } from "../types";
+import { RepositoryData } from "../data";
 
 hljs_.registerLanguage("yaml", yaml_);
 

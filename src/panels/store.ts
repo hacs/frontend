@@ -17,7 +17,7 @@ import {
   ValueChangedEvent,
   Route,
   LovelaceConfig
-} from "../types";
+} from "../data";
 
 import { OviewItemBuilder } from "../misc/OviewItemBuilder";
 

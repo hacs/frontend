@@ -10,7 +10,7 @@ import {
 import { HomeAssistant } from "custom-card-helpers";
 import { HacsStyle } from "../style/hacs-style";
 import { HACS } from "../Hacs";
-import { RepositoryData, Status, Configuration } from "../types";
+import { RepositoryData, Status, Configuration } from "../data";
 
 import { AboutHacs } from "./AboutHacs";
 
