@@ -11,7 +11,7 @@ export function AddedToLovelace(
   status: Status
 ): boolean {
   if (status.lovelace_mode === "yaml") return true;
-  if (lovelaceconfig !== undefined) {
+  if (lovelaceconfig) {
     var loaded: boolean = false;
     var URL: string = `/community_plugin/${
       repository.full_name.split("/")[1]

@@ -2,11 +2,7 @@ import { customElement, TemplateResult, html, property } from "lit-element";
 import swal from "sweetalert";
 import { HacsRepositoryButton } from "./HacsRepositoryButton";
 
-import {
-  Configuration,
-  LovelaceConfig,
-  LovelaceResourceConfig
-} from "../../data";
+import { LovelaceConfig, LovelaceResourceConfig } from "../../data";
 
 import { localize } from "../../localize/localize";
 
@@ -14,11 +10,7 @@ import { Logger } from "../../misc/Logger";
 
 @customElement("hacs-button-add-to-lovelace")
 export class HacsButtonAddToLovelace extends HacsRepositoryButton {
-  @property() public configuration: Configuration;
-  @property() public lovelaceconfig: LovelaceConfig;
-
   logger = new Logger("add_to_lovelace");
-
   render(): TemplateResult | void {
     if (!this.repository.installed) return html``;
     if (this.repository.javascript_type === null) return html``;

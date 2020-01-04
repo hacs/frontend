@@ -197,6 +197,6 @@ export const getLovelaceConfiguration = async (hass: HomeAssistant) => {
     });
     return response;
   } catch (e) {
-    return e;
+    return null;
   }
 };

@@ -59,7 +59,9 @@ export class HacsRepository extends LitElement {
         }
       }
     });
-    return changedProperties.has("repo");
+    return (
+      changedProperties.has("repo") || changedProperties.has("lovelaceconfig")
+    );
   }
 
   protected firstUpdated() {
