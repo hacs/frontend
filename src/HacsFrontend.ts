@@ -43,6 +43,9 @@ class HacsFrontendBase extends LitElement {
   @property() public lovelaceconfig: LovelaceConfig;
   @property() public route!: Route;
 
+  private status: Status;
+  private configuration: Configuration;
+  private repositories: RepositoryData[];
   public logger = new Logger();
 
   protected update(changedProperties: PropertyValues): void {
@@ -91,10 +94,6 @@ class HacsFrontendBase extends LitElement {
     localStorage.setItem("hacs-sort", "name-desc");
   }
 
-  status: Status;
-  configuration: Configuration;
-  repositories: RepositoryData[];
-
   private _recreatehacs(): void {
     var configuration = this.configuration;
     var repositories = this.repositories;
@@ -141,6 +140,7 @@ class HacsFrontendBase extends LitElement {
     this.status = status;
     this.critical = critical;
     this.lovelaceconfig = lovelaceconfig;
+    this._recreatehacs();
   }
 
   private async updateProperty(
@@ -160,6 +160,7 @@ class HacsFrontendBase extends LitElement {
       this.critical = await getCritical(this.hass);
     else if (property === "lovelaceconfig")
       this.lovelaceconfig = await getLovelaceConfiguration(this.hass);
+    this._recreatehacs();
   }
 
   _reload(e: any) {

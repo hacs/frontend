@@ -19,7 +19,8 @@ const opts_json = {
 };
 
 const opts_babel = {
-  exclude: "node_modules/**"
+  exclude: "node_modules/**",
+  sourceMap: "inline"
 };
 
 const opts_dev = {
