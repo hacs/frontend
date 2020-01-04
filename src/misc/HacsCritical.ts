@@ -13,8 +13,8 @@ import { Critical } from "../data";
 
 @customElement("hacs-critical")
 export class HacsCritical extends LitElement {
-  @property({ type: Array }) public critical!: Critical[];
-  @property({ type: Object }) public hass!: HomeAssistant;
+  @property() public critical!: Critical[];
+  @property() public hass!: HomeAssistant;
 
   async Acknowledge(ev) {
     var repository = ev.composedPath()[3].repository;

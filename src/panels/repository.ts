@@ -28,15 +28,15 @@ import { GFM, HLJS } from "../markdown/styles";
 
 @customElement("hacs-repository")
 export class HacsRepository extends LitElement {
-  @property({ type: Array }) public repositories!: RepositoryData[];
-  @property({ type: Boolean }) public repository_view = false;
-  @property({ type: Object }) private repo: RepositoryData;
-  @property({ type: Object }) public configuration!: Configuration;
-  @property({ type: Object }) public hacs!: HACS;
-  @property({ type: Object }) public hass!: HomeAssistant;
-  @property({ type: Object }) public lovelaceconfig: LovelaceConfig;
-  @property({ type: Object }) public route!: Route;
-  @property({ type: Object }) public status!: Status;
+  @property() public repositories!: RepositoryData[];
+  @property() public repository_view = false;
+  @property() private repo: RepositoryData;
+  @property() public configuration!: Configuration;
+  @property() public hacs!: HACS;
+  @property() public hass!: HomeAssistant;
+  @property() public lovelaceconfig: LovelaceConfig;
+  @property() public route!: Route;
+  @property() public status!: Status;
   public repository!: string;
   private panel: string;
 

@@ -11,9 +11,9 @@ import "./LoadUIElements";
 
 @customElement("hacs-frontend")
 class HacsFrontend extends LitElement {
-  @property({ type: Boolean }) public narrow!: boolean;
-  @property({ type: Object }) public hass!: HomeAssistant;
-  @property({ type: Object }) public route!: Route;
+  @property() public narrow!: boolean;
+  @property() public hass!: HomeAssistant;
+  @property() public route!: Route;
 
   setModalCSS() {
     if (document.getElementById("modal-style")) return;

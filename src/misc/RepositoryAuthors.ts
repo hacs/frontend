@@ -13,8 +13,8 @@ import { localize } from "../localize/localize";
 
 @customElement("hacs-authors")
 export class Authors extends LitElement {
-  @property({ type: Object }) public hass!: HomeAssistant;
-  @property({ type: Array }) public authors!: [string];
+  @property() public hass!: HomeAssistant;
+  @property() public authors!: [string];
 
   protected render(): TemplateResult | void {
     if (String(this.authors.length) === "0") return html``;

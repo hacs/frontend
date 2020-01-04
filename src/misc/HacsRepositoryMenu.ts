@@ -14,9 +14,9 @@ import { localize } from "../localize/localize";
 
 @customElement("hacs-repository-menu")
 export class HacsRepositoryMenu extends LitElement {
-  @property({ type: Object }) public hass!: HomeAssistant;
-  @property({ type: Object }) public repository!: RepositoryData;
-  @property({ type: Object }) public route!: Route;
+  @property() public hass!: HomeAssistant;
+  @property() public repository!: RepositoryData;
+  @property() public route!: Route;
 
   protected render(): TemplateResult | void {
     return html`

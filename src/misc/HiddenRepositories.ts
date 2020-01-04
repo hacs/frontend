@@ -13,8 +13,8 @@ import { RepositoryData } from "../data";
 
 @customElement("hacs-hidden-repositories")
 export class HiddenRepositories extends LitElement {
-  @property({ type: Array }) public _hidden!: RepositoryData[];
-  @property({ type: Object }) public hacs!: HACS;
+  @property() public _hidden!: RepositoryData[];
+  @property() public hacs!: HACS;
 
   UnHide(ev) {
     var repo = ev.composedPath()[4].repoID;

@@ -22,9 +22,9 @@ import { step as onboarding6 } from "./onboarding_steps/6";
 
 @customElement("hacs-onboarding")
 export class HacsOnboarding extends LitElement {
-  @property({ type: Boolean }) public narrow!: boolean;
-  @property({ type: Object }) public hacs!: HACS;
-  @property({ type: Object }) public hass!: HomeAssistant;
+  @property() public narrow!: boolean;
+  @property() public hacs!: HACS;
+  @property() public hass!: HomeAssistant;
   @property() private step: number = 0;
 
   NextStep() {

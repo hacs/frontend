@@ -16,9 +16,9 @@ import { GFM } from "../markdown/styles";
 
 @customElement("hacs-lovelace-hint")
 export class LoveLaceHint extends LitElement {
-  @property({ type: Object }) public configuration!: Configuration;
-  @property({ type: Object }) public hass!: HomeAssistant;
-  @property({ type: Object }) public repository!: RepositoryData;
+  @property() public configuration!: Configuration;
+  @property() public hass!: HomeAssistant;
+  @property() public repository!: RepositoryData;
   @query("#LovelaceExample") private hint!: any;
 
   protected render(): TemplateResult | void {

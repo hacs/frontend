@@ -5,7 +5,7 @@ import { HACS } from "../../Hacs";
 
 @customElement("hacs-button-goto-integrations")
 export class HacsButtonGoToIntegrations extends HacsRepositoryButton {
-  @property({ type: Object }) public hacs!: HACS;
+  @property() public hacs!: HACS;
 
   render(): TemplateResult | void {
     return html`

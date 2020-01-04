@@ -14,8 +14,8 @@ import { Route } from "../../data";
 
 @customElement("hacs-button-restart-home-assistant")
 export class HacsButtonRestartHomeAssistant extends HacsRepositoryButton {
-  @property({ type: Object }) public hacs!: HACS;
-  @property({ type: Object }) public route!: Route;
+  @property() public hacs!: HACS;
+  @property() public route!: Route;
 
   render(): TemplateResult | void {
     return html`

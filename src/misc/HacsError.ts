@@ -12,8 +12,8 @@ import { HomeAssistant } from "custom-card-helpers";
 
 @customElement("hacs-error")
 export class HacsError extends LitElement {
-  @property({ type: Object }) public hass!: HomeAssistant;
-  @property({ type: Object }) public error: {
+  @property() public hass!: HomeAssistant;
+  @property() public error: {
     message: string;
     action: string;
     exception?: string;

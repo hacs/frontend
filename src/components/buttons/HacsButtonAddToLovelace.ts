@@ -14,8 +14,8 @@ import { Logger } from "../../misc/Logger";
 
 @customElement("hacs-button-add-to-lovelace")
 export class HacsButtonAddToLovelace extends HacsRepositoryButton {
-  @property({ type: Object }) public configuration: Configuration;
-  @property({ type: Object }) public lovelaceconfig: LovelaceConfig;
+  @property() public configuration: Configuration;
+  @property() public lovelaceconfig: LovelaceConfig;
 
   logger = new Logger("add_to_lovelace");
 

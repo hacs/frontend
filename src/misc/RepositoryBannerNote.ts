@@ -18,13 +18,13 @@ import { HomeAssistant } from "custom-card-helpers";
 
 @customElement("hacs-repository-banner-note")
 export class RepositoryBannerNote extends LitElement {
-  @property({ type: Object }) public hacs!: HACS;
-  @property({ type: Object }) public configuration: Configuration;
-  @property({ type: Object }) public hass!: HomeAssistant;
-  @property({ type: Object }) public lovelaceconfig: LovelaceConfig;
-  @property({ type: Object }) public repository!: RepositoryData;
-  @property({ type: Object }) public route!: Route;
-  @property({ type: Object }) public status!: Status;
+  @property() public hacs!: HACS;
+  @property() public configuration: Configuration;
+  @property() public hass!: HomeAssistant;
+  @property() public lovelaceconfig: LovelaceConfig;
+  @property() public repository!: RepositoryData;
+  @property() public route!: Route;
+  @property() public status!: Status;
 
   protected render(): TemplateResult | void {
     if (!this.repository.installed) return html``;

@@ -24,13 +24,13 @@ import { OviewItemBuilder } from "../misc/OviewItemBuilder";
 
 @customElement("hacs-installed")
 export class HacsInstalled extends LitElement {
-  @property({ type: Array }) public repositories!: RepositoryData[];
-  @property({ type: Object }) public configuration!: Configuration;
-  @property({ type: Object }) public hacs!: HACS;
-  @property({ type: Object }) public hass!: HomeAssistant;
-  @property({ type: Object }) public lovelaceconfig: LovelaceConfig;
-  @property({ type: Object }) public route!: Route;
-  @property({ type: Object }) public status!: Status;
+  @property() public repositories!: RepositoryData[];
+  @property() public configuration!: Configuration;
+  @property() public hacs!: HACS;
+  @property() public hass!: HomeAssistant;
+  @property() public lovelaceconfig: LovelaceConfig;
+  @property() public route!: Route;
+  @property() public status!: Status;
 
   protected render(): TemplateResult | void {
     if (this.repositories === undefined)

@@ -11,8 +11,8 @@ import { Route } from "../data";
 
 @customElement("hacs-settings")
 export class HacsSettings extends LitElement {
-  @property({ type: Object }) public hacs!: HACS;
-  @property({ type: Object }) public route!: Route;
+  @property() public hacs!: HACS;
+  @property() public route!: Route;
 
   render(): TemplateResult | void {
     if (this.hacs === undefined) {

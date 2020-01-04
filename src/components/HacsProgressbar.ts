@@ -11,7 +11,7 @@ import { HacsStyle } from "../style/hacs-style";
 
 @customElement("hacs-progressbar")
 export class HacsProgressbar extends LitElement {
-  @property({ type: Boolean }) public active: boolean = true;
+  @property() public active: boolean = true;
 
   protected render(): TemplateResult | void {
     if (!this.active) return html``;

@@ -20,9 +20,9 @@ interface LoveLaceHint extends HTMLElement {
 
 @customElement("hacs-repository-note")
 export class RepositoryNote extends LitElement {
-  @property({ type: Object }) public configuration!: Configuration;
-  @property({ type: Object }) public hass!: HomeAssistant;
-  @property({ type: Object }) public repository!: RepositoryData;
+  @property() public configuration!: Configuration;
+  @property() public hass!: HomeAssistant;
+  @property() public repository!: RepositoryData;
 
   protected render(): TemplateResult | void {
     let path: string = this.repository.local_path;

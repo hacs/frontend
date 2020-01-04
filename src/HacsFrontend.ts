@@ -35,13 +35,13 @@ import { Logger } from "./misc/Logger";
 
 @customElement("hacs-frontendbase")
 class HacsFrontendBase extends LitElement {
-  @property({ type: Array }) public critical!: Critical[];
-  @property({ type: Boolean }) public narrow!: boolean;
-  @property({ type: Boolean }) public repository_view: boolean = false;
-  @property({ type: Object }) public hacs!: HACS;
-  @property({ type: Object }) public hass!: HomeAssistant;
-  @property({ type: Object }) public lovelaceconfig: LovelaceConfig;
-  @property({ type: Object }) public route!: Route;
+  @property() public critical!: Critical[];
+  @property() public narrow!: boolean;
+  @property() public repository_view: boolean = false;
+  @property() public hacs!: HACS;
+  @property() public hass!: HomeAssistant;
+  @property() public lovelaceconfig: LovelaceConfig;
+  @property() public route!: Route;
 
   public logger = new Logger();
 

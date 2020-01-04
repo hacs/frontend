@@ -19,11 +19,11 @@ import swal from "sweetalert";
 @customElement("hacs-menu")
 export class HacsMenu extends LitElement {
   @property() public location!: string;
-  @property({ type: Object }) public hacs!: HACS;
-  @property({ type: Object }) public hass!: HomeAssistant;
-  @property({ type: Object }) public configuration!: Configuration;
-  @property({ type: Object }) public status!: Status;
-  @property({ type: Array }) public repositories!: RepositoryData[];
+  @property() public hacs!: HACS;
+  @property() public hass!: HomeAssistant;
+  @property() public configuration!: Configuration;
+  @property() public status!: Status;
+  @property() public repositories!: RepositoryData[];
 
   protected render(): TemplateResult | void {
     return html`

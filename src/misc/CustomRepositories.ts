@@ -16,10 +16,10 @@ import { Route, RepositoryData } from "../data";
 
 @customElement("hacs-custom-repositories")
 export class CustomRepositories extends LitElement {
-  @property({ type: Object }) public hacs!: HACS;
-  @property({ type: Object }) public route!: Route;
-  @property({ type: Boolean }) private background_task: boolean = true;
-  @property({ type: Array }) private custom!: RepositoryData[];
+  @property() public hacs!: HACS;
+  @property() public route!: Route;
+  @property() private background_task: boolean = true;
+  @property() private custom!: RepositoryData[];
 
   protected update(changedProperties: PropertyValues): void {
     super.update(changedProperties);
