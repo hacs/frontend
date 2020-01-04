@@ -1,4 +1,4 @@
-/* eslint-disable no-console, no-undef, prefer-destructuring, prefer-destructuring, no-constant-condition, max-len */
+/* eslint-disable no-undef, prefer-destructuring, prefer-destructuring, no-constant-condition, max-len */
 import { HomeAssistant } from "custom-card-helpers";
 import {
   css,
