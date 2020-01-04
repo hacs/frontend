@@ -50,7 +50,8 @@ class HacsFrontendBase extends LitElement {
 
   protected update(changedProperties: PropertyValues): void {
     super.update(changedProperties);
-    this.hacs.logger.info("Changed properties", changedProperties);
+    if (this.hacs.configuration.debug)
+      this.hacs.logger.info("Changed properties", changedProperties);
   }
 
   public connectedCallback() {
