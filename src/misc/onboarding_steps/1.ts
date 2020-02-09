@@ -44,21 +44,21 @@ export const step = html`
   </li>
   </br>
   <h1>
-	  🚨 Warning
+    🚨 Warning
   </h1>
   <hr />
   <p>
-	  HACS and everything you find in it are <b>not</b> tested by Home Assistant.
+    HACS and everything you find in it are <b>not</b> tested by Home Assistant.
   </p>
   <p>
-	  Custom extentions can cause harm to your system and/or contain bugs.
-	  If you have issues with a custom extension you found in HACS, 
+    Custom extentions can cause harm to your system and/or contain bugs.
+    If you have issues with a custom extension you found in HACS, 
     report it to the author of <i>that</i> custom extension.
   </p>
   <p>
-	  You can easily get to the issue tracker of anything you find 
+    You can easily get to the issue tracker of anything you find 
     in HACS with the menu (located at the top right) on every repository you find inside HACS.
-	  </br></br>
-	  <b>The HACS and Home Assistant teams do not support <i>anything</i> you find here.</b>
+    </br></br>
+    <b>The HACS and Home Assistant teams do not support <i>anything</i> you find here.</b>
   </p>
 `;
