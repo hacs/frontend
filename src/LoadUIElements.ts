@@ -20,6 +20,7 @@ import "./components/repositorybanner/PluginNotLoaded";
 import "./components/HacsBody";
 import "./components/HacsLink";
 import "./components/HacsProgressbar";
+import "./components/MultiSpinner";
 import "./misc/HacsMenu";
 
 import "./misc/CustomRepositories";

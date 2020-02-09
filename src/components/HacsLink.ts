@@ -11,17 +11,24 @@ import {
 @customElement("hacs-link")
 export class HacsLink extends LitElement {
   @property() private url!: string;
-  @property() private ext: boolean = true;
   protected render(): TemplateResult | void {
-    return html`
+    if (this.url.includes("http")) {
+      return html`
       <a
         href="${this.url}"
-        target="${this.ext ? "_blank" : "_self"}"
-        rel="${this.ext ? "noreferrer" : ""}"
+        target="_blank"
+        rel="noreferrer"
       >
         <slot></slot>
       </a>
     `;
+    } else {
+      return html`
+      <a href="${this.url}" >
+        <slot></slot>
+      </a>
+    `;
+    }
   }
 
   static get styles(): CSSResultArray {
