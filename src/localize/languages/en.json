@@ -33,6 +33,7 @@
     "exist": "{item} already exists",
     "generic": "Are you sure?",
     "home_assistant_is_restarting": "Hold on, Home Assistant is now restarting.",
+    "home_assistant_version_not_correct": "You are running Home Assistant version '{haversion}', but this repository requires minimum version '{minversion}' to be installed.",
     "no_upgrades": "No upgrades pending",
     "no": "No",
     "ok": "OK",

@@ -87,6 +87,12 @@ export class HacsButtonMainAction extends HacsRepositoryButton {
           this.ExecuteAction();
         }
       });
+    } else if (!this.repository.can_install) {
+      swal(
+        localize("confirm.home_assistant_version_not_correct")
+          .replace("{haversion}", this.hass.config.version)
+          .replace("{minversion}", this.repository.homeassistant)
+      );
     } else this.ExecuteAction();
   }
 
