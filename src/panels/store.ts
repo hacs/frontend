@@ -43,14 +43,18 @@ export class HacsStore extends LitElement {
         return Date.parse(a.last_updated) < Date.parse(b.last_updated);
       }
 
-      return a[sortkey] > b[sortkey];
+      return (
+        String(a[sortkey]).toLowerCase() > String(b[sortkey]).toLowerCase()
+      );
     } else {
       if (sortkey === "stars") return a.stars > b.stars;
       if (sortkey === "last_updated") {
         return Date.parse(a.last_updated) > Date.parse(b.last_updated);
       }
 
-      return a[sortkey] < b[sortkey];
+      return (
+        String(a[sortkey]).toLowerCase() < String(b[sortkey]).toLowerCase()
+      );
     }
   }
 
