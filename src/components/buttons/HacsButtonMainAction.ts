@@ -67,7 +67,10 @@ export class HacsButtonMainAction extends HacsRepositoryButton {
   RepositoryInstall() {
     if (this.pathExists && !this.repository.installed) {
       let path: string = this.repository.local_path;
-      if (this.repository.category === "theme") {
+      if (
+        this.repository.category === "theme" ||
+        this.repository.category === "python_script"
+      ) {
         path = `${path}/${this.repository.file_name}`;
       }
       swal(
