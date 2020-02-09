@@ -121,7 +121,9 @@ class HacsFrontendBase extends LitElement {
 
   protected async firstUpdated() {
     window.onpopstate = function() {
-      window.location.reload();
+      if (window.location.pathname.includes("hacs")) {
+        window.location.reload();
+      }
     };
     const [
       repositories,
