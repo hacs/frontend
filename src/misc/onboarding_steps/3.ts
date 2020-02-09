@@ -2,14 +2,48 @@ import { html } from "lit-element";
 
 export const step = html`
   <h1>
-    First startup
+    Resources and useful links
+  </h1>
+  <hr />
+  <li><hacs-link url="https://hacs.xyz/">HACS Documentation</hacs-link></li>
+  <li><hacs-link url="https://github.com/hacs">HACS @ GitHub</hacs-link></li>
+  <li><hacs-link url="https://discord.gg/apgchf8">HACS @ Discord</hacs-link></li>
+  <li>
+    <hacs-link url="https://hacs.xyz/docs/basic/automation#new-repositories-added"
+    >Automation: New repository was added to HACS</hacs-link>
+  </li>
+  <li>
+    <hacs-link url="https://hacs.xyz/docs/basic/automation#updates-pending"
+    >Automation: Update pending in HACS</hacs-link>
+  </li>
+  </br></br>
+
+  <h1>
+    Last words
   </h1>
   <hr />
   <p>
-    The first time you start Home Assistant with HACS enabled it needs to get information about every repository it knows.</br> It is important that you let it finish this process before you restart Home Assistant, if you restart before it's finished it will need to start over.
+    HACS is mainly developed/maintained by a single person (<hacs-link 
+    url="https://github.com/ludeeus"
+    >@ludeeus</hacs-link>). Because of this, it can take some time 
+    before issues are looked at and pull requests are reviewed.
   </p>
-  <p>When it's done you will no longer see the progressbar.</p>
-  <hacs-progressbar .active=${true}></hacs-progressbar>
-  <p>This process can take several minutes depending on your system and network.</p>
-  <p>Again this progressbar is just an example, you can click "Continue" now.</p>
+  <p>
+	  If you have issues/suggestions regarding HACS, report them here: <hacs-link 
+    url="https://hacs.xyz/docs/issues"
+    >GitHub</hacs-link>
+  </p>
+  <p>
+	  If you have questions regarding HACS please join the <hacs-link 
+    url="https://discord.gg/apgchf8"
+    >Discord server</hacs-link>
+  </p>
+  </br>
+  <p>
+	  If you find this custom integration useful, please consider supporting me by <hacs-link 
+    url="https://github.com/sponsors/ludeeus"
+    >sponsoring me on GitHub❤️</hacs-link> or <hacs-link 
+    url="https://buymeacoffee.com/ludeeus"
+    >buying me ☕️/🍺</hacs-link>
+  </p>
 `;
