@@ -9,10 +9,6 @@ export const step = html`
     Congratulations, you have successfully installed HACS! 🎉 </br> This onboarding
     process will hopefully help you to understand what HACS is and what it does.
   </p>
-  <p>To start off here are a few useful links:</p>
-  <li><hacs-link url="https://hacs.xyz/">HACS Documentation</hacs-link></li>
-  <li><hacs-link url="https://github.com/hacs">HACS @ GitHub</hacs-link></li>
-  <li><hacs-link url="https://discord.gg/apgchf8">HACS @ Discord</hacs-link></li>
   </br>
   <p><b>NB!: You will only see this onboarding once, so take your time to read it all.</b></p>
 `;
