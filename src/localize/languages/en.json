@@ -83,6 +83,7 @@
     "not_loaded": "Not loaded",
     "plugin_not_loaded": "This plugin is not added to your Lovelace resources.",
     "restart_pending": "Restart pending",
+    "config_flow_title": "UI Configuration supported",
     "restart": "You need to restart Home Assistant."
   },
   "settings": {
