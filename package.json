@@ -39,7 +39,7 @@
     "rollup-plugin-progress": "^1.1.1",
     "rollup-plugin-sizes": "^1.0.1",
     "rollup-plugin-terser": "^5.1.2",
-    "rollup-plugin-typescript2": "^0.24.3",
+    "rollup-plugin-typescript2": "^0.26.0",
     "rollup": "^1.24.0",
     "sweetalert": "^2.1.2",
     "typescript": "^3.6.4",
