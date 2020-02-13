@@ -10,10 +10,6 @@ export const step = html`
 	  to find, install and upgrade custom extensions for Home Assistant.
   </p>
   <p>
-    HACS is a distribution platform that makes it super easy to find, install and upgrade 
-	  custom extensions that are not part of Home Assistant core.
-  </p>
-  <p>
     Extensions, in this context, are:
   </p>
   <li>
