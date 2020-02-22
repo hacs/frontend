@@ -65,6 +65,12 @@ export class HacsButtonMainAction extends HacsRepositoryButton {
   }
 
   RepositoryInstall() {
+    RepositoryWebSocketAction(
+      this.hass,
+      this.repository.id,
+      "set_state",
+      "installing"
+    );
     if (this.pathExists && !this.repository.installed) {
       let path: string = this.repository.local_path;
       if (
@@ -85,6 +91,13 @@ export class HacsButtonMainAction extends HacsRepositoryButton {
       ).then(value => {
         if (value !== null) {
           this.ExecuteAction();
+        } else {
+          RepositoryWebSocketAction(
+            this.hass,
+            this.repository.id,
+            "set_state",
+            ""
+          );
         }
       });
     } else if (!this.repository.can_install) {
@@ -93,16 +106,15 @@ export class HacsButtonMainAction extends HacsRepositoryButton {
           .replace("{haversion}", this.hass.config.version)
           .replace("{minversion}", this.repository.homeassistant)
       );
+      RepositoryWebSocketAction(
+        this.hass,
+        this.repository.id,
+        "set_state",
+        ""
+      );
     } else this.ExecuteAction();
   }
-
   ExecuteAction() {
-    RepositoryWebSocketAction(
-      this.hass,
-      this.repository.id,
-      "set_state",
-      "installing"
-    );
     RepositoryWebSocketAction(this.hass, this.repository.id, "install");
   }
 }
