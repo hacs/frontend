@@ -19,10 +19,11 @@ export class Authors extends LitElement {
   protected render(): TemplateResult | void {
     if (String(this.authors.length) === "0") return html``;
     let authors = [];
-    const seperateElement = document.createElement("div");
-    seperateElement.className = "seperator";
-    seperateElement.innerText = ",";
     this.authors.forEach(author => {
+      const seperateElement = document.createElement("div");
+      seperateElement.className = "seperator";
+      seperateElement.innerText = ",";
+
       const authorElement = document.createElement("a");
       authorElement.href = `https://github.com/${author.replace("@", "")}`;
       authorElement.target = "_blank";
