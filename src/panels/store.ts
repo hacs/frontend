@@ -114,7 +114,7 @@ export class HacsStore extends LitElement {
           if (repository.name.toLowerCase().includes(this.search.toLowerCase()))
             return true;
           if (
-            repository.description
+            String(repository.description)
               .toLowerCase()
               .includes(this.search.toLowerCase())
           )
