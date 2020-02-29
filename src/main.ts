@@ -29,11 +29,19 @@ class HacsFrontend extends LitElement {
           color: var(--primary-text-color) !important;
       }
       .swal-button {
-          background-color: var(--primary-color) !important;
-          color: var(--primary-text-color) !important;
+          background-color: transparent !important;
+          color: var(--mdc-theme-primary, --primary-text-color) !important;
       }
       .swal-text:first-child {
         margin: 16px 0px 0px 8px;
+      }
+      .swal-button:focus {
+        outline: none;
+        box-shadow: none;
+      }
+      .swal-button:hover {
+        outline: none;
+        box-shadow: 0 0 0 1px #fff, 0 0 0 3px;
       }`;
     element.appendChild(style);
   }
