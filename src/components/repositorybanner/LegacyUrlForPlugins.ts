@@ -7,6 +7,7 @@ import { LovelaceResourceConfig } from "../../data";
 export class HacsLegacyUrlForPlugins extends HacsRepositoryBanner {
   @property() private _wrongURL: LovelaceResourceConfig[] = [];
   protected render(): TemplateResult | void {
+    if (this.status.lovelace_mode === "yaml") return html``;
     const title = "Legacy URL's detected";
     const resources = this.lovelaceconfig as LovelaceResourceConfig[];
 
