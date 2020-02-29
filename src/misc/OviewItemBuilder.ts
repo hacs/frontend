@@ -5,7 +5,8 @@ import {
   RepositoryData,
   Status,
   Route,
-  LovelaceConfig
+  LovelaceConfig,
+  LovelaceResourceConfig
 } from "../data";
 import { AddedToLovelace } from "../misc/AddedToLovelace";
 import emoji from "node-emoji";
@@ -13,7 +14,7 @@ import emoji from "node-emoji";
 export class OviewItemBuilder {
   hass: HomeAssistant;
   configuration: Configuration;
-  lovelaceconfig: LovelaceConfig;
+  lovelaceconfig: LovelaceConfig | LovelaceResourceConfig[];
   status: Status;
   route: Route;
   dispatchEvent: any;
@@ -21,7 +22,7 @@ export class OviewItemBuilder {
   constructor(
     hass: HomeAssistant,
     configuration: Configuration,
-    lovelaceconfig: LovelaceConfig,
+    lovelaceconfig: LovelaceConfig | LovelaceResourceConfig[],
     status: Status,
     route: Route
   ) {

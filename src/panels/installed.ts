@@ -17,7 +17,8 @@ import {
   RepositoryCategories,
   AllCategories,
   Route,
-  LovelaceConfig
+  LovelaceConfig,
+  LovelaceResourceConfig
 } from "../data";
 
 import { OviewItemBuilder } from "../misc/OviewItemBuilder";
@@ -28,7 +29,7 @@ export class HacsInstalled extends LitElement {
   @property() public configuration!: Configuration;
   @property() public hacs!: HACS;
   @property() public hass!: HomeAssistant;
-  @property() public lovelaceconfig: LovelaceConfig;
+  @property() public lovelaceconfig: LovelaceConfig | LovelaceResourceConfig[];
   @property() public route!: Route;
   @property() public status!: Status;
 

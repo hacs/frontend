@@ -5,13 +5,15 @@ import {
   html,
   property
 } from "lit-element";
-
+import { HomeAssistant } from "custom-card-helpers";
 import { HACS } from "../Hacs";
-import { Route } from "../data";
+import { Route, LovelaceConfig, LovelaceResourceConfig } from "../data";
 
 @customElement("hacs-settings")
 export class HacsSettings extends LitElement {
   @property() public hacs!: HACS;
+  @property() public hass!: HomeAssistant;
+  @property() public lovelaceconfig: LovelaceConfig | LovelaceResourceConfig[];
   @property() public route!: Route;
 
   render(): TemplateResult | void {
@@ -22,6 +24,11 @@ export class HacsSettings extends LitElement {
     }
     return html`
       <hacs-body>
+        <hacs-legacy-url-for-plugins
+          .hass=${this.hass}
+          .lovelaceconfig=${this.lovelaceconfig}
+        >
+        </hacs-legacy-url-for-plugins>
         <hacs-custom-repositories .hacs=${this.hacs} .route=${this.route}>
         </hacs-custom-repositories>
         <hacs-hidden-repositories .hacs=${this.hacs}>

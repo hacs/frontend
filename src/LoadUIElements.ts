@@ -16,6 +16,7 @@ import "./components/buttons/HacsButtonRestartHomeAssistant";
 import "./components/buttons/HacsButtonUninstall";
 import "./components/repositorybanner/IntegrationFirstInstall";
 import "./components/repositorybanner/IntegrationPendingRestart";
+import "./components/repositorybanner/LegacyUrlForPlugins";
 import "./components/repositorybanner/PluginNotLoaded";
 import "./components/HacsBody";
 import "./components/HacsLink";

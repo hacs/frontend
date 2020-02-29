@@ -13,7 +13,6 @@ export class HacsButtonAddToLovelace extends HacsRepositoryButton {
   logger = new Logger("add_to_lovelace");
   render(): TemplateResult | void {
     if (!this.repository.installed) return html``;
-    if (this.repository.javascript_type === null) return html``;
 
     return html`
       <mwc-button @click=${this.RepositoryAddToLovelace}>
@@ -22,11 +21,13 @@ export class HacsButtonAddToLovelace extends HacsRepositoryButton {
     `;
   }
 
-  RepositoryAddToLovelace() {
-    swal(localize("confirm.add_to_lovelace"), {
+  async RepositoryAddToLovelace() {
+    const value = await swal(localize("confirm.add_to_lovelace"), {
       buttons: [localize("confirm.no"), localize("confirm.yes")]
-    }).then(value => {
-      if (value !== null) {
+    });
+
+    if (value !== null) {
+      if (this.hass.config.version.split(".")[1] <= "106") {
         this.hass.connection
           .sendMessagePromise({
             type: "lovelace/config",
@@ -36,14 +37,10 @@ export class HacsButtonAddToLovelace extends HacsRepositoryButton {
             resp => {
               var currentConfig = resp as LovelaceConfig;
               const cardConfig: LovelaceResourceConfig = {
-                type: this.repository.javascript_type as
-                  | "css"
-                  | "js"
-                  | "module"
-                  | "html",
-                url: `/community_plugin/${
-                  this.repository.full_name.split("/")[1]
-                }/${this.repository.file_name}`
+                type: "module",
+                url: `/hacsfiles/${this.repository.full_name.split("/")[1]}/${
+                  this.repository.file_name
+                }`
               };
               if (currentConfig.resources)
                 currentConfig.resources!.push(cardConfig);
@@ -58,7 +55,18 @@ export class HacsButtonAddToLovelace extends HacsRepositoryButton {
               this.logger.error(err);
             }
           );
+      } else {
+        this.hass.callWS({
+          type: "lovelace/resources/create",
+          res_type: "module",
+          url: `/hacsfiles/${this.repository.full_name.split("/")[1]}/${
+            this.repository.file_name
+          }`
+        });
       }
-    });
+      this.dispatchEvent(
+        new CustomEvent("hacs-force-reload", { bubbles: true, composed: true })
+      );
+    }
   }
 }

@@ -25,40 +25,38 @@ export class LoveLaceHint extends LitElement {
     const pluginpath = `${this.repository.full_name.split("/")[1]}/${
       this.repository.file_name
     }`;
-    const plugintype = `${
-      this.repository.javascript_type !== undefined
-        ? this.repository.javascript_type
-        : localize(`repository.lovelace_no_js_type`)
-    }`;
     return html`
       <div class="lovelace-hint markdown-body">
         <p class="example-title">
           ${localize(`repository.lovelace_instruction`)}:
         </p>
-        <pre id="LovelaceExample" class="yaml">
-  - url: /community_plugin/${pluginpath}
-    type: ${plugintype}</pre
-        >
-
-        <paper-icon-button
-          title="${localize(`repository.lovelace_copy_example`)}"
-          icon="mdi:content-copy"
-          id="CopyLLExample"
-          @click="${this.CopyToLovelaceExampleToClipboard}"
-          role="button"
-        ></paper-icon-button>
+        <table class="llhint">
+          <tr>
+            <td>URL:</td>
+            <td><code>/hacsfiles/${pluginpath}</code></td>
+          </tr>
+          <tr>
+            <td>Type:</td>
+            <td>
+              ${this.hass.localize(
+                "ui.panel.config.lovelace.resources.types.module"
+              ) || "module"}
+            </td>
+          </tr>
+        </table>
       </div>
     `;
   }
 
-  CopyToLovelaceExampleToClipboard() {
-    navigator.clipboard.writeText(this.hint.innerText);
-  }
   static get styles(): CSSResultArray {
     return [
       HacsStyle,
       GFM,
       css`
+        .llhint tbody {
+          width: 100%;
+          display: inline-table;
+        }
         .example-title {
           margin-block-end: 0em;
         }

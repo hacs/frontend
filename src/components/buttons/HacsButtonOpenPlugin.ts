@@ -12,7 +12,7 @@ export class HacsButtonOpenPlugin extends HacsRepositoryButton {
 
     return html`
       <a
-        href="/community_plugin/${path.pop()}/${this.repository.file_name}"
+        href="/hacsfiles/${path.pop()}/${this.repository.file_name}"
         target="_blank"
       >
         <mwc-button>

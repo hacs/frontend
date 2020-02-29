@@ -11,7 +11,8 @@ import {
   Configuration,
   Status,
   Route,
-  LovelaceConfig
+  LovelaceConfig,
+  LovelaceResourceConfig
 } from "../../data";
 import { HACS } from "../../Hacs";
 import { HomeAssistant } from "custom-card-helpers";
@@ -21,7 +22,7 @@ export class HacsRepositoryBanner extends LitElement {
   @property() public hacs!: HACS;
   @property() public configuration: Configuration;
   @property() public hass!: HomeAssistant;
-  @property() public lovelaceconfig: LovelaceConfig;
+  @property() public lovelaceconfig: LovelaceConfig | LovelaceResourceConfig[];
   @property() public repository!: RepositoryData;
   @property() public route!: Route;
   @property() public status!: Status;

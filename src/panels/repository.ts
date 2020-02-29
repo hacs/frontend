@@ -19,7 +19,8 @@ import {
   Route,
   Status,
   ValueChangedEvent,
-  LovelaceConfig
+  LovelaceConfig,
+  LovelaceResourceConfig
 } from "../data";
 
 import emoji from "node-emoji";
@@ -34,7 +35,7 @@ export class HacsRepository extends LitElement {
   @property() public configuration!: Configuration;
   @property() public hacs!: HACS;
   @property() public hass!: HomeAssistant;
-  @property() public lovelaceconfig: LovelaceConfig;
+  @property() public lovelaceconfig: LovelaceConfig | LovelaceResourceConfig[];
   @property() public route!: Route;
   @property() public status!: Status;
   public repository!: string;

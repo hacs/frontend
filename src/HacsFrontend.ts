@@ -22,6 +22,7 @@ import {
   SelectedValue,
   LocationChangedEvent,
   LovelaceConfig,
+  LovelaceResourceConfig,
   RepositoryActionData,
   getConfiguration,
   getRepositories,
@@ -40,7 +41,7 @@ class HacsFrontendBase extends LitElement {
   @property() public repository_view: boolean = false;
   @property() public hacs!: HACS;
   @property() public hass!: HomeAssistant;
-  @property() public lovelaceconfig: LovelaceConfig;
+  @property() public lovelaceconfig: LovelaceConfig | LovelaceResourceConfig[];
   @property() public route!: Route;
 
   private status: Status;
@@ -327,6 +328,8 @@ class HacsFrontendBase extends LitElement {
                   .hacs=${this.hacs}
                   .hass=${this.hass}
                   .route=${this.route}
+                  .lovelaceconfig=${this.lovelaceconfig}
+                  .configuration=${this.configuration}
                 >
                 </hacs-settings>
               `

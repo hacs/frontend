@@ -16,7 +16,8 @@ import {
   Configuration,
   ValueChangedEvent,
   Route,
-  LovelaceConfig
+  LovelaceConfig,
+  LovelaceResourceConfig
 } from "../data";
 
 import { OviewItemBuilder } from "../misc/OviewItemBuilder";
@@ -27,7 +28,7 @@ export class HacsStore extends LitElement {
   @property() public configuration!: Configuration;
   @property() public hacs!: HACS;
   @property() public hass!: HomeAssistant;
-  @property() public lovelaceconfig: LovelaceConfig;
+  @property() public lovelaceconfig: LovelaceConfig | LovelaceResourceConfig[];
   @property() public route!: Route;
   @property() public status!: Status;
   @property() public store!: string;

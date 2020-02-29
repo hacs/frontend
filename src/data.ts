@@ -144,6 +144,7 @@ export interface LovelaceCardConfig {
 export interface LovelaceResourceConfig {
   type: "css" | "js" | "module" | "html";
   url: string;
+  id?: string;
 }
 
 export interface HacsBanner extends HTMLElement {
@@ -191,9 +192,29 @@ export const getStatus = async (hass: HomeAssistant) => {
 };
 
 export const getLovelaceConfiguration = async (hass: HomeAssistant) => {
+  if (hass.config.version.split(".")[1] <= "106") {
+    return await getLovelaceConfigLegacy(hass);
+  }
+  return getLovelaceResources(hass);
+};
+
+const getLovelaceConfigLegacy = async (hass: HomeAssistant) => {
   try {
     const response = await hass.connection.sendMessagePromise<LovelaceConfig>({
       type: "lovelace/config"
+    });
+    return response;
+  } catch (e) {
+    return null;
+  }
+};
+
+const getLovelaceResources = async (hass: HomeAssistant) => {
+  try {
+    const response = await hass.connection.sendMessagePromise<
+      LovelaceResourceConfig[]
+    >({
+      type: "lovelace/resources"
     });
     return response;
   } catch (e) {
