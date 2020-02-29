@@ -11,8 +11,6 @@ export class HacsLegacyUrlForPlugins extends HacsRepositoryBanner {
     const title = "Legacy URL's detected";
     const resources = this.lovelaceconfig as LovelaceResourceConfig[];
 
-    console.log(resources);
-
     if (!resources) return html``;
 
     this._wrongURL = resources?.filter(resource => {
