@@ -7,7 +7,7 @@ import {
 } from "lit-element";
 import { HomeAssistant } from "custom-card-helpers";
 import { HACS } from "../Hacs";
-import { Route, LovelaceConfig, LovelaceResourceConfig } from "../data";
+import { Route, LovelaceConfig, LovelaceResourceConfig, Status } from "../data";
 
 @customElement("hacs-settings")
 export class HacsSettings extends LitElement {
@@ -15,6 +15,7 @@ export class HacsSettings extends LitElement {
   @property() public hass!: HomeAssistant;
   @property() public lovelaceconfig: LovelaceConfig | LovelaceResourceConfig[];
   @property() public route!: Route;
+  @property() public status!: Status;
 
   render(): TemplateResult | void {
     if (this.hacs === undefined) {
@@ -26,6 +27,7 @@ export class HacsSettings extends LitElement {
       <hacs-body>
         <hacs-legacy-url-for-plugins
           .hass=${this.hass}
+          .status=${this.status}
           .lovelaceconfig=${this.lovelaceconfig}
         >
         </hacs-legacy-url-for-plugins>

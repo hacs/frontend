@@ -328,6 +328,7 @@ class HacsFrontendBase extends LitElement {
                   .hacs=${this.hacs}
                   .hass=${this.hass}
                   .route=${this.route}
+                  .status=${this.status}
                   .lovelaceconfig=${this.lovelaceconfig}
                   .configuration=${this.configuration}
                 >
