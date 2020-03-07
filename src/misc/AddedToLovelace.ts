@@ -29,8 +29,7 @@ export function AddedToLovelace(
     if (resources) {
       (resources as LovelaceResourceConfig[]).forEach(
         (item: LovelaceResourceConfig) => {
-          if (item.url === URL1 || item.url === URL2 || item.type !== "module")
-            loaded = true;
+          if (item.url === URL1 || item.url === URL2) loaded = true;
         }
       );
     }
