@@ -100,6 +100,8 @@ export class HacsRepository extends LitElement {
     } else {
       if (this.repo.category === "appdaemon") {
         var FE_cat = "appdaemon_apps";
+      } else if (this.repo.category === "netdaemon") {
+        var FE_cat = "netdaemon_apps";
       } else {
         FE_cat = `${this.repo.category}s`;
       }

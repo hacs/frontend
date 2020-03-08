@@ -91,6 +91,7 @@ export interface LocationChangedEvent {
 
 export interface RepositoryCategories {
   appdaemon_apps: RepositoryData[];
+  netdaemon_apps: RepositoryData[];
   integrations: RepositoryData[];
   plugins: RepositoryData[];
   python_scripts: RepositoryData[];
@@ -101,6 +102,7 @@ export const AllCategories = [
   "integrations",
   "plugins",
   "appdaemon_apps",
+  "netdaemon_apps",
   "python_scripts",
   "themes"
 ];

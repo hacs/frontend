@@ -49,6 +49,7 @@ export class HacsInstalled extends LitElement {
       integrations: [],
       plugins: [],
       appdaemon_apps: [],
+      netdaemon_apps: [],
       python_scripts: [],
       themes: []
     };
@@ -61,6 +62,8 @@ export class HacsInstalled extends LitElement {
           categories.plugins.push(repository);
         if (repository.category === "appdaemon")
           categories.appdaemon_apps.push(repository);
+        if (repository.category === "netdaemon")
+          categories.netdaemon_apps.push(repository);
         if (repository.category === "python_script")
           categories.python_scripts.push(repository);
         if (repository.category === "theme") categories.themes.push(repository);
