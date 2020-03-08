@@ -3,6 +3,8 @@
     "about": "About",
     "appdaemon_apps": "AppDaemon Apps",
     "appdaemon": "AppDaemon",
+    "netdaemon_apps": "NetDaemon Apps",
+    "netdaemon": "NetDaemon",
     "background_task": "Background task running, this page will reload when it's done.",
     "check_log_file": "Check your log file for more details.",
     "continue": "Continue",

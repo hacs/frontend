@@ -265,6 +265,13 @@ class HacsFrontendBase extends LitElement {
                     </paper-tab>
                   `
                 : ""}
+              ${this.configuration.categories.includes("netdaemon")
+                ? html`
+                    <paper-tab page-name="netdaemon">
+                      ${this.hacs.localize(`common.netdaemon_apps`)}
+                    </paper-tab>
+                  `
+                : ""}
               ${this.configuration.categories.includes("python_script")
                 ? html`
                     <paper-tab page-name="python_script">
