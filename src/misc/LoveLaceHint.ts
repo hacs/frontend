@@ -38,9 +38,7 @@ export class LoveLaceHint extends LitElement {
           <tr>
             <td>Type:</td>
             <td>
-              ${this.hass.localize(
-                "ui.panel.config.lovelace.resources.types.module"
-              ) || "module"}
+              module
             </td>
           </tr>
         </table>

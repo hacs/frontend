@@ -35,12 +35,19 @@ export class RepositoryNote extends LitElement {
 
     const p = document.createElement("p");
     p.innerText = `${localize(`repository.note_installed`)} '${path}'`;
-    if (
-      ["appdaemon", "integration", "plugin"].includes(this.repository.category)
-    ) {
+    if (["appdaemon", "integration"].includes(this.repository.category)) {
       p.innerText += `, ${localize(
         `repository.note_${this.repository.category}`
       )}.`;
+    } else if (this.repository.category === "plugin") {
+      if (this.hass.config.version.split(".")[1] <= "106") {
+        p.innerText += `, ${localize("repository.note_plugin")}`;
+      } else {
+        p.innerHTML += `, ${localize("repository.note_plugin_post_107").replace(
+          "/config/lovelace/resources",
+          "<a href='/config/lovelace/resources'>'/config/lovelace/resources'</a>"
+        )}`;
+      }
     }
 
     Note.appendChild(p);
