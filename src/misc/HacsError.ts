@@ -42,7 +42,7 @@ export class HacsError extends LitElement {
     }
 
     return html`
-            <ha-card header="An error ocoured while processing" class="alert">
+            <ha-card header="An error occurred while processing" class="alert">
                 <div class="card-content">
                   ${
                     this.error.exception !== undefined
