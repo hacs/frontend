@@ -13,19 +13,16 @@ export class HacsButtonMainAction extends HacsRepositoryButton {
 
   protected firstUpdated() {
     let path: string = this.repository.local_path;
-    if (this.repository.category === "theme") {
-      path = `${path}/${this.repository.file_name}`;
-    }
     this.hass.connection
       .sendMessagePromise({
         type: "hacs/check_path",
-        path: path
+        path: path,
       })
       .then(
-        resp => {
+        (resp) => {
           this.pathExists = resp["exist"];
         },
-        err => {
+        (err) => {
           this.logger.error("(hacs/check_path) Message failed!");
           this.logger.error(err);
         }
@@ -50,12 +47,8 @@ export class HacsButtonMainAction extends HacsRepositoryButton {
     return html`
       <mwc-button @click=${this.RepositoryInstall}>
         ${this.repository.state == "installing"
-          ? html`
-              <paper-spinner active></paper-spinner>
-            `
-          : html`
-              ${label}
-            `}
+          ? html` <paper-spinner active></paper-spinner> `
+          : html` ${label} `}
       </mwc-button>
     `;
   }
@@ -73,10 +66,7 @@ export class HacsButtonMainAction extends HacsRepositoryButton {
     );
     if (this.pathExists && !this.repository.installed) {
       let path: string = this.repository.local_path;
-      if (
-        this.repository.category === "theme" ||
-        this.repository.category === "python_script"
-      ) {
+      if (this.repository.category === "python_script") {
         path = `${path}/${this.repository.file_name}`;
       }
       swal(
@@ -86,9 +76,9 @@ export class HacsButtonMainAction extends HacsRepositoryButton {
           "\n" +
           localize("confirm.continue"),
         {
-          buttons: [localize("confirm.no"), localize("confirm.yes")]
+          buttons: [localize("confirm.no"), localize("confirm.yes")],
         }
-      ).then(value => {
+      ).then((value) => {
         if (value !== null) {
           this.ExecuteAction();
         } else {
@@ -106,12 +96,7 @@ export class HacsButtonMainAction extends HacsRepositoryButton {
           .replace("{haversion}", this.hass.config.version)
           .replace("{minversion}", this.repository.homeassistant)
       );
-      RepositoryWebSocketAction(
-        this.hass,
-        this.repository.id,
-        "set_state",
-        ""
-      );
+      RepositoryWebSocketAction(this.hass, this.repository.id, "set_state", "");
     } else this.ExecuteAction();
   }
   ExecuteAction() {
