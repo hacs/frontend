@@ -5,7 +5,7 @@ import {
   html,
   css,
   customElement,
-  property
+  property,
 } from "lit-element";
 import { HomeAssistant } from "custom-card-helpers";
 import { HacsStyle } from "../style/hacs-style";
@@ -47,10 +47,6 @@ export class HacsMenu extends LitElement {
         >
           <paper-item @click=${this.openHelp}
             >${this.hacs.localize("common.documentation")}
-          </paper-item>
-
-          <paper-item @click=${this.ReloadData}>
-            ${this.hacs.localize("settings.reload_data")}
           </paper-item>
 
           <paper-item @click=${this.ReloadWindow}>
@@ -117,7 +113,7 @@ export class HacsMenu extends LitElement {
       type: "hacs/settings",
       action: `set_fe_${
         this.configuration.frontend_mode !== "Table" ? "table" : "grid"
-      }`
+      }`,
     });
   }
 
@@ -126,7 +122,7 @@ export class HacsMenu extends LitElement {
       type: "hacs/settings",
       action: `set_fe_compact_${String(
         this.configuration.frontend_compact
-      ).toLocaleLowerCase()}`
+      ).toLocaleLowerCase()}`,
     });
   }
 
@@ -135,7 +131,7 @@ export class HacsMenu extends LitElement {
       new CustomEvent("hacs-force-reload", {
         detail: { force: true },
         bubbles: true,
-        composed: true
+        composed: true,
       })
     );
   }
@@ -152,14 +148,14 @@ export class HacsMenu extends LitElement {
       {
         buttons: [
           this.hacs.localize("confirm.no"),
-          this.hacs.localize("confirm.yes")
-        ]
+          this.hacs.localize("confirm.yes"),
+        ],
       }
-    ).then(value => {
+    ).then((value) => {
       if (value !== null) {
         this.hass.connection.sendMessage({
           type: "hacs/settings",
-          action: "reload_data"
+          action: "reload_data",
         });
       }
     });
@@ -171,31 +167,31 @@ export class HacsMenu extends LitElement {
       return;
     }
     var elements: RepositoryData[] = [];
-    this.repositories.forEach(element => {
+    this.repositories.forEach((element) => {
       if (element.pending_upgrade) elements.push(element);
     });
     if (elements.length > 0) {
       var msg = this.hacs.localize(`confirm.upgrade_all`) + "\n\n";
-      elements.forEach(element => {
+      elements.forEach((element) => {
         msg += `${element.name}: ${element.installed_version} -> ${element.available_version}\n`;
       });
       msg += `\n${this.hacs.localize("confirm.continue")}`;
       swal(msg, {
         buttons: [
           this.hacs.localize("confirm.no"),
-          this.hacs.localize("confirm.yes")
-        ]
-      }).then(value => {
+          this.hacs.localize("confirm.yes"),
+        ],
+      }).then((value) => {
         if (value !== null) {
           this.hass.connection.sendMessage({
             type: "hacs/settings",
-            action: "upgrade_all"
+            action: "upgrade_all",
           });
         }
       });
     } else {
       swal(this.hacs.localize(`confirm.no_upgrades`), {
-        buttons: [this.hacs.localize("confirm.ok")]
+        buttons: [this.hacs.localize("confirm.ok")],
       });
     }
   }
@@ -207,7 +203,7 @@ export class HacsMenu extends LitElement {
         this.hacs,
         this.repositories,
         this.configuration
-      ) as any
+      ) as any,
     });
   }
 
@@ -266,7 +262,7 @@ export class HacsMenu extends LitElement {
             var(--primary-background-color)
           );
         }
-      `
+      `,
     ];
   }
 }
