@@ -1,13 +1,13 @@
 // See https://aka.ms/vscode-remote/devcontainer.json for format details.
 {
   "name": "HACS Frontend",
-  "dockerFile": "DockerFile",
+  "image": "ludeeus/container:frontend",
   "context": "..",
   "appPort": ["5000:5000"],
-  "postCreateCommand": "npm install; npm run postinstall",
+  "postCreateCommand": "yarn; yarn postinstall",
   "runArgs": [
     "-v",
-    "${env:HOME}${env:USERPROFILE}/.ssh:/tmp/.ssh" // This is added so you can push from inside the container
+    "${env:HOME}${env:USERPROFILE}/.ssh:/tmp/.ssh"
   ],
   "extensions": [
     "github.vscode-pull-request-github",

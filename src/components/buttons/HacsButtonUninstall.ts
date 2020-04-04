@@ -3,7 +3,7 @@ import {
   CSSResultArray,
   css,
   TemplateResult,
-  html
+  html,
 } from "lit-element";
 import { HacsStyle } from "../../style/hacs-style";
 import { HacsRepositoryButton } from "./HacsRepositoryButton";
@@ -34,12 +34,8 @@ export class HacsButtonUninstall extends HacsRepositoryButton {
         <mwc-button @click=${this.RepositoryUnInstall}">
             ${
               this.repository.state == "uninstalling"
-                ? html`
-                    <paper-spinner active></paper-spinner>
-                  `
-                : html`
-                    ${label}
-                  `
+                ? html` <paper-spinner active></paper-spinner> `
+                : html` ${label} `
             }
         </mwc-button>
         `;
@@ -51,7 +47,7 @@ export class HacsButtonUninstall extends HacsRepositoryButton {
         mwc-button {
           --mdc-theme-primary: var(--google-red-500);
         }
-      `
+      `,
     ];
   }
 
@@ -63,7 +59,7 @@ export class HacsButtonUninstall extends HacsRepositoryButton {
     const value = await swal(
       localize("confirm.uninstall", "{item}", this.repository.name),
       {
-        buttons: [localize("confirm.no"), localize("confirm.yes")]
+        buttons: [localize("confirm.no"), localize("confirm.yes")],
       }
     );
 
@@ -98,9 +94,9 @@ export class HacsButtonUninstall extends HacsRepositoryButton {
       this.hass.connection
         .sendMessagePromise({
           type: "lovelace/config",
-          force: false
+          force: false,
         })
-        .then(resp => {
+        .then((resp) => {
           const currentConfig = resp as LovelaceConfig;
 
           if (currentConfig.resources) {
@@ -114,23 +110,25 @@ export class HacsButtonUninstall extends HacsRepositoryButton {
             currentConfig.resources = resources;
             this.hass.callWS({
               type: "lovelace/config/save",
-              config: currentConfig
+              config: currentConfig,
             });
           }
         });
     } else {
       const resources = await this.hass.callWS<LovelaceResourceConfig[]>({
-        type: "lovelace/resources"
+        type: "lovelace/resources",
       });
-      const resource: LovelaceResourceConfig = resources.find(function(
+      const resource: LovelaceResourceConfig = resources.find(function (
         element
       ) {
         return element.url === url1 || element.url === url2;
       });
-      this.hass.callWS({
-        type: "lovelace/resources/delete",
-        resource_id: resource.id
-      });
+      if (resource) {
+        this.hass.callWS({
+          type: "lovelace/resources/delete",
+          resource_id: resource.id,
+        });
+      }
     }
   }
 }
