@@ -72,7 +72,10 @@ const baseHacsStyles = css`
   .card-group {
     margin-top: 24px;
   }
-
+  .two-line-list-body {
+    min-height: 0 !important;
+    display: contents;
+  }
   .card-group {
     color: var(--primary-text-color);
     margin-bottom: 12px;
@@ -203,5 +206,5 @@ export const HacsStyle: CSSResultArray = [
   _haStyle,
   _navStyle,
   baseHacsStyles,
-  mobileHacsStyles
+  mobileHacsStyles,
 ];

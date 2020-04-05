@@ -6,7 +6,7 @@ import {
   Status,
   Route,
   LovelaceConfig,
-  LovelaceResourceConfig
+  LovelaceResourceConfig,
 } from "../data";
 import { AddedToLovelace } from "../misc/AddedToLovelace";
 import emoji from "node-emoji";
@@ -75,7 +75,7 @@ export class OviewItemBuilder {
           >
           </ha-icon>
         </div>
-        <paper-item-body two-line>
+        <paper-item-body two-line class="two-line-list-body">
           <div>
             ${emoji.emojify(repository.name || "")}
             ${this.route.path === "/installed"
@@ -123,7 +123,7 @@ export class OviewItemBuilder {
       new CustomEvent("hacs-location-change", {
         detail: { value: `repository/${RepoID}` },
         bubbles: true,
-        composed: true
+        composed: true,
       })
     );
   }
