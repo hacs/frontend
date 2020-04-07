@@ -18,7 +18,7 @@
   "devDependencies": {
     "@rollup/plugin-json": "^4.0.0",
     "@typescript-eslint/eslint-plugin": "^2.27.0",
-    "@typescript-eslint/parser": "^2.4.0",
+    "@typescript-eslint/parser": "^2.27.0",
     "card-tools": "github:thomasloven/card-tools",
     "custom-card-helpers": "^1.2.6",
     "eslint-config-airbnb-base": "^14.0.0",
