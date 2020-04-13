@@ -11,7 +11,7 @@ export class HacsButtonMainAction extends HacsRepositoryButton {
 
   logger = new Logger("main_action");
 
-  protected firstUpdated() {
+  protected updated() {
     let path: string = this.repository.local_path;
     this.hass.connection
       .sendMessagePromise({
