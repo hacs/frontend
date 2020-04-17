@@ -111,7 +111,7 @@ export class HacsInstalled extends LitElement {
               </div>
               ${categories[category]
                 .sort((a: RepositoryData, b: RepositoryData) =>
-                  a.name > b.name ? 1 : -1
+                  a.name.toLowerCase() > b.name.toLowerCase() ? 1 : -1
                 )
                 .map(repository => {
                   return builder.render(repository);
