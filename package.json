@@ -29,7 +29,7 @@
     "marked": "^1.0.0",
     "node-emoji": "^1.10.0",
     "patch-package": "^6.2.0",
-    "prettier": "^2.0.4",
+    "prettier": "^2.0.5",
     "rollup-plugin-babel": "^4.3.2",
     "rollup-plugin-cleanup": "^3.1.1",
     "rollup-plugin-commonjs": "^10.1.0",
