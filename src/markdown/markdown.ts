@@ -2,18 +2,22 @@ import { html, TemplateResult } from "lit-element";
 import marked_ from "marked";
 import { filterXSS } from "xss";
 import emoji from "node-emoji";
-import hljs_ from "highlight.js/lib/highlight";
-import yaml_ from "highlight.js/lib/languages/yaml";
+import hljs from "highlight.js/lib/core";
+import yaml from "highlight.js/lib/languages/yaml";
+import javascript from "highlight.js/lib/languages/javascript";
+import json from "highlight.js/lib/languages/json";
+
 import { GFM, HLJS } from "./styles";
 import { RepositoryData } from "../data";
 
-hljs_.registerLanguage("yaml", yaml_);
+hljs.registerLanguage("yaml", yaml);
+hljs.registerLanguage("javascript", javascript);
+hljs.registerLanguage("json", json);
 
-const hljs = hljs_,
-  marked = marked_;
+const marked = marked_;
 
 marked.setOptions({
-  highlight: function(code, lang) {
+  highlight: function (code, lang) {
     if (lang && hljs.getLanguage(lang)) {
       return hljs.highlight(lang, code, true).value;
     } else {
@@ -23,7 +27,7 @@ marked.setOptions({
   breaks: true,
   gfm: true,
   tables: true,
-  langPrefix: ""
+  langPrefix: "",
 });
 
 export class markdown {
@@ -37,7 +41,7 @@ export class markdown {
     // Handle convertion to raw GitHub URL
     input = input.replace(
       /(https:\/\/github\.com\/.*.\/blob*.[^\s]+)/g,
-      function(x) {
+      function (x) {
         let url = x
           .replace("https://github.com/", "https://raw.githubusercontent.com/")
           .replace("/blob/", "/");
@@ -46,7 +50,7 @@ export class markdown {
     );
 
     // Handle relative links
-    input = input.replace(/\!\[*.*\]\(\w*\.\w*\)/g, function(x) {
+    input = input.replace(/\!\[*.*\]\(\w*\.\w*\)/g, function (x) {
       let url = x
         .replace(
           "(",
@@ -58,15 +62,13 @@ export class markdown {
     const content = document.createElement("div");
     content.innerHTML = filterXSS(marked(input)).replace(
       /\<a href="http\w:\/\/.*.\">.*.\<\/a>\W/g,
-      function(x) {
+      function (x) {
         return x
           .replace(/<a href=/gm, "<hacs-link url=")
           .replace(/<\/a>/gm, "</hacs-link>");
       }
     );
     content.style.cssText = `${GFM} ${HLJS}`;
-    return html`
-      ${content}
-    `;
+    return html` ${content} `;
   }
 }
