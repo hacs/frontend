@@ -44,6 +44,13 @@ export class HacsButtonMainAction extends HacsRepositoryButton {
         </mwc-button>
       `;
     }
+    if (!this.repository.can_install && this.repository.installed) {
+      return html`
+        <mwc-button class="disabled-button" @click=${this.RepositoryInstall}>
+          ${localize(`repository.upgrade`)}
+        </mwc-button>
+      `;
+    }
     return html`
       <mwc-button @click=${this.RepositoryInstall}>
         ${this.repository.state == "installing"
