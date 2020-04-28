@@ -2372,10 +2372,10 @@ rollup-plugin-commonjs@^10.1.0:
     resolve "^1.11.0"
     rollup-pluginutils "^2.8.1"
 
-rollup-plugin-dev@^1.1.1:
-  version "1.1.1"
-  resolved "https://registry.yarnpkg.com/rollup-plugin-dev/-/rollup-plugin-dev-1.1.1.tgz#c58102af2dbf6fd916480646d9d040f504e167c4"
-  integrity sha512-nC1Bd08xPulOvX9nSsG0Vpb1Q+F8ZubRv/dIb7wxsDiGCjcYHHoQ/sVRXMuszAxSwmFXI2RxI8jrQQzjuKqAcA==
+rollup-plugin-dev@^1.1.2:
+  version "1.1.2"
+  resolved "https://registry.yarnpkg.com/rollup-plugin-dev/-/rollup-plugin-dev-1.1.2.tgz#821e844ba7354be2f92365a0d696b294b5670bca"
+  integrity sha512-97/vXTVr9zYQovUxoErmUiAv/u3rBCMRvEfBh059ZygieD9x9jU7ZiqJscfP1DKaPYYO5ry6G8JurJImJAvSZA==
   dependencies:
     colorette "^1.1.0"
     date-time "^3.1.0"
