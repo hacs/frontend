@@ -2440,10 +2440,10 @@ rollup-plugin-dev@^1.1.2:
     koa-static "^5.0.0"
     ms "^2.1.2"
 
-rollup-plugin-gzip@^2.4.0:
-  version "2.4.0"
-  resolved "https://registry.yarnpkg.com/rollup-plugin-gzip/-/rollup-plugin-gzip-2.4.0.tgz#ca07e91f756e7e4b40368ed5bf7673e29954e19a"
-  integrity sha512-n28zIxYqiQO25BN/JpC0KrOXmDYuVHmUbuDqsNo6It3m5kmCDaZ08SglHo9Bu0/fn5EvhP4PrIFGcJkiAJlsgw==
+rollup-plugin-gzip@^2.5.0:
+  version "2.5.0"
+  resolved "https://registry.yarnpkg.com/rollup-plugin-gzip/-/rollup-plugin-gzip-2.5.0.tgz#786650e7bddf86d7f723c205c3e3018ea727388c"
+  integrity sha512-1N0xtJJ8XfZYklZN1QcMLe+Mos2Vaccy3YUarE/AB1RkH7mkeppkFAz9srh+9KWOC3I2LWJeAYwFabO0rJ4mxg==
 
 rollup-plugin-node-resolve@^5.2.0:
   version "5.2.0"
