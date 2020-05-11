@@ -3,19 +3,22 @@ import {
   TemplateResult,
   html,
   customElement,
-  property
+  property,
 } from "lit-element";
+import { load_lovelace } from "card-tools/src/hass";
 import { HomeAssistant } from "custom-card-helpers";
-import { Route } from "./data";
-import "./LoadUIElements";
+import { Route } from "./legacy/data";
+import "./legacy/LoadUIElements";
+
+import "./panels/hacs-entry-panel";
 
 @customElement("hacs-frontend")
 class HacsFrontend extends LitElement {
-  @property() public narrow!: boolean;
-  @property() public hass!: HomeAssistant;
-  @property() public route!: Route;
+  @property({ attribute: false }) public hass!: HomeAssistant;
+  @property({ attribute: false }) public narrow!: boolean;
+  @property({ attribute: false }) public route!: Route;
 
-  setModalCSS() {
+  private _setModalCSS() {
     if (document.getElementById("modal-style")) return;
     var element = document.body;
     var style = document.createElement("style");
@@ -46,8 +49,21 @@ class HacsFrontend extends LitElement {
     element.appendChild(style);
   }
 
+  public connectedCallback() {
+    super.connectedCallback();
+    this._setModalCSS();
+    load_lovelace();
+  }
+
   protected render(): TemplateResult | void {
-    this.setModalCSS();
+    return html`
+      <hacs-entry-panel
+        .hass=${this.hass}
+        .route=${this.route}
+        .narrow=${this.narrow}
+      ></hacs-entry-panel>
+    `;
+
     return html`
       <hacs-frontendbase
         .hass=${this.hass}
