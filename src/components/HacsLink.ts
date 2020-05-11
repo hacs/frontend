@@ -5,30 +5,26 @@ import {
   TemplateResult,
   html,
   css,
-  property
+  property,
 } from "lit-element";
 
 @customElement("hacs-link")
 export class HacsLink extends LitElement {
   @property() private url!: string;
   protected render(): TemplateResult | void {
-    if (this.url.includes("http")) {
+    const external = this.url.includes("http");
+    if (external) {
       return html`
-      <a
-        href="${this.url}"
-        target="_blank"
-        rel="noreferrer"
-      >
-        <slot></slot>
-      </a>
-    `;
-    } else {
-      return html`
-      <a href="${this.url}" >
-        <slot></slot>
-      </a>
-    `;
+        <a href="${this.url}" target="_blank" rel="noreferrer">
+          <slot></slot>
+        </a>
+      `;
     }
+    return html`
+      <a href="${this.url}" target="_top">
+        <slot></slot>
+      </a>
+    `;
   }
 
   static get styles(): CSSResultArray {
@@ -38,7 +34,7 @@ export class HacsLink extends LitElement {
           color: var(--link-text-color, var(--accent-color));
           text-decoration: none;
         }
-      `
+      `,
     ];
   }
 }

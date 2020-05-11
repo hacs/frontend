@@ -5,7 +5,7 @@ import {
   css,
   TemplateResult,
   html,
-  property
+  property,
 } from "lit-element";
 import { HacsStyle } from "../style/hacs-style";
 import { HomeAssistant } from "custom-card-helpers";
@@ -20,7 +20,7 @@ export class HacsCritical extends LitElement {
     var repository = ev.composedPath()[3].repository;
     const resp = await this.hass.connection.sendMessagePromise({
       type: "hacs/critical",
-      repository: repository
+      repository: repository,
     });
     this.critical = (resp as any).data;
   }
@@ -30,22 +30,22 @@ export class HacsCritical extends LitElement {
 
     var _critical: Critical[] = [];
 
-    this.critical.forEach(element => {
+    this.critical.forEach((element) => {
       if (!element.acknowledged) _critical.push(element);
     });
 
     return html`
       ${_critical.map(
-        repo =>
+        (repo) =>
           html`
             <ha-card header="Critical Issue!" class="alert">
                 <div class="card-content">
                     The repository "${repo.repository}" has been flagged as a critical repository.</br>
                     The repository has now been uninstalled and removed.</br>
                     For information about how and why these are handled, see
-                    <a href="https://hacs.xyz/docs/developer/maintainer#critical-repositories">
+                    <hacs-link url="https://hacs.xyz/docs/developer/maintainer#critical-repositories">
                         https://hacs.xyz/docs/developer/maintainer#critical-repositories
-                    </a></br>
+                    </hacs-link></br>
                     As a result of this Home Assistant was also restarted.</br></br>
 
                     <b>Reason: </b>${repo.reason}
@@ -54,11 +54,11 @@ export class HacsCritical extends LitElement {
                     <mwc-button @click=${this.Acknowledge} .repository=${repo.repository}>
                         Acknowledge
                     </mwc-button>
-                    <a href="${repo.link}" rel='noreferrer' target="_blank">
+                    <hacs-link .url="${repo.link}">
                         <mwc-button>
                             More information about this incident
                         </mwc-button>
-                    </a>
+                    </hacs-link>
                 </div>
             </ha-card>`
       )}
@@ -80,7 +80,7 @@ export class HacsCritical extends LitElement {
           );
           color: var(--text-primary-color);
         }
-      `
+      `,
     ];
   }
 }

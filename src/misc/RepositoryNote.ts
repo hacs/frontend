@@ -5,7 +5,7 @@ import {
   css,
   TemplateResult,
   html,
-  property
+  property,
 } from "lit-element";
 import { Configuration, RepositoryData } from "../data";
 import { HacsStyle } from "../style/hacs-style";
@@ -40,14 +40,10 @@ export class RepositoryNote extends LitElement {
         `repository.note_${this.repository.category}`
       )}.`;
     } else if (this.repository.category === "plugin") {
-      if (this.hass.config.version.split(".")[1] <= "106") {
-        p.innerText += `, ${localize("repository.note_plugin")}`;
-      } else {
-        p.innerHTML += `, ${localize("repository.note_plugin_post_107").replace(
-          "/config/lovelace/resources",
-          "<a href='/config/lovelace/resources'>'/config/lovelace/resources'</a>"
-        )}`;
-      }
+      p.innerHTML += `, ${localize("repository.note_plugin_post_107").replace(
+        "/config/lovelace/resources",
+        "<hacs-link url='/config/lovelace/resources'>'/config/lovelace/resources'</hacs-link>"
+      )}`;
     }
 
     Note.appendChild(p);
@@ -60,9 +56,7 @@ export class RepositoryNote extends LitElement {
       Note.appendChild(LLHint);
     }
 
-    return html`
-      ${Note}
-    `;
+    return html` ${Note} `;
   }
 
   static get styles(): CSSResultArray {
@@ -75,7 +69,7 @@ export class RepositoryNote extends LitElement {
         p {
           font-style: italic;
         }
-      `
+      `,
     ];
   }
 }

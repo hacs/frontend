@@ -16,11 +16,11 @@ export class HacsButtonChangelog extends HacsRepositoryButton {
     }
 
     return html`
-      <a href="${String(URL)}" rel="noreferrer" target="_blank">
+      <hacs-link .url="${String(URL)}">
         <mwc-button>
           ${localize(`repository.changelog`)}
         </mwc-button>
-      </a>
+      </hacs-link>
     `;
   }
 

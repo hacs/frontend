@@ -8,11 +8,11 @@ import {
   property,
 } from "lit-element";
 import { HomeAssistant } from "custom-card-helpers";
-import { HacsStyle } from "../style/hacs-style";
-import { HACS } from "../Hacs";
-import { RepositoryData, Status, Configuration } from "../data";
+import { HacsStyle } from "../../style/hacs-style";
+import { HACS } from "../../Hacs";
+import { RepositoryData, Status, Configuration } from "../../data";
 
-import { AboutHacs } from "./AboutHacs";
+import { AboutHacs } from "../../misc/AboutHacs";
 
 import swal from "sweetalert";
 
@@ -61,21 +61,17 @@ export class HacsMenu extends LitElement {
               `
             : ""}
 
-          <a href="https://github.com/hacs" target="_blank" rel="noreferrer">
+          <hacs-link url="https://github.com/hacs">
             <paper-item>
               ${this.hacs.localize(`settings.hacs_repo`)}
             </paper-item>
-          </a>
+          </hacs-link>
 
-          <a
-            href="https://hacs.xyz/docs/issues"
-            target="_blank"
-            rel="noreferrer"
-          >
+          <hacs-link url="https://hacs.xyz/docs/issues">
             <paper-item>
               ${this.hacs.localize(`repository.open_issue`)}
             </paper-item>
-          </a>
+          </hacs-link>
           ${!this.location.includes("settings") &&
           !this.location.includes("repository")
             ? html`

@@ -22,13 +22,13 @@ import "./components/HacsBody";
 import "./components/HacsLink";
 import "./components/HacsProgressbar";
 import "./components/MultiSpinner";
-import "./misc/HacsMenu";
+import "./components/menues/HacsMenu";
 
 import "./misc/CustomRepositories";
 import "./misc/HacsCritical";
 import "./misc/HacsError";
 import "./misc/HacsOnboarding";
-import "./misc/HacsRepositoryMenu";
+import "./components/menues/HacsRepositoryMenu";
 import "./misc/HiddenRepositories";
 import "./misc/LoveLaceHint";
 import "./misc/RepositoryAuthors";
