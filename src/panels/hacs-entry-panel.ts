@@ -15,6 +15,44 @@ import { Route } from "../data/common";
 import "../layout/hacs-single-page-layout";
 //import "../components/hacs-link";
 
+const sections = {
+  updates: [
+    {
+      title: "HACS",
+      description: "You are running 0.24.5, version 1.0.0 is available",
+      icon: "mdi:arrow-up-circle",
+      path: "/repository/4367826",
+    },
+  ],
+  panels: [
+    {
+      title: "Core",
+      description:
+        "This is where you find custom component/integrations and python_scripts",
+      icon: "mdi:store",
+      path: "/core",
+    },
+    {
+      title: "Automation",
+      description: "This is where you find AppDaemon and NetDaemon apps",
+      icon: "mdi:robot",
+      path: "/automation",
+    },
+    {
+      title: "Frontend",
+      description: "This is where you find lovelace elements and themes",
+      icon: "mdi:palette",
+      path: "/frontend",
+    },
+    {
+      title: "Settings",
+      description: "This is where you can manage HACS",
+      icon: "mdi:cogs",
+      path: "/settings",
+    },
+  ],
+};
+
 @customElement("hacs-entry-panel")
 export class HacsEntryPanel extends LitElement {
   @property({ attribute: false }) public hass!: HomeAssistant;
@@ -28,58 +66,55 @@ export class HacsEntryPanel extends LitElement {
         .route=${this.route}
         .narrow=${this.narrow}
         header="Home Assistant Community Store"
-        intro="Lorem ipsum"
+        intro=""
       >
+        ${sections.updates.length !== 0
+          ? html` <ha-card>
+              <div class="header">Pending updates</div>
+              ${sections.updates.map(
+                (repository) =>
+                  html` <a
+                    .href="${this.route.prefix}${repository.path}"
+                    aria-role="option"
+                    tabindex="-1"
+                  >
+                    <paper-icon-item>
+                      <ha-icon
+                        class="pending_upgrade"
+                        .icon=${repository.icon}
+                        slot="item-icon"
+                      ></ha-icon>
+                      <paper-item-body two-line>
+                        ${repository.title}
+                        <div secondary>
+                          ${repository.description}
+                        </div>
+                      </paper-item-body>
+                    </paper-icon-item>
+                  </a>`
+              )}
+            </ha-card>`
+          : ""}
         <ha-card>
-          <a href="#" aria-role="option" tabindex="-1">
-            <paper-icon-item>
-              <ha-icon icon="mdi:store" slot="item-icon"></ha-icon>
-              <paper-item-body two-line>
-                Core
-                <div secondary>
-                  This is where you find custom component/integrations and
-                  python_scripts
-                </div>
-              </paper-item-body>
-              <ha-icon icon="mdi:chevron-right"></ha-icon>
-            </paper-icon-item>
-          </a>
-          <a href="#" aria-role="option" tabindex="-1">
-            <paper-icon-item>
-              <ha-icon icon="mdi:robot" slot="item-icon"></ha-icon>
-              <paper-item-body two-line>
-                Automation
-                <div secondary>
-                  This is where you find AppDaemon and NetDaemon apps
-                </div>
-              </paper-item-body>
-              <ha-icon icon="mdi:chevron-right"></ha-icon>
-            </paper-icon-item>
-          </a>
-          <a href="#" aria-role="option" tabindex="-1">
-            <paper-icon-item>
-              <ha-icon icon="mdi:palette" slot="item-icon"></ha-icon>
-              <paper-item-body two-line>
-                Frontend
-                <div secondary>
-                  This is where you find lovelace elements and themes
-                </div>
-              </paper-item-body>
-              <ha-icon icon="mdi:chevron-right"></ha-icon>
-            </paper-icon-item>
-          </a>
-          <a href="#" aria-role="option" tabindex="-1">
-            <paper-icon-item>
-              <ha-icon icon="mdi:cogs" slot="item-icon"></ha-icon>
-              <paper-item-body two-line>
-                Settings
-                <div secondary>
-                  This is where you can manage HACS
-                </div>
-              </paper-item-body>
-              <ha-icon icon="mdi:chevron-right"></ha-icon>
-            </paper-icon-item>
-          </a>
+          ${sections.panels.map(
+            (panel) =>
+              html` <a
+                .href="${this.route.prefix}${panel.path}"
+                aria-role="option"
+                tabindex="-1"
+              >
+                <paper-icon-item>
+                  <ha-icon .icon=${panel.icon} slot="item-icon"></ha-icon>
+                  <paper-item-body two-line>
+                    ${panel.title}
+                    <div secondary>
+                      ${panel.description}
+                    </div>
+                  </paper-item-body>
+                  <ha-icon icon="mdi:chevron-right"></ha-icon>
+                </paper-icon-item>
+              </a>`
+          )}
         </ha-card>
       </hacs-single-page-layout>
     `;
@@ -96,7 +131,6 @@ export class HacsEntryPanel extends LitElement {
       }
       ha-icon {
         color: var(--secondary-text-color);
-        padding: 12px;
       }
       .iron-selected paper-item::before,
       a:not(.iron-selected):focus::before {
@@ -111,7 +145,7 @@ export class HacsEntryPanel extends LitElement {
         will-change: opacity;
       }
       paper-icon-item {
-        padding: 4px 0;
+        padding: 12px 16px;
       }
       a:not(.iron-selected):focus::before {
         background-color: currentColor;
@@ -123,22 +157,19 @@ export class HacsEntryPanel extends LitElement {
       }
 
       paper-item-body {
-        -webkit-font-smoothing: var(
-          --paper-font-headline_-_-webkit-font-smoothing
-        );
         width: 100%;
-        font-size: calc(var(--paper-font-headline_-_font-size) - 4px);
-        line-height: var(--paper-font-headline_-_line-height);
-        opacity: var(--dark-primary-opacity);
       }
       paper-item-body div {
-        -webkit-font-smoothing: var(
-          --paper-font-subhead_-_-webkit-font-smoothing
-        );
-        font-weight: var(--paper-font-subhead_-_font-weight);
-        line-height: 16px;
-        opacity: var(--dark-primary-opacity);
         font-size: 14px;
+        color: var(--secondary-text-color);
+      }
+      .header {
+        font-size: var(--paper-font-headline_-_font-size);
+        opacity: var(--dark-primary-opacity);
+        padding: 8px 0 0 16px;
+      }
+      .pending_upgrade {
+        color: orange;
       }
     `;
   }
