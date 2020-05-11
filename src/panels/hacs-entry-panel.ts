@@ -15,7 +15,7 @@ import { Route } from "../data/common";
 import "../layout/hacs-single-page-layout";
 //import "../components/hacs-link";
 
-const sections = {
+export const sections = {
   updates: [
     {
       title: "HACS",
@@ -26,23 +26,26 @@ const sections = {
   ],
   panels: [
     {
-      title: "Core",
-      description:
-        "This is where you find custom component/integrations and python_scripts",
-      icon: "mdi:store",
-      path: "/core",
+      title: "Integrations",
+      description: "This is where you find custom component/integrations",
+      icon: "mdi:puzzle",
+      path: "/integrations",
+      categories: ["integration"],
     },
     {
       title: "Automation",
-      description: "This is where you find AppDaemon and NetDaemon apps",
+      description:
+        "This is where you find python_scripts, AppDaemon apps and NetDaemon apps",
       icon: "mdi:robot",
       path: "/automation",
+      categories: ["python_script", "appdaemon", "netdaemon"],
     },
     {
       title: "Frontend",
       description: "This is where you find lovelace elements and themes",
       icon: "mdi:palette",
       path: "/frontend",
+      categories: ["plugin", "theme"],
     },
     {
       title: "Settings",
@@ -166,7 +169,7 @@ export class HacsEntryPanel extends LitElement {
       .header {
         font-size: var(--paper-font-headline_-_font-size);
         opacity: var(--dark-primary-opacity);
-        padding: 8px 0 0 16px;
+        padding: 8px 0 4px 16px;
       }
       .pending_upgrade {
         color: orange;
