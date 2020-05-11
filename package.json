@@ -36,7 +36,7 @@
     "rollup-plugin-dev": "^1.1.2",
     "rollup-plugin-gzip": "^2.5.0",
     "rollup-plugin-node-resolve": "^5.2.0",
-    "rollup-plugin-progress": "^1.1.1",
+    "rollup-plugin-progress": "^1.1.2",
     "rollup-plugin-sizes": "^1.0.1",
     "rollup-plugin-terser": "^5.1.2",
     "rollup-plugin-typescript2": "^0.27.0",
