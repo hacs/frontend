@@ -19,9 +19,8 @@ export const sections = {
   updates: [
     {
       title: "HACS",
-      description: "You are running 0.24.5, version 1.0.0 is available",
-      icon: "mdi:arrow-up-circle",
-      path: "/repository/4367826",
+      description: "You are running version 0.24.5, version 1.0.0 is available",
+      id: "4367826",
     },
   ],
   panels: [
@@ -29,14 +28,14 @@ export const sections = {
       title: "Integrations",
       description: "This is where you find custom component/integrations",
       icon: "mdi:puzzle",
-      path: "/integrations",
+      id: "integrations",
       categories: ["integration"],
     },
     {
       title: "Frontend",
       description: "This is where you find lovelace elements and themes",
       icon: "mdi:palette",
-      path: "/frontend",
+      id: "frontend",
       categories: ["plugin", "theme"],
     },
     {
@@ -44,14 +43,14 @@ export const sections = {
       description:
         "This is where you find python_scripts, AppDaemon apps and NetDaemon apps",
       icon: "mdi:robot",
-      path: "/automation",
+      id: "automation",
       categories: ["python_script", "appdaemon", "netdaemon"],
     },
     {
       title: "Settings",
       description: "This is where you can manage HACS",
       icon: "mdi:cogs",
-      path: "/settings",
+      id: "settings",
     },
   ],
 };
@@ -76,15 +75,11 @@ export class HacsEntryPanel extends LitElement {
               <div class="header">Pending updates</div>
               ${sections.updates.map(
                 (repository) =>
-                  html` <a
-                    .href="${this.route.prefix}${repository.path}"
-                    aria-role="option"
-                    tabindex="-1"
-                  >
-                    <paper-icon-item>
+                  html`
+                    <paper-icon-item .id=${repository.id}>
                       <ha-icon
                         class="pending_upgrade"
-                        .icon=${repository.icon}
+                        icon="mdi:arrow-up-circle"
                         slot="item-icon"
                       ></ha-icon>
                       <paper-item-body two-line>
@@ -94,19 +89,15 @@ export class HacsEntryPanel extends LitElement {
                         </div>
                       </paper-item-body>
                     </paper-icon-item>
-                  </a>`
+                  `
               )}
             </ha-card>`
           : ""}
         <ha-card>
           ${sections.panels.map(
             (panel) =>
-              html` <a
-                .href="${this.route.prefix}${panel.path}"
-                aria-role="option"
-                tabindex="-1"
-              >
-                <paper-icon-item>
+              html`
+                <paper-icon-item .id=${panel.id}>
                   <ha-icon .icon=${panel.icon} slot="item-icon"></ha-icon>
                   <paper-item-body two-line>
                     ${panel.title}
@@ -116,7 +107,7 @@ export class HacsEntryPanel extends LitElement {
                   </paper-item-body>
                   <ha-icon icon="mdi:chevron-right"></ha-icon>
                 </paper-icon-item>
-              </a>`
+              `
           )}
         </ha-card>
       </hacs-single-page-layout>
@@ -135,8 +126,7 @@ export class HacsEntryPanel extends LitElement {
       ha-icon {
         color: var(--secondary-text-color);
       }
-      .iron-selected paper-item::before,
-      a:not(.iron-selected):focus::before {
+      .iron-selected paper-item::before {
         position: absolute;
         top: 0;
         right: 0;
@@ -149,10 +139,7 @@ export class HacsEntryPanel extends LitElement {
       }
       paper-icon-item {
         padding: 12px 16px;
-      }
-      a:not(.iron-selected):focus::before {
-        background-color: currentColor;
-        opacity: var(--dark-divider-opacity);
+        cursor: pointer;
       }
       .iron-selected paper-item:focus::before,
       .iron-selected:focus paper-item::before {
