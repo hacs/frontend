@@ -33,19 +33,19 @@ export const sections = {
       categories: ["integration"],
     },
     {
+      title: "Frontend",
+      description: "This is where you find lovelace elements and themes",
+      icon: "mdi:palette",
+      path: "/frontend",
+      categories: ["plugin", "theme"],
+    },
+    {
       title: "Automation",
       description:
         "This is where you find python_scripts, AppDaemon apps and NetDaemon apps",
       icon: "mdi:robot",
       path: "/automation",
       categories: ["python_script", "appdaemon", "netdaemon"],
-    },
-    {
-      title: "Frontend",
-      description: "This is where you find lovelace elements and themes",
-      icon: "mdi:palette",
-      path: "/frontend",
-      categories: ["plugin", "theme"],
     },
     {
       title: "Settings",
