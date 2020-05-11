@@ -20,10 +20,10 @@ export class HacsLegacyUrlForPlugins extends HacsRepositoryBanner {
     if (this._wrongURL.length === 0) return html``;
 
     return html`
-      <ha-card class="info" .header="${title}">
+      <ha-card class="warning" .header="🚨 ${title}">
         <div class="card-content">
-          You have plugins resources in your lovelace configuration that still
-          uses the old "/community_plugin" URL and not the new "/hacsfiles"
+          You have plugin resources in your lovelace configuration that still
+          uses the old "/community_plugin" URL and not "/hacsfiles"
         </div>
         <div class="card-actions">
           <mwc-button @click=${this.UpdateResources}>
