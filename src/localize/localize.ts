@@ -15,6 +15,7 @@ import * as ro from "./languages/ro.json";
 import * as ru from "./languages/ru.json";
 import * as sl from "./languages/sl.json";
 import * as sv from "./languages/sv.json";
+import * as vi from "./languages/vi.json";
 import * as zh_Hans from "./languages/zh-Hans.json";
 
 export function localize(
@@ -40,7 +41,8 @@ export function localize(
     ru: ru,
     sl: sl,
     sv: sv,
-    zh_Hans: zh_Hans
+    vi: vi,
+    zh_Hans: zh_Hans,
   };
 
   const section = string.split(".")[0];
