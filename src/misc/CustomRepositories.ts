@@ -6,7 +6,7 @@ import {
   CSSResultArray,
   css,
   TemplateResult,
-  html
+  html,
 } from "lit-element";
 import swal from "sweetalert";
 
@@ -45,7 +45,7 @@ export class CustomRepositories extends LitElement {
   getCustomRepositories(): RepositoryData[] {
     return this.hacs.repositories
       .sort((a, b) => (a.full_name > b.full_name ? 1 : -1))
-      .filter(repo => {
+      .filter((repo) => {
         if (repo.custom) return true;
         else return false;
       });
@@ -63,15 +63,15 @@ export class CustomRepositories extends LitElement {
     swal(this.hacs.localize("confirm.delete", "{item}", RepoFullName), {
       buttons: [
         this.hacs.localize("confirm.no"),
-        this.hacs.localize("confirm.yes")
-      ]
-    }).then(value => {
+        this.hacs.localize("confirm.yes"),
+      ],
+    }).then((value) => {
       if (!this.hacs.isnullorempty(value)) {
         this.dispatchEvent(
           new CustomEvent("hacs-repository-action", {
             detail: { repo: RepoID, action: "delete" },
             bubbles: true,
-            composed: true
+            composed: true,
           })
         );
       }
@@ -91,18 +91,19 @@ export class CustomRepositories extends LitElement {
   }
 
   Save(ev) {
-    var selected = ev.composedPath()[2].children[1].selectedItem;
+    const elems = ev.composedPath()[4].children;
+    var selected = elems[1].selectedItem;
     if (selected === undefined) {
       swal(this.hacs.localize("settings.missing_category"));
       return;
     }
     var category = selected.category;
-    var repo = ev.composedPath()[2].children[0].value;
+    var repo = elems[0].value;
     this.dispatchEvent(
       new CustomEvent("hacs-repository-action", {
         detail: { repo: repo, action: "add", data: category },
         bubbles: true,
-        composed: true
+        composed: true,
       })
     );
     swal(
@@ -129,7 +130,7 @@ export class CustomRepositories extends LitElement {
       new CustomEvent("hacs-location-change", {
         detail: { value: `repository/${RepoID}` },
         bubbles: true,
-        composed: true
+        composed: true,
       })
     );
   }
@@ -153,52 +154,52 @@ export class CustomRepositories extends LitElement {
                 `
               : html`
                   ${this.custom &&
-                    this.custom.map(
-                      repo =>
-                        html`
-                          <div
-                            class="row"
-                            .RepoID=${repo.id}
-                            .RepoFullName=${repo.full_name}
-                          >
-                            <paper-item class="customlistitem">
-                              <div
-                                @click=${this.ShowRepository}
-                                class="link flexy"
-                                title="${this.hacs.localize(
-                                  "settings.open_repository"
-                                )}"
-                              >
-                                <div class="MobileHide">
-                                  [${repo.category}]&nbsp;
-                                </div>
-                                ${repo.full_name}
+                  this.custom.map(
+                    (repo) =>
+                      html`
+                        <div
+                          class="row"
+                          .RepoID=${repo.id}
+                          .RepoFullName=${repo.full_name}
+                        >
+                          <paper-item class="customlistitem">
+                            <div
+                              @click=${this.ShowRepository}
+                              class="link flexy"
+                              title="${this.hacs.localize(
+                                "settings.open_repository"
+                              )}"
+                            >
+                              <div class="MobileHide">
+                                [${repo.category}]&nbsp;
                               </div>
-                              ${repo.installed
-                                ? html`
-                                    <ha-icon
-                                      title="${this.hacs.localize(
-                                        "settings.delete"
-                                      )}"
-                                      class="listicon disabled"
-                                      icon="mdi:delete"
-                                      @click=${this.DeleteInstalled}
-                                    ></ha-icon>
-                                  `
-                                : html`
-                                    <ha-icon
-                                      title="${this.hacs.localize(
-                                        "settings.delete"
-                                      )}"
-                                      class="listicon"
-                                      icon="mdi:delete"
-                                      @click=${this.Delete}
-                                    ></ha-icon>
-                                  `}
-                            </paper-item>
-                          </div>
-                        `
-                    )}
+                              ${repo.full_name}
+                            </div>
+                            ${repo.installed
+                              ? html`
+                                  <ha-icon
+                                    title="${this.hacs.localize(
+                                      "settings.delete"
+                                    )}"
+                                    class="listicon disabled"
+                                    icon="mdi:delete"
+                                    @click=${this.DeleteInstalled}
+                                  ></ha-icon>
+                                `
+                              : html`
+                                  <ha-icon
+                                    title="${this.hacs.localize(
+                                      "settings.delete"
+                                    )}"
+                                    class="listicon"
+                                    icon="mdi:delete"
+                                    @click=${this.Delete}
+                                  ></ha-icon>
+                                `}
+                          </paper-item>
+                        </div>
+                      `
+                  )}
                 `}
           </div>
         </div>
@@ -219,7 +220,7 @@ export class CustomRepositories extends LitElement {
                 >
                   <paper-listbox slot="dropdown-content" selected="-1">
                     ${this.hacs.configuration.categories.map(
-                      category => html`
+                      (category) => html`
                         <paper-item class="categoryitem" .category=${category}>
                           ${this.hacs.localize(`common.${category}`)}
                         </paper-item>
@@ -294,7 +295,7 @@ export class CustomRepositories extends LitElement {
         paper-item.customlistitem {
           display: flex;
         }
-      `
+      `,
     ];
   }
 }

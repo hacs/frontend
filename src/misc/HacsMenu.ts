@@ -35,7 +35,7 @@ export class HacsMenu extends LitElement {
         aria-disabled="false"
       >
         <paper-icon-button
-          icon="hass:dots-vertical"
+          icon="mdi:dots-vertical"
           slot="dropdown-trigger"
           role="button"
         ></paper-icon-button>
