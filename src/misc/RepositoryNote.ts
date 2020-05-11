@@ -7,10 +7,18 @@ import {
   html,
   property,
 } from "lit-element";
-import { Configuration, RepositoryData } from "../data";
+import {
+  Configuration,
+  RepositoryData,
+  Status,
+  LovelaceConfig,
+  LovelaceResourceConfig,
+} from "../data";
 import { HacsStyle } from "../style/hacs-style";
 import { HomeAssistant } from "custom-card-helpers";
 import { localize } from "../localize/localize";
+
+import { AddedToLovelace } from "./AddedToLovelace";
 
 interface LoveLaceHint extends HTMLElement {
   hass?: HomeAssistant;
@@ -20,11 +28,20 @@ interface LoveLaceHint extends HTMLElement {
 
 @customElement("hacs-repository-note")
 export class RepositoryNote extends LitElement {
-  @property() public configuration!: Configuration;
-  @property() public hass!: HomeAssistant;
-  @property() public repository!: RepositoryData;
+  @property({ attribute: false }) public configuration!: Configuration;
+  @property({ attribute: false }) public hass!: HomeAssistant;
+  @property({ attribute: false }) public repository!: RepositoryData;
+  @property({ attribute: false }) public lovelaceconfig:
+    | LovelaceConfig
+    | LovelaceResourceConfig[];
+  @property({ attribute: false }) public status!: Status;
 
   protected render(): TemplateResult | void {
+    const addedToLovelace = AddedToLovelace(
+      this.repository,
+      this.lovelaceconfig,
+      this.status
+    );
     let path: string = this.repository.local_path;
     if (this.repository.category === "theme") {
       path = `${path}/${this.repository.file_name}`;
@@ -39,7 +56,7 @@ export class RepositoryNote extends LitElement {
       p.innerText += `, ${localize(
         `repository.note_${this.repository.category}`
       )}.`;
-    } else if (this.repository.category === "plugin") {
+    } else if (this.repository.category === "plugin" && !addedToLovelace) {
       p.innerHTML += `, ${localize("repository.note_plugin_post_107").replace(
         "/config/lovelace/resources",
         "<hacs-link url='/config/lovelace/resources'>'/config/lovelace/resources'</hacs-link>"
@@ -48,7 +65,7 @@ export class RepositoryNote extends LitElement {
 
     Note.appendChild(p);
 
-    if (this.repository.category === "plugin") {
+    if (this.repository.category === "plugin" && !addedToLovelace) {
       const LLHint: LoveLaceHint = document.createElement("hacs-lovelace-hint");
       LLHint.hass = this.hass;
       LLHint.configuration = this.configuration;

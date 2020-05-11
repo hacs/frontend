@@ -6,7 +6,7 @@ import {
   html,
   css,
   PropertyValues,
-  property
+  property,
 } from "lit-element";
 import { HomeAssistant } from "custom-card-helpers";
 import { HacsStyle } from "../style/hacs-style";
@@ -20,7 +20,7 @@ import {
   Status,
   ValueChangedEvent,
   LovelaceConfig,
-  LovelaceResourceConfig
+  LovelaceResourceConfig,
 } from "../data";
 
 import emoji from "node-emoji";
@@ -29,15 +29,17 @@ import { GFM, HLJS } from "../markdown/styles";
 
 @customElement("hacs-repository")
 export class HacsRepository extends LitElement {
-  @property() public repositories!: RepositoryData[];
-  @property() public repository_view = false;
-  @property() private repo: RepositoryData;
-  @property() public configuration!: Configuration;
-  @property() public hacs!: HACS;
-  @property() public hass!: HomeAssistant;
-  @property() public lovelaceconfig: LovelaceConfig | LovelaceResourceConfig[];
-  @property() public route!: Route;
-  @property() public status!: Status;
+  @property({ attribute: false }) public repositories!: RepositoryData[];
+  @property({ type: Boolean }) public repository_view = false;
+  @property({ attribute: false }) private repo: RepositoryData;
+  @property({ attribute: false }) public configuration!: Configuration;
+  @property({ attribute: false }) public hacs!: HACS;
+  @property({ attribute: false }) public hass!: HomeAssistant;
+  @property({ attribute: false }) public lovelaceconfig:
+    | LovelaceConfig
+    | LovelaceResourceConfig[];
+  @property({ attribute: false }) public route!: Route;
+  @property({ attribute: false }) public status!: Status;
   public repository!: string;
   private panel: string;
 
@@ -50,7 +52,7 @@ export class HacsRepository extends LitElement {
     changedProperties.forEach((_oldValue, propName) => {
       if (propName === "hacs") {
         const _repository = this.repository;
-        const _repositories = this.hacs.repositories.filter(function(repo) {
+        const _repositories = this.hacs.repositories.filter(function (repo) {
           return repo.id === _repository;
         });
         const repo = _repositories[0];
@@ -73,17 +75,17 @@ export class HacsRepository extends LitElement {
           detail: {
             repo: this.repository,
             action: "set_state",
-            data: "other"
+            data: "other",
           },
           bubbles: true,
-          composed: true
+          composed: true,
         })
       );
       this.dispatchEvent(
         new CustomEvent("hacs-repository-action", {
           detail: { repo: this.repository, action: "update" },
           bubbles: true,
-          composed: true
+          composed: true,
         })
       );
     }
@@ -215,7 +217,7 @@ export class HacsRepository extends LitElement {
                           selected="${this.repo.selected_tag}"
                           attr-for-selected="value"
                         >
-                          ${this.repo.releases.map(release => {
+                          ${this.repo.releases.map((release) => {
                             return html`
                               <paper-item value="${release}"
                                 >${release}</paper-item
@@ -276,6 +278,8 @@ export class HacsRepository extends LitElement {
                   </div>
                   <hacs-repository-note
                     .hass=${this.hass}
+                    .lovelaceconfig=${this.lovelaceconfig}
+                    .status=${this.status}
                     .configuration=${this.configuration}
                     .repository=${this.repo}
                   ></hacs-repository-note>
@@ -293,7 +297,7 @@ export class HacsRepository extends LitElement {
         new CustomEvent("hacs-repository-action", {
           detail: { repo: this.repository, action: "set_state", data: "other" },
           bubbles: true,
-          composed: true
+          composed: true,
         })
       );
       this.dispatchEvent(
@@ -301,10 +305,10 @@ export class HacsRepository extends LitElement {
           detail: {
             repo: this.repository,
             action: "set_version",
-            data: e.detail.value
+            data: e.detail.value,
           },
           bubbles: true,
-          composed: true
+          composed: true,
         })
       );
     }
@@ -321,7 +325,7 @@ export class HacsRepository extends LitElement {
       new CustomEvent("hacs-location-change", {
         detail: { value: this.panel },
         bubbles: true,
-        composed: true
+        composed: true,
       })
     );
   }
@@ -416,7 +420,7 @@ export class HacsRepository extends LitElement {
           text-overflow: ellipsis;
           overflow: hidden;
         }
-      `
+      `,
     ];
   }
 }
