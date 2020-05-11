@@ -13,12 +13,11 @@ export class HacsLegacyUrlForPlugins extends HacsRepositoryBanner {
 
     if (!resources) return html``;
 
-    this._wrongURL = resources?.filter(resource => {
+    this._wrongURL = resources?.filter((resource) => {
       return resource.url.startsWith("/community_plugin");
     });
 
     if (this._wrongURL.length === 0) return html``;
-    if (this.hass.config.version.split(".")[1] <= "106") return html``;
 
     return html`
       <ha-card class="info" .header="${title}">
@@ -36,12 +35,12 @@ export class HacsLegacyUrlForPlugins extends HacsRepositoryBanner {
   }
 
   async UpdateResources() {
-    this._wrongURL.forEach(resource => {
+    this._wrongURL.forEach((resource) => {
       const url = resource.url.replace("/community_plugin", "/hacsfiles");
       this.hass.callWS({
         type: "lovelace/resources/update",
         resource_id: resource.id,
-        url
+        url,
       });
     });
     this.dispatchEvent(

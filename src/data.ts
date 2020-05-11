@@ -104,7 +104,7 @@ export const AllCategories = [
   "appdaemon_apps",
   "netdaemon_apps",
   "python_scripts",
-  "themes"
+  "themes",
 ];
 
 export interface LovelaceConfig {
@@ -167,56 +167,38 @@ export interface RepositoryActionData {
 
 export const getConfiguration = async (hass: HomeAssistant) => {
   const response = await hass.connection.sendMessagePromise<Configuration>({
-    type: "hacs/config"
+    type: "hacs/config",
   });
   return response;
 };
 
 export const getRepositories = async (hass: HomeAssistant) => {
   const response = await hass.connection.sendMessagePromise<RepositoryData[]>({
-    type: "hacs/repositories"
+    type: "hacs/repositories",
   });
   return response;
 };
 
 export const getCritical = async (hass: HomeAssistant) => {
   const response = await hass.connection.sendMessagePromise<Critical[]>({
-    type: "hacs/get_critical"
+    type: "hacs/get_critical",
   });
   return response;
 };
 
 export const getStatus = async (hass: HomeAssistant) => {
   const response = await hass.connection.sendMessagePromise<Status>({
-    type: "hacs/status"
+    type: "hacs/status",
   });
   return response;
 };
 
 export const getLovelaceConfiguration = async (hass: HomeAssistant) => {
-  if (hass.config.version.split(".")[1] <= "106") {
-    return await getLovelaceConfigLegacy(hass);
-  }
-  return getLovelaceResources(hass);
-};
-
-const getLovelaceConfigLegacy = async (hass: HomeAssistant) => {
-  try {
-    const response = await hass.connection.sendMessagePromise<LovelaceConfig>({
-      type: "lovelace/config"
-    });
-    return response;
-  } catch (e) {
-    return null;
-  }
-};
-
-const getLovelaceResources = async (hass: HomeAssistant) => {
   try {
     const response = await hass.connection.sendMessagePromise<
       LovelaceResourceConfig[]
     >({
-      type: "lovelace/resources"
+      type: "lovelace/resources",
     });
     return response;
   } catch (e) {
