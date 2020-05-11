@@ -31,14 +31,12 @@ export class HacsButtonUninstall extends HacsRepositoryButton {
     }
 
     return html`
-        <mwc-button @click=${this.RepositoryUnInstall}">
-            ${
-              this.repository.state == "uninstalling"
-                ? html` <paper-spinner active></paper-spinner> `
-                : html` ${label} `
-            }
-        </mwc-button>
-        `;
+      <mwc-button @click=${this.RepositoryUnInstall}>
+        ${this.repository.state == "uninstalling"
+          ? html` <paper-spinner active></paper-spinner> `
+          : html` ${label} `}
+      </mwc-button>
+    `;
   }
   static get styles(): CSSResultArray {
     return [
