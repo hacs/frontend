@@ -29,7 +29,7 @@ export const _navStyle = css`
 
   app-toolbar ha-menu-button + [main-title],
   app-toolbar ha-paper-icon-button-arrow-prev + [main-title],
-  app-toolbar paper-icon-button + [main-title] {
+  app-toolbar ha-icon-button + [main-title] {
     margin-left: 24px;
   }
   .tabs {

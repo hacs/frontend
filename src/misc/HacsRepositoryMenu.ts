@@ -5,7 +5,7 @@ import {
   TemplateResult,
   html,
   LitElement,
-  property
+  property,
 } from "lit-element";
 import { RepositoryData, Route } from "../data";
 import { HacsStyle } from "../style/hacs-style";
@@ -28,11 +28,11 @@ export class HacsRepositoryMenu extends LitElement {
         vertical-align="top"
         aria-disabled="false"
       >
-        <paper-icon-button
+        <ha-icon-button
           icon="hass:dots-vertical"
           slot="dropdown-trigger"
           role="button"
-        ></paper-icon-button>
+        ></ha-icon-button>
         <paper-listbox
           slot="dropdown-content"
           role="listbox"
@@ -105,7 +105,7 @@ export class HacsRepositoryMenu extends LitElement {
             var(--primary-background-color)
           );
         }
-      `
+      `,
     ];
   }
 
@@ -115,17 +115,17 @@ export class HacsRepositoryMenu extends LitElement {
         detail: {
           repo: this.repository.id,
           action: "set_state",
-          data: "other"
+          data: "other",
         },
         bubbles: true,
-        composed: true
+        composed: true,
       })
     );
     this.dispatchEvent(
       new CustomEvent("hacs-repository-action", {
         detail: { repo: this.repository.id, action: "update" },
         bubbles: true,
-        composed: true
+        composed: true,
       })
     );
   }
@@ -136,10 +136,10 @@ export class HacsRepositoryMenu extends LitElement {
         detail: {
           repo: this.repository.id,
           action: "set_state",
-          data: "other"
+          data: "other",
         },
         bubbles: true,
-        composed: true
+        composed: true,
       })
     );
     if (this.repository.beta) {
@@ -147,7 +147,7 @@ export class HacsRepositoryMenu extends LitElement {
         new CustomEvent("hacs-repository-action", {
           detail: { repo: this.repository.id, action: "hide_beta" },
           bubbles: true,
-          composed: true
+          composed: true,
         })
       );
     } else {
@@ -155,7 +155,7 @@ export class HacsRepositoryMenu extends LitElement {
         new CustomEvent("hacs-repository-action", {
           detail: { repo: this.repository.id, action: "show_beta" },
           bubbles: true,
-          composed: true
+          composed: true,
         })
       );
     }
@@ -167,10 +167,10 @@ export class HacsRepositoryMenu extends LitElement {
         detail: {
           repo: this.repository.id,
           action: "set_state",
-          data: "other"
+          data: "other",
         },
         bubbles: true,
-        composed: true
+        composed: true,
       })
     );
     if (this.repository.hide) {
@@ -178,7 +178,7 @@ export class HacsRepositoryMenu extends LitElement {
         new CustomEvent("hacs-repository-action", {
           detail: { repo: this.repository.id, action: "unhide" },
           bubbles: true,
-          composed: true
+          composed: true,
         })
       );
     } else {
@@ -186,7 +186,7 @@ export class HacsRepositoryMenu extends LitElement {
         new CustomEvent("hacs-repository-action", {
           detail: { repo: this.repository.id, action: "hide" },
           bubbles: true,
-          composed: true
+          composed: true,
         })
       );
     }
@@ -194,7 +194,7 @@ export class HacsRepositoryMenu extends LitElement {
       new CustomEvent("hacs-location-change", {
         detail: { value: this.repository.category },
         bubbles: true,
-        composed: true
+        composed: true,
       })
     );
   }

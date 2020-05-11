@@ -34,11 +34,11 @@ export class HacsMenu extends LitElement {
         vertical-align="top"
         aria-disabled="false"
       >
-        <paper-icon-button
+        <ha-icon-button
           icon="mdi:dots-vertical"
           slot="dropdown-trigger"
           role="button"
-        ></paper-icon-button>
+        ></ha-icon-button>
         <paper-listbox
           slot="dropdown-content"
           role="listbox"
