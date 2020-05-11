@@ -8,7 +8,7 @@ import {
   LitElement,
   property,
   PropertyValues,
-  TemplateResult
+  TemplateResult,
 } from "lit-element";
 import { HACS, Hacs } from "./Hacs";
 import { HacsStyle } from "./style/hacs-style";
@@ -28,7 +28,7 @@ import {
   getRepositories,
   getStatus,
   getCritical,
-  getLovelaceConfiguration
+  getLovelaceConfiguration,
 } from "./data";
 
 import { load_lovelace } from "card-tools/src/hass";
@@ -81,7 +81,7 @@ class HacsFrontendBase extends LitElement {
       () => this.updateProperty("status"),
       "hacs/status"
     );
-    this.hass.connection.subscribeEvents(e => this._reload(e), "hacs/reload");
+    this.hass.connection.subscribeEvents((e) => this._reload(e), "hacs/reload");
     this.hass.connection.subscribeEvents(
       () => this.updateProperty("repositories"),
       "hacs/repository"
@@ -121,7 +121,7 @@ class HacsFrontendBase extends LitElement {
   }
 
   protected async firstUpdated() {
-    window.onpopstate = function() {
+    window.onpopstate = function () {
       if (window.location.pathname.includes("hacs")) {
         window.location.reload();
       }
@@ -131,13 +131,13 @@ class HacsFrontendBase extends LitElement {
       configuration,
       status,
       critical,
-      lovelaceconfig
+      lovelaceconfig,
     ] = await Promise.all([
       getRepositories(this.hass),
       getConfiguration(this.hass),
       getStatus(this.hass),
       getCritical(this.hass),
-      getLovelaceConfiguration(this.hass)
+      getLovelaceConfiguration(this.hass),
     ]);
     this.repositories = repositories;
     this.configuration = configuration;
@@ -214,19 +214,11 @@ class HacsFrontendBase extends LitElement {
               ></ha-menu-button>
               <div main-title class="fulltitle">
                 Home Assistant Community Store
-                ${this._rootPath === "hacs_dev"
-                  ? html`
-                      (DEVELOPMENT)
-                    `
-                  : ""}
+                ${this._rootPath === "hacs_dev" ? html` (DEVELOPMENT) ` : ""}
               </div>
               <div main-title class="mobiletitle">
                 HACS
-                ${this._rootPath === "hacs_dev"
-                  ? html`
-                      (DEVELOPMENT)
-                    `
-                  : ""}
+                ${this._rootPath === "hacs_dev" ? html` (DEVELOPMENT) ` : ""}
               </div>
               <hacs-menu
                 .location=${window.location.pathname}
@@ -255,7 +247,7 @@ class HacsFrontendBase extends LitElement {
               >
 
               <paper-tab page-name="plugin"
-                >${this.hacs.localize(`common.plugins`)}</paper-tab
+                >${this.hacs.localize(`common.lovelace_elements`)}</paper-tab
               >
 
               ${this.configuration.categories.includes("appdaemon")
@@ -402,7 +394,7 @@ class HacsFrontendBase extends LitElement {
     this.configuration.onboarding_done = true;
     this.hass.connection.sendMessage({
       type: "hacs/settings",
-      action: "onboarding_done"
+      action: "onboarding_done",
     });
     this.requestUpdate();
   }
@@ -412,7 +404,7 @@ class HacsFrontendBase extends LitElement {
       new CustomEvent("hacs-location-change", {
         detail: { value: e.detail.selected },
         bubbles: true,
-        composed: true
+        composed: true,
       })
     );
   }
@@ -479,7 +471,7 @@ class HacsFrontendBase extends LitElement {
             margin-left: 24px;
           }
         }
-      `
+      `,
     ];
   }
 }
