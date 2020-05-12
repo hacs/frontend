@@ -45,22 +45,48 @@ export function localize(
     zh_Hans: zh_Hans,
   };
 
-  const section = string.split(".")[0];
-  const key = string.split(".")[1];
+  let subsection: string;
+  let section: string;
+  let key: string;
+
+  let translated: string;
+
+  const split = string.split(".");
+
+  if (split.length === 3) {
+    section = split[0];
+    subsection = split[1];
+    key = split[2];
+  } else {
+    section = split[0];
+    key = split[1];
+  }
 
   const lang = (localStorage.getItem("selectedLanguage") || "en")
     .replace(/['"]+/g, "")
     .replace("-", "_");
 
-  var translated: string;
-
   try {
-    translated = languages[lang][section][key];
+    if (subsection !== undefined) {
+      translated = languages[lang][section][subsection][key];
+    } else {
+      translated = languages[lang][section][key];
+    }
   } catch (e) {
-    translated = languages["en"][section][key];
+    if (subsection !== undefined) {
+      translated = languages["en"][section][subsection][key];
+    } else {
+      translated = languages["en"][section][key];
+    }
   }
 
-  if (translated === undefined) translated = languages["en"][section][key];
+  if (translated === undefined) {
+    if (subsection !== undefined) {
+      translated = languages["en"][section][subsection][key];
+    } else {
+      translated = languages["en"][section][key];
+    }
+  }
 
   if (search !== undefined && replace !== undefined) {
     translated = translated.replace(search, replace);

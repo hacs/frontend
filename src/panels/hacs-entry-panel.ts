@@ -18,6 +18,8 @@ import {
 } from "../data/common";
 import "../layout/hacs-single-page-layout";
 
+import { localize } from "../localize/localize";
+
 import { sections } from "./hacs-sections";
 //import "../components/hacs-link";
 
@@ -34,12 +36,7 @@ export class HacsEntryPanel extends LitElement {
     sections.updates = []; // reset so we don't get duplicates
     this.repositories?.forEach((repo) => {
       if (repo.pending_upgrade) {
-        sections.updates.push({
-          name: repo.name,
-          id: repo.id,
-          installed: repo.installed_version,
-          available: repo.available_version,
-        });
+        sections.updates.push(repo);
       }
     });
     return html`
@@ -52,7 +49,7 @@ export class HacsEntryPanel extends LitElement {
       >
         ${sections.updates.length !== 0
           ? html` <ha-card>
-              <div class="header">Pending updates</div>
+              <div class="header">${localize("store.pending_upgrades")}</div>
               ${sections.updates.map(
                 (repository) =>
                   html`
@@ -65,8 +62,15 @@ export class HacsEntryPanel extends LitElement {
                       <paper-item-body two-line>
                         ${repository.name}
                         <div secondary>
-                          You are running version ${repository.installed},
-                          version ${repository.available} is available
+                          ${localize("sections.pending_repository_upgrade")
+                            .replace(
+                              "{installed}",
+                              repository.installed_version
+                            )
+                            .replace(
+                              "{available}",
+                              repository.available_version
+                            )}
                         </div>
                       </paper-item-body>
                     </paper-icon-item>
@@ -81,9 +85,9 @@ export class HacsEntryPanel extends LitElement {
                 <paper-icon-item @click=${() => this._changeLocation(panel.id)}>
                   <ha-icon .icon=${panel.icon} slot="item-icon"></ha-icon>
                   <paper-item-body two-line>
-                    ${panel.title}
+                    ${localize(`sections.${panel.id}.title`)}
                     <div secondary>
-                      ${panel.description}
+                      ${localize(`sections.${panel.id}.description`)}
                     </div>
                   </paper-item-body>
                   <ha-icon icon="mdi:chevron-right"></ha-icon>
