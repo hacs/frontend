@@ -24,7 +24,7 @@ export const _navStyle = css`
 
   paper-tabs {
     --paper-tabs-selection-bar-color: #fff;
-    margin-left: 12px;
+    padding-left: 12px;
   }
 
   app-toolbar ha-menu-button + [main-title],
