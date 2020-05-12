@@ -57,6 +57,7 @@ export class HacsEntryPanel extends LitElement {
   @property({ attribute: false }) public lovelace: LovelaceResource[];
 
   protected render(): TemplateResult | void {
+    sections.updates = []; // reset so we don't get duplicates
     this.repositories?.forEach((repo) => {
       if (repo.pending_upgrade) {
         sections.updates.push({
