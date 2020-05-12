@@ -76,6 +76,7 @@ export class HacsResolver extends LitElement {
           .hass=${this.hass}
           .route=${this.route}
           .narrow=${this.narrow}
+          .configuration=${this.configuration}
           .lovelace=${this.lovelace}
           .repositories=${this.repositories}
         ></hacs-entry-panel>`

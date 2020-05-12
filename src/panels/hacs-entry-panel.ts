@@ -10,46 +10,20 @@ import {
   property,
 } from "lit-element";
 import { HomeAssistant } from "custom-card-helpers";
-import { Route, Repository, LovelaceResource } from "../data/common";
+import {
+  Route,
+  Repository,
+  LovelaceResource,
+  Configuration,
+} from "../data/common";
 import "../layout/hacs-single-page-layout";
-//import "../components/hacs-link";
 
-export const sections = {
-  updates: [],
-  panels: [
-    {
-      title: "Integrations",
-      description: "This is where you find custom component/integrations",
-      icon: "mdi:puzzle",
-      id: "integrations",
-      categories: ["integration"],
-    },
-    {
-      title: "Frontend",
-      description: "This is where you find lovelace elements and themes",
-      icon: "mdi:palette",
-      id: "frontend",
-      categories: ["plugin", "theme"],
-    },
-    {
-      title: "Automation",
-      description:
-        "This is where you find python_scripts, AppDaemon apps and NetDaemon apps",
-      icon: "mdi:robot",
-      id: "automation",
-      categories: ["python_script", "appdaemon", "netdaemon"],
-    },
-    {
-      title: "Settings",
-      description: "This is where you can manage HACS",
-      icon: "mdi:cogs",
-      id: "settings",
-    },
-  ],
-};
+import { sections } from "./hacs-sections";
+//import "../components/hacs-link";
 
 @customElement("hacs-entry-panel")
 export class HacsEntryPanel extends LitElement {
+  @property({ attribute: false }) public configuration: Configuration;
   @property({ attribute: false }) public hass!: HomeAssistant;
   @property({ attribute: false }) public narrow!: boolean;
   @property({ attribute: false }) public route!: Route;
@@ -61,7 +35,7 @@ export class HacsEntryPanel extends LitElement {
     this.repositories?.forEach((repo) => {
       if (repo.pending_upgrade) {
         sections.updates.push({
-          title: repo.name,
+          name: repo.name,
           id: repo.id,
           installed: repo.installed_version,
           available: repo.available_version,
@@ -89,7 +63,7 @@ export class HacsEntryPanel extends LitElement {
                         slot="item-icon"
                       ></ha-icon>
                       <paper-item-body two-line>
-                        ${repository.title}
+                        ${repository.name}
                         <div secondary>
                           You are running version ${repository.installed},
                           version ${repository.available} is available
