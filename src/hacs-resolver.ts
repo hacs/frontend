@@ -3,6 +3,7 @@ import {
   TemplateResult,
   html,
   customElement,
+  PropertyValues,
   property,
 } from "lit-element";
 import { HomeAssistant } from "custom-card-helpers";
@@ -30,6 +31,8 @@ import {
 
 import "./panels/hacs-entry-panel";
 import "./panels/hacs-store-panel";
+
+import { sections } from "./panels/hacs-sections";
 
 @customElement("hacs-resolver")
 export class HacsResolver extends LitElement {
@@ -72,6 +75,7 @@ export class HacsResolver extends LitElement {
   }
 
   protected render(): TemplateResult | void {
+    console.log("render");
     if (this.route.path === "" || this.route.path === "/") {
       this.route.path = "/dashboard";
     }
@@ -93,6 +97,7 @@ export class HacsResolver extends LitElement {
           .configuration=${this.configuration}
           .lovelace=${this.lovelace}
           .repositories=${this.repositories}
+          .section=${this.route.path.split("/")[1]}
         ></hacs-store-panel>`}`;
   }
 
@@ -100,7 +105,6 @@ export class HacsResolver extends LitElement {
     this.route = ev.detail.route;
     this.logger.debug(this.route);
     navigate(this, this.route.prefix + this.route.path);
-    //this.requestUpdate();
-    window.location.reload();
+    this.requestUpdate();
   }
 }

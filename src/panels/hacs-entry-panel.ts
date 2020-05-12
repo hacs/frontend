@@ -2,7 +2,7 @@ import "@polymer/paper-item/paper-icon-item";
 import "@polymer/paper-item/paper-item-body";
 import {
   css,
-  CSSResult,
+  CSSResultArray,
   customElement,
   html,
   LitElement,
@@ -18,9 +18,11 @@ import {
 } from "../data/common";
 import "../layout/hacs-single-page-layout";
 
+import { HacsCommonStyle } from "../styles/hacs-common-style";
+
 import { localize } from "../localize/localize";
 
-import { sections } from "./hacs-sections";
+import { sections, panelEnabled } from "./hacs-sections";
 //import "../components/hacs-link";
 
 @customElement("hacs-entry-panel")
@@ -39,6 +41,7 @@ export class HacsEntryPanel extends LitElement {
         sections.updates.push(repo);
       }
     });
+    console.log(panelEnabled("integrations", this.configuration));
     return html`
       <hacs-single-page-layout
         .hass=${this.hass}
@@ -99,54 +102,49 @@ export class HacsEntryPanel extends LitElement {
     `;
   }
 
-  static get styles(): CSSResult {
-    return css`
-      a {
-        text-decoration: none;
-        color: var(--primary-text-color);
-        position: relative;
-        display: block;
-        outline: 0;
-      }
-      ha-icon {
-        color: var(--secondary-text-color);
-      }
-      .iron-selected paper-item::before {
-        position: absolute;
-        top: 0;
-        right: 0;
-        bottom: 0;
-        left: 0;
-        pointer-events: none;
-        content: "";
-        transition: opacity 15ms linear;
-        will-change: opacity;
-      }
-      paper-icon-item {
-        padding: 12px 16px;
-        cursor: pointer;
-      }
-      .iron-selected paper-item:focus::before,
-      .iron-selected:focus paper-item::before {
-        opacity: 0.2;
-      }
+  static get styles(): CSSResultArray {
+    return [
+      HacsCommonStyle,
+      css`
+        a {
+          text-decoration: none;
+          color: var(--primary-text-color);
+          position: relative;
+          display: block;
+          outline: 0;
+        }
+        ha-icon {
+          color: var(--secondary-text-color);
+        }
+        .iron-selected paper-item::before {
+          position: absolute;
+          top: 0;
+          right: 0;
+          bottom: 0;
+          left: 0;
+          pointer-events: none;
+          content: "";
+          transition: opacity 15ms linear;
+          will-change: opacity;
+        }
+        paper-icon-item {
+          padding: 12px 16px;
+          cursor: pointer;
+        }
+        .iron-selected paper-item:focus::before,
+        .iron-selected:focus paper-item::before {
+          opacity: 0.2;
+        }
 
-      paper-item-body {
-        width: 100%;
-      }
-      paper-item-body div {
-        font-size: 14px;
-        color: var(--secondary-text-color);
-      }
-      .header {
-        font-size: var(--paper-font-headline_-_font-size);
-        opacity: var(--dark-primary-opacity);
-        padding: 8px 0 4px 16px;
-      }
-      .pending_upgrade {
-        color: orange;
-      }
-    `;
+        paper-item-body {
+          width: 100%;
+        }
+        paper-item-body div {
+          font-size: 14px;
+          color: var(--secondary-text-color);
+        }
+      `,
+    ];
   }
 
   private _changeLocation(id: string): void {

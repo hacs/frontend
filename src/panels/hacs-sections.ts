@@ -1,3 +1,4 @@
+import { Configuration } from "../data/common";
 export const sections = {
   updates: [],
   panels: [
@@ -21,4 +22,14 @@ export const sections = {
       id: "settings",
     },
   ],
+};
+
+export const panelEnabled = (panel: string, config: Configuration) => {
+  const categories = sections.panels.find((p) => p.id === panel).categories;
+  if (categories === undefined) return true;
+  return (
+    categories?.filter((element) => {
+      config?.categories.includes(element);
+    }).length !== 0
+  );
 };

@@ -31,6 +31,7 @@ export class HacsTabbedLayout extends LitElement {
   }
 
   protected render(): TemplateResult | void {
+    console.log("render hacs-tabbed-layout");
     return html`
       <div class="main">
         <div class="toolbar">
