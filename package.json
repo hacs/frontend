@@ -18,7 +18,7 @@
   "devDependencies": {
     "@rollup/plugin-json": "^4.0.3",
     "@typescript-eslint/eslint-plugin": "^2.32.0",
-    "@typescript-eslint/parser": "^2.31.0",
+    "@typescript-eslint/parser": "^2.32.0",
     "card-tools": "github:thomasloven/card-tools",
     "custom-card-helpers": "^1.6.4",
     "chokidar": "^3.4.0",
