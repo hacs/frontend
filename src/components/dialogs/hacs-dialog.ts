@@ -36,6 +36,9 @@ export class HacsDialog extends LitElement {
 
   private _close() {
     this.active = false;
+    this.dispatchEvent(
+      new Event("hacs-dialog-close", { bubbles: true, composed: true })
+    );
   }
 
   static get styles(): CSSResultArray {

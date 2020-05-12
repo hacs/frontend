@@ -10,6 +10,8 @@ import {
 
 import { Repository } from "../../data/common";
 
+import { markdown } from "../../legacy/markdown/markdown";
+
 import "./hacs-dialog";
 
 @customElement("hacs-repository-info-dialog")
@@ -22,7 +24,7 @@ export class HacsRepositoryInfoDialog extends LitElement {
     return html`
       <hacs-dialog .active=${this.active}>
         <div slot="header">${this.repository.name}</div>
-        ${this.repository.info}
+        ${markdown.html(this.repository.additional_info || "", this.repository)}
       </hacs-dialog>
     `;
   }
