@@ -10,7 +10,7 @@ import { HomeAssistant } from "custom-card-helpers";
 import { Route } from "./legacy/data";
 import "./legacy/LoadUIElements";
 
-import "./panels/hacs-entry-panel";
+import "./hacs-resolver";
 
 @customElement("hacs-frontend")
 class HacsFrontend extends LitElement {
@@ -57,11 +57,11 @@ class HacsFrontend extends LitElement {
 
   protected render(): TemplateResult | void {
     return html`
-      <hacs-entry-panel
+      <hacs-resolver
         .hass=${this.hass}
         .route=${this.route}
         .narrow=${this.narrow}
-      ></hacs-entry-panel>
+      ></hacs-resolver>
     `;
 
     return html`

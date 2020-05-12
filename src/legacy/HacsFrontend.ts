@@ -63,7 +63,7 @@ class HacsFrontendBase extends LitElement {
     this.hacs = new Hacs(this.configuration, this.repositories, this.status);
 
     /* Add handlers for custom HACS browser events */
-    this.addEventListener("hacs-location-change", this.locationChanged);
+    //this.addEventListener("hacs-location-change", this.locationChanged);
     this.addEventListener("hacs-repository-action", this.RepositoryAction);
     this.addEventListener("hacs-onboarding-done", this.onboardingDone);
     this.addEventListener("hacs-recreate", this._recreatehacs);

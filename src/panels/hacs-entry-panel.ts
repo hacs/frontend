@@ -10,19 +10,12 @@ import {
   property,
 } from "lit-element";
 import { HomeAssistant } from "custom-card-helpers";
-import { Route } from "../data/common";
-
+import { Route, Repository, LovelaceResource } from "../data/common";
 import "../layout/hacs-single-page-layout";
 //import "../components/hacs-link";
 
 export const sections = {
-  updates: [
-    {
-      title: "HACS",
-      description: "You are running version 0.24.5, version 1.0.0 is available",
-      id: "4367826",
-    },
-  ],
+  updates: [],
   panels: [
     {
       title: "Integrations",
@@ -60,8 +53,20 @@ export class HacsEntryPanel extends LitElement {
   @property({ attribute: false }) public hass!: HomeAssistant;
   @property({ attribute: false }) public narrow!: boolean;
   @property({ attribute: false }) public route!: Route;
+  @property({ attribute: false }) public repositories: Repository[];
+  @property({ attribute: false }) public lovelace: LovelaceResource[];
 
   protected render(): TemplateResult | void {
+    this.repositories?.forEach((repo) => {
+      if (repo.pending_upgrade) {
+        sections.updates.push({
+          title: repo.name,
+          id: repo.id,
+          installed: repo.installed_version,
+          available: repo.available_version,
+        });
+      }
+    });
     return html`
       <hacs-single-page-layout
         .hass=${this.hass}
@@ -85,7 +90,8 @@ export class HacsEntryPanel extends LitElement {
                       <paper-item-body two-line>
                         ${repository.title}
                         <div secondary>
-                          ${repository.description}
+                          You are running version ${repository.installed},
+                          version ${repository.available} is available
                         </div>
                       </paper-item-body>
                     </paper-icon-item>
@@ -97,7 +103,7 @@ export class HacsEntryPanel extends LitElement {
           ${sections.panels.map(
             (panel) =>
               html`
-                <paper-icon-item .id=${panel.id}>
+                <paper-icon-item @click=${() => this._changeLocation(panel.id)}>
                   <ha-icon .icon=${panel.icon} slot="item-icon"></ha-icon>
                   <paper-item-body two-line>
                     ${panel.title}
@@ -162,5 +168,16 @@ export class HacsEntryPanel extends LitElement {
         color: orange;
       }
     `;
+  }
+
+  private _changeLocation(id: string): void {
+    this.route.path = `/${id}`;
+    this.dispatchEvent(
+      new CustomEvent("hacs-location-changed", {
+        detail: { route: this.route },
+        bubbles: true,
+        composed: true,
+      })
+    );
   }
 }
