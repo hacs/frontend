@@ -16,31 +16,12 @@ import { localize } from "../localize/localize";
 @customElement("hacs-tabbed-layout")
 export class HacsTabbedLayout extends LitElement {
   @property({ type: Object }) public hass!: HomeAssistant;
-  @property() private _searchFilter: string = "";
   @property() public selected: string;
   @property() public tabs: any;
-
-  @query("#search-input") private _searchFilterInput?: any;
 
   private async _ChangeTabAction(tab: string) {
     this.selected = tab;
     window.scrollTo(0, 0);
-  }
-
-  _searchFilterLogs(logs: string): string {
-    if (!this._searchFilter) return logs;
-    let filteredLogs: (string | undefined)[];
-
-    filteredLogs = logs.split("\n").map((line) => {
-      if (
-        line.toLowerCase().includes(String(this._searchFilter).toLowerCase())
-      ) {
-        return line;
-      }
-      return "";
-    });
-
-    return filteredLogs.join("\n");
   }
 
   protected render(): TemplateResult | void {
@@ -62,39 +43,13 @@ export class HacsTabbedLayout extends LitElement {
             )}
           </div>
           <div id="toolbar-icon">
-            <ha-icon-button icon="mdi:reload" role="button"></ha-icon-button>
+          <slot name="toolbar-icon"></slot>
           </div>
         </div>
-        <div class="searchbar">
-          <ha-icon icon="mdi:magnify" role="button"></ha-icon>
-          <input
-            id="search-input"
-            class="search-input"
-            placeholder="Filter logs"
-            .value=${this._searchFilter}
-            @input=${this._searchFilterInputChanged}
-          />
-          ${this._searchFilter
-            ? html`
-                <ha-icon-button
-                  icon="mdi:close"
-                  role="button"
-                  @click=${this._clearFilter}
-                ></ha-icon-button>
-              `
-            : ""}
         </div>
-        <div class="content"></div>
+        <div class="content"><slot></slot></div>
       </div>
     `;
-  }
-
-  private _clearFilter() {
-    this._searchFilter = "";
-  }
-
-  private _searchFilterInputChanged() {
-    this._searchFilter = this._searchFilterInput?.value;
   }
 
   static get styles() {
