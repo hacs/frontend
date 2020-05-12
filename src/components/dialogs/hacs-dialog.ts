@@ -35,9 +35,8 @@ export class HacsDialog extends LitElement {
   }
 
   private _close() {
-    this.active = false;
     this.dispatchEvent(
-      new Event("hacs-dialog-close", { bubbles: true, composed: true })
+      new Event("hacs-dialog-closed", { bubbles: true, composed: true })
     );
   }
 
