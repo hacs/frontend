@@ -21,6 +21,7 @@ export class HacsRepositoryInfoDialog extends LitElement {
   @property() public active: boolean = false;
 
   protected render(): TemplateResult | void {
+    if (!this.active) return html``;
     return html`
       <hacs-dialog .active=${this.active}>
         <div slot="header">${this.repository.name}</div>
