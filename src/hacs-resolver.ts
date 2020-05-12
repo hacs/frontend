@@ -28,6 +28,7 @@ import {
 } from "./data/fetch";
 
 import "./panels/hacs-entry-panel";
+import "./panels/hacs-store-panel";
 
 @customElement("hacs-resolver")
 export class HacsResolver extends LitElement {
@@ -80,7 +81,7 @@ export class HacsResolver extends LitElement {
           .lovelace=${this.lovelace}
           .repositories=${this.repositories}
         ></hacs-entry-panel>`
-      : ""}`;
+      : html`<hacs-store-panel .hass=${this.hass}></hacs-store-panel>`}`;
   }
 
   private _setRoute(): void {
