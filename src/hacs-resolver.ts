@@ -17,6 +17,7 @@ import {
   Status,
   Configuration,
   Repository,
+  LocationChangedEvent,
 } from "./data/common";
 
 import {
@@ -45,7 +46,9 @@ export class HacsResolver extends LitElement {
 
   public connectedCallback() {
     super.connectedCallback();
-    this.addEventListener("hacs-location-changed", this._setRoute);
+    this.addEventListener("hacs-location-changed", (e) =>
+      this._setRoute(e as LocationChangedEvent)
+    );
   }
   protected async firstUpdated() {
     window.onpopstate = function () {
@@ -69,7 +72,9 @@ export class HacsResolver extends LitElement {
   }
 
   protected render(): TemplateResult | void {
-    this._setRoute();
+    if (this.route.path === "" || this.route.path === "/") {
+      this.route.path = "/dashboard";
+    }
     this.logger.debug(this.route);
 
     return html`${this.route.path === "/dashboard"
@@ -81,15 +86,21 @@ export class HacsResolver extends LitElement {
           .lovelace=${this.lovelace}
           .repositories=${this.repositories}
         ></hacs-entry-panel>`
-      : html`<hacs-store-panel .hass=${this.hass}></hacs-store-panel>`}`;
+      : html`<hacs-store-panel
+          .hass=${this.hass}
+          .route=${this.route}
+          .narrow=${this.narrow}
+          .configuration=${this.configuration}
+          .lovelace=${this.lovelace}
+          .repositories=${this.repositories}
+        ></hacs-store-panel>`}`;
   }
 
-  private _setRoute(): void {
-    if (this.route.path === "" || this.route.path === "/") {
-      this.route.path = "/dashboard";
-    }
+  private _setRoute(ev: LocationChangedEvent): void {
+    this.route = ev.detail.route;
     this.logger.debug(this.route);
     navigate(this, this.route.prefix + this.route.path);
-    this.requestUpdate();
+    //this.requestUpdate();
+    window.location.reload();
   }
 }

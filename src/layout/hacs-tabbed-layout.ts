@@ -4,30 +4,39 @@ import {
   property,
   html,
   css,
-  query,
   TemplateResult,
 } from "lit-element";
 import { HomeAssistant } from "custom-card-helpers";
-import "@material/mwc-list/mwc-list-item";
-import "@material/mwc-select/mwc-select";
-
+import { Route } from "../data/common";
 import { localize } from "../localize/localize";
 
 @customElement("hacs-tabbed-layout")
 export class HacsTabbedLayout extends LitElement {
   @property({ type: Object }) public hass!: HomeAssistant;
+  @property({ type: Object }) public route!: Route;
   @property() public selected: string;
   @property() public tabs: any;
 
-  private async _ChangeTabAction(tab: string) {
-    this.selected = tab;
+  private _ChangeTabAction(tab: string) {
     window.scrollTo(0, 0);
+    this.selected = tab;
+    this.route.path = `/${tab}`;
+    this.dispatchEvent(
+      new CustomEvent("hacs-location-changed", {
+        detail: { route: this.route },
+        bubbles: true,
+        composed: true,
+      })
+    );
   }
 
   protected render(): TemplateResult | void {
     return html`
       <div class="main">
         <div class="toolbar">
+        <ha-icon-button icon="mdi:chevron-left" @click=${
+          this._goBack
+        }></ha-icon-button>
           <div id="tabbar">
             ${this.tabs.map(
               (tab) => html`
@@ -50,6 +59,17 @@ export class HacsTabbedLayout extends LitElement {
         <div class="content"><slot></slot></div>
       </div>
     `;
+  }
+
+  private _goBack(): void {
+    this.route.path = "";
+    this.dispatchEvent(
+      new CustomEvent("hacs-location-changed", {
+        detail: { route: this.route },
+        bubbles: true,
+        composed: true,
+      })
+    );
   }
 
   static get styles() {
