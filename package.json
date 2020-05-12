@@ -25,7 +25,7 @@
     "eslint-config-airbnb-base": "^14.0.0",
     "eslint-plugin-import": "^2.16.0",
     "eslint": "^6.5.1",
-    "highlight.js": "^10.0.2",
+    "highlight.js": "^10.0.3",
     "lit-element": "^2.3.1",
     "lit-html": "^1.2.1",
     "marked": "^1.0.0",
