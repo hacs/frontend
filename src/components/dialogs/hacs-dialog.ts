@@ -8,11 +8,12 @@ import {
   property,
 } from "lit-element";
 import { classMap } from "lit-html/directives/class-map";
-
+import { HomeAssistant } from "custom-card-helpers";
 import { HacsCommonStyle } from "../../styles/hacs-common-style";
 
 @customElement("hacs-dialog")
 export class HacsDialog extends LitElement {
+  @property({ attribute: false }) public hass!: HomeAssistant;
   @property({ attribute: false }) public narrow!: boolean;
   @property({ type: Boolean }) public active: boolean = false;
 
@@ -21,7 +22,9 @@ export class HacsDialog extends LitElement {
       return html``;
     }
 
-    const sidebarDocked = localStorage.getItem("dockedSidebar") === "docked";
+    const sidebarDocked =
+      window.localStorage.getItem("dockedSidebar") === '"docked"';
+
     return html`
       <div
         class=${classMap({

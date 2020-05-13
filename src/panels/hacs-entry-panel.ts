@@ -40,8 +40,6 @@ export class HacsEntryPanel extends LitElement {
   @property() private _updateDialogActive: boolean = false;
 
   protected render(): TemplateResult | void {
-    console.log(localStorage.getItem("dockedSidebar"));
-    console.log(this.narrow);
     sections.updates = []; // reset so we don't get duplicates
     this.repositories?.forEach((repo) => {
       if (repo.pending_upgrade) {
@@ -111,6 +109,7 @@ export class HacsEntryPanel extends LitElement {
       </hacs-single-page-layout>
       ${this._updateDialogActive
         ? html`<hacs-update-dialog
+            .hass=${this.hass}
             .active=${true}
             .repository=${this._updateRepository}
             .narrow=${this.narrow}

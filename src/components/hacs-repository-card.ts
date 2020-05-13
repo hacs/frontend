@@ -10,9 +10,11 @@ import {
 import { HacsCommonStyle } from "../styles/hacs-common-style";
 import "../components/dialogs/hacs-repository-info-dialog";
 import { Repository } from "../data/common";
+import { HomeAssistant } from "custom-card-helpers";
 
 @customElement("hacs-repository-card")
 export class HacsRepositoryCard extends LitElement {
+  @property({ attribute: false }) public hass!: HomeAssistant;
   @property({ attribute: false }) public narrow!: boolean;
   @property({ attribute: false }) public repository!: Repository;
   @property() private _updateDialogActive: boolean = false;
@@ -58,6 +60,7 @@ export class HacsRepositoryCard extends LitElement {
       </ha-card>
       ${this._updateDialogActive
         ? html` <hacs-repository-info-dialog
+            .hass=${this.hass}
             .narrow=${this.narrow}
             .active=${true}
             .repository=${this.repository}

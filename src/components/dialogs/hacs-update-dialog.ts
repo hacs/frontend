@@ -9,11 +9,12 @@ import {
 } from "lit-element";
 
 import { Repository } from "../../data/common";
-
+import { HomeAssistant } from "custom-card-helpers";
 import "./hacs-dialog";
 
 @customElement("hacs-update-dialog")
 export class HacsUpdateDialog extends LitElement {
+  @property({ attribute: false }) public hass!: HomeAssistant;
   @property({ attribute: false }) public narrow!: boolean;
   @property({ attribute: false }) public repository!: Repository;
   @property({ attribute: false }) public loading: boolean = true;
@@ -22,7 +23,11 @@ export class HacsUpdateDialog extends LitElement {
   protected render(): TemplateResult | void {
     if (!this.active) return html``;
     return html`
-      <hacs-dialog .active=${this.active} .narrow=${this.narrow}>
+      <hacs-dialog
+        .active=${this.active}
+        .narrow=${this.narrow}
+        .hass=${this.hass}
+      >
         <div slot="header">Update pending</div>
         <div class="content">
           New update for ${this.repository.name}
