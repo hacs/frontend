@@ -6,7 +6,6 @@ import {
   LitElement,
   TemplateResult,
   property,
-  query,
 } from "lit-element";
 import { HacsCommonStyle } from "../styles/hacs-common-style";
 import "../components/dialogs/hacs-repository-info-dialog";
@@ -15,7 +14,7 @@ import { Repository } from "../data/common";
 @customElement("hacs-repository-card")
 export class HacsRepositoryCard extends LitElement {
   @property({ attribute: false }) public repository!: Repository;
-  @query("hacs-repository-info-dialog") dialog;
+  @property() private _updateDialogActive: boolean = false;
 
   protected render(): TemplateResult | void {
     return html`
@@ -56,17 +55,20 @@ export class HacsRepositoryCard extends LitElement {
             : ""}
         </div>
       </ha-card>
-      <hacs-repository-info-dialog
-        .repository=${this.repository}
-      ></hacs-repository-info-dialog>
+      ${this._updateDialogActive
+        ? html` <hacs-repository-info-dialog
+            .active=${true}
+            .repository=${this.repository}
+          ></hacs-repository-info-dialog>`
+        : ""}
     `;
   }
 
   private _showReopsitoryInfo() {
-    this.dialog.active = true;
+    this._updateDialogActive = true;
     this.addEventListener(
       "hacs-dialog-closed",
-      () => (this.dialog.active = false)
+      () => (this._updateDialogActive = false)
     );
   }
 

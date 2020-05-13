@@ -11,14 +11,14 @@ import { HacsCommonStyle } from "../../styles/hacs-common-style";
 
 @customElement("hacs-dialog")
 export class HacsDialog extends LitElement {
-  @property() public active: boolean = false;
+  @property({ type: Boolean }) public active: boolean = false;
 
   protected render(): TemplateResult | void {
     if (!this.active) {
       return html``;
     }
     return html`
-      <div class="backdrop" @click=${this._close}>
+      <div class="backdrop">
         <ha-card class="dialog">
           <div class="header"><slot name="header"></slot></div>
           <ha-icon-button
@@ -44,6 +44,9 @@ export class HacsDialog extends LitElement {
     return [
       HacsCommonStyle,
       css`
+        .header {
+          padding-right: 42px !important;
+        }
         .close {
           position: absolute;
           top: 0;
@@ -65,7 +68,7 @@ export class HacsDialog extends LitElement {
           top: 5%;
           height: 100;
           margin: auto;
-          width: 76%;
+          width: fit-content;
         }
       `,
     ];

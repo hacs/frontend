@@ -18,6 +18,8 @@ import {
 } from "../data/common";
 import "../layout/hacs-single-page-layout";
 
+import "../components/dialogs/hacs-update-dialog";
+
 import { HacsCommonStyle } from "../styles/hacs-common-style";
 
 import { localize } from "../localize/localize";
@@ -34,6 +36,9 @@ export class HacsEntryPanel extends LitElement {
   @property({ attribute: false }) public repositories: Repository[];
   @property({ attribute: false }) public lovelace: LovelaceResource[];
 
+  @property({ attribute: false }) private _updateRepository: Repository;
+  @property() private _updateDialogActive: boolean = false;
+
   protected render(): TemplateResult | void {
     sections.updates = []; // reset so we don't get duplicates
     this.repositories?.forEach((repo) => {
@@ -41,7 +46,6 @@ export class HacsEntryPanel extends LitElement {
         sections.updates.push(repo);
       }
     });
-    console.log(panelEnabled("integrations", this.configuration));
     return html`
       <hacs-single-page-layout
         .hass=${this.hass}
@@ -56,7 +60,9 @@ export class HacsEntryPanel extends LitElement {
               ${sections.updates.map(
                 (repository) =>
                   html`
-                    <paper-icon-item .id=${repository.id}>
+                    <paper-icon-item
+                      @click="${() => this._openUpdateDialog(repository)}"
+                    >
                       <ha-icon
                         class="pending_upgrade"
                         icon="mdi:arrow-up-circle"
@@ -99,7 +105,22 @@ export class HacsEntryPanel extends LitElement {
           )}
         </ha-card>
       </hacs-single-page-layout>
+      ${this._updateDialogActive
+        ? html`<hacs-update-dialog
+            .active=${true}
+            .repository=${this._updateRepository}
+          ></hacs-update-dialog>`
+        : ""}
     `;
+  }
+
+  private _openUpdateDialog(repository: Repository) {
+    this._updateRepository = repository;
+    this._updateDialogActive = true;
+    this.addEventListener(
+      "hacs-dialog-closed",
+      () => (this._updateDialogActive = false)
+    );
   }
 
   static get styles(): CSSResultArray {

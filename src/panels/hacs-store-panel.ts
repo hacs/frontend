@@ -44,6 +44,7 @@ export class HacsStorePanel extends LitElement {
     if (repo.name.toLocaleLowerCase().includes(input)) return true;
     if (repo.description?.toLocaleLowerCase().includes(input)) return true;
     if (repo.category.toLocaleLowerCase().includes(input)) return true;
+    if (repo.full_name.toLocaleLowerCase().includes(input)) return true;
     if (String(repo.authors)?.toLocaleLowerCase().includes(input)) return true;
     if (repo.domain?.toLocaleLowerCase().includes(input)) return true;
     return false;
@@ -56,7 +57,21 @@ export class HacsStorePanel extends LitElement {
       .tabs=${sections.panels}
       .route=${this.route}
       .selected=${this.section}
-    >
+      ><paper-menu-button
+        slot="toolbar-icon"
+        horizontal-align="right"
+        vertical-align="top"
+        vertical-offset="40"
+        close-on-activate
+      >
+        <ha-icon-button
+          icon="hass:dots-vertical"
+          slot="dropdown-trigger"
+        ></ha-icon-button>
+        <paper-listbox slot="dropdown-content">
+          <paper-item class="pointer">About HACS</paper-item>
+        </paper-listbox>
+      </paper-menu-button>
       <hacs-search
         .input=${this.searchInput}
         @input=${this._inputValueChanged}
@@ -90,6 +105,9 @@ export class HacsStorePanel extends LitElement {
         grid-gap: 16px 16px;
         padding: 8px 16px 16px;
         margin-bottom: 64px;
+      }
+      paper-item {
+        cursor: pointer;
       }
     `;
   }
