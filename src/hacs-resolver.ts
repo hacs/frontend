@@ -75,7 +75,6 @@ export class HacsResolver extends LitElement {
   }
 
   protected render(): TemplateResult | void {
-    console.log("render");
     if (this.route.path === "" || this.route.path === "/") {
       this.route.path = "/dashboard";
     }

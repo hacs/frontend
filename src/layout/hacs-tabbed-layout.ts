@@ -17,21 +17,7 @@ export class HacsTabbedLayout extends LitElement {
   @property() public selected: string;
   @property() public tabs: any;
 
-  private _ChangeTabAction(tab: string) {
-    window.scrollTo(0, 0);
-    this.selected = tab;
-    this.route.path = `/${tab}`;
-    this.dispatchEvent(
-      new CustomEvent("hacs-location-changed", {
-        detail: { route: this.route },
-        bubbles: true,
-        composed: true,
-      })
-    );
-  }
-
   protected render(): TemplateResult | void {
-    console.log("render hacs-tabbed-layout");
     return html`
       <div class="main">
         <div class="toolbar">
@@ -62,8 +48,19 @@ export class HacsTabbedLayout extends LitElement {
     `;
   }
 
+  private _ChangeTabAction(tab: string) {
+    window.scrollTo(0, 0);
+    this.selected = tab;
+    this.route.path = `/${tab}`;
+    this._locationChanged();
+  }
+
   private _goBack(): void {
     this.route.path = "";
+    this._locationChanged();
+  }
+
+  private _locationChanged(): void {
     this.dispatchEvent(
       new CustomEvent("hacs-location-changed", {
         detail: { route: this.route },
@@ -134,35 +131,6 @@ export class HacsTabbedLayout extends LitElement {
         margin: 8px;
         --mdc-theme-primary: var(--primary-color);
         --mdc-theme-text-primary-on-background: var(--primary-text-color);
-      }
-      .log {
-        margin: 8px;
-        padding: 4px;
-        position: relative;
-        background: var(
-          --ha-card-background,
-          var(--paper-card-background-color, white)
-        );
-        border-radius: var(--ha-card-border-radius, 2px);
-        box-shadow: var(
-          --ha-card-box-shadow,
-          0 2px 2px 0 rgba(0, 0, 0, 0.14),
-          0 1px 5px 0 rgba(0, 0, 0, 0.12),
-          0 3px 1px -2px rgba(0, 0, 0, 0.2)
-        );
-        color: var(--primary-text-color);
-        display: block;
-        transition: all 0.3s ease-out;
-      }
-      color-log {
-        --colorlog-text: var(--primary-text-color);
-      }
-
-      .reload {
-        z-index: 2;
-        position: fixed;
-        right: 8px;
-        top: 8px;
       }
 
       .toolbar-button {

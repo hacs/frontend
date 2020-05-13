@@ -16,16 +16,20 @@ import "./hacs-dialog";
 
 @customElement("hacs-repository-info-dialog")
 export class HacsRepositoryInfoDialog extends LitElement {
-  @property() public repository!: Repository;
-  @property() public loading: boolean = true;
-  @property() public active: boolean = false;
+  @property({ attribute: false }) public repository!: Repository;
+  @property({ attribute: false }) public loading: boolean = true;
+  @property({ attribute: false }) public active: boolean = false;
 
   protected render(): TemplateResult | void {
     if (!this.active) return html``;
     return html`
       <hacs-dialog .active=${this.active}>
         <div slot="header">${this.repository.name}</div>
-        ${markdown.html(this.repository.additional_info || "", this.repository)}
+        ${markdown.html(
+          this.repository.additional_info ||
+            "No additional information is given by the developer",
+          this.repository
+        )}
       </hacs-dialog>
     `;
   }

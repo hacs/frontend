@@ -14,8 +14,7 @@ import { Repository } from "../data/common";
 
 @customElement("hacs-repository-card")
 export class HacsRepositoryCard extends LitElement {
-  @property() public repository!: Repository;
-  @property() private showInfoDialog: boolean = false;
+  @property({ attribute: false }) public repository!: Repository;
   @query("hacs-repository-info-dialog") dialog;
 
   protected render(): TemplateResult | void {
@@ -37,22 +36,24 @@ export class HacsRepositoryCard extends LitElement {
           <div>
             <mwc-button>install</mwc-button>
           </div>
-          <paper-menu-button
-            horizontal-align="right"
-            vertical-align="top"
-            vertical-offset="40"
-            close-on-activate
-          >
-            <ha-icon-button
-              icon="hass:dots-vertical"
-              slot="dropdown-trigger"
-            ></ha-icon-button>
-            <paper-listbox slot="dropdown-content">
-              <paper-item class="pointer" @click=${this._showReopsitoryInfo}
-                >Show information</paper-item
+          ${this.repository.installed
+            ? html` <paper-menu-button
+                horizontal-align="right"
+                vertical-align="top"
+                vertical-offset="40"
+                close-on-activate
               >
-            </paper-listbox>
-          </paper-menu-button>
+                <ha-icon-button
+                  icon="hass:dots-vertical"
+                  slot="dropdown-trigger"
+                ></ha-icon-button>
+                <paper-listbox slot="dropdown-content">
+                  <paper-item class="pointer" @click=${this._showReopsitoryInfo}
+                    >Show information</paper-item
+                  >
+                </paper-listbox>
+              </paper-menu-button>`
+            : ""}
         </div>
       </ha-card>
       <hacs-repository-info-dialog

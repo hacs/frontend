@@ -15,6 +15,7 @@ import {
 } from "../data/common";
 import "../layout/hacs-tabbed-layout";
 import "../components/hacs-repository-card";
+import "../components/hacs-search";
 
 import { sections } from "./hacs-sections";
 
@@ -27,16 +28,28 @@ export class HacsStorePanel extends LitElement {
   @property({ attribute: false }) public repositories!: Repository[];
   @property({ attribute: false }) public lovelace: LovelaceResource[];
   @property() public section!: string;
+  @property() public searchInput: string = "";
 
   private _filteredRepositories = () =>
-    this.repositories?.filter((repo) =>
-      sections.panels
-        .find((section) => section.id === this.section)
-        .categories?.includes(repo.category)
+    this.repositories?.filter(
+      (repo) =>
+        sections.panels
+          .find((section) => section.id === this.section)
+          .categories?.includes(repo.category) && this._searchFilter(repo)
     );
 
+  private _searchFilter(repo: Repository): boolean {
+    const input = this.searchInput.toLocaleLowerCase();
+    if (input === "") return true;
+    if (repo.name.toLocaleLowerCase().includes(input)) return true;
+    if (repo.description?.toLocaleLowerCase().includes(input)) return true;
+    if (repo.category.toLocaleLowerCase().includes(input)) return true;
+    if (String(repo.authors)?.toLocaleLowerCase().includes(input)) return true;
+    if (repo.domain?.toLocaleLowerCase().includes(input)) return true;
+    return false;
+  }
+
   protected render(): TemplateResult | void {
-    console.log("render hacs-store-panel");
     const repositories = this._filteredRepositories();
     return html`<hacs-tabbed-layout
       .hass=${this.hass}
@@ -44,6 +57,10 @@ export class HacsStorePanel extends LitElement {
       .route=${this.route}
       .selected=${this.section}
     >
+      <hacs-search
+        .input=${this.searchInput}
+        @input=${this._inputValueChanged}
+      ></hacs-search>
       <div class="content">
         ${repositories?.map(
           (repo) =>
@@ -53,6 +70,10 @@ export class HacsStorePanel extends LitElement {
         )}
       </div>
     </hacs-tabbed-layout>`;
+  }
+
+  private _inputValueChanged(ev: any) {
+    this.searchInput = ev.target.input;
   }
 
   static get styles() {
