@@ -34,7 +34,7 @@ export class markdown {
   static convert(input: string): string {
     return marked(input);
   }
-  static html(input: string, repo: RepositoryData): TemplateResult | void {
+  static html(input: string, repo?: RepositoryData): TemplateResult | void {
     // Convert emoji short codes to real emojis
     input = emoji.emojify(input);
 

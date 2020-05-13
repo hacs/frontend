@@ -16,6 +16,7 @@ import {
 import "../layout/hacs-tabbed-layout";
 import "../components/hacs-repository-card";
 import "../components/hacs-search";
+import "../components/hacs-tabbed-menu";
 
 import { sections } from "./hacs-sections";
 
@@ -57,21 +58,16 @@ export class HacsStorePanel extends LitElement {
       .tabs=${sections.panels}
       .route=${this.route}
       .selected=${this.section}
-      ><paper-menu-button
+      ><hacs-tabbed-menu
         slot="toolbar-icon"
-        horizontal-align="right"
-        vertical-align="top"
-        vertical-offset="40"
-        close-on-activate
+        .hass=${this.hass}
+        .route=${this.route}
+        .narrow=${this.narrow}
+        .configuration=${this.configuration}
+        .lovelace=${this.lovelace}
+        .repositories=${this.repositories}
       >
-        <ha-icon-button
-          icon="hass:dots-vertical"
-          slot="dropdown-trigger"
-        ></ha-icon-button>
-        <paper-listbox slot="dropdown-content">
-          <paper-item class="pointer">About HACS</paper-item>
-        </paper-listbox>
-      </paper-menu-button>
+      </hacs-tabbed-menu>
       <hacs-search
         .input=${this.searchInput}
         @input=${this._inputValueChanged}

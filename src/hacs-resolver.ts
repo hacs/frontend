@@ -31,8 +31,7 @@ import {
 
 import "./panels/hacs-entry-panel";
 import "./panels/hacs-store-panel";
-
-import { sections } from "./panels/hacs-sections";
+import "./panels/hacs-settings-panel";
 
 @customElement("hacs-resolver")
 export class HacsResolver extends LitElement {
@@ -88,6 +87,15 @@ export class HacsResolver extends LitElement {
           .lovelace=${this.lovelace}
           .repositories=${this.repositories}
         ></hacs-entry-panel>`
+      : this.route.path === "/settings"
+      ? html`<hacs-settings-panel
+          .hass=${this.hass}
+          .route=${this.route}
+          .narrow=${this.narrow}
+          .configuration=${this.configuration}
+          .lovelace=${this.lovelace}
+          .repositories=${this.repositories}
+        ></hacs-settings-panel>`
       : html`<hacs-store-panel
           .hass=${this.hass}
           .route=${this.route}
