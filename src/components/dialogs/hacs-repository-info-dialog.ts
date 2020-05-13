@@ -16,6 +16,7 @@ import "./hacs-dialog";
 
 @customElement("hacs-repository-info-dialog")
 export class HacsRepositoryInfoDialog extends LitElement {
+  @property({ attribute: false }) public narrow!: boolean;
   @property({ attribute: false }) public repository!: Repository;
   @property({ attribute: false }) public loading: boolean = true;
   @property({ attribute: false }) public active: boolean = false;
@@ -23,7 +24,7 @@ export class HacsRepositoryInfoDialog extends LitElement {
   protected render(): TemplateResult | void {
     if (!this.active) return html``;
     return html`
-      <hacs-dialog .active=${this.active}>
+      <hacs-dialog .active=${this.active} .narrow=${this.narrow}>
         <div slot="header">${this.repository.name}</div>
         ${markdown.html(
           this.repository.additional_info ||

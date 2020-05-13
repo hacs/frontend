@@ -14,6 +14,7 @@ import "./hacs-dialog";
 
 @customElement("hacs-update-dialog")
 export class HacsUpdateDialog extends LitElement {
+  @property({ attribute: false }) public narrow!: boolean;
   @property({ attribute: false }) public repository!: Repository;
   @property({ attribute: false }) public loading: boolean = true;
   @property({ attribute: false }) public active: boolean = false;
@@ -21,7 +22,7 @@ export class HacsUpdateDialog extends LitElement {
   protected render(): TemplateResult | void {
     if (!this.active) return html``;
     return html`
-      <hacs-dialog .active=${this.active}>
+      <hacs-dialog .active=${this.active} .narrow=${this.narrow}>
         <div slot="header">Update pending</div>
         <div class="content">
           New update for ${this.repository.name}
