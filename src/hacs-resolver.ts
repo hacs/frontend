@@ -78,7 +78,6 @@ export class HacsResolver extends LitElement {
     if (this.route.path === "" || this.route.path === "/") {
       this.route.path = "/dashboard";
     }
-    this.logger.debug(this.route);
 
     return html`${this.route.path === "/dashboard"
       ? html`<hacs-entry-panel
@@ -102,7 +101,6 @@ export class HacsResolver extends LitElement {
 
   private _setRoute(ev: LocationChangedEvent): void {
     this.route = ev.detail.route;
-    this.logger.debug(this.route);
     navigate(this, this.route.prefix + this.route.path);
     this.requestUpdate();
   }
