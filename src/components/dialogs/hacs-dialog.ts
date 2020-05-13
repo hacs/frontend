@@ -44,6 +44,9 @@ export class HacsDialog extends LitElement {
     return [
       HacsCommonStyle,
       css`
+        ha-card {
+          background-color: var(--card-background-color);
+        }
         .header {
           padding-right: 42px !important;
         }

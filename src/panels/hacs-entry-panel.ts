@@ -52,7 +52,9 @@ export class HacsEntryPanel extends LitElement {
         .route=${this.route}
         .narrow=${this.narrow}
         header="Home Assistant Community Store"
-        intro=""
+        intro="${sections.updates.length === 0
+          ? "Updates and important messages will show here if there are any"
+          : ""}"
       >
         ${sections.updates.length !== 0
           ? html` <ha-card>

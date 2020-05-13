@@ -29,14 +29,25 @@ export class HacsUpdateDialog extends LitElement {
           <p><b>Available version:</b> ${this.repository.available_version}</p>
         </div>
         <div class="card-actions">
-          <mwc-button>Update</mwc-button>
+          <mwc-button @click=${this._updateRepository}>Update</mwc-button>
+          <hacs-link .url=${this._getChanglogURL()}
+            ><mwc-button>Changelog</mwc-button></hacs-link
+          >
           <hacs-link .url="https://github.com/${this.repository.full_name}"
             ><mwc-button>Repository</mwc-button></hacs-link
           >
-          <mwc-button>Changelog</mwc-button>
         </div>
       </hacs-dialog>
     `;
+  }
+
+  private async _updateRepository(): Promise<void> {}
+
+  private _getChanglogURL(): string {
+    if (this.repository.version_or_commit === "commit") {
+      return `https://github.com/${this.repository.full_name}/compare/${this.repository.installed_version}...${this.repository.available_version}`;
+    }
+    return `https://github.com/${this.repository.full_name}/releases/${this.repository.available_version}`;
   }
 
   static get styles(): CSSResultArray {

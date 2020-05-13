@@ -82,6 +82,9 @@ export class HacsSearch extends LitElement {
           outline-offset: 0;
           outline: 0;
         }
+        input {
+          background-color: var(--sidebar-background-color);
+        }
       `,
     ];
   }
