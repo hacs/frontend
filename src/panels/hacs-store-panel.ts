@@ -77,12 +77,14 @@ export class HacsStorePanel extends LitElement {
         @input=${this._inputValueChanged}
       ></hacs-search>
       <div class="content">
-        ${repositories?.map(
-          (repo) =>
-            html`<hacs-repository-card
-              .repository=${repo}
-            ></hacs-repository-card>`
-        )}
+        ${repositories
+          ? repositories.map(
+              (repo) =>
+                html`<hacs-repository-card
+                  .repository=${repo}
+                ></hacs-repository-card>`
+            )
+          : ""}
       </div>
     </hacs-tabbed-layout>`;
   }

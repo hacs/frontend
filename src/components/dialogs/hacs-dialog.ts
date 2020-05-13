@@ -49,6 +49,7 @@ export class HacsDialog extends LitElement {
         }
         .header {
           padding-right: 42px !important;
+          width: max-content;
         }
         .close {
           position: absolute;
@@ -57,21 +58,24 @@ export class HacsDialog extends LitElement {
         }
         .backdrop {
           background-color: rgba(0, 0, 0, 0.75);
-          width: 100%;
+          width: calc(100% - 256px);
           height: 100%;
           position: fixed;
           z-index: 1;
           top: 0;
-          left: 0;
+          left: 256px;
         }
 
         .dialog {
+          top: 64px;
           z-index: 2;
-          left: 10%;
-          top: 5%;
-          height: 100;
-          margin: auto;
+          overflow-x: hidden;
+          height: auto;
           width: fit-content;
+          margin: auto;
+          min-width: 333px;
+          max-height: 95%;
+          max-width: 95%;
         }
       `,
     ];

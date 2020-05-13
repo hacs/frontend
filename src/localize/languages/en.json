@@ -102,11 +102,11 @@
   "sections": {
     "integrations": {
       "title": "Integrations",
-      "description": "This is where you find custom component/integrations"
+      "description": "This is where you find custom integrations (custom_components)"
     },
     "frontend": {
       "title": "Frontend",
-      "description": "This is where you find lovelace elements and themes"
+      "description": "This is where you find themes, custom cards and other elements for lovelace"
     },
     "automation": {
       "title": "Automation",
