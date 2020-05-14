@@ -1,11 +1,4 @@
-import {
-  css,
-  CSSResultArray,
-  customElement,
-  html,
-  TemplateResult,
-  property,
-} from "lit-element";
+import { customElement, html, TemplateResult, property } from "lit-element";
 import { HacsDialogBase } from "./hacs-dialog-base";
 import { selectRepository } from "../../data/common";
 import { markdown } from "../../legacy/markdown/markdown";

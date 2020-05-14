@@ -159,9 +159,7 @@ export class HacsRepositoryCard extends LitElement {
           flex-direction: column;
           height: 100%;
         }
-        :host(.highlight) ha-card {
-          border: 1px solid var(--accent-color);
-        }
+
         .card-content {
           padding: 0 0 3px 0;
           height: 100%;
@@ -175,14 +173,12 @@ export class HacsRepositoryCard extends LitElement {
           padding-right: 5px;
         }
         .group-header {
-          display: flex;
-          align-items: center;
-          height: 40px;
-          padding: 24px 16px 8px 16px;
-          vertical-align: middle;
+          height: auto;
+          align-content: center;
         }
         .group-header h2 {
           margin: 0;
+          padding: 8px 16px;
         }
         h2 {
           margin-top: 0;
@@ -202,25 +198,32 @@ export class HacsRepositoryCard extends LitElement {
         }
 
         .status-new {
-          border-color: var(--google-blue-500);
+          border-color: var(--hacs-new-color, var(--google-blue-500));
         }
 
         .status-update {
-          border-color: var(--google-yellow-500);
+          border-color: var(--hacs-update-color, var(--google-yellow-500));
         }
 
         .new-header {
-          background-color: var(--google-blue-500);
-          color: white;
+          background-color: var(--hacs-new-color, var(--google-blue-500));
+          color: var(--hacs-new-text-color, var(--text-primary-color));
         }
 
         .update-header {
-          background-color: var(--google-yellow-500);
-          color: white;
+          background-color: var(--hacs-update-color, var(--google-yellow-500));
+          color: var(--hacs-update-text-color, var(--text-primary-color));
         }
 
         mwc-button.update-header {
-          --mdc-theme-primary: var(--google-yellow-500);
+          --mdc-theme-primary: var(
+            --hacs-update-color,
+            var(--google-yellow-500)
+          );
+          --mdc-theme-on-primary: var(
+            --hacs-update-text-color,
+            var(--text-primary-color)
+          );
         }
 
         .status-border {
@@ -229,7 +232,6 @@ export class HacsRepositoryCard extends LitElement {
         }
 
         .status-header {
-          position: absolute;
           top: 0;
           padding: 6px 0;
           width: 100%;
@@ -238,7 +240,7 @@ export class HacsRepositoryCard extends LitElement {
           left: 0;
         }
         .uninstall {
-          color: red;
+          color: var(--hacs-error-color, var(--google-red-500));
         }
       `,
     ];

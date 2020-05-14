@@ -1,11 +1,4 @@
-import {
-  css,
-  CSSResultArray,
-  customElement,
-  html,
-  TemplateResult,
-  property,
-} from "lit-element";
+import { customElement, html, TemplateResult, property } from "lit-element";
 import { selectRepository } from "../../data/common";
 import { HacsDialogBase } from "./hacs-dialog-base";
 import { markdown } from "../../legacy/markdown/markdown";
@@ -34,9 +27,5 @@ export class HacsGenericDialog extends HacsDialogBase {
           : this.content || ""}
       </hacs-dialog>
     `;
-  }
-
-  static get styles(): CSSResultArray {
-    return [css``];
   }
 }

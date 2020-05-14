@@ -120,19 +120,13 @@ export class HacsTabbedLayout extends LitElement {
       .content {
         position: absolute;
         width: 100%;
-        height: calc(100% - 65px - 65px);
+        height: calc(100% - 65px);
         overflow-y: auto;
         overflow: auto;
         -webkit-overflow-scrolling: touch;
       }
       :host([narrow]) .content {
         height: calc(100% - 128px);
-      }
-      mwc-select {
-        width: calc(100% - 16px);
-        margin: 8px;
-        --mdc-theme-primary: var(--primary-color);
-        --mdc-theme-text-primary-on-background: var(--primary-text-color);
       }
 
       .toolbar-button {
@@ -148,9 +142,7 @@ export class HacsTabbedLayout extends LitElement {
         outline: none;
         box-sizing: border-box;
       }
-      .name {
-        white-space: nowrap;
-      }
+
       ha-icon-button {
         cursor: pointer;
       }

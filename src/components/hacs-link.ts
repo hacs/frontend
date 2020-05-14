@@ -31,8 +31,8 @@ export class HacsLink extends LitElement {
     return [
       css`
         a {
-          color: var(--link-text-color, var(--accent-color));
-          text-decoration: none;
+          color: var(--hacs-link-text-color, var(--accent-color));
+          text-decoration: var(--hacs-link-text-decoration, none);
         }
       `,
     ];
