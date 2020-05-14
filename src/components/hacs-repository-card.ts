@@ -38,10 +38,12 @@ export class HacsRepositoryCard extends LitElement {
           <div class="group-header">
             ${this.repository.pending_upgrade
               ? html`
-                  <div class="status-header update-header">PENDING UPDATE</div>
+                  <div class="status-header update-header">Pending update</div>
                 `
               : this.repository.new
-              ? html` <div class="status-header new-header">NEW</div> `
+              ? html`
+                  <div class="status-header new-header">New repository</div>
+                `
               : ""}
 
             <h2 class="pointer" @click=${this._showReopsitoryInfo}>
@@ -62,18 +64,19 @@ export class HacsRepositoryCard extends LitElement {
                   >
                 </div>
                 <div>
-                  <mwc-button class="right" @click=${this._showReopsitoryInfo}
+                  <mwc-button @click=${this._showReopsitoryInfo}
                     >Information</mwc-button
                   >
                 </div>
                 <div>
-                  <mwc-button class="right" @click=${this._setNotNew}
-                    >Hide</mwc-button
-                  >
+                  <mwc-button @click=${this._setNotNew}>Hide</mwc-button>
                 </div>`
             : this.repository.pending_upgrade
             ? html`<div>
-                <mwc-button class="right" @click=${this._updateRepository}
+                <mwc-button
+                  class="update-header"
+                  @click=${this._updateRepository}
+                  raised
                   >Update</mwc-button
                 >
               </div>`
@@ -175,7 +178,7 @@ export class HacsRepositoryCard extends LitElement {
           display: flex;
           align-items: center;
           height: 40px;
-          padding: 16px 16px 8px 16px;
+          padding: 24px 16px 8px 16px;
           vertical-align: middle;
         }
         .group-header h2 {
@@ -199,33 +202,38 @@ export class HacsRepositoryCard extends LitElement {
         }
 
         .status-new {
-          border-color: blue;
+          border-color: var(--google-blue-500);
         }
 
         .status-update {
-          border-color: orange;
+          border-color: var(--google-yellow-500);
         }
 
         .new-header {
-          background-color: blue;
+          background-color: var(--google-blue-500);
           color: white;
         }
 
         .update-header {
-          background-color: orange;
+          background-color: var(--google-yellow-500);
           color: white;
+        }
+
+        mwc-button.update-header {
+          --mdc-theme-primary: var(--google-yellow-500);
         }
 
         .status-border {
           border-style: solid;
-          border-width: 4px;
+          border-width: 1px;
         }
 
         .status-header {
           position: absolute;
           top: 0;
+          padding: 6px 0;
           width: 100%;
-          font-weight: 700;
+          font-weight: 300;
           text-align: center;
           left: 0;
         }
