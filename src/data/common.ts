@@ -42,6 +42,10 @@ export interface LocationChangedEvent {
   detail?: { route: Route; force?: boolean };
 }
 
+export interface GenericDialogEvent {
+  detail?: { header?: string; content?: string; markdown?: boolean };
+}
+
 export interface Repository {
   has_icon_url: boolean;
   additional_info: string;

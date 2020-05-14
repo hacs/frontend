@@ -42,13 +42,6 @@ export class HacsAboutDialog extends LitElement {
 **Frontend version:** | ${version}
 **Repositories:** | ${this.repositories.length}
 
-***
-
-_Everything you find in HACS is **not** tested by Home Assistant, that includes HACS itself._
-_The HACS and Home Assistant teams do not support **anything** you find here._
-
-***
-
 **Useful links:**
 
 - [General documentation](https://hacs.xyz/)
@@ -58,6 +51,11 @@ _The HACS and Home Assistant teams do not support **anything** you find here._
 - [Discord](https://discord.gg/apgchf8)
 - [Become a GitHub sponsor? ❤️](https://github.com/sponsors/ludeeus)
 - [BuyMe~~Coffee~~Beer? 🍺🙈](https://buymeacoffee.com/ludeeus)
+
+***
+
+_Everything you find in HACS is **not** tested by Home Assistant, that includes HACS itself._
+_The HACS and Home Assistant teams do not support **anything** you find here._
         `)}
         </div>
       </hacs-dialog>
