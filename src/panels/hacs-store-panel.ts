@@ -12,6 +12,7 @@ import {
   Configuration,
   Repository,
   LovelaceResource,
+  sortRepositoriesByName,
 } from "../data/common";
 import "../layout/hacs-tabbed-layout";
 import "../components/hacs-repository-card";
@@ -53,7 +54,7 @@ export class HacsStorePanel extends LitElement {
   }
 
   protected render(): TemplateResult | void {
-    const repositories = this._filteredRepositories();
+    const repositories = sortRepositoriesByName(this._filteredRepositories());
     return html`<hacs-tabbed-layout
       .hass=${this.hass}
       .tabs=${sections.panels}

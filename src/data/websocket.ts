@@ -105,6 +105,13 @@ export const repositoryUpdate = async (
   });
 };
 
+export const settingsClearAllNewRepositories = async (hass: HomeAssistant) => {
+  await hass.connection.sendMessagePromise<void>({
+    type: "hacs/settings",
+    action: "clear_new",
+  });
+};
+
 export const getLovelaceConfiguration = async (hass: HomeAssistant) => {
   try {
     const response = await hass.connection.sendMessagePromise<

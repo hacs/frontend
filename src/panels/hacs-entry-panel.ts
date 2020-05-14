@@ -15,6 +15,7 @@ import {
   Repository,
   LovelaceResource,
   Configuration,
+  sortRepositoriesByName,
 } from "../data/common";
 import "../layout/hacs-single-page-layout";
 
@@ -54,7 +55,7 @@ export class HacsEntryPanel extends LitElement {
         ${sections.updates.length !== 0
           ? html` <ha-card>
               <div class="header">${localize("store.pending_upgrades")}</div>
-              ${sections.updates.map(
+              ${sortRepositoriesByName(sections.updates).map(
                 (repository) =>
                   html`
                     <paper-icon-item

@@ -103,3 +103,11 @@ export const selectRepository = (
     return repo.id === repository;
   });
 };
+
+export const sortRepositoriesByName = (
+  repositories: Repository[]
+): Repository[] => {
+  return repositories.sort((a: Repository, b: Repository) =>
+    a.name.toLowerCase() > b.name.toLowerCase() ? 1 : -1
+  );
+};

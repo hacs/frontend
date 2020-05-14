@@ -14,6 +14,8 @@ import {
   LovelaceResource,
 } from "../data/common";
 
+import { settingsClearAllNewRepositories } from "../data/websocket";
+
 @customElement("hacs-tabbed-menu")
 export class HacsTabbedMenu extends LitElement {
   @property({ attribute: false }) public configuration: Configuration;
@@ -42,6 +44,12 @@ export class HacsTabbedMenu extends LitElement {
         <paper-item @click=${() => window.location.reload(true)}
           >Reload window</paper-item
         >
+        ${this.repositories.filter((repo) => repo.new).length !== 0
+          ? html` <paper-item @click=${this._clearAllNewRepositories}
+              >Clear all new</paper-item
+            >`
+          : ""}
+
         <hacs-link url="https://github.com/hacs"
           ><paper-item>GitHub</paper-item></hacs-link
         >
@@ -51,6 +59,10 @@ export class HacsTabbedMenu extends LitElement {
         <paper-item @click=${this._showAboutDialog}>About HACS</paper-item>
       </paper-listbox>
     </paper-menu-button>`;
+  }
+
+  private async _clearAllNewRepositories() {
+    await settingsClearAllNewRepositories(this.hass);
   }
 
   private _showAboutDialog() {
