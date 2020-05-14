@@ -11,6 +11,11 @@ import { classMap } from "lit-html/directives/class-map";
 
 import { HacsCommonStyle } from "../styles/hacs-common-style";
 import { Repository } from "../data/common";
+import {
+  repositoryInstall,
+  repositorySetNotNew,
+  repositoryUninstall,
+} from "../data/websocket";
 import { HomeAssistant } from "custom-card-helpers";
 
 @customElement("hacs-repository-card")
@@ -52,7 +57,7 @@ export class HacsRepositoryCard extends LitElement {
         <div class="card-actions">
           ${this.repository.new
             ? html`<div>
-                  <mwc-button @click=${this._showReopsitoryInfo}
+                  <mwc-button @click=${this._installRepository}
                     >Install</mwc-button
                   >
                 </div>
@@ -62,13 +67,13 @@ export class HacsRepositoryCard extends LitElement {
                   >
                 </div>
                 <div>
-                  <mwc-button class="right" @click=${this._showReopsitoryInfo}
+                  <mwc-button class="right" @click=${this._setNotNew}
                     >Hide</mwc-button
                   >
                 </div>`
             : this.repository.pending_upgrade
             ? html`<div>
-                <mwc-button class="right" @click=${this._openUpdateDialog}
+                <mwc-button class="right" @click=${this._installRepository}
                   >Update</mwc-button
                 >
               </div>`
@@ -90,7 +95,7 @@ export class HacsRepositoryCard extends LitElement {
                   >
                   <paper-item
                     class="pointer uninstall"
-                    @click=${this._showReopsitoryInfo}
+                    @click=${this._uninstallRepository}
                     >Uninstall</paper-item
                   >
                 </paper-listbox>
@@ -130,6 +135,18 @@ export class HacsRepositoryCard extends LitElement {
         composed: true,
       })
     );
+  }
+
+  private async _setNotNew() {
+    await repositorySetNotNew(this.hass, this.repository.id);
+  }
+
+  private async _installRepository() {
+    await repositoryInstall(this.hass, this.repository.id);
+  }
+
+  private async _uninstallRepository() {
+    await repositoryUninstall(this.hass, this.repository.id);
   }
 
   static get styles(): CSSResultArray {

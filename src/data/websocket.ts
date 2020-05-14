@@ -46,6 +46,17 @@ export const repositoryInstall = async (
   });
 };
 
+export const repositoryUninstall = async (
+  hass: HomeAssistant,
+  repository: string
+) => {
+  await hass.connection.sendMessagePromise<void>({
+    type: "hacs/repository",
+    action: "uninstall",
+    repository: repository,
+  });
+};
+
 export const repositoryInstallVersion = async (
   hass: HomeAssistant,
   repository: string,
@@ -69,6 +80,17 @@ export const repositorySetVersion = async (
     action: "set_version",
     repository: repository,
     data: version,
+  });
+};
+
+export const repositorySetNotNew = async (
+  hass: HomeAssistant,
+  repository: string
+) => {
+  await hass.connection.sendMessagePromise<void>({
+    type: "hacs/repository",
+    action: "not_new",
+    repository: repository,
   });
 };
 
