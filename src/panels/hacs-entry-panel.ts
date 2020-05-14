@@ -119,7 +119,7 @@ export class HacsEntryPanel extends LitElement {
       new CustomEvent("hacs-dialog", {
         detail: {
           type: "update",
-          repository: repository,
+          repository: repository.id,
         },
         bubbles: true,
         composed: true,

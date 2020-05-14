@@ -94,3 +94,12 @@ export interface Repository {
   updated_info: boolean;
   version_or_commit: string;
 }
+
+export const selectRepository = (
+  repositories: Repository[],
+  repository: string
+): Repository => {
+  return repositories.find((repo) => {
+    return repo.id === repository;
+  });
+};

@@ -15,7 +15,6 @@ import {
   repositoryInstall,
   repositorySetNotNew,
   repositoryUninstall,
-  repositoryUpdate,
 } from "../data/websocket";
 import { HomeAssistant } from "custom-card-helpers";
 
@@ -74,7 +73,7 @@ export class HacsRepositoryCard extends LitElement {
                 </div>`
             : this.repository.pending_upgrade
             ? html`<div>
-                <mwc-button class="right" @click=${this._installRepository}
+                <mwc-button class="right" @click=${this._updateRepository}
                   >Update</mwc-button
                 >
               </div>`
@@ -108,19 +107,24 @@ export class HacsRepositoryCard extends LitElement {
   }
 
   private async _showReopsitoryInfo() {
-    if (!this.repository.updated_info) {
-      await repositoryUpdate(this.hass, this.repository.id);
-    }
     this.dispatchEvent(
       new CustomEvent("hacs-dialog", {
         detail: {
-          type: "generic",
-          header: this.repository.name,
-          content:
-            this.repository.additional_info ||
-            "No additional information is given by the developer",
-          markdown: true,
-          repository: this.repository,
+          type: "repository-info",
+          repository: this.repository.id,
+        },
+        bubbles: true,
+        composed: true,
+      })
+    );
+  }
+
+  private async _updateRepository() {
+    this.dispatchEvent(
+      new CustomEvent("hacs-dialog", {
+        detail: {
+          type: "update",
+          repository: this.repository.id,
         },
         bubbles: true,
         composed: true,

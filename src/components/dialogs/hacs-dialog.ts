@@ -3,20 +3,15 @@ import {
   CSSResultArray,
   customElement,
   html,
-  LitElement,
   TemplateResult,
-  property,
 } from "lit-element";
 import { classMap } from "lit-html/directives/class-map";
-import { HomeAssistant } from "custom-card-helpers";
+import { HacsDialogBase } from "./hacs-dialog-base";
+
 import { HacsCommonStyle } from "../../styles/hacs-common-style";
 
 @customElement("hacs-dialog")
-export class HacsDialog extends LitElement {
-  @property({ attribute: false }) public hass!: HomeAssistant;
-  @property({ attribute: false }) public narrow!: boolean;
-  @property({ type: Boolean }) public active: boolean = false;
-
+export class HacsDialog extends HacsDialogBase {
   protected render(): TemplateResult | void {
     if (!this.active) {
       return html``;

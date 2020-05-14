@@ -3,29 +3,25 @@ import {
   CSSResultArray,
   customElement,
   html,
-  LitElement,
   TemplateResult,
   property,
 } from "lit-element";
 
-import { Repository } from "../../data/common";
 import {
   repositoryInstall,
   repositoryInstallVersion,
 } from "../../data/websocket";
-import { HomeAssistant } from "custom-card-helpers";
+import { HacsDialogBase } from "./hacs-dialog-base";
+import { selectRepository } from "../../data/common";
 import "./hacs-dialog";
 
 @customElement("hacs-update-dialog")
-export class HacsUpdateDialog extends LitElement {
-  @property({ attribute: false }) public hass!: HomeAssistant;
-  @property({ attribute: false }) public narrow!: boolean;
-  @property({ attribute: false }) public repository!: Repository;
-  @property({ attribute: false }) public loading: boolean = true;
-  @property({ attribute: false }) public active: boolean = false;
+export class HacsUpdateDialog extends HacsDialogBase {
+  @property() public repository?: string;
 
   protected render(): TemplateResult | void {
     if (!this.active) return html``;
+    const repository = selectRepository(this.repositories, this.repository);
     return html`
       <hacs-dialog
         .active=${this.active}
@@ -34,16 +30,16 @@ export class HacsUpdateDialog extends LitElement {
       >
         <div slot="header">Update pending</div>
         <div class="content">
-          New update for ${this.repository.name}
-          <p><b>Installed version:</b> ${this.repository.installed_version}</p>
-          <p><b>Available version:</b> ${this.repository.available_version}</p>
+          New update for ${repository.name}
+          <p><b>Installed version:</b> ${repository.installed_version}</p>
+          <p><b>Available version:</b> ${repository.available_version}</p>
         </div>
         <div class="card-actions">
           <mwc-button @click=${this._updateRepository}>Update</mwc-button>
           <hacs-link .url=${this._getChanglogURL()}
             ><mwc-button>Changelog</mwc-button></hacs-link
           >
-          <hacs-link .url="https://github.com/${this.repository.full_name}"
+          <hacs-link .url="https://github.com/${repository.full_name}"
             ><mwc-button>Repository</mwc-button></hacs-link
           >
         </div>
@@ -55,25 +51,27 @@ export class HacsUpdateDialog extends LitElement {
     this.dispatchEvent(
       new Event("hacs-dialog-closed", { bubbles: true, composed: true })
     );
+    const repository = selectRepository(this.repositories, this.repository);
     if (
-      this.repository.version_or_commit !== "commit" &&
-      this.repository.selected_tag !== this.repository.available_version
+      repository.version_or_commit !== "commit" &&
+      repository.selected_tag !== repository.available_version
     ) {
       await repositoryInstallVersion(
         this.hass,
-        this.repository.id,
-        this.repository.available_version
+        repository.id,
+        repository.available_version
       );
     } else {
-      await repositoryInstall(this.hass, this.repository.id);
+      await repositoryInstall(this.hass, repository.id);
     }
   }
 
   private _getChanglogURL(): string {
-    if (this.repository.version_or_commit === "commit") {
-      return `https://github.com/${this.repository.full_name}/compare/${this.repository.installed_version}...${this.repository.available_version}`;
+    const repository = selectRepository(this.repositories, this.repository);
+    if (repository.version_or_commit === "commit") {
+      return `https://github.com/${repository.full_name}/compare/${repository.installed_version}...${repository.available_version}`;
     }
-    return `https://github.com/${this.repository.full_name}/releases/${this.repository.available_version}`;
+    return `https://github.com/${repository.full_name}/releases/${repository.available_version}`;
   }
 
   static get styles(): CSSResultArray {

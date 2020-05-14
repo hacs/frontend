@@ -42,7 +42,7 @@ export class HacsResolver extends LitElement {
   @property({ attribute: false }) public critical!: Critical[];
   @property({ attribute: false }) public hass!: HomeAssistant;
   @property({ attribute: false }) public lovelace: LovelaceResource[];
-  @property({ attribute: false }) public narrow!: boolean;
+  @property({ type: Boolean }) public narrow!: boolean;
   @property({ attribute: false }) public repositories: Repository[];
   @property({ attribute: false }) public route!: Route;
   @property({ attribute: false }) public status: Status;
@@ -132,6 +132,10 @@ export class HacsResolver extends LitElement {
       <hacs-event-dialog
         .hass=${this.hass}
         .route=${this.route}
+        .narrow=${this.narrow}
+        .configuration=${this.configuration}
+        .lovelace=${this.lovelace}
+        .repositories=${this.repositories}
         id="hacs-dialog"
       ></hacs-event-dialog>`;
   }

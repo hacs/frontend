@@ -35,6 +35,18 @@ export const getStatus = async (hass: HomeAssistant) => {
   return response;
 };
 
+export const repositoryData = async (
+  hass: HomeAssistant,
+  repository: string
+) => {
+  const response = await hass.connection.sendMessagePromise<Repository>({
+    type: "hacs/get_repository",
+    action: "data",
+    repository: repository,
+  });
+  return response;
+};
+
 export const repositoryInstall = async (
   hass: HomeAssistant,
   repository: string

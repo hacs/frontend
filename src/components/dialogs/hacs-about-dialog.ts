@@ -3,29 +3,17 @@ import {
   CSSResultArray,
   customElement,
   html,
-  LitElement,
   TemplateResult,
-  property,
 } from "lit-element";
-
-import { Repository, Configuration } from "../../data/common";
-import { HomeAssistant } from "custom-card-helpers";
 
 import { markdown } from "../../legacy/markdown/markdown";
 
 import { version } from "../../version";
-
+import { HacsDialogBase } from "./hacs-dialog-base";
 import "./hacs-dialog";
 
 @customElement("hacs-about-dialog")
-export class HacsAboutDialog extends LitElement {
-  @property({ attribute: false }) public hass!: HomeAssistant;
-  @property({ attribute: false }) public narrow!: boolean;
-  @property({ attribute: false }) public configuration: Configuration;
-  @property({ attribute: false }) public repositories: Repository[];
-  @property({ attribute: false }) public loading: boolean = true;
-  @property({ attribute: false }) public active: boolean = false;
-
+export class HacsAboutDialog extends HacsDialogBase {
   protected render(): TemplateResult | void {
     if (!this.active) return html``;
     return html`
