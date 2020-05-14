@@ -15,6 +15,7 @@ import {
   repositoryInstall,
   repositorySetNotNew,
   repositoryUninstall,
+  repositoryUpdate,
 } from "../data/websocket";
 import { HomeAssistant } from "custom-card-helpers";
 
@@ -106,7 +107,10 @@ export class HacsRepositoryCard extends LitElement {
     `;
   }
 
-  private _showReopsitoryInfo() {
+  private async _showReopsitoryInfo() {
+    if (!this.repository.updated_info) {
+      await repositoryUpdate(this.hass, this.repository.id);
+    }
     this.dispatchEvent(
       new CustomEvent("hacs-dialog", {
         detail: {
@@ -116,19 +120,6 @@ export class HacsRepositoryCard extends LitElement {
             this.repository.additional_info ||
             "No additional information is given by the developer",
           markdown: true,
-          repository: this.repository,
-        },
-        bubbles: true,
-        composed: true,
-      })
-    );
-  }
-
-  private _openUpdateDialog() {
-    this.dispatchEvent(
-      new CustomEvent("hacs-dialog", {
-        detail: {
-          type: "update",
           repository: this.repository,
         },
         bubbles: true,
@@ -195,17 +186,9 @@ export class HacsRepositoryCard extends LitElement {
           padding: 0;
           float: right;
         }
-        @media (min-width: 563px) {
-          paper-listbox {
-            max-height: 150px;
-            overflow: auto;
-          }
-        }
+
         .pointer {
           cursor: pointer;
-        }
-        paper-item {
-          min-height: 35px;
         }
         paper-item-body {
           opacity: var(--dark-primary-opacity);

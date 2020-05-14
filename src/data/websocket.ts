@@ -94,6 +94,17 @@ export const repositorySetNotNew = async (
   });
 };
 
+export const repositoryUpdate = async (
+  hass: HomeAssistant,
+  repository: string
+) => {
+  await hass.connection.sendMessagePromise<void>({
+    type: "hacs/repository",
+    action: "update",
+    repository: repository,
+  });
+};
+
 export const getLovelaceConfiguration = async (hass: HomeAssistant) => {
   try {
     const response = await hass.connection.sendMessagePromise<

@@ -100,6 +100,15 @@ export class HacsEntryPanel extends LitElement {
                 </paper-icon-item>
               `
           )}
+          <paper-icon-item @click=${this._openAboutDialog}>
+            <ha-icon icon="mdi:information" slot="item-icon"></ha-icon>
+            <paper-item-body two-line>
+              ${localize(`sections.about.title`)}
+              <div secondary>
+                ${localize(`sections.about.description`)}
+              </div>
+            </paper-item-body>
+          </paper-icon-item>
         </ha-card>
       </hacs-single-page-layout>
     `;
@@ -111,6 +120,20 @@ export class HacsEntryPanel extends LitElement {
         detail: {
           type: "update",
           repository: repository,
+        },
+        bubbles: true,
+        composed: true,
+      })
+    );
+  }
+
+  private _openAboutDialog() {
+    this.dispatchEvent(
+      new CustomEvent("hacs-dialog", {
+        detail: {
+          type: "about",
+          configuration: this.configuration,
+          repositories: this.repositories,
         },
         bubbles: true,
         composed: true,

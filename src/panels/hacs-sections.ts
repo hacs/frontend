@@ -17,10 +17,6 @@ export const sections = {
       id: "automation",
       categories: ["python_script", "appdaemon", "netdaemon"],
     },
-    {
-      icon: "mdi:cogs",
-      id: "settings",
-    },
   ],
 };
 

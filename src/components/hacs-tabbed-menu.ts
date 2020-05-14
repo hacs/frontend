@@ -69,8 +69,15 @@ export class HacsTabbedMenu extends LitElement {
 
   static get styles() {
     return css`
+      paper-menu-button {
+        color: var(--secondary-text-color);
+        padding: 0;
+      }
       paper-item {
         cursor: pointer;
+      }
+      paper-item-body {
+        opacity: var(--dark-primary-opacity);
       }
     `;
   }

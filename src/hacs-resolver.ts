@@ -120,15 +120,6 @@ export class HacsResolver extends LitElement {
             .lovelace=${this.lovelace}
             .repositories=${this.repositories}
           ></hacs-entry-panel>`
-        : this.route.path === "/settings"
-        ? html`<hacs-settings-panel
-            .hass=${this.hass}
-            .route=${this.route}
-            .narrow=${this.narrow}
-            .configuration=${this.configuration}
-            .lovelace=${this.lovelace}
-            .repositories=${this.repositories}
-          ></hacs-settings-panel>`
         : html`<hacs-store-panel
             .hass=${this.hass}
             .route=${this.route}
@@ -138,14 +129,16 @@ export class HacsResolver extends LitElement {
             .repositories=${this.repositories}
             .section=${this.route.path.split("/")[1]}
           ></hacs-store-panel>`}
-      <hacs-event-dialog id="hacs-dialog"></hacs-event-dialog>`;
+      <hacs-event-dialog
+        .hass=${this.hass}
+        .route=${this.route}
+        id="hacs-dialog"
+      ></hacs-event-dialog>`;
   }
 
   private _showDialog(ev: HacsDialogEvent): void {
     const dialogParams = ev.detail;
     this._hacsDialog.active = true;
-    this._hacsDialog.hass = this.hass;
-    this._hacsDialog.narrow = this.narrow;
     this._hacsDialog.params = dialogParams;
     this.addEventListener(
       "hacs-dialog-closed",
