@@ -36,7 +36,8 @@ export class HacsStorePanel extends LitElement {
       (repo) =>
         sections.panels
           .find((section) => section.id === this.section)
-          .categories?.includes(repo.category) && this._searchFilter(repo)
+          .categories?.includes(repo.category) &&
+        (repo.installed || repo.new)
     );
 
   private _searchFilter(repo: Repository): boolean {
@@ -57,6 +58,7 @@ export class HacsStorePanel extends LitElement {
       .hass=${this.hass}
       .tabs=${sections.panels}
       .route=${this.route}
+      .narrow=${this.narrow}
       .selected=${this.section}
       ><hacs-tabbed-menu
         slot="toolbar-icon"
@@ -68,10 +70,7 @@ export class HacsStorePanel extends LitElement {
         .repositories=${this.repositories}
       >
       </hacs-tabbed-menu>
-      <hacs-search
-        .input=${this.searchInput}
-        @input=${this._inputValueChanged}
-      ></hacs-search>
+
       <div class="content">
         ${repositories
           ? repositories.map(

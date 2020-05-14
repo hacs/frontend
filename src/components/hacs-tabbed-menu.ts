@@ -14,8 +14,6 @@ import {
   LovelaceResource,
 } from "../data/common";
 
-import "../components/dialogs/hacs-about-dialog";
-
 @customElement("hacs-tabbed-menu")
 export class HacsTabbedMenu extends LitElement {
   @property({ attribute: false }) public configuration: Configuration;
@@ -25,42 +23,47 @@ export class HacsTabbedMenu extends LitElement {
   @property({ attribute: false }) public repositories!: Repository[];
   @property({ attribute: false }) public lovelace: LovelaceResource[];
 
-  @property({ attribute: false }) private _aboutDialogActive: boolean = false;
-
   protected render(): TemplateResult | void {
     return html`<paper-menu-button
-        slot="toolbar-icon"
-        horizontal-align="right"
-        vertical-align="top"
-        vertical-offset="40"
-        close-on-activate
-      >
-        <ha-icon-button
-          icon="hass:dots-vertical"
-          slot="dropdown-trigger"
-        ></ha-icon-button>
-        <paper-listbox slot="dropdown-content">
-          <paper-item class="pointer" @click=${this._showAboutDialog}
-            >About HACS</paper-item
-          >
-        </paper-listbox>
-      </paper-menu-button>
-      ${this._aboutDialogActive
-        ? html` <hacs-about-dialog
-            .hass=${this.hass}
-            .narrow=${this.narrow}
-            .active=${true}
-            .configuration=${this.configuration}
-            .repositories=${this.repositories}
-          ></hacs-about-dialog>`
-        : ""} `;
+      slot="toolbar-icon"
+      horizontal-align="right"
+      vertical-align="top"
+      vertical-offset="40"
+      close-on-activate
+    >
+      <ha-icon-button
+        icon="hass:dots-vertical"
+        slot="dropdown-trigger"
+      ></ha-icon-button>
+      <paper-listbox slot="dropdown-content">
+        <hacs-link url="https://hacs.xyz/"
+          ><paper-item>Documentation</paper-item></hacs-link
+        >
+        <paper-item @click=${() => window.location.reload(true)}
+          >Reload window</paper-item
+        >
+        <hacs-link url="https://github.com/hacs"
+          ><paper-item>GitHub</paper-item></hacs-link
+        >
+        <hacs-link url="https://hacs.xyz/docs/issues"
+          ><paper-item>Open issue</paper-item></hacs-link
+        >
+        <paper-item @click=${this._showAboutDialog}>About HACS</paper-item>
+      </paper-listbox>
+    </paper-menu-button>`;
   }
 
   private _showAboutDialog() {
-    this._aboutDialogActive = true;
-    this.addEventListener(
-      "hacs-dialog-closed",
-      () => (this._aboutDialogActive = false)
+    this.dispatchEvent(
+      new CustomEvent("hacs-dialog", {
+        detail: {
+          type: "about",
+          configuration: this.configuration,
+          repositories: this.repositories,
+        },
+        bubbles: true,
+        composed: true,
+      })
     );
   }
 

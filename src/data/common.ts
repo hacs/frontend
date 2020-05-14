@@ -42,8 +42,14 @@ export interface LocationChangedEvent {
   detail?: { route: Route; force?: boolean };
 }
 
-export interface GenericDialogEvent {
-  detail?: { header?: string; content?: string; markdown?: boolean };
+export interface HacsDialogEvent {
+  detail?: {
+    type: string;
+    header?: string;
+    content?: string;
+    markdown?: boolean;
+    repository?: Repository;
+  };
 }
 
 export interface Repository {

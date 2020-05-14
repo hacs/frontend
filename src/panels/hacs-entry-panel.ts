@@ -18,8 +18,6 @@ import {
 } from "../data/common";
 import "../layout/hacs-single-page-layout";
 
-import "../components/dialogs/hacs-update-dialog";
-
 import { HacsCommonStyle } from "../styles/hacs-common-style";
 
 import { localize } from "../localize/localize";
@@ -35,9 +33,6 @@ export class HacsEntryPanel extends LitElement {
   @property({ attribute: false }) public route!: Route;
   @property({ attribute: false }) public repositories: Repository[];
   @property({ attribute: false }) public lovelace: LovelaceResource[];
-
-  @property({ attribute: false }) private _updateRepository: Repository;
-  @property() private _updateDialogActive: boolean = false;
 
   protected render(): TemplateResult | void {
     sections.updates = []; // reset so we don't get duplicates
@@ -107,23 +102,19 @@ export class HacsEntryPanel extends LitElement {
           )}
         </ha-card>
       </hacs-single-page-layout>
-      ${this._updateDialogActive
-        ? html`<hacs-update-dialog
-            .hass=${this.hass}
-            .active=${true}
-            .repository=${this._updateRepository}
-            .narrow=${this.narrow}
-          ></hacs-update-dialog>`
-        : ""}
     `;
   }
 
   private _openUpdateDialog(repository: Repository) {
-    this._updateRepository = repository;
-    this._updateDialogActive = true;
-    this.addEventListener(
-      "hacs-dialog-closed",
-      () => (this._updateDialogActive = false)
+    this.dispatchEvent(
+      new CustomEvent("hacs-dialog", {
+        detail: {
+          type: "update",
+          repository: repository,
+        },
+        bubbles: true,
+        composed: true,
+      })
     );
   }
 

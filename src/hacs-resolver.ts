@@ -19,7 +19,7 @@ import {
   Configuration,
   Repository,
   LocationChangedEvent,
-  GenericDialogEvent,
+  HacsDialogEvent,
 } from "./data/common";
 
 import {
@@ -28,12 +28,13 @@ import {
   getStatus,
   getCritical,
   getLovelaceConfiguration,
-} from "./data/fetch";
+} from "./data/websocket";
 
 import "./panels/hacs-entry-panel";
 import "./panels/hacs-store-panel";
 import "./panels/hacs-settings-panel";
-import "./components/dialogs/hacs-generc-dialog";
+
+import "./components/dialogs/hacs-event-dialog";
 
 @customElement("hacs-resolver")
 export class HacsResolver extends LitElement {
@@ -46,8 +47,7 @@ export class HacsResolver extends LitElement {
   @property({ attribute: false }) public route!: Route;
   @property({ attribute: false }) public status: Status;
 
-  @property({ attribute: false }) private _genericDialogActive: boolean = false;
-  @query("#generic-dialog") private _genericDialog?: any;
+  @query("#hacs-dialog") private _hacsDialog?: any;
 
   public logger = new HacsLogger();
 
@@ -57,8 +57,8 @@ export class HacsResolver extends LitElement {
       this._setRoute(e as LocationChangedEvent)
     );
 
-    this.addEventListener("hacs-generic-dialog", (e) =>
-      this._showGenericDialog(e as GenericDialogEvent)
+    this.addEventListener("hacs-dialog", (e) =>
+      this._showDialog(e as HacsDialogEvent)
     );
   }
 
@@ -115,22 +115,20 @@ export class HacsResolver extends LitElement {
             .repositories=${this.repositories}
             .section=${this.route.path.split("/")[1]}
           ></hacs-store-panel>`}
-      <hacs-generic-dialog
+      <hacs-event-dialog
         .hass=${this.hass}
         .narrow=${this.narrow}
-        id="generic-dialog"
-      ></hacs-generic-dialog> `;
+        id="hacs-dialog"
+      ></hacs-event-dialog>`;
   }
 
-  private _showGenericDialog(ev: GenericDialogEvent): void {
+  private _showDialog(ev: HacsDialogEvent): void {
     const dialogParams = ev.detail;
-    this._genericDialog.active = true;
-    this._genericDialog.header = dialogParams.header || "";
-    this._genericDialog.content = dialogParams.content || "";
-    this._genericDialog.markdown = dialogParams.markdown || false;
+    this._hacsDialog.active = true;
+    this._hacsDialog.params = dialogParams;
     this.addEventListener(
       "hacs-dialog-closed",
-      () => (this._genericDialog.active = false)
+      () => (this._hacsDialog.active = false)
     );
   }
 

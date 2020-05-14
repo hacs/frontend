@@ -7,6 +7,7 @@ import {
   TemplateResult,
 } from "lit-element";
 import { HomeAssistant } from "custom-card-helpers";
+import { classMap } from "lit-html/directives/class-map";
 import { Route } from "../data/common";
 import { localize } from "../localize/localize";
 
@@ -28,9 +29,10 @@ export class HacsTabbedLayout extends LitElement {
             ${this.tabs.map(
               (tab) => html`
                 <div
-                  class="${this.selected === tab.id
-                    ? "toolbar-button selected"
-                    : "toolbar-button"}"
+                  class="${classMap({
+                    "toolbar-button": true,
+                    selected: this.selected === tab.id,
+                  })}"
                   @click=${() => this._ChangeTabAction(tab.id)}
                 >
                   ${localize(`sections.${tab.id}.title`)}

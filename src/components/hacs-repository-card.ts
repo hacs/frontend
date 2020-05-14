@@ -7,8 +7,9 @@ import {
   TemplateResult,
   property,
 } from "lit-element";
+import { classMap } from "lit-html/directives/class-map";
+
 import { HacsCommonStyle } from "../styles/hacs-common-style";
-import "../components/dialogs/hacs-repository-info-dialog";
 import { Repository } from "../data/common";
 import { HomeAssistant } from "custom-card-helpers";
 
@@ -17,13 +18,27 @@ export class HacsRepositoryCard extends LitElement {
   @property({ attribute: false }) public hass!: HomeAssistant;
   @property({ attribute: false }) public narrow!: boolean;
   @property({ attribute: false }) public repository!: Repository;
-  @property() private _updateDialogActive: boolean = false;
 
   protected render(): TemplateResult | void {
     return html`
-      <ha-card>
+      <ha-card
+        class=${classMap({
+          "status-border":
+            this.repository.new || this.repository.pending_upgrade,
+          "status-new": this.repository.new,
+          "status-update": this.repository.pending_upgrade,
+        })}
+      >
         <div class="card-content">
           <div class="group-header">
+            ${this.repository.pending_upgrade
+              ? html`
+                  <div class="status-header update-header">PENDING UPDATE</div>
+                `
+              : this.repository.new
+              ? html` <div class="status-header new-header">NEW</div> `
+              : ""}
+
             <h2 class="pointer" @click=${this._showReopsitoryInfo}>
               ${this.repository.name}
             </h2>
@@ -35,9 +50,29 @@ export class HacsRepositoryCard extends LitElement {
           >
         </div>
         <div class="card-actions">
-          <div>
-            <mwc-button>install</mwc-button>
-          </div>
+          ${this.repository.new
+            ? html`<div>
+                  <mwc-button @click=${this._showReopsitoryInfo}
+                    >Install</mwc-button
+                  >
+                </div>
+                <div>
+                  <mwc-button class="right" @click=${this._showReopsitoryInfo}
+                    >Information</mwc-button
+                  >
+                </div>
+                <div>
+                  <mwc-button class="right" @click=${this._showReopsitoryInfo}
+                    >Hide</mwc-button
+                  >
+                </div>`
+            : this.repository.pending_upgrade
+            ? html`<div>
+                <mwc-button class="right" @click=${this._openUpdateDialog}
+                  >Update</mwc-button
+                >
+              </div>`
+            : html`<div></div>`}
           ${this.repository.installed
             ? html` <paper-menu-button
                 horizontal-align="right"
@@ -51,29 +86,49 @@ export class HacsRepositoryCard extends LitElement {
                 ></ha-icon-button>
                 <paper-listbox slot="dropdown-content">
                   <paper-item class="pointer" @click=${this._showReopsitoryInfo}
-                    >Show information</paper-item
+                    >Information</paper-item
+                  >
+                  <paper-item
+                    class="pointer uninstall"
+                    @click=${this._showReopsitoryInfo}
+                    >Uninstall</paper-item
                   >
                 </paper-listbox>
               </paper-menu-button>`
             : ""}
         </div>
       </ha-card>
-      ${this._updateDialogActive
-        ? html` <hacs-repository-info-dialog
-            .hass=${this.hass}
-            .narrow=${this.narrow}
-            .active=${true}
-            .repository=${this.repository}
-          ></hacs-repository-info-dialog>`
-        : ""}
     `;
   }
 
   private _showReopsitoryInfo() {
-    this._updateDialogActive = true;
-    this.addEventListener(
-      "hacs-dialog-closed",
-      () => (this._updateDialogActive = false)
+    this.dispatchEvent(
+      new CustomEvent("hacs-dialog", {
+        detail: {
+          type: "generic",
+          header: this.repository.name,
+          content:
+            this.repository.additional_info ||
+            "No additional information is given by the developer",
+          markdown: true,
+          repository: this.repository,
+        },
+        bubbles: true,
+        composed: true,
+      })
+    );
+  }
+
+  private _openUpdateDialog() {
+    this.dispatchEvent(
+      new CustomEvent("hacs-dialog", {
+        detail: {
+          type: "update",
+          repository: this.repository,
+        },
+        bubbles: true,
+        composed: true,
+      })
     );
   }
 
@@ -137,6 +192,41 @@ export class HacsRepositoryCard extends LitElement {
         }
         paper-item-body {
           opacity: var(--dark-primary-opacity);
+        }
+
+        .status-new {
+          border-color: blue;
+        }
+
+        .status-update {
+          border-color: orange;
+        }
+
+        .new-header {
+          background-color: blue;
+          color: white;
+        }
+
+        .update-header {
+          background-color: orange;
+          color: white;
+        }
+
+        .status-border {
+          border-style: solid;
+          border-width: 4px;
+        }
+
+        .status-header {
+          position: absolute;
+          top: 0;
+          width: 100%;
+          font-weight: 700;
+          text-align: center;
+          left: 0;
+        }
+        .uninstall {
+          color: red;
         }
       `,
     ];
