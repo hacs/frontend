@@ -8,6 +8,8 @@ import {
 import { load_lovelace } from "card-tools/src/hass";
 import { HomeAssistant } from "custom-card-helpers";
 import { Route } from "./legacy/data";
+import { Configuration } from "./data/common";
+import { getConfiguration } from "./data/websocket";
 import "./legacy/LoadUIElements";
 
 import "./hacs-resolver";
@@ -17,6 +19,7 @@ class HacsFrontend extends LitElement {
   @property({ attribute: false }) public hass!: HomeAssistant;
   @property({ attribute: false }) public narrow!: boolean;
   @property({ attribute: false }) public route!: Route;
+  @property({ attribute: false }) public configuration!: Configuration;
 
   private _setModalCSS() {
     if (document.getElementById("modal-style")) return;
@@ -49,20 +52,26 @@ class HacsFrontend extends LitElement {
     element.appendChild(style);
   }
 
-  public connectedCallback() {
+  public async connectedCallback() {
     super.connectedCallback();
     this._setModalCSS();
     load_lovelace();
+    this.configuration = await getConfiguration(this.hass);
   }
 
   protected render(): TemplateResult | void {
-    return html`
-      <hacs-resolver
-        .hass=${this.hass}
-        .route=${this.route}
-        .narrow=${this.narrow}
-      ></hacs-resolver>
-    `;
+    if (!this.hass || !this.configuration) return html``;
+
+    if (this.configuration.experimental) {
+      return html`
+        <hacs-resolver
+          .hass=${this.hass}
+          .route=${this.route}
+          .narrow=${this.narrow}
+          .configuration=${this.configuration}
+        ></hacs-resolver>
+      `;
+    }
 
     return html`
       <hacs-frontendbase

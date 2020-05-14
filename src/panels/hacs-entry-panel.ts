@@ -144,7 +144,6 @@ export class HacsEntryPanel extends LitElement {
           will-change: opacity;
         }
         paper-icon-item {
-          padding: 12px 16px;
           cursor: pointer;
         }
         .iron-selected paper-item:focus::before,
@@ -154,6 +153,10 @@ export class HacsEntryPanel extends LitElement {
 
         paper-item-body {
           width: 100%;
+          min-height: var(--paper-item-body-two-line-min-height, 72px);
+          display: var(--layout-vertical_-_display);
+          flex-direction: var(--layout-vertical_-_flex-direction);
+          justify-content: var(--layout-center-justified_-_justify-content);
         }
         paper-item-body div {
           font-size: 14px;
