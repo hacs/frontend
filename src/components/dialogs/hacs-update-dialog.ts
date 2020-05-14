@@ -9,6 +9,7 @@ import {
 } from "lit-element";
 
 import { Repository } from "../../data/common";
+import { repositoryInstall, repositorySetVersion } from "../../data/websocket";
 import { HomeAssistant } from "custom-card-helpers";
 import "./hacs-dialog";
 
@@ -47,7 +48,20 @@ export class HacsUpdateDialog extends LitElement {
     `;
   }
 
-  private async _updateRepository(): Promise<void> {}
+  private async _updateRepository(): Promise<void> {
+    if (
+      this.repository.version_or_commit !== "commit" &&
+      this.repository.selected_tag !== this.repository.available_version
+    ) {
+      await repositorySetVersion(
+        this.hass,
+        this.repository.id,
+        this.repository.available_version
+      );
+    }
+    await repositoryInstall(this.hass, this.repository.id);
+    this.active = false;
+  }
 
   private _getChanglogURL(): string {
     if (this.repository.version_or_commit === "commit") {

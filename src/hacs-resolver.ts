@@ -68,6 +68,29 @@ export class HacsResolver extends LitElement {
         window.location.reload();
       }
     };
+
+    /* Backend event subscription */
+    this.hass.connection.subscribeEvents(
+      () => this._updateProperties(),
+      "hacs/config"
+    );
+    this.hass.connection.subscribeEvents(
+      () => this._updateProperties(),
+      "hacs/status"
+    );
+
+    this.hass.connection.subscribeEvents(
+      () => this._updateProperties(),
+      "hacs/repository"
+    );
+    this.hass.connection.subscribeEvents(
+      () => this._updateProperties(),
+      "lovelace_updated"
+    );
+    await this._updateProperties();
+  }
+
+  private async _updateProperties() {
     [
       this.repositories,
       this.configuration,
@@ -115,16 +138,14 @@ export class HacsResolver extends LitElement {
             .repositories=${this.repositories}
             .section=${this.route.path.split("/")[1]}
           ></hacs-store-panel>`}
-      <hacs-event-dialog
-        .hass=${this.hass}
-        .narrow=${this.narrow}
-        id="hacs-dialog"
-      ></hacs-event-dialog>`;
+      <hacs-event-dialog id="hacs-dialog"></hacs-event-dialog>`;
   }
 
   private _showDialog(ev: HacsDialogEvent): void {
     const dialogParams = ev.detail;
     this._hacsDialog.active = true;
+    this._hacsDialog.hass = this.hass;
+    this._hacsDialog.narrow = this.narrow;
     this._hacsDialog.params = dialogParams;
     this.addEventListener(
       "hacs-dialog-closed",

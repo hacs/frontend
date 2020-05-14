@@ -1,5 +1,4 @@
 import { HomeAssistant } from "custom-card-helpers";
-
 import {
   Configuration,
   Repository,
@@ -7,6 +6,7 @@ import {
   Status,
   LovelaceResource,
 } from "./common";
+
 export const getConfiguration = async (hass: HomeAssistant) => {
   const response = await hass.connection.sendMessagePromise<Configuration>({
     type: "hacs/config",
@@ -33,6 +33,30 @@ export const getStatus = async (hass: HomeAssistant) => {
     type: "hacs/status",
   });
   return response;
+};
+
+export const repositoryInstall = async (
+  hass: HomeAssistant,
+  repository: string
+) => {
+  await hass.connection.sendMessagePromise<void>({
+    type: "hacs/repository",
+    action: "install",
+    repository: repository,
+  });
+};
+
+export const repositorySetVersion = async (
+  hass: HomeAssistant,
+  repository: string,
+  version: string
+) => {
+  await hass.connection.sendMessagePromise<void>({
+    type: "hacs/repository/data",
+    action: "set_version",
+    repository: repository,
+    data: version,
+  });
 };
 
 export const getLovelaceConfiguration = async (hass: HomeAssistant) => {
