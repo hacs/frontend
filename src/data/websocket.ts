@@ -46,6 +46,19 @@ export const repositoryInstall = async (
   });
 };
 
+export const repositoryInstallVersion = async (
+  hass: HomeAssistant,
+  repository: string,
+  version: string
+) => {
+  await hass.connection.sendMessagePromise<void>({
+    type: "hacs/repository/data",
+    action: "install",
+    repository: repository,
+    data: version,
+  });
+};
+
 export const repositorySetVersion = async (
   hass: HomeAssistant,
   repository: string,

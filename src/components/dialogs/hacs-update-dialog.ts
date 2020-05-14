@@ -9,7 +9,10 @@ import {
 } from "lit-element";
 
 import { Repository } from "../../data/common";
-import { repositoryInstall, repositorySetVersion } from "../../data/websocket";
+import {
+  repositoryInstall,
+  repositoryInstallVersion,
+} from "../../data/websocket";
 import { HomeAssistant } from "custom-card-helpers";
 import "./hacs-dialog";
 
@@ -49,18 +52,21 @@ export class HacsUpdateDialog extends LitElement {
   }
 
   private async _updateRepository(): Promise<void> {
+    this.dispatchEvent(
+      new Event("hacs-dialog-closed", { bubbles: true, composed: true })
+    );
     if (
       this.repository.version_or_commit !== "commit" &&
       this.repository.selected_tag !== this.repository.available_version
     ) {
-      await repositorySetVersion(
+      await repositoryInstallVersion(
         this.hass,
         this.repository.id,
         this.repository.available_version
       );
+    } else {
+      await repositoryInstall(this.hass, this.repository.id);
     }
-    await repositoryInstall(this.hass, this.repository.id);
-    this.active = false;
   }
 
   private _getChanglogURL(): string {
