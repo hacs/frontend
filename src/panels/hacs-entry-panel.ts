@@ -12,6 +12,7 @@ import {
 import { HomeAssistant } from "custom-card-helpers";
 import {
   Route,
+  Status,
   Repository,
   LovelaceResource,
   Configuration,
@@ -34,6 +35,7 @@ export class HacsEntryPanel extends LitElement {
   @property({ attribute: false }) public route!: Route;
   @property({ attribute: false }) public repositories: Repository[];
   @property({ attribute: false }) public lovelace: LovelaceResource[];
+  @property({ attribute: false }) public status: Status;
 
   protected render(): TemplateResult | void {
     sections.updates = []; // reset so we don't get duplicates
@@ -104,7 +106,7 @@ export class HacsEntryPanel extends LitElement {
                         ${localize(`sections.${panel.id}.description`)}
                       </div>
                     </paper-item-body>
-                    <ha-icon icon="mdi:chevron-right"></ha-icon>
+                    <ha-icon-button icon="mdi:chevron-right"></ha-icon-button>
                   </paper-icon-item>
                 `
             )}
@@ -160,9 +162,11 @@ export class HacsEntryPanel extends LitElement {
           display: block;
           outline: 0;
         }
+        ha-icon-button,
         ha-icon {
           color: var(--secondary-text-color);
         }
+
         .iron-selected paper-item::before {
           position: absolute;
           top: 0;

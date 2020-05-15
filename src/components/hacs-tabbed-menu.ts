@@ -9,6 +9,7 @@ import {
 import { HomeAssistant } from "custom-card-helpers";
 import {
   Route,
+  Status,
   Configuration,
   Repository,
   LovelaceResource,
@@ -24,6 +25,7 @@ export class HacsTabbedMenu extends LitElement {
   @property({ attribute: false }) public route!: Route;
   @property({ attribute: false }) public repositories!: Repository[];
   @property({ attribute: false }) public lovelace: LovelaceResource[];
+  @property({ attribute: false }) public status: Status;
 
   protected render(): TemplateResult | void {
     return html`<paper-menu-button
@@ -56,6 +58,12 @@ export class HacsTabbedMenu extends LitElement {
         <hacs-link url="https://hacs.xyz/docs/issues"
           ><paper-item>Open issue</paper-item></hacs-link
         >
+        ${!this.status?.disabled && !this.status?.background_task
+          ? html`<paper-item @click=${this._showCustomRepositoriesDialog}
+              >Custom repositories</paper-item
+            >`
+          : ""}
+
         <paper-item @click=${this._showAboutDialog}>About HACS</paper-item>
       </paper-listbox>
     </paper-menu-button>`;
@@ -71,6 +79,19 @@ export class HacsTabbedMenu extends LitElement {
         detail: {
           type: "about",
           configuration: this.configuration,
+          repositories: this.repositories,
+        },
+        bubbles: true,
+        composed: true,
+      })
+    );
+  }
+
+  private _showCustomRepositoriesDialog() {
+    this.dispatchEvent(
+      new CustomEvent("hacs-dialog", {
+        detail: {
+          type: "custom-repositories",
           repositories: this.repositories,
         },
         bubbles: true,

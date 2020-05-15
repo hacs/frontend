@@ -117,6 +117,7 @@ export class HacsResolver extends LitElement {
             .narrow=${this.narrow}
             .configuration=${this.configuration}
             .lovelace=${this.lovelace}
+            .status=${this.status}
             .repositories=${this.repositories}
           ></hacs-entry-panel>`
         : html`<hacs-store-panel
@@ -126,6 +127,7 @@ export class HacsResolver extends LitElement {
             .configuration=${this.configuration}
             .lovelace=${this.lovelace}
             .repositories=${this.repositories}
+            .status=${this.status}
             .section=${this.route.path.split("/")[1]}
           ></hacs-store-panel>`}
       <hacs-event-dialog
@@ -134,6 +136,7 @@ export class HacsResolver extends LitElement {
         .narrow=${this.narrow}
         .configuration=${this.configuration}
         .lovelace=${this.lovelace}
+        .status=${this.status}
         .repositories=${this.repositories}
         id="hacs-dialog"
       ></hacs-event-dialog>`;

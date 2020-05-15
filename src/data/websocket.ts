@@ -83,6 +83,19 @@ export const repositorySetVersion = async (
   });
 };
 
+export const repositoryAdd = async (
+  hass: HomeAssistant,
+  repository: string,
+  category: string
+) => {
+  await hass.connection.sendMessagePromise<void>({
+    type: "hacs/repository/data",
+    action: "add",
+    repository: repository,
+    data: category,
+  });
+};
+
 export const repositorySetNotNew = async (
   hass: HomeAssistant,
   repository: string
@@ -101,6 +114,17 @@ export const repositoryUpdate = async (
   await hass.connection.sendMessagePromise<void>({
     type: "hacs/repository",
     action: "update",
+    repository: repository,
+  });
+};
+
+export const repositoryDelete = async (
+  hass: HomeAssistant,
+  repository: string
+) => {
+  await hass.connection.sendMessagePromise<void>({
+    type: "hacs/repository",
+    action: "delete",
     repository: repository,
   });
 };

@@ -23,10 +23,5 @@ export const sections = {
 export const panelEnabled = (panel: string, config: Configuration) => {
   const categories = sections.panels.find((p) => p.id === panel).categories;
   if (categories === undefined) return true;
-  const enabled = config?.categories;
-  console.log(
-    panel,
-    categories.filter((c) => enabled.includes(c)).length !== 0
-  );
-  return categories.filter((c) => enabled.includes(c)).length !== 0;
+  return categories.filter((c) => config?.categories.includes(c)).length !== 0;
 };

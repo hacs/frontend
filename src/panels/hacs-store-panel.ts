@@ -9,6 +9,7 @@ import {
 import { HomeAssistant } from "custom-card-helpers";
 import {
   Route,
+  Status,
   Configuration,
   Repository,
   LovelaceResource,
@@ -29,6 +30,7 @@ export class HacsStorePanel extends LitElement {
   @property({ attribute: false }) public route!: Route;
   @property({ attribute: false }) public repositories!: Repository[];
   @property({ attribute: false }) public lovelace: LovelaceResource[];
+  @property({ attribute: false }) public status: Status;
   @property() public section!: string;
   @property() public searchInput: string = "";
 
@@ -70,6 +72,7 @@ export class HacsStorePanel extends LitElement {
         .narrow=${this.narrow}
         .configuration=${this.configuration}
         .lovelace=${this.lovelace}
+        .status=${this.status}
         .repositories=${this.repositories}
       >
       </hacs-tabbed-menu>
@@ -82,6 +85,7 @@ export class HacsStorePanel extends LitElement {
                   .hass=${this.hass}
                   .repository=${repo}
                   .narrow=${this.narrow}
+                  .status=${this.status}
                 ></hacs-repository-card>`
             )
           : ""}

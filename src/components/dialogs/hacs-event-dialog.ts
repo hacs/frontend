@@ -5,6 +5,7 @@ import "./hacs-generic-dialog";
 import "./hacs-about-dialog";
 import "./hacs-update-dialog";
 import "./hacs-repository-info-dialog";
+import "./hacs-custom-repositories-dialog";
 
 @customElement("hacs-event-dialog")
 export class HacsEventDialog extends HacsDialogBase {
