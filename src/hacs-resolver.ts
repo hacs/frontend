@@ -32,7 +32,6 @@ import {
 
 import "./panels/hacs-entry-panel";
 import "./panels/hacs-store-panel";
-import "./panels/hacs-settings-panel";
 
 import "./components/dialogs/hacs-event-dialog";
 

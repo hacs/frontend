@@ -42,6 +42,7 @@ export class HacsEntryPanel extends LitElement {
         sections.updates.push(repo);
       }
     });
+
     return html`
       <hacs-single-page-layout
         .hass=${this.hass}
@@ -86,21 +87,27 @@ export class HacsEntryPanel extends LitElement {
             </ha-card>`
           : ""}
         <ha-card>
-          ${sections.panels.map(
-            (panel) =>
-              html`
-                <paper-icon-item @click=${() => this._changeLocation(panel.id)}>
-                  <ha-icon .icon=${panel.icon} slot="item-icon"></ha-icon>
-                  <paper-item-body two-line>
-                    ${localize(`sections.${panel.id}.title`)}
-                    <div secondary>
-                      ${localize(`sections.${panel.id}.description`)}
-                    </div>
-                  </paper-item-body>
-                  <ha-icon icon="mdi:chevron-right"></ha-icon>
-                </paper-icon-item>
-              `
-          )}
+          ${sections.panels
+            .filter((panel) => {
+              return panelEnabled(panel.id, this.configuration);
+            })
+            .map(
+              (panel) =>
+                html`
+                  <paper-icon-item
+                    @click=${() => this._changeLocation(panel.id)}
+                  >
+                    <ha-icon .icon=${panel.icon} slot="item-icon"></ha-icon>
+                    <paper-item-body two-line>
+                      ${localize(`sections.${panel.id}.title`)}
+                      <div secondary>
+                        ${localize(`sections.${panel.id}.description`)}
+                      </div>
+                    </paper-item-body>
+                    <ha-icon icon="mdi:chevron-right"></ha-icon>
+                  </paper-icon-item>
+                `
+            )}
           <paper-icon-item @click=${this._openAboutDialog}>
             <ha-icon icon="mdi:information" slot="item-icon"></ha-icon>
             <paper-item-body two-line>

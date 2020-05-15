@@ -19,7 +19,7 @@ import "../components/hacs-repository-card";
 import "../components/hacs-search";
 import "../components/hacs-tabbed-menu";
 
-import { sections } from "./hacs-sections";
+import { sections, panelEnabled } from "./hacs-sections";
 
 @customElement("hacs-store-panel")
 export class HacsStorePanel extends LitElement {
@@ -57,7 +57,9 @@ export class HacsStorePanel extends LitElement {
     const repositories = sortRepositoriesByName(this._filteredRepositories());
     return html`<hacs-tabbed-layout
       .hass=${this.hass}
-      .tabs=${sections.panels}
+      .tabs=${sections.panels.filter((panel) => {
+        return panelEnabled(panel.id, this.configuration);
+      })}
       .route=${this.route}
       .narrow=${this.narrow}
       .selected=${this.section}
