@@ -99,7 +99,7 @@ export const selectRepository = (
   repositories: Repository[],
   repository: string
 ): Repository => {
-  return repositories.find((repo) => {
+  return repositories?.find((repo) => {
     return repo.id === repository;
   });
 };
@@ -107,7 +107,7 @@ export const selectRepository = (
 export const sortRepositoriesByName = (
   repositories: Repository[]
 ): Repository[] => {
-  return repositories.sort((a: Repository, b: Repository) =>
+  return repositories?.sort((a: Repository, b: Repository) =>
     a.name.toLowerCase() > b.name.toLowerCase() ? 1 : -1
   );
 };

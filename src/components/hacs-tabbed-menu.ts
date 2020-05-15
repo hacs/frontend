@@ -44,7 +44,7 @@ export class HacsTabbedMenu extends LitElement {
         <paper-item @click=${() => window.location.reload(true)}
           >Reload window</paper-item
         >
-        ${this.repositories.filter((repo) => repo.new).length !== 0
+        ${this.repositories?.filter((repo) => repo.new).length !== 0
           ? html` <paper-item @click=${this._clearAllNewRepositories}
               >Clear all new</paper-item
             >`
