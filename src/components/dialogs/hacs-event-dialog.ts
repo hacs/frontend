@@ -26,7 +26,7 @@ export class HacsEventDialog extends HacsDialogBase {
     el.repositories = this.repositories;
     el.route = this.route;
     el.status = this.status;
-    console.log("event", this.secondary);
+
     if (this.params) {
       for (let [key, value] of Object.entries(this.params)) {
         el[key] = value;

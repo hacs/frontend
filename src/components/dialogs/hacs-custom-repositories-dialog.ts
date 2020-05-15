@@ -39,7 +39,7 @@ export class HacsCustomRepositoriesDialog extends HacsDialogBase {
               ${repo.category === "integration" && repo.domain
                 ? html`
                     <img
-                      src="https://brands.home-assistant.io/${repo.domain}/icon.png"
+                      src="https://brands.home-assistant.io/_/${repo.domain}/icon.png"
                       referrerpolicy="no-referrer"
                       @error=${this._onImageError}
                       @load=${this._onImageLoad}

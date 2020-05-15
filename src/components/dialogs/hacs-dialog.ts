@@ -126,6 +126,7 @@ export class HacsDialog extends HacsDialogBase {
 
         .card-content {
           padding: 65px 4px;
+          max-width: 100%;
         }
 
         ::slotted([slot="actions"]) {

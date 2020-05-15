@@ -7,8 +7,11 @@ import {
   css,
   property,
 } from "lit-element";
+import { classMap } from "lit-html/directives/class-map";
 import { HacsDialogBase } from "./hacs-dialog-base";
 import { Repository, sortRepositoriesByName } from "../../data/common";
+
+import { localize } from "../../localize/localize";
 
 import "../hacs-search";
 
@@ -29,6 +32,7 @@ export class HacsAddRepositoryDialog extends HacsDialogBase {
   }
 
   protected render(): TemplateResult | void {
+    this._searchInput = window.localStorage.getItem("hacs-search");
     if (!this.active) return html``;
     const repositories = this.repositories?.filter(
       (repo) =>
@@ -43,7 +47,7 @@ export class HacsAddRepositoryDialog extends HacsDialogBase {
         .hass=${this.hass}
       >
         <div slot="header">Add repository</div>
-        <div class="content">
+        <div class=${classMap({ content: true, narrow: this.narrow })}>
           <hacs-search
             .input=${this._searchInput}
             @input=${this._inputValueChanged}
@@ -51,12 +55,13 @@ export class HacsAddRepositoryDialog extends HacsDialogBase {
           <div class="list"></div>
           ${sortRepositoriesByName(repositories)?.map(
             (repo) => html`<paper-icon-item
+              class=${classMap({ narrow: this.narrow })}
               @click=${() => this._openInformation(repo)}
             >
               ${repo.category === "integration" && repo.domain
                 ? html`
                     <img
-                      src="https://brands.home-assistant.io/${repo.domain}/icon.png"
+                      src="https://brands.home-assistant.io/_/${repo.domain}/icon.png"
                       referrerpolicy="no-referrer"
                       @error=${this._onImageError}
                       @load=${this._onImageLoad}
@@ -70,7 +75,8 @@ export class HacsAddRepositoryDialog extends HacsDialogBase {
                 >${repo.name}
                 <div secondary>${repo.description}</div>
                 <div secondary>
-                  Category: ${repo.category}
+                  ${localize("settings.category")}:
+                  ${localize(`common.${repo.category}`)}
                 </div></paper-item-body
               >
             </paper-icon-item>`
@@ -82,6 +88,7 @@ export class HacsAddRepositoryDialog extends HacsDialogBase {
 
   private _inputValueChanged(ev: any) {
     this._searchInput = ev.target.input;
+    window.localStorage.setItem("hacs-search", this._searchInput);
   }
 
   private _openInformation(repo) {
@@ -102,15 +109,21 @@ export class HacsAddRepositoryDialog extends HacsDialogBase {
   }
 
   private _onImageError(ev) {
-    ev.target.outerHTML = `<ha-icon
-      icon="mdi:github-circle"
-      slot="item-icon"
-    ></ha-icon>`;
+    if (ev.target) {
+      ev.target.outerHTML = `<ha-icon
+    icon="mdi:github-circle"
+    slot="item-icon"
+  ></ha-icon>`;
+    }
   }
   static get styles() {
     return css`
       .content {
         min-width: 500px;
+      }
+      .narrow {
+        min-width: unset !important;
+        width: 100%;
       }
       .list {
         margin-top: 16px;
@@ -142,6 +155,9 @@ export class HacsAddRepositoryDialog extends HacsDialogBase {
         display: var(--layout-vertical_-_display);
         flex-direction: var(--layout-vertical_-_flex-direction);
         justify-content: var(--layout-center-justified_-_justify-content);
+      }
+      paper-icon-item.narrow {
+        border-bottom: 1px solid var(--divider-color);
       }
       paper-item-body div {
         font-size: 14px;

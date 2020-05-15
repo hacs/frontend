@@ -119,6 +119,10 @@ export class HacsStorePanel extends LitElement {
       paper-item {
         cursor: pointer;
       }
+
+      mwc-fab[narrow] {
+        margin-bottom: 65px;
+      }
       mwc-fab {
         position: fixed;
         bottom: 16px;
