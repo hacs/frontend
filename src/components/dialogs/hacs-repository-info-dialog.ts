@@ -34,7 +34,7 @@ export class HacsRepositoryDialog extends HacsDialogBase {
             )
           : "Loading information..."}
         ${!repository.installed && repository.updated_info
-          ? html` <div class="card-actions">
+          ? html` <div slot="actions">
               <mwc-button @click=${this._installRepository} raised
                 >Install this repository in HACS</mwc-button
               >

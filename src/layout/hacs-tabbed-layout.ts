@@ -157,10 +157,6 @@ export class HacsTabbedLayout extends LitElement {
         color: var(--sidebar-icon-color);
       }
 
-      #toolbar-icon {
-        float: right;
-      }
-
       .main-title {
         -webkit-font-smoothing: var(
           --paper-font-headline_-_-webkit-font-smoothing

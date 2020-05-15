@@ -34,7 +34,7 @@ export class HacsUpdateDialog extends HacsDialogBase {
           <p><b>Installed version:</b> ${repository.installed_version}</p>
           <p><b>Available version:</b> ${repository.available_version}</p>
         </div>
-        <div class="card-actions">
+        <div slot="actions">
           <mwc-button @click=${this._updateRepository}>Update</mwc-button>
           <hacs-link .url=${this._getChanglogURL()}
             ><mwc-button>Changelog</mwc-button></hacs-link
