@@ -20,11 +20,11 @@
     "@typescript-eslint/eslint-plugin": "^2.33.0",
     "@typescript-eslint/parser": "^2.33.0",
     "card-tools": "github:thomasloven/card-tools",
-    "custom-card-helpers": "^1.6.4",
     "chokidar": "^3.4.0",
+    "custom-card-helpers": "^1.6.4",
+    "eslint": "^6.5.1",
     "eslint-config-airbnb-base": "^14.0.0",
     "eslint-plugin-import": "^2.16.0",
-    "eslint": "^6.5.1",
     "highlight.js": "^10.0.3",
     "lit-element": "^2.3.1",
     "lit-html": "^1.2.1",
@@ -32,6 +32,7 @@
     "node-emoji": "^1.10.0",
     "patch-package": "^6.2.0",
     "prettier": "^2.0.5",
+    "rollup": "^1.24.0",
     "rollup-plugin-babel": "^4.3.2",
     "rollup-plugin-cleanup": "^3.1.1",
     "rollup-plugin-commonjs": "^10.1.0",
@@ -42,9 +43,11 @@
     "rollup-plugin-sizes": "^1.0.1",
     "rollup-plugin-terser": "^5.1.2",
     "rollup-plugin-typescript2": "^0.27.1",
-    "rollup": "^1.24.0",
     "sweetalert": "^2.1.2",
     "typescript": "^3.9.2",
     "xss": "^1.0.6"
+  },
+  "dependencies": {
+    "dompurify": "^2.0.11"
   }
 }

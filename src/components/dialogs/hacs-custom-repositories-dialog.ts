@@ -36,7 +36,7 @@ export class HacsCustomRepositoriesDialog extends HacsDialogBase {
           <div class="list"></div>
           ${repositories?.map(
             (repo) => html`<paper-icon-item>
-              ${repo.category === "integration" && repo.domain
+              ${repo.category === "integration"
                 ? html`
                     <img
                       src="https://brands.home-assistant.io/_/${repo.domain}/icon.png"

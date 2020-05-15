@@ -58,7 +58,7 @@ export class HacsAddRepositoryDialog extends HacsDialogBase {
               class=${classMap({ narrow: this.narrow })}
               @click=${() => this._openInformation(repo)}
             >
-              ${repo.category === "integration" && repo.domain
+              ${repo.category === "integration"
                 ? html`
                     <img
                       src="https://brands.home-assistant.io/_/${repo.domain}/icon.png"

@@ -1,13 +1,12 @@
 import { html, TemplateResult } from "lit-element";
 import marked_ from "marked";
-import { filterXSS } from "xss";
+import DOMPurify from "dompurify";
 import emoji from "node-emoji";
 import hljs from "highlight.js/lib/core";
 import yaml from "highlight.js/lib/languages/yaml";
 import javascript from "highlight.js/lib/languages/javascript";
 import json from "highlight.js/lib/languages/json";
 
-import { GFM, HLJS } from "./styles";
 import { RepositoryData } from "../data";
 
 hljs.registerLanguage("yaml", yaml);
@@ -54,21 +53,104 @@ export class markdown {
       let url = x
         .replace(
           "(",
-          `(https://raw.githubusercontent.com/${repo.full_name}/master/`
+          `(https://raw.githubusercontent.com/${repo?.full_name}/master/`
         )
         .replace("/blob/", "/");
       return url;
     });
     const content = document.createElement("div");
-    content.innerHTML = filterXSS(marked(input)).replace(
-      /\<a href="http\w:\/\/.*.\">.*.\<\/a>\W/g,
-      function (x) {
-        return x
-          .replace(/<a href=/gm, "<hacs-link url=")
-          .replace(/<\/a>/gm, "</hacs-link>");
-      }
-    );
-    content.style.cssText = `${GFM} ${HLJS}`;
-    return html` ${content} `;
+    content.innerHTML = DOMPurify.sanitize(marked(input), {
+      css: false,
+    }).replace(/\<a href="http\w:\/\/.*.\">.*.\<\/a>\W/g, function (x) {
+      return x
+        .replace(/<a href=/gm, "<hacs-link url=")
+        .replace(/<\/a>/gm, "</hacs-link>");
+    });
+    const style = document.createElement("style");
+    style.innerText = `pre, code, .hljs {
+      display: block;
+      background: white;
+      color: #333333;
+      background-color: #f8f8f8;
+      overflow-x: auto;
+    }
+
+    pre {
+      width: 100%;
+      padding: 0.5em;
+    }
+
+    code {
+      width: fit-content;
+      padding: 0.1em;
+    }
+
+    .hljs-comment,
+    .hljs-meta {
+      color: #969896;
+    }
+
+    .hljs-variable,
+    .hljs-template-variable,
+    .hljs-strong,
+    .hljs-emphasis,
+    .hljs-quote {
+      color: #df5000;
+    }
+
+    .hljs-keyword,
+    .hljs-selector-tag,
+    .hljs-type {
+      color: #d73a49;
+    }
+
+    .hljs-literal,
+    .hljs-symbol,
+    .hljs-bullet,
+    .hljs-attribute {
+      color: #0086b3;
+    }
+
+    .hljs-section,
+    .hljs-name {
+      color: #63a35c;
+    }
+
+    .hljs-tag {
+      color: #333333;
+    }
+
+    .hljs-title,
+    .hljs-attr,
+    .hljs-selector-id,
+    .hljs-selector-class,
+    .hljs-selector-attr,
+    .hljs-selector-pseudo {
+      color: #6f42c1;
+    }
+
+    .hljs-addition {
+      color: #55a532;
+      background-color: #eaffea;
+    }
+
+    .hljs-deletion {
+      color: #bd2c00;
+      background-color: #ffecec;
+    }
+
+    .hljs-link {
+      text-decoration: underline;
+    }
+
+    .hljs-number {
+      color: #005cc5;
+    }
+
+    .hljs-string {
+      color: #db4437;
+    }`;
+    console.log(style);
+    return html`${style}${content} `;
   }
 }

@@ -230,7 +230,7 @@ export class HacsRepositoryCard extends LitElement {
         }
 
         .default-header {
-          padding: 10px !important;
+          padding: 10px 0 !important;
         }
 
         mwc-button.update-header {
