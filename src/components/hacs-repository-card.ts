@@ -44,7 +44,7 @@ export class HacsRepositoryCard extends LitElement {
               ? html`
                   <div class="status-header new-header">New repository</div>
                 `
-              : ""}
+              : html`<div class="status-header default-header"></div>`}
 
             <h2 class="pointer" @click=${this._showReopsitoryInfo}>
               ${this.repository.name}
@@ -95,6 +95,20 @@ export class HacsRepositoryCard extends LitElement {
                 <paper-listbox slot="dropdown-content">
                   <paper-item class="pointer" @click=${this._showReopsitoryInfo}
                     >Information</paper-item
+                  >
+                  <hacs-link
+                    .url="https://github.com/${this.repository
+                      .full_name}/issues"
+                    ><paper-item class="pointer"
+                      >Open issue</paper-item
+                    ></hacs-link
+                  >
+                  <hacs-link
+                    .url="https://github.com/hacs/integration/issues/new?assignees=ludeeus&labels=flag&template=flag.md&title=${this
+                      .repository.full_name}"
+                    ><paper-item class="pointer uninstall"
+                      >Report for removal</paper-item
+                    ></hacs-link
                   >
                   <paper-item
                     class="pointer uninstall"
@@ -213,6 +227,10 @@ export class HacsRepositoryCard extends LitElement {
         .update-header {
           background-color: var(--hacs-update-color, var(--google-yellow-500));
           color: var(--hacs-update-text-color, var(--text-primary-color));
+        }
+
+        .default-header {
+          padding: 10px !important;
         }
 
         mwc-button.update-header {
