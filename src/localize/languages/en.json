@@ -99,6 +99,25 @@
     "config_flow_title": "UI Configuration supported",
     "restart": "You need to restart Home Assistant."
   },
+  "sections": {
+    "integrations": {
+      "title": "Integrations",
+      "description": "This is where you find custom integrations (custom_components)"
+    },
+    "frontend": {
+      "title": "Frontend",
+      "description": "This is where you find themes, custom cards and other elements for lovelace"
+    },
+    "automation": {
+      "title": "Automation",
+      "description": "This is where you find python_scripts, AppDaemon apps and NetDaemon apps"
+    },
+    "about": {
+      "title": "About",
+      "description": "Show information about HACS"
+    },
+    "pending_repository_upgrade": "You are running version {installed}, version {available} is available"
+  },
   "settings": {
     "add_custom_repository": "ADD CUSTOM REPOSITORY",
     "adding_new_repo_category": "With category '{category}'.",

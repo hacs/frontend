@@ -2,7 +2,7 @@ import "@polymer/paper-item/paper-icon-item";
 import "@polymer/paper-item/paper-item-body";
 import {
   css,
-  CSSResult,
+  CSSResultArray,
   customElement,
   html,
   LitElement,
@@ -12,13 +12,19 @@ import {
 import { HomeAssistant } from "custom-card-helpers";
 import {
   Route,
+  Status,
   Repository,
   LovelaceResource,
   Configuration,
+  sortRepositoriesByName,
 } from "../data/common";
 import "../layout/hacs-single-page-layout";
 
-import { sections } from "./hacs-sections";
+import { HacsCommonStyle } from "../styles/hacs-common-style";
+
+import { localize } from "../localize/localize";
+
+import { sections, panelEnabled } from "./hacs-sections";
 //import "../components/hacs-link";
 
 @customElement("hacs-entry-panel")
@@ -29,34 +35,35 @@ export class HacsEntryPanel extends LitElement {
   @property({ attribute: false }) public route!: Route;
   @property({ attribute: false }) public repositories: Repository[];
   @property({ attribute: false }) public lovelace: LovelaceResource[];
+  @property({ attribute: false }) public status: Status;
 
   protected render(): TemplateResult | void {
     sections.updates = []; // reset so we don't get duplicates
     this.repositories?.forEach((repo) => {
       if (repo.pending_upgrade) {
-        sections.updates.push({
-          name: repo.name,
-          id: repo.id,
-          installed: repo.installed_version,
-          available: repo.available_version,
-        });
+        sections.updates.push(repo);
       }
     });
+
     return html`
       <hacs-single-page-layout
         .hass=${this.hass}
         .route=${this.route}
         .narrow=${this.narrow}
-        header="Home Assistant Community Store"
-        intro=""
+        .header=${this.narrow ? "HACS" : "Home Assistant Community Store"}
+        intro="${sections.updates.length === 0
+          ? "Updates and important messages will show here if there are any"
+          : ""}"
       >
         ${sections.updates.length !== 0
           ? html` <ha-card>
-              <div class="header">Pending updates</div>
-              ${sections.updates.map(
+              <div class="header">${localize("store.pending_upgrades")}</div>
+              ${sortRepositoriesByName(sections.updates).map(
                 (repository) =>
                   html`
-                    <paper-icon-item .id=${repository.id}>
+                    <paper-icon-item
+                      @click="${() => this._openUpdateDialog(repository)}"
+                    >
                       <ha-icon
                         class="pending_upgrade"
                         icon="mdi:arrow-up-circle"
@@ -65,8 +72,15 @@ export class HacsEntryPanel extends LitElement {
                       <paper-item-body two-line>
                         ${repository.name}
                         <div secondary>
-                          You are running version ${repository.installed},
-                          version ${repository.available} is available
+                          ${localize("sections.pending_repository_upgrade")
+                            .replace(
+                              "{installed}",
+                              repository.installed_version
+                            )
+                            .replace(
+                              "{available}",
+                              repository.available_version
+                            )}
                         </div>
                       </paper-item-body>
                     </paper-icon-item>
@@ -75,74 +89,116 @@ export class HacsEntryPanel extends LitElement {
             </ha-card>`
           : ""}
         <ha-card>
-          ${sections.panels.map(
-            (panel) =>
-              html`
-                <paper-icon-item @click=${() => this._changeLocation(panel.id)}>
-                  <ha-icon .icon=${panel.icon} slot="item-icon"></ha-icon>
-                  <paper-item-body two-line>
-                    ${panel.title}
-                    <div secondary>
-                      ${panel.description}
-                    </div>
-                  </paper-item-body>
-                  <ha-icon icon="mdi:chevron-right"></ha-icon>
-                </paper-icon-item>
-              `
-          )}
+          ${sections.panels
+            .filter((panel) => {
+              return panelEnabled(panel.id, this.configuration);
+            })
+            .map(
+              (panel) =>
+                html`
+                  <paper-icon-item
+                    @click=${() => this._changeLocation(panel.id)}
+                  >
+                    <ha-icon .icon=${panel.icon} slot="item-icon"></ha-icon>
+                    <paper-item-body two-line>
+                      ${localize(`sections.${panel.id}.title`)}
+                      <div secondary>
+                        ${localize(`sections.${panel.id}.description`)}
+                      </div>
+                    </paper-item-body>
+                    <ha-icon-button icon="mdi:chevron-right"></ha-icon-button>
+                  </paper-icon-item>
+                `
+            )}
+          <paper-icon-item @click=${this._openAboutDialog}>
+            <ha-icon icon="mdi:information" slot="item-icon"></ha-icon>
+            <paper-item-body two-line>
+              ${localize(`sections.about.title`)}
+              <div secondary>
+                ${localize(`sections.about.description`)}
+              </div>
+            </paper-item-body>
+          </paper-icon-item>
         </ha-card>
       </hacs-single-page-layout>
     `;
   }
 
-  static get styles(): CSSResult {
-    return css`
-      a {
-        text-decoration: none;
-        color: var(--primary-text-color);
-        position: relative;
-        display: block;
-        outline: 0;
-      }
-      ha-icon {
-        color: var(--secondary-text-color);
-      }
-      .iron-selected paper-item::before {
-        position: absolute;
-        top: 0;
-        right: 0;
-        bottom: 0;
-        left: 0;
-        pointer-events: none;
-        content: "";
-        transition: opacity 15ms linear;
-        will-change: opacity;
-      }
-      paper-icon-item {
-        padding: 12px 16px;
-        cursor: pointer;
-      }
-      .iron-selected paper-item:focus::before,
-      .iron-selected:focus paper-item::before {
-        opacity: 0.2;
-      }
+  private _openUpdateDialog(repository: Repository) {
+    this.dispatchEvent(
+      new CustomEvent("hacs-dialog", {
+        detail: {
+          type: "update",
+          repository: repository.id,
+        },
+        bubbles: true,
+        composed: true,
+      })
+    );
+  }
 
-      paper-item-body {
-        width: 100%;
-      }
-      paper-item-body div {
-        font-size: 14px;
-        color: var(--secondary-text-color);
-      }
-      .header {
-        font-size: var(--paper-font-headline_-_font-size);
-        opacity: var(--dark-primary-opacity);
-        padding: 8px 0 4px 16px;
-      }
-      .pending_upgrade {
-        color: orange;
-      }
-    `;
+  private _openAboutDialog() {
+    this.dispatchEvent(
+      new CustomEvent("hacs-dialog", {
+        detail: {
+          type: "about",
+          configuration: this.configuration,
+          repositories: this.repositories,
+        },
+        bubbles: true,
+        composed: true,
+      })
+    );
+  }
+
+  static get styles(): CSSResultArray {
+    return [
+      HacsCommonStyle,
+      css`
+        a {
+          text-decoration: none;
+          color: var(--primary-text-color);
+          position: relative;
+          display: block;
+          outline: 0;
+        }
+        ha-icon-button,
+        ha-icon {
+          color: var(--secondary-text-color);
+        }
+
+        .iron-selected paper-item::before {
+          position: absolute;
+          top: 0;
+          right: 0;
+          bottom: 0;
+          left: 0;
+          pointer-events: none;
+          content: "";
+          transition: opacity 15ms linear;
+          will-change: opacity;
+        }
+        paper-icon-item {
+          cursor: pointer;
+        }
+        .iron-selected paper-item:focus::before,
+        .iron-selected:focus paper-item::before {
+          opacity: 0.2;
+        }
+
+        paper-item-body {
+          width: 100%;
+          min-height: var(--paper-item-body-two-line-min-height, 72px);
+          display: var(--layout-vertical_-_display);
+          flex-direction: var(--layout-vertical_-_flex-direction);
+          justify-content: var(--layout-center-justified_-_justify-content);
+        }
+        paper-item-body div {
+          font-size: 14px;
+          color: var(--secondary-text-color);
+        }
+      `,
+    ];
   }
 
   private _changeLocation(id: string): void {

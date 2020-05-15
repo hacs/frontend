@@ -38,6 +38,21 @@ export interface LovelaceResource {
   id?: string;
 }
 
+export interface LocationChangedEvent {
+  detail?: { route: Route; force?: boolean };
+}
+
+export interface HacsDialogEvent {
+  detail?: {
+    type: string;
+    header?: string;
+    content?: string;
+    markdown?: boolean;
+    frosen?: boolean;
+    repository?: Repository;
+  };
+}
+
 export interface Repository {
   has_icon_url: boolean;
   additional_info: string;
@@ -80,3 +95,20 @@ export interface Repository {
   updated_info: boolean;
   version_or_commit: string;
 }
+
+export const selectRepository = (
+  repositories: Repository[],
+  repository: string
+): Repository => {
+  return repositories?.find((repo) => {
+    return repo.id === repository;
+  });
+};
+
+export const sortRepositoriesByName = (
+  repositories: Repository[]
+): Repository[] => {
+  return repositories?.sort((a: Repository, b: Repository) =>
+    a.name.toLowerCase() > b.name.toLowerCase() ? 1 : -1
+  );
+};
