@@ -118,6 +118,7 @@ export class HacsDialog extends HacsDialogBase {
         .close {
           pointer-events: auto;
           color: var(--sidebar-icon-color);
+          --mdc-icon-size: 32px;
         }
 
         .card-content {
