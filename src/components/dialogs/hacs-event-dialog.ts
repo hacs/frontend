@@ -6,6 +6,7 @@ import "./hacs-about-dialog";
 import "./hacs-update-dialog";
 import "./hacs-repository-info-dialog";
 import "./hacs-custom-repositories-dialog";
+import "./hacs-add-repository-dialog";
 
 @customElement("hacs-event-dialog")
 export class HacsEventDialog extends HacsDialogBase {
@@ -21,9 +22,11 @@ export class HacsEventDialog extends HacsDialogBase {
     el.narrow = this.narrow;
     el.configuration = this.configuration;
     el.lovelace = this.lovelace;
+    el.secondary = this.secondary;
     el.repositories = this.repositories;
     el.route = this.route;
     el.status = this.status;
+    console.log("event", this.secondary);
     if (this.params) {
       for (let [key, value] of Object.entries(this.params)) {
         el[key] = value;

@@ -47,6 +47,7 @@ export class HacsResolver extends LitElement {
   @property({ attribute: false }) public status: Status;
 
   @query("#hacs-dialog") private _hacsDialog?: any;
+  @query("#hacs-dialog-secondary") private _hacsDialogSecondary?: any;
 
   public logger = new HacsLogger();
 
@@ -58,6 +59,9 @@ export class HacsResolver extends LitElement {
 
     this.addEventListener("hacs-dialog", (e) =>
       this._showDialog(e as HacsDialogEvent)
+    );
+    this.addEventListener("hacs-dialog-secondary", (e) =>
+      this._showDialogSecondary(e as HacsDialogEvent)
     );
   }
 
@@ -139,6 +143,16 @@ export class HacsResolver extends LitElement {
         .status=${this.status}
         .repositories=${this.repositories}
         id="hacs-dialog"
+      ></hacs-event-dialog>
+      <hacs-event-dialog
+        .hass=${this.hass}
+        .route=${this.route}
+        .narrow=${this.narrow}
+        .configuration=${this.configuration}
+        .lovelace=${this.lovelace}
+        .status=${this.status}
+        .repositories=${this.repositories}
+        id="hacs-dialog-secondary"
       ></hacs-event-dialog>`;
   }
 
@@ -149,6 +163,17 @@ export class HacsResolver extends LitElement {
     this.addEventListener(
       "hacs-dialog-closed",
       () => (this._hacsDialog.active = false)
+    );
+  }
+
+  private _showDialogSecondary(ev: HacsDialogEvent): void {
+    const dialogParams = ev.detail;
+    this._hacsDialogSecondary.active = true;
+    this._hacsDialogSecondary.secondary = true;
+    this._hacsDialogSecondary.params = dialogParams;
+    this.addEventListener(
+      "hacs-secondary-dialog-closed",
+      () => (this._hacsDialogSecondary.active = false)
     );
   }
 

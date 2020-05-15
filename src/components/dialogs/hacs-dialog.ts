@@ -74,7 +74,10 @@ export class HacsDialog extends HacsDialogBase {
 
   private _close() {
     this.dispatchEvent(
-      new Event("hacs-dialog-closed", { bubbles: true, composed: true })
+      new Event(
+        this.secondary ? "hacs-secondary-dialog-closed" : "hacs-dialog-closed",
+        { bubbles: true, composed: true }
+      )
     );
   }
 

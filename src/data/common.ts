@@ -48,6 +48,7 @@ export interface HacsDialogEvent {
     header?: string;
     content?: string;
     markdown?: boolean;
+    frosen?: boolean;
     repository?: Repository;
   };
 }

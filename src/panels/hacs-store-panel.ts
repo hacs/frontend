@@ -6,6 +6,7 @@ import {
   css,
   TemplateResult,
 } from "lit-element";
+import "@material/mwc-fab";
 import { HomeAssistant } from "custom-card-helpers";
 import {
   Route,
@@ -32,7 +33,6 @@ export class HacsStorePanel extends LitElement {
   @property({ attribute: false }) public lovelace: LovelaceResource[];
   @property({ attribute: false }) public status: Status;
   @property() public section!: string;
-  @property() public searchInput: string = "";
 
   private _filteredRepositories = () =>
     this.repositories?.filter(
@@ -42,18 +42,6 @@ export class HacsStorePanel extends LitElement {
           .categories?.includes(repo.category) &&
         (repo.installed || repo.new)
     );
-
-  private _searchFilter(repo: Repository): boolean {
-    const input = this.searchInput.toLocaleLowerCase();
-    if (input === "") return true;
-    if (repo.name.toLocaleLowerCase().includes(input)) return true;
-    if (repo.description?.toLocaleLowerCase().includes(input)) return true;
-    if (repo.category.toLocaleLowerCase().includes(input)) return true;
-    if (repo.full_name.toLocaleLowerCase().includes(input)) return true;
-    if (String(repo.authors)?.toLocaleLowerCase().includes(input)) return true;
-    if (repo.domain?.toLocaleLowerCase().includes(input)) return true;
-    return false;
-  }
 
   protected render(): TemplateResult | void {
     const repositories = sortRepositoriesByName(this._filteredRepositories());
@@ -90,11 +78,27 @@ export class HacsStorePanel extends LitElement {
             )
           : ""}
       </div>
+      <mwc-fab
+        ?narrow="${this.narrow}"
+        title="Add integration"
+        @click=${this._addIntegration}
+      >
+        <ha-icon icon="mdi:plus"></ha-icon>
+      </mwc-fab>
     </hacs-tabbed-layout>`;
   }
 
-  private _inputValueChanged(ev: any) {
-    this.searchInput = ev.target.input;
+  private _addIntegration() {
+    this.dispatchEvent(
+      new CustomEvent("hacs-dialog", {
+        detail: {
+          type: "add-repository",
+          repositories: this.repositories,
+        },
+        bubbles: true,
+        composed: true,
+      })
+    );
   }
 
   static get styles() {
@@ -114,6 +118,36 @@ export class HacsStorePanel extends LitElement {
       }
       paper-item {
         cursor: pointer;
+      }
+      mwc-fab {
+        position: fixed;
+        bottom: 16px;
+        right: 16px;
+        z-index: 1;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        box-sizing: border-box;
+        width: 56px;
+        height: 56px;
+        fill: currentcolor;
+        cursor: pointer;
+        user-select: none;
+        -webkit-appearance: none;
+        background-color: var(--accent-color);
+        color: var(--text-primary-color);
+        box-shadow: var(
+          --mdc-fab-box-shadow-active,
+          0px 7px 8px -4px rgba(0, 0, 0, 0.2),
+          0px 12px 17px 2px rgba(0, 0, 0, 0.14),
+          0px 5px 22px 4px rgba(0, 0, 0, 0.12)
+        );
+        border-radius: 50%;
+        --mdc-ripple-fg-opacity: 0.24;
+        --mdc-ripple-fg-size: 32px;
+        --mdc-ripple-fg-scale: 1.75;
+        --mdc-ripple-left: 12px;
+        --mdc-ripple-top: 12px;
       }
     `;
   }

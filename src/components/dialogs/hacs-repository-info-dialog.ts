@@ -24,6 +24,7 @@ export class HacsRepositoryDialog extends HacsDialogBase {
         .active=${this.active}
         .narrow=${this.narrow}
         .hass=${this.hass}
+        .secondary=${this.secondary}
       >
         <div slot="header">${repository.name || ""}</div>
         ${repository.updated_info
