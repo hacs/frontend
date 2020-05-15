@@ -27,7 +27,16 @@ export class HacsSinglePageLayout extends LitElement {
           narrow: !this.isWide,
         })}"
       >
-        <div class="header">${this.header || ""}</div>
+        <div class="header-group">
+          ${this.narrow
+            ? html`<ha-menu-button
+                .hass=${this.hass}
+                .narrow=${this.narrow}
+              ></ha-menu-button>`
+            : ""}
+
+          <div class="header">${this.header || ""}</div>
+        </div>
         <div
           class="together layout ${classMap({
             narrow: !this.isWide,
@@ -46,6 +55,10 @@ export class HacsSinglePageLayout extends LitElement {
     return css`
       :host {
         display: block;
+      }
+      .header-group {
+        display: flex;
+        align-items: center;
       }
       .content {
         padding: 28px 20px 0;
@@ -103,12 +116,15 @@ export class HacsSinglePageLayout extends LitElement {
         max-width: 640px;
       }
       .narrow .together {
-        margin-top: 20px;
+        margin-top: 0;
       }
       .narrow .intro {
         padding-bottom: 20px;
         margin-right: 0;
         max-width: 500px;
+      }
+      ha-menu-button {
+        --app-header-background-color: var(--primary-background-color);
       }
     `;
   }

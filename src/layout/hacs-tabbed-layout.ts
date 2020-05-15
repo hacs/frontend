@@ -13,8 +13,9 @@ import { localize } from "../localize/localize";
 
 @customElement("hacs-tabbed-layout")
 export class HacsTabbedLayout extends LitElement {
-  @property({ type: Object }) public hass!: HomeAssistant;
-  @property({ type: Object }) public route!: Route;
+  @property({ attribute: false }) public hass!: HomeAssistant;
+  @property({ attribute: false }) public route!: Route;
+  @property({ type: Boolean }) public narrow!: boolean;
   @property() public selected: string;
   @property() public tabs: any;
 
@@ -25,7 +26,16 @@ export class HacsTabbedLayout extends LitElement {
         <ha-icon-button icon="mdi:chevron-left" @click=${
           this._goBack
         }></ha-icon-button>
-          <div id="tabbar">
+                ${
+                  this.narrow
+                    ? html`
+                        <div class="main-title">
+                          ${localize(`sections.${this.selected}.title`)}
+                        </div>
+                      `
+                    : ""
+                }
+          <div id="tabbar" class=${classMap({ "bottom-bar": this.narrow })}>
             ${this.tabs.map(
               (tab) => html`
                 <div
@@ -35,7 +45,12 @@ export class HacsTabbedLayout extends LitElement {
                   })}"
                   @click=${() => this._ChangeTabAction(tab.id)}
                 >
-                  ${localize(`sections.${tab.id}.title`)}
+                  ${this.narrow
+                    ? html`<ha-icon-button .icon=${tab.icon}></ha-icon-button
+                        ><span class="name"
+                          >${localize(`sections.${tab.id}.title`)}</span
+                        >`
+                    : localize(`sections.${tab.id}.title`)}
                 </div>
               `
             )}
@@ -82,6 +97,9 @@ export class HacsTabbedLayout extends LitElement {
       ha-menu-button {
         margin-right: 24px;
       }
+      .name {
+        white-space: nowrap;
+      }
       .toolbar {
         display: flex;
         align-items: center;
@@ -109,6 +127,21 @@ export class HacsTabbedLayout extends LitElement {
       #tabbar {
         display: flex;
         font-size: 14px;
+      }
+      #tabbar.bottom-bar {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        padding: 0 16px;
+        box-sizing: border-box;
+        background-color: var(--sidebar-background-color);
+        border-top: 1px solid var(--divider-color);
+        justify-content: space-between;
+        z-index: 1;
+        font-size: 12px;
+        width: 100%;
+      }
+      #tabbar:not(.bottom-bar) {
         flex: 1;
         justify-content: center;
       }
@@ -116,15 +149,43 @@ export class HacsTabbedLayout extends LitElement {
       :host(:not([narrow])) #toolbar-icon {
         min-width: 40px;
       }
+      ha-menu-button,
+      ha-icon-button-arrow-prev,
+      ::slotted([slot="toolbar-icon"]) {
+        flex-shrink: 0;
+        pointer-events: auto;
+        color: var(--sidebar-icon-color);
+      }
+
+      #toolbar-icon {
+        float: right;
+      }
+
+      .main-title {
+        -webkit-font-smoothing: var(
+          --paper-font-headline_-_-webkit-font-smoothing
+        );
+        flex: 1;
+        font-family: var(--paper-font-headline_-_font-family);
+        font-size: var(--paper-font-headline_-_font-size);
+        font-weight: var(--paper-font-headline_-_font-weight);
+        letter-spacing: var(--paper-font-headline_-_letter-spacing);
+        line-height: 26px;
+        max-height: 26px;
+        opacity: var(--dark-primary-opacity);
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
 
       .content {
-        position: absolute;
+        position: relative;
         width: 100%;
         height: calc(100% - 65px);
         overflow-y: auto;
         overflow: auto;
         -webkit-overflow-scrolling: touch;
       }
+
       :host([narrow]) .content {
         height: calc(100% - 128px);
       }
