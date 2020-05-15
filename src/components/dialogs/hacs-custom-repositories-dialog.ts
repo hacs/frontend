@@ -90,6 +90,7 @@ export class HacsCustomRepositoriesDialog extends HacsDialogBase {
             <mwc-button raised @click=${this._addRepository}>add</mwc-button>
           </div>
         </div>
+        <i>You need to close this dialog manually to see our changes.</i>
       </hacs-dialog>
     `;
   }
