@@ -6,6 +6,8 @@ import {
   query,
   property,
 } from "lit-element";
+import memoizeOne from "memoize-one";
+
 import { HomeAssistant } from "custom-card-helpers";
 import { HacsLogger } from "./components/HacsLogger";
 
@@ -51,6 +53,12 @@ export class HacsResolver extends LitElement {
 
   public logger = new HacsLogger();
 
+  private _sortRepositoriesByName = memoizeOne((repositories: Repository[]) =>
+    repositories.sort((a: Repository, b: Repository) =>
+      a.name.toLowerCase() > b.name.toLowerCase() ? 1 : -1
+    )
+  );
+
   public connectedCallback() {
     super.connectedCallback();
     this.addEventListener("hacs-location-changed", (e) =>
@@ -94,12 +102,12 @@ export class HacsResolver extends LitElement {
   }
 
   private async _updateProperties() {
-    [
-      this.repositories,
-      this.configuration,
-      this.status,
-      this.critical,
-      this.lovelace,
+    const [
+      repositories,
+      configuration,
+      status,
+      critical,
+      lovelace,
     ] = await Promise.all([
       getRepositories(this.hass),
       getConfiguration(this.hass),
@@ -107,6 +115,13 @@ export class HacsResolver extends LitElement {
       getCritical(this.hass),
       getLovelaceConfiguration(this.hass),
     ]);
+
+    this.configuration = configuration;
+    this.status = status;
+    this.critical = critical;
+    this.lovelace = lovelace;
+    this.configuration = configuration;
+    this.repositories = this._sortRepositoriesByName(repositories);
   }
 
   protected render(): TemplateResult | void {

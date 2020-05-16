@@ -66,7 +66,7 @@ export class HacsCustomRepositoriesDialog extends HacsDialogBase {
             <input
               id="add-input"
               class="add-input"
-              placeholder="Add custom repository"
+              placeholder="Add custom repository URL"
               .value=${this._inputRepository || ""}
               @input=${this._inputValueChanged}
             />

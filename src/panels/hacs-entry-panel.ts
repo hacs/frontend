@@ -9,6 +9,7 @@ import {
   TemplateResult,
   property,
 } from "lit-element";
+import memoizeOne from "memoize-one";
 import { HomeAssistant } from "custom-card-helpers";
 import {
   Route,
@@ -25,7 +26,6 @@ import { HacsCommonStyle } from "../styles/hacs-common-style";
 import { localize } from "../localize/localize";
 
 import { sections } from "./hacs-sections";
-import { panelsEnabled } from "../tools/filter";
 //import "../components/hacs-link";
 
 @customElement("hacs-entry-panel")
@@ -38,6 +38,18 @@ export class HacsEntryPanel extends LitElement {
   @property({ attribute: false }) public lovelace: LovelaceResource[];
   @property({ attribute: false }) public status: Status;
 
+  private _panelsEnabled = memoizeOne(
+    (sections: any, config: Configuration) => {
+      return sections.panels.filter((panel) => {
+        const categories = panel.categories;
+        if (categories === undefined) return true;
+        return (
+          categories.filter((c) => config?.categories.includes(c)).length !== 0
+        );
+      });
+    }
+  );
+
   protected render(): TemplateResult | void {
     sections.updates = []; // reset so we don't get duplicates
     this.repositories?.forEach((repo) => {
@@ -45,6 +57,8 @@ export class HacsEntryPanel extends LitElement {
         sections.updates.push(repo);
       }
     });
+
+    const enabledSections = this._panelsEnabled(sections, this.configuration);
 
     return html`
       <hacs-single-page-layout
@@ -90,7 +104,7 @@ export class HacsEntryPanel extends LitElement {
             </ha-card>`
           : ""}
         <ha-card>
-          ${panelsEnabled(sections, this.configuration).map(
+          ${enabledSections.map(
             (panel) =>
               html`
                 <paper-icon-item @click=${() => this._changeLocation(panel.id)}>

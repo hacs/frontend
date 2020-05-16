@@ -10,62 +10,45 @@ import {
 } from "lit-element";
 import { classMap } from "lit-html/directives/class-map";
 import { HacsDialogBase } from "./hacs-dialog-base";
-import { Repository, sortRepositoriesByName } from "../../data/common";
+import { Repository } from "../../data/common";
 
 import { localize } from "../../localize/localize";
-import { repositoriesInActiveCategory } from "../../tools/filter";
-
 import "../hacs-search";
 
 @customElement("hacs-add-repository-dialog")
 export class HacsAddRepositoryDialog extends HacsDialogBase {
   @property() private _searchInput: string = "";
 
-  private _searchFilter(repo: Repository): boolean {
-    const input = this._searchInput.toLocaleLowerCase();
-    if (input === "") return true;
-    if (repo.name.toLocaleLowerCase().includes(input)) return true;
-    if (repo.description?.toLocaleLowerCase().includes(input)) return true;
-    if (repo.category.toLocaleLowerCase().includes(input)) return true;
-    if (repo.full_name.toLocaleLowerCase().includes(input)) return true;
-    if (String(repo.authors)?.toLocaleLowerCase().includes(input)) return true;
-    if (repo.domain?.toLocaleLowerCase().includes(input)) return true;
-    return false;
-  }
+  private _repositoriesInActiveCategory = memoizeOne(
+    (repositories: Repository[], categories: string[]) =>
+      repositories.filter((repo) => categories.includes(repo.category))
+  );
+
+  private _filterRepositories = memoizeOne(
+    (repositories: Repository[], filter: string) =>
+      repositories.filter(
+        (repo) =>
+          repo.name.includes(filter) ||
+          repo.description?.toLocaleLowerCase().includes(filter) ||
+          repo.category.toLocaleLowerCase().includes(filter) ||
+          repo.full_name.toLocaleLowerCase().includes(filter) ||
+          String(repo.authors)?.toLocaleLowerCase().includes(filter) ||
+          repo.domain?.toLocaleLowerCase().includes(filter)
+      )
+  );
 
   protected render(): TemplateResult | void {
     this._searchInput = window.localStorage.getItem("hacs-search");
     if (!this.active) return html``;
-    const repositoryCards = sortRepositoriesByName(
-      repositoriesInActiveCategory(
+
+    const repositories = this._filterRepositories(
+      this._repositoriesInActiveCategory(
         this.repositories,
         this.configuration?.categories
-      )?.filter((repo) => this._searchFilter(repo))
-    )?.map(
-      (repo) => html`<paper-icon-item
-        class=${classMap({ narrow: this.narrow })}
-        @click=${() => this._openInformation(repo)}
-      >
-        ${repo.category === "integration"
-          ? html`
-              <img
-                src="https://brands.home-assistant.io/_/${repo.domain}/icon.png"
-                referrerpolicy="no-referrer"
-                @error=${this._onImageError}
-                @load=${this._onImageLoad}
-              />
-            `
-          : html`<ha-icon icon="mdi:github-circle" slot="item-icon"></ha-icon>`}
-        <paper-item-body three-line
-          >${repo.name}
-          <div secondary>${repo.description}</div>
-          <div secondary>
-            ${localize("settings.category")}:
-            ${localize(`common.${repo.category}`)}
-          </div></paper-item-body
-        >
-      </paper-icon-item>`
+      ),
+      this._searchInput.toLocaleLowerCase()
     );
+
     return html`
       <hacs-dialog
         .active=${this.active}
@@ -79,7 +62,44 @@ export class HacsAddRepositoryDialog extends HacsDialogBase {
             @input=${this._inputValueChanged}
           ></hacs-search>
           <div class="list"></div>
-          ${repositoryCards}
+          ${repositories.slice(0, 100).map(
+            (repo) => html`<paper-icon-item
+              class=${classMap({ narrow: this.narrow })}
+              @click=${() => this._openInformation(repo)}
+            >
+              ${repo.category === "integration"
+                ? html`
+                    <img
+                      src="https://brands.home-assistant.io/_/${repo.domain}/icon.png"
+                      referrerpolicy="no-referrer"
+                      @error=${this._onImageError}
+                      @load=${this._onImageLoad}
+                    />
+                  `
+                : html`<ha-icon
+                    icon="mdi:github-circle"
+                    slot="item-icon"
+                  ></ha-icon>`}
+              <paper-item-body three-line
+                >${repo.name}
+                <div secondary>${repo.description}</div>
+                <div secondary>
+                  ${localize("settings.category")}:
+                  ${localize(`common.${repo.category}`)}
+                </div></paper-item-body
+              >
+            </paper-icon-item>`
+          )}
+          ${repositories.length === 0
+            ? html`<p>
+                No repositories found matching your filter
+              </p>`
+            : repositories.length > 100
+            ? html`<p>
+                Only the first 100 repositories are shown, use the search to
+                filter what you need
+              </p>`
+            : ""}
         </div>
       </hacs-dialog>
     `;
