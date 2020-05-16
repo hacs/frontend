@@ -59,10 +59,16 @@ export class HacsRepositoryDialog extends HacsDialogBase {
   }
 
   private async _installRepository(): Promise<void> {
-    this.dispatchEvent(
-      new Event("hacs-dialog-closed", { bubbles: true, composed: true })
-    );
     const repository = selectRepository(this.repositories, this.repository);
-    await repositoryInstall(this.hass, repository.id);
+    this.dispatchEvent(
+      new CustomEvent("hacs-dialog-secondary", {
+        detail: {
+          type: "install",
+          repository: repository.id,
+        },
+        bubbles: true,
+        composed: true,
+      })
+    );
   }
 }

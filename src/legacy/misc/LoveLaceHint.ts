@@ -12,7 +12,6 @@ import { Configuration, RepositoryData } from "../data";
 import { HacsStyle } from "../style/hacs-style";
 import { HomeAssistant } from "custom-card-helpers";
 import { localize } from "../../localize/localize";
-import { GFM } from "../markdown/styles";
 
 @customElement("hacs-lovelace-hint")
 export class LoveLaceHint extends LitElement {
@@ -49,7 +48,7 @@ export class LoveLaceHint extends LitElement {
   static get styles(): CSSResultArray {
     return [
       HacsStyle,
-      GFM,
+
       css`
         .llhint tbody {
           width: 100%;

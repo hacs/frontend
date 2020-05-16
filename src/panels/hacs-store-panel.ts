@@ -66,8 +66,8 @@ export class HacsStorePanel extends LitElement {
       </hacs-tabbed-menu>
 
       <div class="content">
-        ${repositories
-          ? repositories.map(
+        ${repositories?.length !== 0
+          ? repositories?.map(
               (repo) =>
                 html`<hacs-repository-card
                   .hass=${this.hass}
@@ -76,7 +76,10 @@ export class HacsStorePanel extends LitElement {
                   .status=${this.status}
                 ></hacs-repository-card>`
             )
-          : ""}
+          : html`<div class="no-repositories">
+              You do not have any repositories in this section, click the +
+              button to add some.
+            </div>`}
       </div>
       <mwc-fab
         ?narrow="${this.narrow}"
@@ -115,6 +118,11 @@ export class HacsStorePanel extends LitElement {
         grid-gap: 16px 16px;
         padding: 8px 16px 16px;
         margin-bottom: 64px;
+      }
+      .no-repositories {
+        width: 100%;
+        text-align: center;
+        margin-top: 12px;
       }
       paper-item {
         cursor: pointer;

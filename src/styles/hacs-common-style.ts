@@ -21,4 +21,7 @@ export const HacsCommonStyle = css`
     opacity: var(--dark-primary-opacity);
     padding: 8px 0 4px 16px;
   }
+  mwc-button[raised] {
+    border-radius: 10px;
+  }
 `;

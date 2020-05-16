@@ -25,7 +25,6 @@ import {
 
 import emoji from "node-emoji";
 import { markdown } from "../markdown/markdown";
-import { GFM, HLJS } from "../markdown/styles";
 
 @customElement("hacs-repository")
 export class HacsRepository extends LitElement {
@@ -332,8 +331,6 @@ export class HacsRepository extends LitElement {
 
   static get styles(): CSSResultArray {
     return [
-      GFM,
-      HLJS,
       HacsStyle,
       css`
         .loader {

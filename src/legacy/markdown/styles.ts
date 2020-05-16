@@ -1,7 +1,5 @@
-import { css, CSSResultArray } from "lit-element";
-
 // from https://raw.githubusercontent.com/highlightjs/highlight.js/master/src/styles/github.css
-export const HLJS = css`
+export const HLJS = `
   /*
 
 github.com style (c) Vasily Polovnyov <vast@whiteants.net>
@@ -104,14 +102,14 @@ github.com style (c) Vasily Polovnyov <vast@whiteants.net>
 `;
 
 // From https://github.com/sindresorhus/github-markdown-css/blob/gh-pages/github-markdown.css
-const GFM1 = css`
+const GFM1 = `
   @font-face {
     font-family: octicons-link;
     src: url(data:font/woff;charset=utf-8;base64,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)
       format("woff");
   }
 `;
-const GFM2 = css`
+const GFM2 = `
   .markdown-body .octicon {
     display: inline-block;
     fill: currentColor;
@@ -328,6 +326,7 @@ const GFM2 = css`
   .markdown-body pre {
     font-family: monospace, monospace;
     font-size: 1em;
+    background-color: var(--material-secondary-background-color);
   }
 
   .markdown-body hr {
@@ -414,7 +413,7 @@ const GFM2 = css`
     line-height: 10px;
     color: #444d56;
     vertical-align: middle;
-    background-color: #fafbfc;
+    background-color: var(--material-secondary-background-color);
     border: 1px solid #d1d5da;
     border-radius: 3px;
     box-shadow: inset 0 -1px 0 #d1d5da;
@@ -646,7 +645,7 @@ const GFM2 = css`
     line-height: 10px;
     color: #444d56;
     vertical-align: middle;
-    background-color: #fafbfc;
+    background-color: var(--material-secondary-background-color);
     border: 1px solid #d1d5da;
     border-radius: 3px;
     box-shadow: inset 0 -1px 0 #d1d5da;
@@ -675,7 +674,7 @@ const GFM2 = css`
     text-decoration: none;
   }
 `;
-export const GFM3 = css`
+export const GFM3 = `
   .markdown-body blockquote,
   .markdown-body details,
   .markdown-body dl,
@@ -843,7 +842,7 @@ export const GFM3 = css`
     padding: 0.2em 0.4em;
     margin: 0;
     font-size: 85%;
-    background-color: rgba(27, 31, 35, 0.05);
+    background-color: var(--material-secondary-background-color);
     border-radius: 3px;
   }
 
@@ -876,7 +875,7 @@ export const GFM3 = css`
     overflow: auto;
     font-size: 85%;
     line-height: 1.45;
-    background-color: var(--primary-background-color, #f6f8fa);
+    background-color: var(--material-secondary-background-color, #f6f8fa);
     border-radius: var(--ha-card-border-radius, 3px);
   }
 
@@ -1079,4 +1078,4 @@ export const GFM3 = css`
   }
 `;
 
-export const GFM: CSSResultArray = [GFM1, GFM2, GFM3];
+export const GFM = `${GFM1}${GFM2}${GFM3}`;

@@ -86,7 +86,7 @@ export class HacsDialog extends HacsDialogBase {
       HacsCommonStyle,
       css`
         ha-card {
-          background-color: var(--card-background-color);
+          background-color: var(--paper-card-background-color);
         }
         .header-group {
           position: absolute;
@@ -125,7 +125,7 @@ export class HacsDialog extends HacsDialogBase {
         }
 
         .card-content {
-          padding: 65px 4px;
+          padding: 72px 12px 12px 12px;
           max-width: 100%;
         }
 

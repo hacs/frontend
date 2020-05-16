@@ -80,7 +80,12 @@ export class HacsRepositoryCard extends LitElement {
                   >Update</mwc-button
                 >
               </div>`
-            : html`<div></div>`}
+            : ""}
+          <div>
+            <hacs-link .url="https://github.com/${this.repository.full_name}"
+              ><mwc-button>Repository</mwc-button></hacs-link
+            >
+          </div>
           ${this.repository.installed
             ? html` <paper-menu-button
                 horizontal-align="right"
@@ -103,18 +108,20 @@ export class HacsRepositoryCard extends LitElement {
                       >Open issue</paper-item
                     ></hacs-link
                   >
-                  <hacs-link
-                    .url="https://github.com/hacs/integration/issues/new?assignees=ludeeus&labels=flag&template=flag.md&title=${this
-                      .repository.full_name}"
-                    ><paper-item class="pointer uninstall"
-                      >Report for removal</paper-item
-                    ></hacs-link
-                  >
-                  <paper-item
-                    class="pointer uninstall"
-                    @click=${this._uninstallRepository}
-                    >Uninstall</paper-item
-                  >
+                  ${this.repository.id !== "172733314"
+                    ? html`<hacs-link
+                          .url="https://github.com/hacs/integration/issues/new?assignees=ludeeus&labels=flag&template=flag.md&title=${this
+                            .repository.full_name}"
+                          ><paper-item class="pointer uninstall"
+                            >Report for removal</paper-item
+                          ></hacs-link
+                        >
+                        <paper-item
+                          class="pointer uninstall"
+                          @click=${this._uninstallRepository}
+                          >Uninstall</paper-item
+                        >`
+                    : ""}
                 </paper-listbox>
               </paper-menu-button>`
             : ""}
@@ -153,8 +160,17 @@ export class HacsRepositoryCard extends LitElement {
     await repositorySetNotNew(this.hass, this.repository.id);
   }
 
-  private async _installRepository() {
-    await repositoryInstall(this.hass, this.repository.id);
+  private _installRepository() {
+    this.dispatchEvent(
+      new CustomEvent("hacs-dialog", {
+        detail: {
+          type: "install",
+          repository: this.repository.id,
+        },
+        bubbles: true,
+        composed: true,
+      })
+    );
   }
 
   private async _uninstallRepository() {
