@@ -111,7 +111,7 @@ export class HacsDialog extends HacsDialogBase {
           font-size: var(--paper-font-headline_-_font-size);
           font-weight: var(--paper-font-headline_-_font-weight);
           letter-spacing: var(--paper-font-headline_-_letter-spacing);
-          line-height: 26px;
+          line-height: 28px;
           max-height: 26px;
           opacity: var(--dark-primary-opacity);
           overflow: hidden;
@@ -177,6 +177,7 @@ export class HacsDialog extends HacsDialogBase {
           min-width: 350px;
           max-height: calc(90% - 64px);
           max-width: 90%;
+          padding-bottom: 65px;
           z-index: 2;
           overflow-x: hidden;
           height: auto;

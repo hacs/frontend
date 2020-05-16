@@ -79,6 +79,7 @@ export class HacsUpdateDialog extends HacsDialogBase {
       css`
         .content {
           padding: 32px 8px;
+        }
       `,
     ];
   }

@@ -1,3 +1,5 @@
+import "@polymer/paper-item/paper-icon-item";
+import "@polymer/paper-item/paper-item-body";
 import {
   css,
   CSSResultArray,
@@ -30,7 +32,42 @@ export class HacsInstallDialog extends HacsDialogBase {
         .secondary=${this.secondary}
       >
         <div slot="header">${repository.name}</div>
-        <div class="content"></div>
+        <div class="content">
+          <div class="description">${repository.description}</div>
+          ${repository.version_or_commit === "version"
+            ? html`<div class="version-select-container">
+                <paper-dropdown-menu
+                  class="version-select-dropdown"
+                  label="Select version"
+                >
+                  <paper-listbox
+                    id="version"
+                    class="version-select-list"
+                    slot="dropdown-content"
+                    selected="-1"
+                  >
+                    ${repository.releases.map((release) => {
+                      return html`<paper-item
+                        version="${release}"
+                        class="version-select-item"
+                        >${release}</paper-item
+                      >`;
+                    })}
+                    ${repository.full_name === "hacs/integration" ||
+                    repository.hide_default_branch
+                      ? ""
+                      : html`
+                          <paper-item
+                            version="${repository.default_branch}"
+                            class="version-select-item"
+                            >${repository.default_branch}</paper-item
+                          >
+                        `}
+                  </paper-listbox>
+                </paper-dropdown-menu>
+              </div>`
+            : ""}
+        </div>
         <div slot="actions">
           <mwc-button @click=${this._installRepository}>Install</mwc-button>
 
@@ -73,8 +110,27 @@ export class HacsInstallDialog extends HacsDialogBase {
   static get styles(): CSSResultArray {
     return [
       css`
+        .version-select-dropdown {
+          width: 100%;
+        }
         .content {
           padding: 32px 8px;
+        }
+
+        .description {
+          margin-top: -24px;
+          font-style: italic;
+        }
+        paper-menu-button {
+          color: var(--secondary-text-color);
+          padding: 0;
+        }
+        paper-item {
+          cursor: pointer;
+        }
+        paper-item-body {
+          opacity: var(--dark-primary-opacity);
+        }
       `,
     ];
   }

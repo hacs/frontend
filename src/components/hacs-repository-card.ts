@@ -101,6 +101,9 @@ export class HacsRepositoryCard extends LitElement {
                   <paper-item class="pointer" @click=${this._showReopsitoryInfo}
                     >Information</paper-item
                   >
+                  <paper-item @click=${this._installRepository}
+                    >Reinstall</paper-item
+                  >
                   <hacs-link
                     .url="https://github.com/${this.repository
                       .full_name}/issues"
@@ -267,11 +270,14 @@ export class HacsRepositoryCard extends LitElement {
 
         .status-header {
           top: 0;
-          padding: 6px 0;
+          padding: 6px 1px;
+          margin: -1px;
           width: 100%;
           font-weight: 300;
           text-align: center;
           left: 0;
+          border-top-left-radius: var(--ha-card-border-radius);
+          border-top-right-radius: var(--ha-card-border-radius);
         }
         .uninstall {
           color: var(--hacs-error-color, var(--google-red-500));
