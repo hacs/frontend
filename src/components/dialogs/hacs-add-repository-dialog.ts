@@ -1,5 +1,6 @@
 import "@polymer/paper-item/paper-icon-item";
 import "@polymer/paper-item/paper-item-body";
+import memoizeOne from "memoize-one";
 import {
   customElement,
   html,
@@ -12,6 +13,7 @@ import { HacsDialogBase } from "./hacs-dialog-base";
 import { Repository, sortRepositoriesByName } from "../../data/common";
 
 import { localize } from "../../localize/localize";
+import { repositoriesInActiveCategory } from "../../tools/filter";
 
 import "../hacs-search";
 
@@ -34,11 +36,35 @@ export class HacsAddRepositoryDialog extends HacsDialogBase {
   protected render(): TemplateResult | void {
     this._searchInput = window.localStorage.getItem("hacs-search");
     if (!this.active) return html``;
-    const repositories = this.repositories?.filter(
-      (repo) =>
-        !repo.installed &&
-        this.configuration.categories.includes(repo.category) &&
-        this._searchFilter(repo)
+    const repositoryCards = sortRepositoriesByName(
+      repositoriesInActiveCategory(
+        this.repositories,
+        this.configuration?.categories
+      )?.filter((repo) => this._searchFilter(repo))
+    )?.map(
+      (repo) => html`<paper-icon-item
+        class=${classMap({ narrow: this.narrow })}
+        @click=${() => this._openInformation(repo)}
+      >
+        ${repo.category === "integration"
+          ? html`
+              <img
+                src="https://brands.home-assistant.io/_/${repo.domain}/icon.png"
+                referrerpolicy="no-referrer"
+                @error=${this._onImageError}
+                @load=${this._onImageLoad}
+              />
+            `
+          : html`<ha-icon icon="mdi:github-circle" slot="item-icon"></ha-icon>`}
+        <paper-item-body three-line
+          >${repo.name}
+          <div secondary>${repo.description}</div>
+          <div secondary>
+            ${localize("settings.category")}:
+            ${localize(`common.${repo.category}`)}
+          </div></paper-item-body
+        >
+      </paper-icon-item>`
     );
     return html`
       <hacs-dialog
@@ -53,34 +79,7 @@ export class HacsAddRepositoryDialog extends HacsDialogBase {
             @input=${this._inputValueChanged}
           ></hacs-search>
           <div class="list"></div>
-          ${sortRepositoriesByName(repositories)?.map(
-            (repo) => html`<paper-icon-item
-              class=${classMap({ narrow: this.narrow })}
-              @click=${() => this._openInformation(repo)}
-            >
-              ${repo.category === "integration"
-                ? html`
-                    <img
-                      src="https://brands.home-assistant.io/_/${repo.domain}/icon.png"
-                      referrerpolicy="no-referrer"
-                      @error=${this._onImageError}
-                      @load=${this._onImageLoad}
-                    />
-                  `
-                : html`<ha-icon
-                    icon="mdi:github-circle"
-                    slot="item-icon"
-                  ></ha-icon>`}
-              <paper-item-body three-line
-                >${repo.name}
-                <div secondary>${repo.description}</div>
-                <div secondary>
-                  ${localize("settings.category")}:
-                  ${localize(`common.${repo.category}`)}
-                </div></paper-item-body
-              >
-            </paper-icon-item>`
-          )}
+          ${repositoryCards}
         </div>
       </hacs-dialog>
     `;
@@ -158,6 +157,7 @@ export class HacsAddRepositoryDialog extends HacsDialogBase {
       }
       paper-icon-item.narrow {
         border-bottom: 1px solid var(--divider-color);
+        padding: 8px 0;
       }
       paper-item-body div {
         font-size: 14px;

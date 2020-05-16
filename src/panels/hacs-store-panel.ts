@@ -21,7 +21,8 @@ import "../components/hacs-repository-card";
 import "../components/hacs-search";
 import "../components/hacs-tabbed-menu";
 
-import { sections, panelEnabled } from "./hacs-sections";
+import { sections } from "./hacs-sections";
+import { panelsEnabled, repositoriesInActiveSection } from "../tools/filter";
 
 @customElement("hacs-store-panel")
 export class HacsStorePanel extends LitElement {
@@ -34,22 +35,13 @@ export class HacsStorePanel extends LitElement {
   @property({ attribute: false }) public status: Status;
   @property() public section!: string;
 
-  private _filteredRepositories = () =>
-    this.repositories?.filter(
-      (repo) =>
-        sections.panels
-          .find((section) => section.id === this.section)
-          .categories?.includes(repo.category) &&
-        (repo.installed || repo.new)
-    );
-
   protected render(): TemplateResult | void {
-    const repositories = sortRepositoriesByName(this._filteredRepositories());
+    const repositories = sortRepositoriesByName(
+      repositoriesInActiveSection(this.repositories, sections, this.section)
+    );
     return html`<hacs-tabbed-layout
       .hass=${this.hass}
-      .tabs=${sections.panels.filter((panel) => {
-        return panelEnabled(panel.id, this.configuration);
-      })}
+      .tabs=${panelsEnabled(sections, this.configuration)}
       .route=${this.route}
       .narrow=${this.narrow}
       .selected=${this.section}

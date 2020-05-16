@@ -22,13 +22,18 @@ export class HacsAboutDialog extends HacsDialogBase {
         .narrow=${this.narrow}
         .hass=${this.hass}
       >
-        <div slot="header">Home Asisstant Community Store</div>
+        <div slot="header">
+          ${this.narrow ? "HACS" : "Home Asisstant Community Store"}
+        </div>
         <div class="content">
           ${markdown.html(`
 **Integration version:** | ${this.configuration.version}
 --|--
 **Frontend version:** | ${version}
 **Repositories:** | ${this.repositories.length}
+**Installed repositories:** | ${
+            this.repositories.filter((repo) => repo.installed).length
+          }
 
 **Useful links:**
 

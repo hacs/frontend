@@ -19,9 +19,3 @@ export const sections = {
     },
   ],
 };
-
-export const panelEnabled = (panel: string, config: Configuration) => {
-  const categories = sections.panels.find((p) => p.id === panel).categories;
-  if (categories === undefined) return true;
-  return categories.filter((c) => config?.categories.includes(c)).length !== 0;
-};
