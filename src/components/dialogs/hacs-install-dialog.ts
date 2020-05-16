@@ -33,7 +33,6 @@ export class HacsInstallDialog extends HacsDialogBase {
       >
         <div slot="header">${repository.name}</div>
         <div class="content">
-          <div class="description">${repository.description}</div>
           ${repository.version_or_commit === "version"
             ? html`<div class="version-select-container">
                 <paper-dropdown-menu
@@ -117,10 +116,6 @@ export class HacsInstallDialog extends HacsDialogBase {
           padding: 32px 8px;
         }
 
-        .description {
-          margin-top: -24px;
-          font-style: italic;
-        }
         paper-menu-button {
           color: var(--secondary-text-color);
           padding: 0;
