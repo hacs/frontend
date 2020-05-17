@@ -176,14 +176,14 @@ export class HacsTabbedLayout extends LitElement {
       .content {
         position: relative;
         width: 100%;
-        height: calc(100% - 65px);
+        height: calc(100vh - 65px);
         overflow-y: auto;
         overflow: auto;
         -webkit-overflow-scrolling: touch;
       }
 
       :host([narrow]) .content {
-        height: calc(100% - 128px);
+        height: calc(100vh - 128px);
       }
 
       .toolbar-button {

@@ -95,10 +95,9 @@ export class HacsDialog extends HacsDialogBase {
           align-items: center;
           font-size: 20px;
           height: 65px;
-          background-color: var(--secondary-background-color);
+          background-color: var(--primary-background-color);
           border-bottom: 1px solid var(--divider-color);
           font-weight: 400;
-          color: var(--sidebar-text-color);
           font-family: var(--paper-font-body1_-_font-family);
           padding: 12px 16px;
           box-sizing: border-box;

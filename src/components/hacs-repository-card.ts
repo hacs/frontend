@@ -11,11 +11,7 @@ import { classMap } from "lit-html/directives/class-map";
 
 import { HacsCommonStyle } from "../styles/hacs-common-style";
 import { Repository } from "../data/common";
-import {
-  repositoryInstall,
-  repositorySetNotNew,
-  repositoryUninstall,
-} from "../data/websocket";
+import { repositorySetNotNew, repositoryUninstall } from "../data/websocket";
 import { HomeAssistant } from "custom-card-helpers";
 
 @customElement("hacs-repository-card")
@@ -69,6 +65,12 @@ export class HacsRepositoryCard extends LitElement {
                   >
                 </div>
                 <div>
+                  <hacs-link
+                    .url="https://github.com/${this.repository.full_name}"
+                    ><mwc-button>Repository</mwc-button></hacs-link
+                  >
+                </div>
+                <div>
                   <mwc-button @click=${this._setNotNew}>Hide</mwc-button>
                 </div>`
             : this.repository.pending_upgrade
@@ -80,12 +82,12 @@ export class HacsRepositoryCard extends LitElement {
                   >Update</mwc-button
                 >
               </div>`
-            : ""}
-          <div>
-            <hacs-link .url="https://github.com/${this.repository.full_name}"
-              ><mwc-button>Repository</mwc-button></hacs-link
-            >
-          </div>
+            : html`<div>
+                <hacs-link
+                  .url="https://github.com/${this.repository.full_name}"
+                  ><mwc-button>Repository</mwc-button></hacs-link
+                >
+              </div>`}
           ${this.repository.installed
             ? html` <paper-menu-button
                 horizontal-align="right"
@@ -111,7 +113,7 @@ export class HacsRepositoryCard extends LitElement {
                       >Open issue</paper-item
                     ></hacs-link
                   >
-                  ${this.repository.id !== "172733314"
+                  ${String(this.repository.id) !== "172733314"
                     ? html`<hacs-link
                           .url="https://github.com/hacs/integration/issues/new?assignees=ludeeus&labels=flag&template=flag.md&title=${this
                             .repository.full_name}"

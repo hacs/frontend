@@ -5,18 +5,25 @@ import {
   property,
   css,
 } from "lit-element";
+import memoizeOne from "memoize-one";
+
 import { HacsDialogBase } from "./hacs-dialog-base";
-import { selectRepository } from "../../data/common";
+import { Repository } from "../../data/common";
 import { markdown } from "../../legacy/markdown/markdown";
 
-import { repositoryUpdate, repositoryInstall } from "../../data/websocket";
+import { repositoryUpdate } from "../../data/websocket";
 
 @customElement("hacs-repository-info-dialog")
 export class HacsRepositoryDialog extends HacsDialogBase {
   @property() public repository?: string;
 
+  private _getRepository = memoizeOne(
+    (repositories: Repository[], repository: string) =>
+      repositories?.find((repo) => repo.id === repository)
+  );
+
   protected async firstUpdated() {
-    const repository = selectRepository(this.repositories, this.repository);
+    const repository = this._getRepository(this.repositories, this.repository);
     if (!repository.updated_info) {
       await repositoryUpdate(this.hass, repository.id);
     }
@@ -24,7 +31,7 @@ export class HacsRepositoryDialog extends HacsDialogBase {
 
   protected render(): TemplateResult | void {
     if (!this.active) return html``;
-    const repository = selectRepository(this.repositories, this.repository);
+    const repository = this._getRepository(this.repositories, this.repository);
     return html`
       <hacs-dialog
         .active=${this.active}
@@ -59,7 +66,7 @@ export class HacsRepositoryDialog extends HacsDialogBase {
   }
 
   private async _installRepository(): Promise<void> {
-    const repository = selectRepository(this.repositories, this.repository);
+    const repository = this._getRepository(this.repositories, this.repository);
     this.dispatchEvent(
       new CustomEvent("hacs-dialog-secondary", {
         detail: {

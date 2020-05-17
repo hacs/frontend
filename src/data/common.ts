@@ -96,15 +96,6 @@ export interface Repository {
   version_or_commit: string;
 }
 
-export const selectRepository = (
-  repositories: Repository[],
-  repository: string
-): Repository => {
-  return repositories?.find((repo) => {
-    return repo.id === repository;
-  });
-};
-
 export const sortRepositoriesByName = (
   repositories: Repository[]
 ): Repository[] => {

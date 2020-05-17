@@ -1,5 +1,7 @@
 import "@polymer/paper-item/paper-icon-item";
 import "@polymer/paper-item/paper-item-body";
+import memoizeOne from "memoize-one";
+
 import {
   css,
   CSSResultArray,
@@ -10,20 +12,29 @@ import {
 } from "lit-element";
 
 import {
+  repositoryToggleBeta,
   repositoryInstall,
+  getRepositories,
   repositoryInstallVersion,
 } from "../../data/websocket";
 import { HacsDialogBase } from "./hacs-dialog-base";
-import { selectRepository } from "../../data/common";
+import { Repository } from "../../data/common";
 import "./hacs-dialog";
 
 @customElement("hacs-install-dialog")
 export class HacsInstallDialog extends HacsDialogBase {
   @property() public repository?: string;
+  @property() private _toggle: boolean = false;
+
+  private _getRepository = memoizeOne(
+    (repositories: Repository[], repository: string) =>
+      repositories?.find((repo) => repo.id === repository)
+  );
 
   protected render(): TemplateResult | void {
     if (!this.active) return html``;
-    const repository = selectRepository(this.repositories, this.repository);
+    const repository = this._getRepository(this.repositories, this.repository);
+    console.log(repository);
     return html`
       <hacs-dialog
         .active=${this.active}
@@ -34,41 +45,54 @@ export class HacsInstallDialog extends HacsDialogBase {
         <div slot="header">${repository.name}</div>
         <div class="content">
           ${repository.version_or_commit === "version"
-            ? html`<div class="version-select-container">
-                <paper-dropdown-menu
-                  class="version-select-dropdown"
-                  label="Select version"
-                >
-                  <paper-listbox
-                    id="version"
-                    class="version-select-list"
-                    slot="dropdown-content"
-                    selected="-1"
+            ? html`<div class="beta-container">
+                  <ha-switch
+                    ?disabled=${this._toggle}
+                    .checked=${repository.beta}
+                    @change=${this._toggleBeta}
+                    >Show beta versions</ha-switch
                   >
-                    ${repository.releases.map((release) => {
-                      return html`<paper-item
-                        version="${release}"
-                        class="version-select-item"
-                        >${release}</paper-item
-                      >`;
-                    })}
-                    ${repository.full_name === "hacs/integration" ||
-                    repository.hide_default_branch
-                      ? ""
-                      : html`
-                          <paper-item
-                            version="${repository.default_branch}"
-                            class="version-select-item"
-                            >${repository.default_branch}</paper-item
-                          >
-                        `}
-                  </paper-listbox>
-                </paper-dropdown-menu>
-              </div>`
+                </div>
+                <div class="version-select-container">
+                  <paper-dropdown-menu
+                    ?disabled=${this._toggle}
+                    class="version-select-dropdown"
+                    label="Select version"
+                  >
+                    <paper-listbox
+                      id="version"
+                      class="version-select-list"
+                      slot="dropdown-content"
+                      selected="-1"
+                    >
+                      ${repository.releases.map((release) => {
+                        return html`<paper-item
+                          version="${release}"
+                          class="version-select-item"
+                          >${release}</paper-item
+                        >`;
+                      })}
+                      ${repository.full_name === "hacs/integration" ||
+                      repository.hide_default_branch
+                        ? ""
+                        : html`
+                            <paper-item
+                              version="${repository.default_branch}"
+                              class="version-select-item"
+                              >${repository.default_branch}</paper-item
+                            >
+                          `}
+                    </paper-listbox>
+                  </paper-dropdown-menu>
+                </div>`
             : ""}
         </div>
         <div slot="actions">
-          <mwc-button @click=${this._installRepository}>Install</mwc-button>
+          <mwc-button
+            ?disabled=${this._toggle}
+            @click=${this._installRepository}
+            >Install</mwc-button
+          >
 
           <hacs-link .url="https://github.com/${repository.full_name}"
             ><mwc-button>Repository</mwc-button></hacs-link
@@ -76,6 +100,13 @@ export class HacsInstallDialog extends HacsDialogBase {
         </div>
       </hacs-dialog>
     `;
+  }
+
+  private async _toggleBeta(): Promise<void> {
+    this._toggle = true;
+    await repositoryToggleBeta(this.hass, this.repository);
+    this.repositories = await getRepositories(this.hass);
+    this._toggle = false;
   }
 
   private async _installRepository(): Promise<void> {
@@ -91,7 +122,7 @@ export class HacsInstallDialog extends HacsDialogBase {
         composed: true,
       })
     );
-    const repository = selectRepository(this.repositories, this.repository);
+    const repository = this._getRepository(this.repositories, this.repository);
     if (
       repository.version_or_commit !== "commit" &&
       repository.selected_tag !== repository.available_version

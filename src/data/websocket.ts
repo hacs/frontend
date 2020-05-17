@@ -57,6 +57,17 @@ export const repositoryUninstall = async (
   });
 };
 
+export const repositoryToggleBeta = async (
+  hass: HomeAssistant,
+  repository: string
+) => {
+  await hass.connection.sendMessagePromise<void>({
+    type: "hacs/repository",
+    action: "toggle_beta",
+    repository: repository,
+  });
+};
+
 export const repositoryInstallVersion = async (
   hass: HomeAssistant,
   repository: string,

@@ -1,5 +1,7 @@
 import { customElement, html, TemplateResult, property } from "lit-element";
-import { selectRepository } from "../../data/common";
+import memoizeOne from "memoize-one";
+
+import { Repository } from "../../data/common";
 import { HacsDialogBase } from "./hacs-dialog-base";
 import { markdown } from "../../legacy/markdown/markdown";
 
@@ -10,9 +12,14 @@ export class HacsGenericDialog extends HacsDialogBase {
   @property() public header?: string;
   @property() public content?: string;
 
+  private _getRepository = memoizeOne(
+    (repositories: Repository[], repository: string) =>
+      repositories?.find((repo) => repo.id === repository)
+  );
+
   protected render(): TemplateResult | void {
     if (!this.active) return html``;
-    const repository = selectRepository(this.repositories, this.repository);
+    const repository = this._getRepository(this.repositories, this.repository);
     return html`
       <hacs-dialog
         .active=${this.active}

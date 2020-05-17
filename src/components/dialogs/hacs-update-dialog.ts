@@ -6,22 +6,28 @@ import {
   TemplateResult,
   property,
 } from "lit-element";
+import memoizeOne from "memoize-one";
 
 import {
   repositoryInstall,
   repositoryInstallVersion,
 } from "../../data/websocket";
 import { HacsDialogBase } from "./hacs-dialog-base";
-import { selectRepository } from "../../data/common";
+import { Repository } from "../../data/common";
 import "./hacs-dialog";
 
 @customElement("hacs-update-dialog")
 export class HacsUpdateDialog extends HacsDialogBase {
   @property() public repository?: string;
 
+  private _getRepository = memoizeOne(
+    (repositories: Repository[], repository: string) =>
+      repositories?.find((repo) => repo.id === repository)
+  );
+
   protected render(): TemplateResult | void {
     if (!this.active) return html``;
-    const repository = selectRepository(this.repositories, this.repository);
+    const repository = this._getRepository(this.repositories, this.repository);
     return html`
       <hacs-dialog
         .active=${this.active}
@@ -51,7 +57,7 @@ export class HacsUpdateDialog extends HacsDialogBase {
     this.dispatchEvent(
       new Event("hacs-dialog-closed", { bubbles: true, composed: true })
     );
-    const repository = selectRepository(this.repositories, this.repository);
+    const repository = this._getRepository(this.repositories, this.repository);
     if (
       repository.version_or_commit !== "commit" &&
       repository.selected_tag !== repository.available_version
@@ -67,7 +73,7 @@ export class HacsUpdateDialog extends HacsDialogBase {
   }
 
   private _getChanglogURL(): string {
-    const repository = selectRepository(this.repositories, this.repository);
+    const repository = this._getRepository(this.repositories, this.repository);
     if (repository.version_or_commit === "commit") {
       return `https://github.com/${repository.full_name}/compare/${repository.installed_version}...${repository.available_version}`;
     }
