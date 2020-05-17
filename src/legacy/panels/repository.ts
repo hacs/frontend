@@ -52,7 +52,7 @@ export class HacsRepository extends LitElement {
       if (propName === "hacs") {
         const _repository = this.repository;
         const _repositories = this.hacs.repositories.filter(function (repo) {
-          return repo.id === _repository;
+          return String(repo.id) === String(_repository);
         });
         const repo = _repositories[0];
 
@@ -67,8 +67,7 @@ export class HacsRepository extends LitElement {
   }
 
   protected firstUpdated() {
-    if (this.repo === undefined || !this.repo.updated_info) {
-      this.repo.status = "other";
+    if (!this.repo?.updated_info) {
       this.dispatchEvent(
         new CustomEvent("hacs-repository-action", {
           detail: {

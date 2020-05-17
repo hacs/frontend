@@ -5,7 +5,7 @@ import {
   html,
   customElement,
   css,
-  property
+  property,
 } from "lit-element";
 import { HomeAssistant } from "custom-card-helpers";
 import { HACS } from "../Hacs";
@@ -17,7 +17,7 @@ import {
   ValueChangedEvent,
   Route,
   LovelaceConfig,
-  LovelaceResourceConfig
+  LovelaceResourceConfig,
 } from "../data";
 
 import { OviewItemBuilder } from "../misc/OviewItemBuilder";
@@ -78,9 +78,7 @@ export class HacsStore extends LitElement {
 
   protected render(): TemplateResult | void {
     if (this.repositories === undefined)
-      return html`
-        <hacs-progressbar></hacs-progressbar>
-      `;
+      return html` <hacs-progressbar></hacs-progressbar> `;
 
     const builder = new OviewItemBuilder(
       this.hass,
@@ -94,7 +92,7 @@ export class HacsStore extends LitElement {
     this.search = localStorage.getItem("hacs-search");
     this.sort = localStorage.getItem("hacs-sort");
 
-    var repositories = this.repositories.filter(repository => {
+    var repositories = this.repositories.filter((repository) => {
       // Hide hidden repos from the store
       if (repository.hide) return false;
 
@@ -108,7 +106,7 @@ export class HacsStore extends LitElement {
       // Check if repository category matches store
       if (repository.category === this.store) {
         // Hide HACS from stores
-        if (repository.id === "172733314") return false;
+        if (String(repository.id) === "172733314") return false;
 
         // Search filter
         if (this.search !== "") {
@@ -223,7 +221,7 @@ export class HacsStore extends LitElement {
                 </div>
                 ${new_repositories
                   .sort((a, b) => (this.SortRepo(a, b) ? 1 : -1))
-                  .map(repository => {
+                  .map((repository) => {
                     return builder.render(repository);
                   })}
                 <div class="card-group">
@@ -240,7 +238,7 @@ export class HacsStore extends LitElement {
         <div class="card-group">
           ${repositories
             .sort((a, b) => (this.SortRepo(a, b) ? 1 : -1))
-            .map(repository => {
+            .map((repository) => {
               return builder.render(repository);
             })}
         </div>
@@ -305,7 +303,7 @@ export class HacsStore extends LitElement {
             var(--primary-background-color)
           );
         }
-      `
+      `,
     ];
   }
 }
