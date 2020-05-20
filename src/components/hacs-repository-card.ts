@@ -21,6 +21,7 @@ export class HacsRepositoryCard extends LitElement {
   @property({ attribute: false }) public repository!: Repository;
 
   protected render(): TemplateResult | void {
+    const path = this.repository.local_path.split("/");
     return html`
       <ha-card
         class=${classMap({
@@ -106,6 +107,17 @@ export class HacsRepositoryCard extends LitElement {
                   <paper-item @click=${this._installRepository}
                     >Reinstall</paper-item
                   >
+                  ${this.repository.category === "plugin"
+                    ? html`<hacs-link
+                        .url="/hacsfiles/${path.pop()}/${this.repository
+                          .file_name}"
+                        newtab
+                        ><paper-item class="pointer"
+                          >Open source</paper-item
+                        ></hacs-link
+                      >`
+                    : ""}
+
                   <hacs-link
                     .url="https://github.com/${this.repository
                       .full_name}/issues"

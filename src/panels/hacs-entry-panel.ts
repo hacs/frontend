@@ -14,6 +14,7 @@ import { HomeAssistant } from "custom-card-helpers";
 import {
   Route,
   Status,
+  Message,
   Repository,
   LovelaceResource,
   Configuration,
@@ -50,7 +51,38 @@ export class HacsEntryPanel extends LitElement {
     }
   );
 
+  private _getMessages = memoizeOne((status: Status) => {
+    const messages: Message[] = [];
+    if (status.startup) {
+      messages.push({
+        title: "HACS is starting up",
+        content:
+          "HACS is starting up, during this time some information might be missing or incorrect",
+        severity: "information",
+      });
+    }
+
+    if (status.has_pending_tasks) {
+      messages.push({
+        title: "Background tasks pending",
+        content: "Some repositories might not show untill this is completed",
+        severity: "warning",
+      });
+    }
+
+    if (status.disabled) {
+      messages.push({
+        title: "HACS is disabled",
+        content: "Check your log file for more details",
+        severity: "error",
+      });
+    }
+    return messages;
+  });
+
   protected render(): TemplateResult | void {
+    const messages: Message[] = this._getMessages(this.status);
+
     sections.updates = []; // reset so we don't get duplicates
     this.repositories?.forEach((repo) => {
       if (repo.pending_upgrade) {
@@ -66,10 +98,33 @@ export class HacsEntryPanel extends LitElement {
         .route=${this.route}
         .narrow=${this.narrow}
         .header=${this.narrow ? "HACS" : "Home Assistant Community Store"}
-        intro="${sections.updates.length === 0
+        intro="${sections.updates.length === 0 && messages.length === 0
           ? "Updates and important messages will show here if there are any"
           : ""}"
       >
+        ${messages.length !== 0
+          ? html` <ha-card>
+              <div class="header">Information</div>
+              ${messages.map(
+                (message) =>
+                  html`
+                    <paper-icon-item>
+                      <ha-icon
+                        class="${message.severity}"
+                        icon="mdi:alert-circle"
+                        slot="item-icon"
+                      ></ha-icon>
+                      <paper-item-body two-line>
+                        ${message.title}
+                        <div secondary>
+                          ${message.content}
+                        </div>
+                      </paper-item-body>
+                    </paper-icon-item>
+                  `
+              )}
+            </ha-card>`
+          : ""}
         ${sections.updates.length !== 0
           ? html` <ha-card>
               <div class="header">${localize("store.pending_upgrades")}</div>

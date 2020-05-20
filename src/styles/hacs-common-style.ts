@@ -13,9 +13,11 @@ export const HacsCommonStyle = css`
     text-decoration: none;
     color: var(--link-text-color, var(--accent-color));
   }
-  .pending_upgrade {
+  .pending_upgrade,
+  .warning {
     color: orange;
   }
+
   .header {
     font-size: var(--paper-font-headline_-_font-size);
     opacity: var(--dark-primary-opacity);

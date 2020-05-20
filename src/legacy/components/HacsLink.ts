@@ -10,12 +10,20 @@ import {
 
 @customElement("hacs-link")
 export class HacsLink extends LitElement {
+  @property({ type: Boolean }) public newtab: boolean = false;
   @property() private url!: string;
   protected render(): TemplateResult | void {
     const external = this.url.includes("http");
     if (external) {
       return html`
         <a href="${this.url}" target="_blank" rel="noreferrer">
+          <slot></slot>
+        </a>
+      `;
+    }
+    if (this.newtab) {
+      return html`
+        <a href="${this.url}" target="_blank">
           <slot></slot>
         </a>
       `;
@@ -31,8 +39,8 @@ export class HacsLink extends LitElement {
     return [
       css`
         a {
-          color: var(--link-text-color, var(--accent-color));
-          text-decoration: none;
+          color: var(--hacs-link-text-color, var(--accent-color));
+          text-decoration: var(--hacs-link-text-decoration, none);
         }
       `,
     ];

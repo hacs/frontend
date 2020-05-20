@@ -30,12 +30,19 @@ export interface Status {
   startup: boolean;
   manage_mode: boolean;
   upgrading_all: boolean;
+  has_pending_tasks: boolean;
 }
 
 export interface LovelaceResource {
   type: "css" | "js" | "module" | "html";
   url: string;
   id?: string;
+}
+
+export interface Message {
+  title: string;
+  content: string;
+  severity: "information" | "warning" | "error" | "critical";
 }
 
 export interface LocationChangedEvent {
@@ -78,6 +85,7 @@ export interface Repository {
   info: string;
   installed_version: string;
   installed: boolean;
+  issues: number;
   javascript_type: string;
   last_updated: string;
   local_path: string;
