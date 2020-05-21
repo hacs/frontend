@@ -32,6 +32,19 @@ export class HacsRepositoryDialog extends HacsDialogBase {
     repository.authors.forEach((author) =>
       authors.push(author.replace("@", ""))
     );
+    if (authors.length === 0) {
+      const author = repository.full_name.split("/")[0];
+      if (
+        [
+          "custom-cards",
+          "custom-components",
+          "home-assistant-community-themes",
+        ].includes(author)
+      ) {
+        return authors;
+      }
+      authors.push(author);
+    }
     return authors;
   });
 
