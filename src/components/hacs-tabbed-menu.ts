@@ -14,7 +14,7 @@ import {
   Repository,
   LovelaceResource,
 } from "../data/common";
-
+import { localize } from "../localize/localize";
 import { settingsClearAllNewRepositories } from "../data/websocket";
 
 @customElement("hacs-tabbed-menu")
@@ -41,14 +41,14 @@ export class HacsTabbedMenu extends LitElement {
       ></ha-icon-button>
       <paper-listbox slot="dropdown-content">
         <hacs-link url="https://hacs.xyz/"
-          ><paper-item>Documentation</paper-item></hacs-link
+          ><paper-item>${localize("menu.documentation")}</paper-item></hacs-link
         >
         <paper-item @click=${() => window.location.reload(true)}
-          >Reload window</paper-item
+          >${localize("menu.reload")}</paper-item
         >
         ${this.repositories?.filter((repo) => repo.new).length !== 0
           ? html` <paper-item @click=${this._clearAllNewRepositories}
-              >Clear all new</paper-item
+              >${localize("menu.clear")}</paper-item
             >`
           : ""}
 
@@ -56,15 +56,17 @@ export class HacsTabbedMenu extends LitElement {
           ><paper-item>GitHub</paper-item></hacs-link
         >
         <hacs-link url="https://hacs.xyz/docs/issues"
-          ><paper-item>Open issue</paper-item></hacs-link
+          ><paper-item>${localize("menu.open_issue")}</paper-item></hacs-link
         >
         ${!this.status?.disabled && !this.status?.background_task
           ? html`<paper-item @click=${this._showCustomRepositoriesDialog}
-              >Custom repositories</paper-item
+              >${localize("menu.custom_repositories")}</paper-item
             >`
           : ""}
 
-        <paper-item @click=${this._showAboutDialog}>About HACS</paper-item>
+        <paper-item @click=${this._showAboutDialog}
+          >${localize("menu.about")}</paper-item
+        >
       </paper-listbox>
     </paper-menu-button>`;
   }

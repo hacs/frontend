@@ -45,47 +45,31 @@ export function localize(
     zh_Hans: zh_Hans,
   };
 
-  let subsection: string;
-  let section: string;
-  let key: string;
-
-  let translated: string;
+  let translated: any;
 
   const split = string.split(".");
-
-  if (split.length === 3) {
-    section = split[0];
-    subsection = split[1];
-    key = split[2];
-  } else {
-    section = split[0];
-    key = split[1];
-  }
 
   const lang = (localStorage.getItem("selectedLanguage") || "en")
     .replace(/['"]+/g, "")
     .replace("-", "_");
 
   try {
-    if (subsection !== undefined) {
-      translated = languages[lang][section][subsection][key];
-    } else {
-      translated = languages[lang][section][key];
-    }
+    translated = languages[lang];
+    split.forEach((section) => {
+      translated = translated[section];
+    });
   } catch (e) {
-    if (subsection !== undefined) {
-      translated = languages["en"][section][subsection][key];
-    } else {
-      translated = languages["en"][section][key];
-    }
+    translated = languages["en"];
+    split.forEach((section) => {
+      translated = translated[section];
+    });
   }
 
   if (translated === undefined) {
-    if (subsection !== undefined) {
-      translated = languages["en"][section][subsection][key];
-    } else {
-      translated = languages["en"][section][key];
-    }
+    translated = languages["en"];
+    split.forEach((section) => {
+      translated = translated[section];
+    });
   }
 
   if (search !== undefined && replace !== undefined) {

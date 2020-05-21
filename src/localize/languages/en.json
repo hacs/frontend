@@ -37,6 +37,7 @@
     "theme_plural": "Themes",
     "themes": "Themes",
     "update": "Update",
+    "uninstall": "Uninstall",
     "version": "Version"
   },
   "confirm": {
@@ -152,6 +153,9 @@
     "descending": "descending",
     "last_updated": "Last updated",
     "name": "Name",
+    "no_repositories": "No repositories",
+    "no_repositories_desc1": "It seems like you don't have any repositories installed in this section yet.",
+    "no_repositories_desc2": "Click on the + in the bottom corner to add your first!",
     "new_repositories": "New Repositories",
     "pending_upgrades": "Pending upgrades",
     "placeholder_search": "Please enter a search term...",
@@ -213,5 +217,46 @@
     "installed_version": "Installed version",
     "available_version": "Available version",
     "changelog": "Changelog"
+  },
+  "repository_card": {
+    "pending_update": "Pending update",
+    "new_repository": "New repository",
+    "hide": "Hide",
+    "open_source": "Open source",
+    "open_issue": "Open issue",
+    "reinstall": "Reinstall",
+    "report": "Report for removal",
+    "information": "Information",
+    "update_information": "Update information"
+  },
+  "search": {
+    "placeholder": "Search for repository"
+  },
+  "menu": {
+    "about": "About HACS",
+    "custom_repositories": "Custom repositories",
+    "open_issue": "Open issue",
+    "clear": "Clear all new",
+    "reload": "Reload window",
+    "documentation": "Documentation"
+  },
+  "entry": {
+    "messages": {
+      "startup": {
+        "title": "HACS is starting up",
+        "content": "HACS is starting up, during this time some information might be missing or incorrect"
+      },
+      "has_pending_tasks": {
+        "title": "Background tasks pending",
+        "content": "Some repositories might not show untill this is completed"
+      },
+      "disabled": {
+        "title": "HACS is disabled",
+        "content": "Check your log file for more details"
+      }
+    },
+    "intro": "Updates and important messages will show here if there are any",
+    "information": "Information",
+    "pending_updates": "Pending updates"
   }
 }

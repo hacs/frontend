@@ -21,7 +21,7 @@ import "../layout/hacs-tabbed-layout";
 import "../components/hacs-repository-card";
 import "../components/hacs-search";
 import "../components/hacs-tabbed-menu";
-
+import { localize } from "../localize/localize";
 import { HacsCommonStyle } from "../styles/hacs-common-style";
 import { sections } from "./hacs-sections";
 
@@ -98,11 +98,11 @@ export class HacsStorePanel extends LitElement {
                 ></hacs-repository-card>`
             )
           : html`<ha-card class="no-repositories">
-              <div class="header">No repositories 😕</div>
+              <div class="header">${localize("store.no_repositories")} 😕</div>
               <p>
-                It seems like you don't have any repositories installed in this
-                section yet.<br />Click on the + in the bottom corner to add
-                your first!
+                ${localize("store.no_repositories_desc1")}<br />${localize(
+                  "store.no_repositories_desc2"
+                )}
               </p>
             </ha-card>`}
       </div>

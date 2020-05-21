@@ -53,27 +53,26 @@ export class HacsEntryPanel extends LitElement {
 
   private _getMessages = memoizeOne((status: Status) => {
     const messages: Message[] = [];
-    if (status?.startup) {
+    if (!status?.startup) {
       messages.push({
-        title: "HACS is starting up",
-        content:
-          "HACS is starting up, during this time some information might be missing or incorrect",
+        title: localize("entry.messages.startup.title"),
+        content: localize("entry.messages.startup.content"),
         severity: "information",
       });
     }
 
     if (status?.has_pending_tasks) {
       messages.push({
-        title: "Background tasks pending",
-        content: "Some repositories might not show untill this is completed",
+        title: localize("entry.messages.has_pending_tasks.title"),
+        content: localize("entry.messages.has_pending_tasks.content"),
         severity: "warning",
       });
     }
 
     if (status?.disabled) {
       messages.push({
-        title: "HACS is disabled",
-        content: "Check your log file for more details",
+        title: localize("entry.messages.disabled.title"),
+        content: localize("entry.messages.disabled.content"),
         severity: "error",
       });
     }
@@ -99,12 +98,12 @@ export class HacsEntryPanel extends LitElement {
         .narrow=${this.narrow}
         .header=${this.narrow ? "HACS" : "Home Assistant Community Store"}
         intro="${sections.updates.length === 0 && messages.length === 0
-          ? "Updates and important messages will show here if there are any"
+          ? localize("entry.intro")
           : ""}"
       >
         ${messages.length !== 0
           ? html` <ha-card>
-              <div class="header">Information</div>
+              <div class="header">${localize("entry.information")}</div>
               ${messages.map(
                 (message) =>
                   html`
@@ -127,7 +126,7 @@ export class HacsEntryPanel extends LitElement {
           : ""}
         ${sections.updates.length !== 0
           ? html` <ha-card>
-              <div class="header">${localize("store.pending_upgrades")}</div>
+              <div class="header">${localize("entry.pending_updates")}</div>
               ${sortRepositoriesByName(sections.updates).map(
                 (repository) =>
                   html`

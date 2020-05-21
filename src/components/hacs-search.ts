@@ -10,6 +10,7 @@ import {
 } from "lit-element";
 
 import { HacsCommonStyle } from "../styles/hacs-common-style";
+import { localize } from "../localize/localize";
 
 @customElement("hacs-search")
 export class HacsSearch extends LitElement {
@@ -23,7 +24,7 @@ export class HacsSearch extends LitElement {
         <input
           id="search-input"
           class="search-input"
-          placeholder="Search for repository"
+          placeholder="${localize("search.placeholder")}"
           .value=${this.input || ""}
           @input=${this._inputValueChanged}
         />
