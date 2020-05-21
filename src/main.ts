@@ -61,17 +61,14 @@ class HacsFrontend extends LitElement {
 
   protected render(): TemplateResult | void {
     if (!this.hass || !this.configuration) return html``;
-
-    if (this.configuration.experimental) {
-      return html`
-        <hacs-resolver
-          .hass=${this.hass}
-          .route=${this.route}
-          .narrow=${this.narrow}
-          .configuration=${this.configuration}
-        ></hacs-resolver>
-      `;
-    }
+    return html`
+      <hacs-resolver
+        .hass=${this.hass}
+        .route=${this.route}
+        .narrow=${this.narrow}
+        .configuration=${this.configuration}
+      ></hacs-resolver>
+    `;
 
     return html`
       <hacs-frontendbase
