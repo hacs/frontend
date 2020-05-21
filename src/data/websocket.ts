@@ -105,7 +105,6 @@ export const repositoryAdd = async (
     repository: repository,
     data: category,
   });
-  return await getRepositories(hass);
 };
 
 export const repositorySetNotNew = async (

@@ -3,6 +3,7 @@ import {
   html,
   TemplateResult,
   property,
+  PropertyValues,
   css,
 } from "lit-element";
 import memoizeOne from "memoize-one";
@@ -13,11 +14,12 @@ import { markdown } from "../../legacy/markdown/markdown";
 
 import "../../components/hacs-chip";
 
-import { repositoryUpdate } from "../../data/websocket";
+import { repositoryUpdate, getRepositories } from "../../data/websocket";
 
 @customElement("hacs-repository-info-dialog")
 export class HacsRepositoryDialog extends HacsDialogBase {
   @property() public repository?: string;
+  @property() public _repository?: Repository;
 
   private _getRepository = memoizeOne(
     (repositories: Repository[], repository: string) =>
@@ -33,17 +35,38 @@ export class HacsRepositoryDialog extends HacsDialogBase {
     return authors;
   });
 
+  shouldUpdate(changedProperties: PropertyValues) {
+    changedProperties.forEach((_oldValue, propName) => {
+      if (propName === "hass") {
+        this.sidebarDocked =
+          window.localStorage.getItem("dockedSidebar") === '"docked"';
+      }
+      if (propName === "repositories") {
+        this._repository = this._getRepository(
+          this.repositories,
+          this.repository
+        );
+      }
+    });
+    return (
+      changedProperties.has("sidebarDocked") ||
+      changedProperties.has("narrow") ||
+      changedProperties.has("active") ||
+      changedProperties.has("_repository")
+    );
+  }
+
   protected async firstUpdated() {
-    const repository = this._getRepository(this.repositories, this.repository);
-    if (!repository.updated_info) {
-      await repositoryUpdate(this.hass, repository.id);
+    this._repository = this._getRepository(this.repositories, this.repository);
+    if (!this._repository.updated_info) {
+      await repositoryUpdate(this.hass, this._repository.id);
+      this.repositories = await getRepositories(this.hass);
     }
   }
 
   protected render(): TemplateResult | void {
     if (!this.active) return html``;
-    const repository = this._getRepository(this.repositories, this.repository);
-    const authors = this._getAuthors(repository);
+    const authors = this._getAuthors(this._repository);
     return html`
       <hacs-dialog
         .active=${this.active}
@@ -51,7 +74,7 @@ export class HacsRepositoryDialog extends HacsDialogBase {
         .hass=${this.hass}
         .secondary=${this.secondary}
       >
-        <div slot="header">${repository.name || ""}</div>
+        <div slot="header">${this._repository.name || ""}</div>
         <div class="chips">
           ${authors
             ? authors.map(
@@ -64,38 +87,41 @@ export class HacsRepositoryDialog extends HacsDialogBase {
                 ></hacs-link>`
               )
             : ""}
-          ${repository.downloads
+          ${this._repository.downloads
             ? html` <hacs-chip
                 title="Downloads"
                 icon="mdi:arrow-down-bold"
-                .value=${repository.downloads}
+                .value=${this._repository.downloads}
               ></hacs-chip>`
             : ""}
           <hacs-chip
             title="Stars"
             icon="mdi:star"
-            .value=${repository.stars}
+            .value=${this._repository.stars}
           ></hacs-chip>
-          <hacs-link .url="https://github.com/${repository.full_name}/issues">
+          <hacs-link
+            .url="https://github.com/${this._repository.full_name}/issues"
+          >
             <hacs-chip
               title="Open issues"
               icon="mdi:exclamation-thick"
-              .value=${repository.issues}
+              .value=${this._repository.issues}
             ></hacs-chip
           ></hacs-link>
         </div>
-        ${repository.updated_info
+        ${this._repository.updated_info
           ? markdown.html(
-              repository.additional_info ||
+              this._repository.additional_info ||
                 "The developer has not provided any more information for this repository",
-              repository
+              this._repository
             )
           : "Loading information..."}
-        ${!repository.installed && repository.updated_info
+        ${!this._repository.installed && this._repository.updated_info
           ? html` <div slot="actions">
               <mwc-button @click=${this._installRepository} raised
                 >Install this repository in HACS</mwc-button
-              ><hacs-link .url="https://github.com/${repository.full_name}"
+              ><hacs-link
+                .url="https://github.com/${this._repository.full_name}"
                 ><mwc-button>Open repository</mwc-button></hacs-link
               >
             </div>`
@@ -123,12 +149,11 @@ export class HacsRepositoryDialog extends HacsDialogBase {
   }
 
   private async _installRepository(): Promise<void> {
-    const repository = this._getRepository(this.repositories, this.repository);
     this.dispatchEvent(
       new CustomEvent("hacs-dialog-secondary", {
         detail: {
           type: "install",
-          repository: repository.id,
+          repository: this._repository.id,
         },
         bubbles: true,
         composed: true,
