@@ -1,4 +1,4 @@
-import { LitElement, property } from "lit-element";
+import { LitElement, property, PropertyValues } from "lit-element";
 import { HomeAssistant } from "custom-card-helpers";
 
 import {
@@ -22,4 +22,24 @@ export class HacsDialogBase extends LitElement {
   @property({ type: Boolean }) public secondary: boolean = false;
   @property({ type: Boolean }) public loading: boolean = true;
   @property({ type: Boolean }) public narrow!: boolean;
+  @property({ type: Boolean }) public sidebarDocked!: boolean;
+
+  shouldUpdate(changedProperties: PropertyValues) {
+    changedProperties.forEach((_oldValue, propName) => {
+      if (propName === "hass") {
+        this.sidebarDocked =
+          window.localStorage.getItem("dockedSidebar") === '"docked"';
+      }
+    });
+    return (
+      changedProperties.has("sidebarDocked") ||
+      changedProperties.has("narrow") ||
+      changedProperties.has("active")
+    );
+  }
+  public connectedCallback() {
+    super.connectedCallback();
+    this.sidebarDocked =
+      window.localStorage.getItem("dockedSidebar") === '"docked"';
+  }
 }

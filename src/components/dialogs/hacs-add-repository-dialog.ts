@@ -7,6 +7,7 @@ import {
   TemplateResult,
   css,
   property,
+  PropertyValues,
 } from "lit-element";
 import { classMap } from "lit-html/directives/class-map";
 import { HacsDialogBase } from "./hacs-dialog-base";
@@ -19,6 +20,10 @@ import "../hacs-chip";
 @customElement("hacs-add-repository-dialog")
 export class HacsAddRepositoryDialog extends HacsDialogBase {
   @property() private _searchInput: string = "";
+
+  shouldUpdate(changedProperties: PropertyValues) {
+    return changedProperties.has("_searchInput");
+  }
 
   private _repositoriesInActiveCategory = memoizeOne(
     (repositories: Repository[], categories: string[]) =>

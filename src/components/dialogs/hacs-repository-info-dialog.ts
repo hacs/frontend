@@ -117,7 +117,7 @@ export class HacsRepositoryDialog extends HacsDialogBase {
         margin: 0 4px;
       }
       div.chips hacs-link {
-        margin: -17px 0;
+        margin: -17px 4px;
       }
     `;
   }
