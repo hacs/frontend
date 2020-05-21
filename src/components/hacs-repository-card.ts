@@ -10,15 +10,22 @@ import {
 import { classMap } from "lit-html/directives/class-map";
 
 import { HacsCommonStyle } from "../styles/hacs-common-style";
-import { Repository } from "../data/common";
-import { repositorySetNotNew, repositoryUninstall, repositoryUpdate } from "../data/websocket";
+import { Repository, Status } from "../data/common";
+import {
+  repositorySetNotNew,
+  repositoryUninstall,
+  repositoryUpdate,
+  fetchResources,
+  deleteResource,
+} from "../data/websocket";
 import { HomeAssistant } from "custom-card-helpers";
 
 @customElement("hacs-repository-card")
 export class HacsRepositoryCard extends LitElement {
   @property({ attribute: false }) public hass!: HomeAssistant;
-  @property({ attribute: false }) public narrow!: boolean;
   @property({ attribute: false }) public repository!: Repository;
+  @property({ attribute: false }) public status: Status;
+  @property({ type: Boolean }) public narrow!: boolean;
 
   protected render(): TemplateResult | void {
     const path = this.repository.local_path.split("/");
@@ -154,7 +161,7 @@ export class HacsRepositoryCard extends LitElement {
   }
 
   private async _updateReopsitoryInfo() {
-    await repositoryUpdate(this.hass, this.repository.id)
+    await repositoryUpdate(this.hass, this.repository.id);
   }
 
   private async _showReopsitoryInfo() {
@@ -168,6 +175,12 @@ export class HacsRepositoryCard extends LitElement {
         composed: true,
       })
     );
+  }
+
+  private _lovelaceUrl(): string {
+    return `/hacsfiles/${this.repository?.full_name.split("/")[1]}/${
+      this.repository?.file_name
+    }`;
   }
 
   private async _updateRepository() {
@@ -202,6 +215,17 @@ export class HacsRepositoryCard extends LitElement {
 
   private async _uninstallRepository() {
     await repositoryUninstall(this.hass, this.repository.id);
+    if (
+      this.repository.category === "plugin" &&
+      this.status.lovelace_mode !== "yaml"
+    ) {
+      const resources = await fetchResources(this.hass);
+      resources
+        .filter((resource) => resource.url === this._lovelaceUrl())
+        .forEach((resource) => {
+          deleteResource(this.hass, String(resource.id));
+        });
+    }
   }
 
   static get styles(): CSSResultArray {

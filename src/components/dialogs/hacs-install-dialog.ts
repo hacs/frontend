@@ -17,7 +17,10 @@ import {
   repositoryInstall,
   getRepositories,
   repositoryInstallVersion,
+  fetchResources,
+  createResource,
 } from "../../data/websocket";
+import { localize } from "../../localize/localize";
 import { HacsDialogBase } from "./hacs-dialog-base";
 import { Repository } from "../../data/common";
 import { repositoryUpdate } from "../../data/websocket";
@@ -56,6 +59,14 @@ export class HacsInstallDialog extends HacsDialogBase {
       repositories?.find((repo) => repo.id === repository)
   );
 
+  private _getInstallPath = memoizeOne((repository: Repository) => {
+    let path: string = repository.local_path;
+    if (repository.category === "theme") {
+      path = `${path}/${repository.file_name}`;
+    }
+    return path;
+  });
+
   protected async firstUpdated() {
     this._repository = this._getRepository(this.repositories, this.repository);
     if (!this._repository.updated_info) {
@@ -67,6 +78,7 @@ export class HacsInstallDialog extends HacsDialogBase {
 
   protected render(): TemplateResult | void {
     if (!this.active) return html``;
+    const installPath = this._getInstallPath(this._repository);
     return html`
       <hacs-dialog
         .active=${this.active}
@@ -118,6 +130,27 @@ export class HacsInstallDialog extends HacsDialogBase {
                   </paper-dropdown-menu>
                 </div>`
             : ""}
+          <div class="note">
+            ${localize(`repository.note_installed`)}
+            <code>'${installPath}'</code>
+            ${this._repository.category === "plugin" &&
+            this.status.lovelace_mode === "yaml"
+              ? html` <table class="lovelace">
+                  <tr>
+                    <td>URL:</td>
+                    <td>
+                      <code>${this._lovelaceUrl()}</code>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>Type:</td>
+                    <td>
+                      module
+                    </td>
+                  </tr>
+                </table>`
+              : ""}
+          </div>
         </div>
         <div slot="actions">
           <mwc-button
@@ -134,6 +167,12 @@ export class HacsInstallDialog extends HacsDialogBase {
     `;
   }
 
+  private _lovelaceUrl(): string {
+    return `/hacsfiles/${this._repository?.full_name.split("/")[1]}/${
+      this._repository?.file_name
+    }`;
+  }
+
   private async _toggleBeta(): Promise<void> {
     this._toggle = true;
     await repositoryToggleBeta(this.hass, this.repository);
@@ -142,18 +181,6 @@ export class HacsInstallDialog extends HacsDialogBase {
   }
 
   private async _installRepository(): Promise<void> {
-    this.dispatchEvent(
-      new Event("hacs-secondary-dialog-closed", {
-        bubbles: true,
-        composed: true,
-      })
-    );
-    this.dispatchEvent(
-      new Event("hacs-dialog-closed", {
-        bubbles: true,
-        composed: true,
-      })
-    );
     if (
       this._repository.version_or_commit !== "commit" &&
       this._repository.selected_tag !== this._repository.available_version
@@ -166,6 +193,32 @@ export class HacsInstallDialog extends HacsDialogBase {
     } else {
       await repositoryInstall(this.hass, this._repository.id);
     }
+    if (
+      this._repository.category === "plugin" &&
+      this.status.lovelace_mode !== "yaml"
+    ) {
+      const resources = await fetchResources(this.hass);
+      if (
+        !resources.map((resource) => resource.url).includes(this._lovelaceUrl())
+      ) {
+        createResource(this.hass, {
+          url: this._lovelaceUrl(),
+          res_type: "module",
+        });
+      }
+    }
+    this.dispatchEvent(
+      new Event("hacs-secondary-dialog-closed", {
+        bubbles: true,
+        composed: true,
+      })
+    );
+    this.dispatchEvent(
+      new Event("hacs-dialog-closed", {
+        bubbles: true,
+        composed: true,
+      })
+    );
   }
 
   static get styles(): CSSResultArray {
@@ -177,7 +230,13 @@ export class HacsInstallDialog extends HacsDialogBase {
         .content {
           padding: 32px 8px;
         }
-
+        .note {
+          margin-bottom: -32px;
+          margin-top: 12px;
+        }
+        .lovelace {
+          margin-top: 8px;
+        }
         paper-menu-button {
           color: var(--secondary-text-color);
           padding: 0;

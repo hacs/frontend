@@ -5,6 +5,7 @@ import {
   Critical,
   Status,
   LovelaceResource,
+  LovelaceResourcesMutableParams,
 } from "./common";
 
 export const getConfiguration = async (hass: HomeAssistant) => {
@@ -159,3 +160,25 @@ export const getLovelaceConfiguration = async (hass: HomeAssistant) => {
     return null;
   }
 };
+
+export const fetchResources = (
+  hass: HomeAssistant
+): Promise<LovelaceResource[]> =>
+  hass.connection.sendMessagePromise({
+    type: "lovelace/resources",
+  });
+
+export const createResource = (
+  hass: HomeAssistant,
+  values: LovelaceResourcesMutableParams
+) =>
+  hass.callWS<LovelaceResource>({
+    type: "lovelace/resources/create",
+    ...values,
+  });
+
+export const deleteResource = (hass: HomeAssistant, id: string) =>
+  hass.callWS({
+    type: "lovelace/resources/delete",
+    resource_id: id,
+  });

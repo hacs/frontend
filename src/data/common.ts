@@ -36,7 +36,12 @@ export interface Status {
 export interface LovelaceResource {
   type: "css" | "js" | "module" | "html";
   url: string;
-  id?: string;
+  id: number;
+}
+
+export interface LovelaceResourcesMutableParams {
+  res_type: "css" | "js" | "module" | "html";
+  url: string;
 }
 
 export interface Message {
