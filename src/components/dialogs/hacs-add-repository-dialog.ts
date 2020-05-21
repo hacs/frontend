@@ -14,6 +14,7 @@ import { Repository } from "../../data/common";
 
 import { localize } from "../../localize/localize";
 import "../hacs-search";
+import "../hacs-chip";
 
 @customElement("hacs-add-repository-dialog")
 export class HacsAddRepositoryDialog extends HacsDialogBase {
@@ -62,34 +63,39 @@ export class HacsAddRepositoryDialog extends HacsDialogBase {
             @input=${this._inputValueChanged}
           ></hacs-search>
           <div class="list"></div>
-          ${repositories.slice(0, 100).map(
-            (repo) => html`<paper-icon-item
-              class=${classMap({ narrow: this.narrow })}
-              @click=${() => this._openInformation(repo)}
-            >
-              ${repo.category === "integration"
-                ? html`
-                    <img
-                      src="https://brands.home-assistant.io/_/${repo.domain}/icon.png"
-                      referrerpolicy="no-referrer"
-                      @error=${this._onImageError}
-                      @load=${this._onImageLoad}
-                    />
-                  `
-                : html`<ha-icon
-                    icon="mdi:github-circle"
-                    slot="item-icon"
-                  ></ha-icon>`}
-              <paper-item-body three-line
-                >${repo.name}
-                <div secondary>${repo.description}</div>
-                <div secondary>
-                  ${localize("settings.category")}:
-                  ${localize(`common.${repo.category}`)}
-                </div></paper-item-body
+          ${repositories
+            .sort((a, b) => (a.last_updated > b.last_updated ? -1 : 1))
+            .slice(0, 100)
+            .map(
+              (repo) => html`<paper-icon-item
+                class=${classMap({ narrow: this.narrow })}
+                @click=${() => this._openInformation(repo)}
               >
-            </paper-icon-item>`
-          )}
+                ${repo.category === "integration"
+                  ? html`
+                      <img
+                        src="https://brands.home-assistant.io/_/${repo.domain}/icon.png"
+                        referrerpolicy="no-referrer"
+                        @error=${this._onImageError}
+                        @load=${this._onImageLoad}
+                      />
+                    `
+                  : html`<ha-icon
+                      icon="mdi:github-circle"
+                      slot="item-icon"
+                    ></ha-icon>`}
+                <paper-item-body two-line
+                  >${repo.name}
+                  <div class="category-chip">
+                    <hacs-chip
+                      icon="hacs:hacs"
+                      .value=${localize(`common.${repo.category}`)}
+                    ></hacs-chip>
+                  </div>
+                  <div secondary>${repo.description}</div>
+                </paper-item-body>
+              </paper-icon-item>`
+            )}
           ${repositories.length === 0
             ? html`<p>
                 No repositories found matching your filter
@@ -147,6 +153,11 @@ export class HacsAddRepositoryDialog extends HacsDialogBase {
       .list {
         margin-top: 16px;
       }
+      .category-chip {
+        position: absolute;
+        top: 8px;
+        right: 8px;
+      }
       ha-icon-button,
       ha-icon {
         color: var(--secondary-text-color);
@@ -164,8 +175,13 @@ export class HacsAddRepositoryDialog extends HacsDialogBase {
         position: absolute;
       }
 
+      paper-icon-item:focus {
+        background-color: var(--divider-color);
+      }
+
       paper-icon-item {
         cursor: pointer;
+        padding: 2px 0;
       }
 
       paper-item-body {

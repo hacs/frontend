@@ -36,7 +36,7 @@ export class HacsUpdateDialog extends HacsDialogBase {
       >
         <div slot="header">Update pending</div>
         <div class="content">
-          New update for ${repository.name}
+          ${repository.name}
           <p><b>Installed version:</b> ${repository.installed_version}</p>
           <p><b>Available version:</b> ${repository.available_version}</p>
         </div>
