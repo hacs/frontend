@@ -1,7 +1,7 @@
 import { terser } from "rollup-plugin-terser";
 import cleanup from "rollup-plugin-cleanup";
 import commonjs from "rollup-plugin-commonjs";
-import dev from "rollup-plugin-dev";
+import serve from "rollup-plugin-serve";
 import gzipPlugin from "rollup-plugin-gzip";
 import json from "@rollup/plugin-json";
 import nodeResolve from "rollup-plugin-node-resolve";
@@ -18,11 +18,15 @@ const opts_json = {
 
 const opts_terser = {};
 
-const opts_dev = {
-  dirs: ["hacs_frontend"],
-  port: 5000,
+const serveopts = {
+  contentBase: ["./hacs_frontend"],
   host: "0.0.0.0",
+  port: 5000,
   poll: true,
+  allowCrossOrigin: true,
+  headers: {
+    "Access-Control-Allow-Origin": "*",
+  },
 };
 
 const opts_cleanup = {
@@ -43,7 +47,7 @@ const AwesomePlugins = [
   !isdev && cleanup(opts_cleanup),
   isdev && sizes(),
   isdev && sizes(opts_sizes),
-  isdev && dev(opts_dev),
+  isdev && serve(serveopts),
   !isdev && gzipPlugin(),
 ];
 

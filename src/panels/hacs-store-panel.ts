@@ -162,6 +162,7 @@ export class HacsStorePanel extends LitElement {
           position: fixed;
           bottom: 16px;
           right: 16px;
+          filter: blur(0.4px);
           z-index: 1;
           display: inline-flex;
           align-items: center;
@@ -174,7 +175,7 @@ export class HacsStorePanel extends LitElement {
           user-select: none;
           -webkit-appearance: none;
           background-color: var(--accent-color);
-          color: var(--text-primary-color);
+          color: var(--text-primary-color) !important;
           box-shadow: var(
             --mdc-fab-box-shadow-active,
             0px 7px 8px -4px rgba(0, 0, 0, 0.2),

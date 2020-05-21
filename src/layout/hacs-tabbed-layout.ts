@@ -91,7 +91,8 @@ export class HacsTabbedLayout extends LitElement {
     return css`
       :host {
         display: block;
-        height: 100%;
+        height: 100vh;
+        min-height: -webkit-fill-available;
         background-color: var(--primary-background-color);
       }
       ha-menu-button {
