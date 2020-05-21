@@ -130,6 +130,13 @@ export class HacsInstallDialog extends HacsDialogBase {
                   </paper-dropdown-menu>
                 </div>`
             : ""}
+          ${!this._repository.can_install
+            ? html`<p class="error">
+                ${localize("confirm.home_assistant_version_not_correct")
+                  .replace("{haversion}", this.hass.config.version)
+                  .replace("{minversion}", this._repository.homeassistant)}
+              </p>`
+            : ""}
           <div class="note">
             ${localize(`repository.note_installed`)}
             <code>'${installPath}'</code>
@@ -153,15 +160,19 @@ export class HacsInstallDialog extends HacsDialogBase {
           </div>
         </div>
         <div slot="actions">
-          <mwc-button
-            ?disabled=${this._toggle}
-            @click=${this._installRepository}
-            >${localize("common.install")}</mwc-button
-          >
+          ${this._repository.can_install
+            ? html` <mwc-button
+                ?disabled=${this._toggle}
+                @click=${this._installRepository}
+                >${localize("common.install")}</mwc-button
+              >`
+            : html` <mwc-button disabled @click=${this._installRepository}
+                >${localize("common.install")}</mwc-button
+              >`}
 
           <hacs-link .url="https://github.com/${this._repository.full_name}"
             ><mwc-button
-              >>${localize("common.repository")}</mwc-button
+              >${localize("common.repository")}</mwc-button
             ></hacs-link
           >
         </div>
@@ -238,6 +249,9 @@ export class HacsInstallDialog extends HacsDialogBase {
         }
         .lovelace {
           margin-top: 8px;
+        }
+        .error {
+          color: var(--hacs-error-color, var(--google-red-500));
         }
         paper-menu-button {
           color: var(--secondary-text-color);

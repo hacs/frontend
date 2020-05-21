@@ -47,11 +47,22 @@ export class HacsUpdateDialog extends HacsDialogBase {
             <b>${localize("dialog_update.available_version")}:</b>
             ${repository.available_version}
           </p>
+          ${!repository.can_install
+            ? html`<p class="error">
+                ${localize("confirm.home_assistant_version_not_correct")
+                  .replace("{haversion}", this.hass.config.version)
+                  .replace("{minversion}", repository.homeassistant)}
+              </p>`
+            : ""}
         </div>
         <div slot="actions">
-          <mwc-button @click=${this._updateRepository}
-            >${localize("common.update")}</mwc-button
-          >
+          ${repository.can_install
+            ? html` <mwc-button @click=${this._updateRepository}
+                >${localize("common.update")}</mwc-button
+              >`
+            : html` <mwc-button @click=${this._updateRepository} disabled
+                >${localize("common.update")}</mwc-button
+              >`}
           <hacs-link .url=${this._getChanglogURL()}
             ><mwc-button
               >${localize("dialog_update.changelog")}</mwc-button
@@ -99,6 +110,9 @@ export class HacsUpdateDialog extends HacsDialogBase {
       css`
         .content {
           padding: 32px 8px;
+        }
+        .error {
+          color: var(--hacs-error-color, var(--google-red-500));
         }
       `,
     ];
