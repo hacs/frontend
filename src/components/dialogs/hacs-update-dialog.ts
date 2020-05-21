@@ -79,9 +79,6 @@ export class HacsUpdateDialog extends HacsDialogBase {
   }
 
   private async _updateRepository(): Promise<void> {
-    this.dispatchEvent(
-      new Event("hacs-dialog-closed", { bubbles: true, composed: true })
-    );
     const repository = this._getRepository(this.repositories, this.repository);
     if (
       repository.version_or_commit !== "commit" &&
@@ -95,6 +92,12 @@ export class HacsUpdateDialog extends HacsDialogBase {
     } else {
       await repositoryInstall(this.hass, repository.id);
     }
+    if (repository.category === "plugin") {
+      window.location.reload(true);
+    }
+    this.dispatchEvent(
+      new Event("hacs-dialog-closed", { bubbles: true, composed: true })
+    );
   }
 
   private _getChanglogURL(): string {

@@ -220,6 +220,9 @@ export class HacsInstallDialog extends HacsDialogBase {
         });
       }
     }
+    if (this._repository.category === "plugin") {
+      window.location.reload(true);
+    }
     this.dispatchEvent(
       new Event("hacs-secondary-dialog-closed", {
         bubbles: true,
