@@ -11,7 +11,7 @@ import { classMap } from "lit-html/directives/class-map";
 
 import { HacsCommonStyle } from "../styles/hacs-common-style";
 import { Repository } from "../data/common";
-import { repositorySetNotNew, repositoryUninstall } from "../data/websocket";
+import { repositorySetNotNew, repositoryUninstall, repositoryUpdate } from "../data/websocket";
 import { HomeAssistant } from "custom-card-helpers";
 
 @customElement("hacs-repository-card")
@@ -101,6 +101,12 @@ export class HacsRepositoryCard extends LitElement {
                   slot="dropdown-trigger"
                 ></ha-icon-button>
                 <paper-listbox slot="dropdown-content">
+                  <paper-item
+                    class="pointer"
+                    @click=${this._updateReopsitoryInfo}
+                    >Update information</paper-item
+                  >
+
                   <paper-item class="pointer" @click=${this._showReopsitoryInfo}
                     >Information</paper-item
                   >
@@ -145,6 +151,10 @@ export class HacsRepositoryCard extends LitElement {
         </div>
       </ha-card>
     `;
+  }
+
+  private async _updateReopsitoryInfo() {
+    await repositoryUpdate(this.hass, this.repository.id)
   }
 
   private async _showReopsitoryInfo() {

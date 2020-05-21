@@ -76,6 +76,13 @@ export class HacsRepositoryDialog extends HacsDialogBase {
       >
         <div slot="header">${this._repository.name || ""}</div>
         <div class="chips">
+          ${this._repository.installed
+            ? html`<hacs-chip
+                title="Version installed"
+                icon="mdi:cube"
+                .value=${this._repository.installed_version}
+              ></hacs-chip>`
+            : ""}
           ${authors
             ? authors.map(
                 (author) => html`<hacs-link .url="https://github.com/${author}"

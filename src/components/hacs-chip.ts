@@ -36,6 +36,7 @@ export class HacsChip extends LitElement {
           display: flex;
           border-radius: 50px;
           padding: 0 4px;
+          box-shadow: 2px 2px 8px 1px rgba(0, 0, 0, 0.3);
         }
         .icon {
           margin: auto;
