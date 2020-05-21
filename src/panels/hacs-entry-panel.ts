@@ -53,7 +53,7 @@ export class HacsEntryPanel extends LitElement {
 
   private _getMessages = memoizeOne((status: Status) => {
     const messages: Message[] = [];
-    if (!status?.startup) {
+    if (status?.startup) {
       messages.push({
         title: localize("entry.messages.startup.title"),
         content: localize("entry.messages.startup.content"),

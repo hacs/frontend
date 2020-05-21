@@ -129,17 +129,10 @@ export class HacsResolver extends LitElement {
       this.route.path = "/dashboard";
     }
 
-    return html`${this.route.path === "/dashboard"
-        ? html`<hacs-entry-panel
-            .hass=${this.hass}
-            .route=${this.route}
-            .narrow=${this.narrow}
-            .configuration=${this.configuration}
-            .lovelace=${this.lovelace}
-            .status=${this.status}
-            .repositories=${this.repositories}
-          ></hacs-entry-panel>`
-        : html`<hacs-store-panel
+    return html`${["/integrations", "/frontend", "/automation"].includes(
+        this.route.path
+      )
+        ? html`<hacs-store-panel
             .hass=${this.hass}
             .route=${this.route}
             .narrow=${this.narrow}
@@ -148,7 +141,16 @@ export class HacsResolver extends LitElement {
             .repositories=${this.repositories}
             .status=${this.status}
             .section=${this.route.path.split("/")[1]}
-          ></hacs-store-panel>`}
+          ></hacs-store-panel>`
+        : html`<hacs-entry-panel
+            .hass=${this.hass}
+            .route=${this.route}
+            .narrow=${this.narrow}
+            .configuration=${this.configuration}
+            .lovelace=${this.lovelace}
+            .status=${this.status}
+            .repositories=${this.repositories}
+          ></hacs-entry-panel>`}
       <hacs-event-dialog
         .hass=${this.hass}
         .route=${this.route}
