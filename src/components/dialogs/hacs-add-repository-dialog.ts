@@ -22,7 +22,18 @@ export class HacsAddRepositoryDialog extends HacsDialogBase {
   @property() private _searchInput: string = "";
 
   shouldUpdate(changedProperties: PropertyValues) {
-    return changedProperties.has("_searchInput");
+    changedProperties.forEach((_oldValue, propName) => {
+      if (propName === "hass") {
+        this.sidebarDocked =
+          window.localStorage.getItem("dockedSidebar") === '"docked"';
+      }
+    });
+    return (
+      changedProperties.has("sidebarDocked") ||
+      changedProperties.has("narrow") ||
+      changedProperties.has("active") ||
+      changedProperties.has("_searchInput")
+    );
   }
 
   private _repositoriesInActiveCategory = memoizeOne(

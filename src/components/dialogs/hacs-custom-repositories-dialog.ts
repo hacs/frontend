@@ -7,6 +7,7 @@ import {
   css,
   property,
   query,
+  PropertyValues,
 } from "lit-element";
 import { HacsDialogBase } from "./hacs-dialog-base";
 
@@ -19,8 +20,25 @@ import {
 @customElement("hacs-custom-repositories-dialog")
 export class HacsCustomRepositoriesDialog extends HacsDialogBase {
   @property() private _inputRepository: string;
+  @property() private _error: any;
   @query("#add-input") private _addInput?: any;
-  @query("#category") private _addCategoty?: any;
+  @query("#category") private _addCategory?: any;
+
+  shouldUpdate(changedProperties: PropertyValues) {
+    changedProperties.forEach((_oldValue, propName) => {
+      if (propName === "hass") {
+        this.sidebarDocked =
+          window.localStorage.getItem("dockedSidebar") === '"docked"';
+      }
+    });
+    return (
+      changedProperties.has("sidebarDocked") ||
+      changedProperties.has("narrow") ||
+      changedProperties.has("active") ||
+      changedProperties.has("_error") ||
+      changedProperties.has("repositories")
+    );
+  }
 
   protected render(): TemplateResult | void {
     if (!this.active) return html``;
@@ -33,6 +51,9 @@ export class HacsCustomRepositoriesDialog extends HacsDialogBase {
       >
         <div slot="header">Custom repositories</div>
         <div class="content">
+          ${this._error
+            ? html`<div class="error">${this._error.message}</div>`
+            : ""}
           <div class="list"></div>
           ${repositories?.map(
             (repo) => html`<paper-icon-item>
@@ -90,9 +111,15 @@ export class HacsCustomRepositoriesDialog extends HacsDialogBase {
             <mwc-button raised @click=${this._addRepository}>add</mwc-button>
           </div>
         </div>
-        <i>You need to close this dialog manually to see our changes.</i>
       </hacs-dialog>
     `;
+  }
+
+  protected firstUpdated() {
+    this.hass.connection.subscribeEvents(
+      (msg) => (this._error = (msg as any).data),
+      "hacs/error"
+    );
   }
 
   private _inputValueChanged() {
@@ -100,18 +127,25 @@ export class HacsCustomRepositoriesDialog extends HacsDialogBase {
   }
 
   private async _addRepository() {
+    this._error = undefined;
     const repository = this._inputRepository;
-    const category = this._addCategoty?.selectedItem.category;
-    if (!category || !repository) {
+    const category = this._addCategory?.selectedItem?.category;
+    if (!category) {
+      this._error = { message: "Missing category" };
+      return;
+    }
+    if (!repository) {
+      this._error = { message: "Missing repository" };
       return;
     }
     await repositoryAdd(this.hass, repository, category);
+    this.repositories = await getRepositories(this.hass);
   }
 
   private async _removeRepository(repository: string) {
+    this._error = undefined;
     await repositoryDelete(this.hass, repository);
     this.repositories = await getRepositories(this.hass);
-    this.requestUpdate();
   }
 
   private _onImageLoad(ev) {
@@ -128,6 +162,7 @@ export class HacsCustomRepositoriesDialog extends HacsDialogBase {
     return css`
       .content {
         min-width: 500px;
+        margin-bottom: -65px;
       }
       .list {
         margin-top: 16px;
@@ -150,6 +185,11 @@ export class HacsCustomRepositoriesDialog extends HacsDialogBase {
       }
       .delete {
         cursor: pointer;
+      }
+      .error {
+        line-height: 0px;
+        margin: 12px;
+        color: var(--hacs-error-color, var(--google-red-500));
       }
 
       paper-item-body {
