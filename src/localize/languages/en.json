@@ -248,7 +248,7 @@
       },
       "has_pending_tasks": {
         "title": "Background tasks pending",
-        "content": "Some repositories might not show untill this is completed"
+        "content": "Some repositories might not show until this is completed"
       },
       "disabled": {
         "title": "HACS is disabled",
