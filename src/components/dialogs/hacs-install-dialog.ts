@@ -9,6 +9,7 @@ import {
   html,
   TemplateResult,
   property,
+  PropertyValues,
 } from "lit-element";
 
 import {
@@ -19,22 +20,53 @@ import {
 } from "../../data/websocket";
 import { HacsDialogBase } from "./hacs-dialog-base";
 import { Repository } from "../../data/common";
+import { repositoryUpdate } from "../../data/websocket";
 import "./hacs-dialog";
 
 @customElement("hacs-install-dialog")
 export class HacsInstallDialog extends HacsDialogBase {
   @property() public repository?: string;
-  @property() private _toggle: boolean = false;
+  @property() public _repository?: Repository;
+  @property() private _toggle: boolean = true;
+
+  shouldUpdate(changedProperties: PropertyValues) {
+    changedProperties.forEach((_oldValue, propName) => {
+      if (propName === "hass") {
+        this.sidebarDocked =
+          window.localStorage.getItem("dockedSidebar") === '"docked"';
+      }
+      if (propName === "repositories") {
+        this._repository = this._getRepository(
+          this.repositories,
+          this.repository
+        );
+      }
+    });
+    return (
+      changedProperties.has("sidebarDocked") ||
+      changedProperties.has("narrow") ||
+      changedProperties.has("active") ||
+      changedProperties.has("_toggle") ||
+      changedProperties.has("_repository")
+    );
+  }
 
   private _getRepository = memoizeOne(
     (repositories: Repository[], repository: string) =>
       repositories?.find((repo) => repo.id === repository)
   );
 
+  protected async firstUpdated() {
+    this._repository = this._getRepository(this.repositories, this.repository);
+    if (!this._repository.updated_info) {
+      await repositoryUpdate(this.hass, this._repository.id);
+      this.repositories = await getRepositories(this.hass);
+    }
+    this._toggle = false;
+  }
+
   protected render(): TemplateResult | void {
     if (!this.active) return html``;
-    const repository = this._getRepository(this.repositories, this.repository);
-    console.log(repository);
     return html`
       <hacs-dialog
         .active=${this.active}
@@ -42,13 +74,13 @@ export class HacsInstallDialog extends HacsDialogBase {
         .hass=${this.hass}
         .secondary=${this.secondary}
       >
-        <div slot="header">${repository.name}</div>
+        <div slot="header">${this._repository.name}</div>
         <div class="content">
-          ${repository.version_or_commit === "version"
+          ${this._repository.version_or_commit === "version"
             ? html`<div class="beta-container">
                   <ha-switch
                     ?disabled=${this._toggle}
-                    .checked=${repository.beta}
+                    .checked=${this._repository.beta}
                     @change=${this._toggleBeta}
                     >Show beta versions</ha-switch
                   >
@@ -65,21 +97,21 @@ export class HacsInstallDialog extends HacsDialogBase {
                       slot="dropdown-content"
                       selected="-1"
                     >
-                      ${repository.releases.map((release) => {
+                      ${this._repository.releases.map((release) => {
                         return html`<paper-item
                           version="${release}"
                           class="version-select-item"
                           >${release}</paper-item
                         >`;
                       })}
-                      ${repository.full_name === "hacs/integration" ||
-                      repository.hide_default_branch
+                      ${this._repository.full_name === "hacs/integration" ||
+                      this._repository.hide_default_branch
                         ? ""
                         : html`
                             <paper-item
-                              version="${repository.default_branch}"
+                              version="${this._repository.default_branch}"
                               class="version-select-item"
-                              >${repository.default_branch}</paper-item
+                              >${this._repository.default_branch}</paper-item
                             >
                           `}
                     </paper-listbox>
@@ -94,7 +126,7 @@ export class HacsInstallDialog extends HacsDialogBase {
             >Install</mwc-button
           >
 
-          <hacs-link .url="https://github.com/${repository.full_name}"
+          <hacs-link .url="https://github.com/${this._repository.full_name}"
             ><mwc-button>Repository</mwc-button></hacs-link
           >
         </div>
@@ -122,18 +154,17 @@ export class HacsInstallDialog extends HacsDialogBase {
         composed: true,
       })
     );
-    const repository = this._getRepository(this.repositories, this.repository);
     if (
-      repository.version_or_commit !== "commit" &&
-      repository.selected_tag !== repository.available_version
+      this._repository.version_or_commit !== "commit" &&
+      this._repository.selected_tag !== this._repository.available_version
     ) {
       await repositoryInstallVersion(
         this.hass,
-        repository.id,
-        repository.available_version
+        this._repository.id,
+        this._repository.available_version
       );
     } else {
-      await repositoryInstall(this.hass, repository.id);
+      await repositoryInstall(this.hass, this._repository.id);
     }
   }
 

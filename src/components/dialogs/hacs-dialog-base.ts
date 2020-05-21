@@ -34,7 +34,8 @@ export class HacsDialogBase extends LitElement {
     return (
       changedProperties.has("sidebarDocked") ||
       changedProperties.has("narrow") ||
-      changedProperties.has("active")
+      changedProperties.has("active") ||
+      changedProperties.has("params")
     );
   }
   public connectedCallback() {
