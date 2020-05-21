@@ -17,6 +17,8 @@ import {
   repositoryAdd,
 } from "../../data/websocket";
 
+import { localize } from "../../localize/localize";
+
 @customElement("hacs-custom-repositories-dialog")
 export class HacsCustomRepositoriesDialog extends HacsDialogBase {
   @property() private _inputRepository: string;
@@ -49,7 +51,7 @@ export class HacsCustomRepositoriesDialog extends HacsDialogBase {
         .narrow=${this.narrow}
         .hass=${this.hass}
       >
-        <div slot="header">Custom repositories</div>
+        <div slot="header">${localize("dialog_custom_repositories.title")}</div>
         <div class="content">
           ${this._error
             ? html`<div class="error">${this._error.message}</div>`
@@ -87,13 +89,18 @@ export class HacsCustomRepositoriesDialog extends HacsDialogBase {
             <input
               id="add-input"
               class="add-input"
-              placeholder="Add custom repository URL"
+              placeholder="${localize(
+                "dialog_custom_repositories.url_placeholder"
+              )}"
               .value=${this._inputRepository || ""}
               @input=${this._inputValueChanged}
             />
           </div>
           <div class="add-actions">
-            <paper-dropdown-menu class="category" label="Category">
+            <paper-dropdown-menu
+              class="category"
+              label="${localize("dialog_custom_repositories.category")}"
+            >
               <paper-listbox
                 id="category"
                 slot="dropdown-content"
@@ -102,13 +109,15 @@ export class HacsCustomRepositoriesDialog extends HacsDialogBase {
                 ${this.configuration.categories.map(
                   (category) => html`
                     <paper-item class="categoryitem" .category=${category}>
-                      ${category}
+                      ${localize(`common.${category}`)}
                     </paper-item>
                   `
                 )}
               </paper-listbox>
             </paper-dropdown-menu>
-            <mwc-button raised @click=${this._addRepository}>add</mwc-button>
+            <mwc-button raised @click=${this._addRepository}
+              >${localize("common.add")}</mwc-button
+            >
           </div>
         </div>
       </hacs-dialog>
@@ -131,11 +140,15 @@ export class HacsCustomRepositoriesDialog extends HacsDialogBase {
     const repository = this._inputRepository;
     const category = this._addCategory?.selectedItem?.category;
     if (!category) {
-      this._error = { message: "Missing category" };
+      this._error = {
+        message: localize("dialog_custom_repositories.no_category"),
+      };
       return;
     }
     if (!repository) {
-      this._error = { message: "Missing repository" };
+      this._error = {
+        message: localize("dialog_custom_repositories.no_repository"),
+      };
       return;
     }
     await repositoryAdd(this.hass, repository, category);

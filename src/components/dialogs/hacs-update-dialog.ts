@@ -14,6 +14,8 @@ import {
 } from "../../data/websocket";
 import { HacsDialogBase } from "./hacs-dialog-base";
 import { Repository } from "../../data/common";
+import { localize } from "../../localize/localize";
+
 import "./hacs-dialog";
 
 @customElement("hacs-update-dialog")
@@ -34,19 +36,31 @@ export class HacsUpdateDialog extends HacsDialogBase {
         .narrow=${this.narrow}
         .hass=${this.hass}
       >
-        <div slot="header">Update pending</div>
+        <div slot="header">${localize("dialog_update.title")}</div>
         <div class="content">
           ${repository.name}
-          <p><b>Installed version:</b> ${repository.installed_version}</p>
-          <p><b>Available version:</b> ${repository.available_version}</p>
+          <p>
+            <b>${localize("dialog_update.installed_version")}:</b>
+            ${repository.installed_version}
+          </p>
+          <p>
+            <b>${localize("dialog_update.available_version")}:</b>
+            ${repository.available_version}
+          </p>
         </div>
         <div slot="actions">
-          <mwc-button @click=${this._updateRepository}>Update</mwc-button>
+          <mwc-button @click=${this._updateRepository}
+            >${localize("common.update")}</mwc-button
+          >
           <hacs-link .url=${this._getChanglogURL()}
-            ><mwc-button>Changelog</mwc-button></hacs-link
+            ><mwc-button
+              >${localize("dialog_update.changelog")}</mwc-button
+            ></hacs-link
           >
           <hacs-link .url="https://github.com/${repository.full_name}"
-            ><mwc-button>Repository</mwc-button></hacs-link
+            ><mwc-button
+              >${localize("common.repository")}</mwc-button
+            ></hacs-link
           >
         </div>
       </hacs-dialog>

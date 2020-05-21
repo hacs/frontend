@@ -72,7 +72,9 @@ export class HacsAddRepositoryDialog extends HacsDialogBase {
         .narrow=${this.narrow}
         .hass=${this.hass}
       >
-        <div slot="header">Add repository</div>
+        <div slot="header">
+          ${localize("dialog_add_repo.title")}
+        </div>
         <div class=${classMap({ content: true, narrow: this.narrow })}>
           <hacs-search
             .input=${this._searchInput}
@@ -113,14 +115,9 @@ export class HacsAddRepositoryDialog extends HacsDialogBase {
               </paper-icon-item>`
             )}
           ${repositories.length === 0
-            ? html`<p>
-                No repositories found matching your filter
-              </p>`
+            ? html`<p>${localize("dialog_add_repo.no_match")}</p>`
             : repositories.length > 100
-            ? html`<p>
-                Only the first 100 repositories are shown, use the search to
-                filter what you need
-              </p>`
+            ? html`<p>${localize("dialog_add_repo.limit")}</p>`
             : ""}
         </div>
       </hacs-dialog>
@@ -161,6 +158,7 @@ export class HacsAddRepositoryDialog extends HacsDialogBase {
     return css`
       .content {
         min-width: 500px;
+        margin-bottom: -65px;
       }
       .narrow {
         min-width: unset !important;

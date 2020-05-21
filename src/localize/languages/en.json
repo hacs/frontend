@@ -1,5 +1,6 @@
 {
   "common": {
+    "add": "add",
     "about": "About",
     "appdaemon_apps": "AppDaemon Apps",
     "appdaemon": "AppDaemon",
@@ -14,6 +15,7 @@
     "documentation": "Documentation",
     "element": "element",
     "hacs_is_disabled": "HACS is disabled",
+    "install": "Install",
     "installed": "installed",
     "integration": "Integration",
     "integration_plural": "Integrations",
@@ -28,11 +30,13 @@
     "python_script": "Python Script",
     "python_script_plural": "Python Scripts",
     "python_scripts": "Python Scripts",
+    "repository": "Repository",
     "repositories": "Repositories",
     "settings": "settings",
     "theme": "Theme",
     "theme_plural": "Themes",
     "themes": "Themes",
+    "update": "Update",
     "version": "Version"
   },
   "confirm": {
@@ -168,5 +172,46 @@
     "x_months_ago": "{x} months ago",
     "x_seconds_ago": "{x} seconds ago",
     "x_years_ago": "{x} years ago"
+  },
+  "dialog_about": {
+    "integration_version": "Integration version",
+    "frontend_version": "Frontend version",
+    "installed_repositories": "Installed repositories",
+    "useful_links": "Useful links"
+  },
+  "dialog_add_repo": {
+    "title": "Add repository",
+    "no_match": "No repositories found matching your filter",
+    "limit": "Only the first 100 repositories are shown, use the search to filter what you need"
+  },
+  "dialog_custom_repositories": {
+    "title": "Custom repositories",
+    "url_placeholder": "Add custom repository URL",
+    "category": "Category",
+    "no_repository": "Missing repository",
+    "no_category": "Missing category"
+  },
+  "dialog_install": {
+    "type": "Type",
+    "url": "URL",
+    "select_version": "Select version",
+    "show_beta": "Show beta versions"
+  },
+  "dialog_info": {
+    "version_installed": "Version installed",
+    "open_issues": "Open issues",
+    "stars": "Stars",
+    "downloads": "Downloads",
+    "author": "Author",
+    "no_info": "The developer has not provided any more information for this repository",
+    "loading": "Loading information...",
+    "open_repo": "Open repository",
+    "install": "Install this repository in HACS"
+  },
+  "dialog_update": {
+    "title": "Update pending",
+    "installed_version": "Installed version",
+    "available_version": "Available version",
+    "changelog": "Changelog"
   }
 }

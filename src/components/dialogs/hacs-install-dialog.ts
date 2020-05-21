@@ -94,14 +94,14 @@ export class HacsInstallDialog extends HacsDialogBase {
                     ?disabled=${this._toggle}
                     .checked=${this._repository.beta}
                     @change=${this._toggleBeta}
-                    >Show beta versions</ha-switch
+                    >${localize("dialog_install.show_beta")}</ha-switch
                   >
                 </div>
                 <div class="version-select-container">
                   <paper-dropdown-menu
                     ?disabled=${this._toggle}
                     class="version-select-dropdown"
-                    label="Select version"
+                    label="${localize("dialog_install.select_version")}"
                   >
                     <paper-listbox
                       id="version"
@@ -137,13 +137,13 @@ export class HacsInstallDialog extends HacsDialogBase {
             this.status.lovelace_mode === "yaml"
               ? html` <table class="lovelace">
                   <tr>
-                    <td>URL:</td>
+                    <td>${localize("dialog_install.url")}:</td>
                     <td>
                       <code>${this._lovelaceUrl()}</code>
                     </td>
                   </tr>
                   <tr>
-                    <td>Type:</td>
+                    <td>${localize("dialog_install.type")}:</td>
                     <td>
                       module
                     </td>
@@ -156,11 +156,13 @@ export class HacsInstallDialog extends HacsDialogBase {
           <mwc-button
             ?disabled=${this._toggle}
             @click=${this._installRepository}
-            >Install</mwc-button
+            >${localize("common.install")}</mwc-button
           >
 
           <hacs-link .url="https://github.com/${this._repository.full_name}"
-            ><mwc-button>Repository</mwc-button></hacs-link
+            ><mwc-button
+              >>${localize("common.repository")}</mwc-button
+            ></hacs-link
           >
         </div>
       </hacs-dialog>

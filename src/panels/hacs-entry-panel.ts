@@ -53,7 +53,7 @@ export class HacsEntryPanel extends LitElement {
 
   private _getMessages = memoizeOne((status: Status) => {
     const messages: Message[] = [];
-    if (status.startup) {
+    if (status?.startup) {
       messages.push({
         title: "HACS is starting up",
         content:
@@ -62,7 +62,7 @@ export class HacsEntryPanel extends LitElement {
       });
     }
 
-    if (status.has_pending_tasks) {
+    if (status?.has_pending_tasks) {
       messages.push({
         title: "Background tasks pending",
         content: "Some repositories might not show untill this is completed",
@@ -70,7 +70,7 @@ export class HacsEntryPanel extends LitElement {
       });
     }
 
-    if (status.disabled) {
+    if (status?.disabled) {
       messages.push({
         title: "HACS is disabled",
         content: "Check your log file for more details",

@@ -7,7 +7,7 @@ import {
 } from "lit-element";
 
 import { markdown } from "../../legacy/markdown/markdown";
-
+import { localize } from "../../localize/localize";
 import { version } from "../../version";
 import { HacsDialogBase } from "./hacs-dialog-base";
 import "./hacs-dialog";
@@ -27,15 +27,17 @@ export class HacsAboutDialog extends HacsDialogBase {
         </div>
         <div class="content">
           ${markdown.html(`
-**Integration version:** | ${this.configuration.version}
+**${localize("dialog_about.integration_version")}:** | ${
+            this.configuration.version
+          }
 --|--
-**Frontend version:** | ${version}
-**Repositories:** | ${this.repositories.length}
-**Installed repositories:** | ${
+**${localize("dialog_about.frontend_version")}:** | ${version}
+**${localize("common.repositories")}:** | ${this.repositories.length}
+**${localize("dialog_about.installed_repositories")}:** | ${
             this.repositories.filter((repo) => repo.installed).length
           }
 
-**Useful links:**
+**${localize("dialog_about.useful_links")}:**
 
 - [General documentation](https://hacs.xyz/)
 - [Configuration](https://hacs.xyz/docs/configuration/start)
