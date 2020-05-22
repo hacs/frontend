@@ -38,14 +38,14 @@ export class HacsAddRepositoryDialog extends HacsDialogBase {
 
   private _repositoriesInActiveCategory = memoizeOne(
     (repositories: Repository[], categories: string[]) =>
-      repositories.filter(
+      repositories?.filter(
         (repo) => !repo.installed && categories.includes(repo.category)
       )
   );
 
   private _filterRepositories = memoizeOne(
     (repositories: Repository[], filter: string) =>
-      repositories.filter(
+      repositories?.filter(
         (repo) =>
           repo.name.includes(filter) ||
           repo.description?.toLocaleLowerCase().includes(filter) ||
@@ -57,7 +57,7 @@ export class HacsAddRepositoryDialog extends HacsDialogBase {
   );
 
   protected render(): TemplateResult | void {
-    this._searchInput = window.localStorage.getItem("hacs-search");
+    this._searchInput = window.localStorage.getItem("hacs-search") || "";
     if (!this.active) return html``;
 
     const repositories = this._filterRepositories(
@@ -65,7 +65,7 @@ export class HacsAddRepositoryDialog extends HacsDialogBase {
         this.repositories,
         this.configuration?.categories
       ),
-      this._searchInput.toLocaleLowerCase()
+      this._searchInput?.toLocaleLowerCase()
     );
 
     return html`
