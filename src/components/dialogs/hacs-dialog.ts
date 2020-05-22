@@ -4,6 +4,7 @@ import {
   customElement,
   html,
   TemplateResult,
+  property,
 } from "lit-element";
 import { classMap } from "lit-html/directives/class-map";
 import { HacsDialogBase } from "./hacs-dialog-base";
@@ -12,6 +13,8 @@ import { HacsCommonStyle } from "../../styles/hacs-common-style";
 
 @customElement("hacs-dialog")
 export class HacsDialog extends HacsDialogBase {
+  @property({ type: Boolean }) public noActions: boolean = false;
+
   protected render(): TemplateResult | void {
     if (!this.active) {
       return html``;
@@ -34,39 +37,41 @@ export class HacsDialog extends HacsDialogBase {
             narrow: this.narrow,
           })}
         >
-          <div class="content">
-            <div class="header-group">
-              <ha-icon-button
-                class="close"
-                icon="mdi:close"
-                @click=${this._close}
-              ></ha-icon-button>
-              <div
-                class=${classMap({
-                  header: true,
-                  "narrow-header": this.narrow,
-                })}
-              >
-                <slot name="header"></slot>
-              </div>
-            </div>
+          <div class="header-group">
+            <ha-icon-button
+              class="close"
+              icon="mdi:close"
+              @click=${this._close}
+            ></ha-icon-button>
+
             <div
               class=${classMap({
-                "card-content": true,
-                "narrow-content": this.narrow,
+                header: true,
+                "narrow-header": this.narrow,
               })}
             >
-              <slot></slot>
-            </div>
-            <div
-              class=${classMap({
-                "card-actions": true,
-                "narrow-actions": this.narrow,
-              })}
-            >
-              <slot name="actions"></slot>
+              <slot name="header"></slot>
             </div>
           </div>
+          <div
+            class=${classMap({
+              "card-content": true,
+              noactions: this.noActions,
+              "narrow-content": this.narrow,
+            })}
+          >
+            <div class="content"><slot></slot></div>
+          </div>
+          ${!this.noActions
+            ? html` <div
+                class=${classMap({
+                  "card-actions": true,
+                  "narrow-actions": this.narrow,
+                })}
+              >
+                <slot name="actions"></slot>
+              </div>`
+            : ""}
         </ha-card>
       </div>
     `;
@@ -124,8 +129,21 @@ export class HacsDialog extends HacsDialogBase {
         }
 
         .card-content {
-          padding: 72px 12px 12px 12px;
-          max-width: 100%;
+          position: relative;
+          padding: 0;
+          width: 100%;
+          padding: 0;
+          height: calc(100% - 136px);
+          overflow-y: auto;
+          overflow-x: hidden;
+          -webkit-overflow-scrolling: touch;
+          margin-top: 65px;
+        }
+        .noactions {
+          height: calc(100% - 68px);
+        }
+        .content {
+          padding: 8px;
         }
 
         ::slotted([slot="actions"]) {
@@ -137,12 +155,15 @@ export class HacsDialog extends HacsDialogBase {
           font-size: 20px;
           height: 65px;
           background-color: var(--sidebar-background-color);
-          border-top: 1px solid var(--divider-color);
           font-weight: 400;
           color: var(--sidebar-text-color);
           font-family: var(--paper-font-body1_-_font-family);
           padding: 12px 16px;
           box-sizing: border-box;
+        }
+
+        ::slotted:not([slot="actions"]) {
+          display: none;
         }
 
         .backdrop {
@@ -172,16 +193,18 @@ export class HacsDialog extends HacsDialogBase {
         }
 
         .dialog {
-          top: 64px;
-          min-width: 350px;
-          max-height: calc(90% - 64px);
-          max-width: 90%;
-          padding-bottom: 65px;
-          z-index: 2;
-          overflow-x: hidden;
           height: auto;
-          width: fit-content;
           margin: auto;
+          max-height: calc(100% - 130px);
+          max-width: 90%;
+          min-width: 350px;
+          overflow-x: hidden;
+          padding-bottom: 65px;
+          padding: 0;
+          padding: unset;
+          top: 64px;
+          width: fit-content;
+          z-index: 2;
         }
       `,
     ];

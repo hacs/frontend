@@ -50,6 +50,7 @@ export class HacsCustomRepositoriesDialog extends HacsDialogBase {
         .active=${this.active}
         .narrow=${this.narrow}
         .hass=${this.hass}
+        noActions
       >
         <div slot="header">${localize("dialog_custom_repositories.title")}</div>
         <div class="content">
@@ -174,7 +175,7 @@ export class HacsCustomRepositoriesDialog extends HacsDialogBase {
   static get styles() {
     return css`
       .content {
-        min-width: 500px;
+        width: 1024px;
         margin-bottom: -65px;
       }
       .list {

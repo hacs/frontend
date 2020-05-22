@@ -73,6 +73,7 @@ export class HacsAddRepositoryDialog extends HacsDialogBase {
         .active=${this.active}
         .narrow=${this.narrow}
         .hass=${this.hass}
+        noActions
       >
         <div slot="header">
           ${localize("dialog_add_repo.title")}
@@ -159,7 +160,7 @@ export class HacsAddRepositoryDialog extends HacsDialogBase {
   static get styles() {
     return css`
       .content {
-        min-width: 500px;
+        width: 1024px;
         margin-bottom: -65px;
       }
       .narrow {
