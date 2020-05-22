@@ -38,7 +38,9 @@ export class HacsAddRepositoryDialog extends HacsDialogBase {
 
   private _repositoriesInActiveCategory = memoizeOne(
     (repositories: Repository[], categories: string[]) =>
-      repositories.filter((repo) => categories.includes(repo.category))
+      repositories.filter(
+        (repo) => !repo.installed && categories.includes(repo.category)
+      )
   );
 
   private _filterRepositories = memoizeOne(
