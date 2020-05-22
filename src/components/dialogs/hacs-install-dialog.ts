@@ -10,6 +10,7 @@ import {
   TemplateResult,
   property,
   PropertyValues,
+  query,
 } from "lit-element";
 
 import {
@@ -31,6 +32,7 @@ export class HacsInstallDialog extends HacsDialogBase {
   @property() public repository?: string;
   @property() public _repository?: Repository;
   @property() private _toggle: boolean = true;
+  @query("#version") private _version?: any;
 
   shouldUpdate(changedProperties: PropertyValues) {
     changedProperties.forEach((_oldValue, propName) => {
@@ -111,7 +113,7 @@ export class HacsInstallDialog extends HacsDialogBase {
                     >
                       ${this._repository.releases.map((release) => {
                         return html`<paper-item
-                          version="${release}"
+                          .version=${release}
                           class="version-select-item"
                           >${release}</paper-item
                         >`;
@@ -121,7 +123,7 @@ export class HacsInstallDialog extends HacsDialogBase {
                         ? ""
                         : html`
                             <paper-item
-                              version="${this._repository.default_branch}"
+                              .version=${this._repository.default_branch}
                               class="version-select-item"
                               >${this._repository.default_branch}</paper-item
                             >
@@ -194,14 +196,15 @@ export class HacsInstallDialog extends HacsDialogBase {
   }
 
   private async _installRepository(): Promise<void> {
-    if (
-      this._repository.version_or_commit !== "commit" &&
-      this._repository.selected_tag !== this._repository.available_version
-    ) {
+    if (this._repository.version_or_commit !== "commit") {
+      const selectedVersion =
+        this._version?.selectedItem?.version ||
+        this._repository.available_version ||
+        this._repository.default_branch;
       await repositoryInstallVersion(
         this.hass,
         this._repository.id,
-        this._repository.available_version
+        selectedVersion
       );
     } else {
       await repositoryInstall(this.hass, this._repository.id);
