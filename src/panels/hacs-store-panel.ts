@@ -50,7 +50,7 @@ export class HacsStorePanel extends LitElement {
             .find((panel) => panel.id === section)
             .categories?.includes(repo.category) && repo.new
       );
-      return [installedRepositories, newRepositories];
+      return [installedRepositories || [], newRepositories || []];
     }
   );
 
@@ -68,8 +68,8 @@ export class HacsStorePanel extends LitElement {
 
   protected render(): TemplateResult | void {
     const [
-      newRepositories,
       InstalledRepositories,
+      newRepositories,
     ] = this._repositoriesInActiveSection(
       this.repositories,
       sections,
@@ -96,10 +96,15 @@ export class HacsStorePanel extends LitElement {
       >
       </hacs-tabbed-menu>
 
+      ${newRepositories?.length > 10
+        ? html`<div class="new-repositories">
+            ${localize("store.new_repositories_note")}
+          </div>`
+        : ""}
       <div class="content">
-        ${InstalledRepositories.concat(newRepositories).length !== 0
-          ? InstalledRepositories
-              .concat(newRepositories)
+        ${newRepositories?.concat(InstalledRepositories).length !== 0
+          ? newRepositories
+              ?.concat(InstalledRepositories)
               ?.map(
                 (repo) =>
                   html`<hacs-repository-card
@@ -162,6 +167,9 @@ export class HacsStorePanel extends LitElement {
           width: 100%;
           text-align: center;
           margin-top: 12px;
+        }
+        .new-repositories {
+          margin: 4px 16px 0 16px;
         }
         paper-item {
           cursor: pointer;
