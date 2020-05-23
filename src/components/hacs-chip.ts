@@ -41,12 +41,12 @@ export class HacsChip extends LitElement {
         .icon {
           margin: auto;
           color: var(--hacs-chip-background-color, var(--accent-color));
-          height: 22px;
-          width: 22px;
-          line-height: 22px;
+          height: 20px;
+          width: 20px;
+          line-height: 20px;
           text-align: center;
 
-          margin-left: -3px;
+          margin-left: -2px;
           background-color: var(
             --hacs-chip-text-color,
             var(--text-primary-color)
