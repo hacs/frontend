@@ -37,14 +37,21 @@ export class HacsStorePanel extends LitElement {
   @property() public section!: string;
 
   private _repositoriesInActiveSection = memoizeOne(
-    (repositories: Repository[], sections: any, section: string) =>
-      repositories?.filter(
+    (repositories: Repository[], sections: any, section: string) => {
+      const installedRepositories: Repository[] = repositories?.filter(
         (repo) =>
           sections.panels
             .find((panel) => panel.id === section)
-            .categories?.includes(repo.category) &&
-          (repo.installed || repo.new)
-      )
+            .categories?.includes(repo.category) && repo.installed
+      );
+      const newRepositories: Repository[] = repositories?.filter(
+        (repo) =>
+          sections.panels
+            .find((panel) => panel.id === section)
+            .categories?.includes(repo.category) && repo.new
+      );
+      return [installedRepositories, newRepositories];
+    }
   );
 
   private _panelsEnabled = memoizeOne(
@@ -60,7 +67,10 @@ export class HacsStorePanel extends LitElement {
   );
 
   protected render(): TemplateResult | void {
-    const repositories = this._repositoriesInActiveSection(
+    const [
+      newRepositories,
+      InstalledRepositories,
+    ] = this._repositoriesInActiveSection(
       this.repositories,
       sections,
       this.section
@@ -87,16 +97,18 @@ export class HacsStorePanel extends LitElement {
       </hacs-tabbed-menu>
 
       <div class="content">
-        ${repositories?.length !== 0
-          ? repositories?.map(
-              (repo) =>
-                html`<hacs-repository-card
-                  .hass=${this.hass}
-                  .repository=${repo}
-                  .narrow=${this.narrow}
-                  .status=${this.status}
-                ></hacs-repository-card>`
-            )
+        ${InstalledRepositories.concat(newRepositories).length !== 0
+          ? InstalledRepositories
+              .concat(newRepositories)
+              ?.map(
+                (repo) =>
+                  html`<hacs-repository-card
+                    .hass=${this.hass}
+                    .repository=${repo}
+                    .narrow=${this.narrow}
+                    .status=${this.status}
+                  ></hacs-repository-card>`
+              )
           : html`<ha-card class="no-repositories">
               <div class="header">${localize("store.no_repositories")} 😕</div>
               <p>

@@ -86,7 +86,7 @@ export class HacsRepositoryCard extends LitElement {
                 </div>
                 <div>
                   <mwc-button @click=${this._setNotNew}
-                    >${localize("repository_card.hide")}</mwc-button
+                    >${localize("repository_card.dismiss")}</mwc-button
                   >
                 </div>`
             : this.repository.pending_upgrade
