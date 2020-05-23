@@ -51,41 +51,43 @@ export class HacsCustomRepositoriesDialog extends HacsDialogBase {
         .narrow=${this.narrow}
         .hass=${this.hass}
         noActions
+        dynamicHeight
       >
         <div slot="header">${localize("dialog_custom_repositories.title")}</div>
         <div class="content">
           ${this._error
             ? html`<div class="error">${this._error.message}</div>`
             : ""}
-          <div class="list"></div>
-          ${repositories?.map(
-            (repo) => html`<paper-icon-item>
-              ${repo.category === "integration"
-                ? html`
-                    <img
-                      src="https://brands.home-assistant.io/_/${repo.domain}/icon.png"
-                      referrerpolicy="no-referrer"
-                      @error=${this._onImageError}
-                      @load=${this._onImageLoad}
-                    />
-                  `
-                : html`<ha-icon
-                    icon="mdi:github-circle"
-                    slot="item-icon"
-                  ></ha-icon>`}
-              <paper-item-body three-line
-                >${repo.name}
-                <div secondary>${repo.description}</div>
-                <div secondary>
-                  Category: ${repo.category}
-                </div></paper-item-body
-              ><ha-icon-button
-                class="delete"
-                icon="mdi:delete"
-                @click=${() => this._removeRepository(repo.id)}
-              ></ha-icon-button>
-            </paper-icon-item>`
-          )}
+          <div class="list">
+            ${repositories?.map(
+              (repo) => html`<paper-icon-item>
+                ${repo.category === "integration"
+                  ? html`
+                      <img
+                        src="https://brands.home-assistant.io/_/${repo.domain}/icon.png"
+                        referrerpolicy="no-referrer"
+                        @error=${this._onImageError}
+                        @load=${this._onImageLoad}
+                      />
+                    `
+                  : html`<ha-icon
+                      icon="mdi:github-circle"
+                      slot="item-icon"
+                    ></ha-icon>`}
+                <paper-item-body three-line
+                  >${repo.name}
+                  <div secondary>${repo.description}</div>
+                  <div secondary>
+                    Category: ${repo.category}
+                  </div></paper-item-body
+                ><ha-icon-button
+                  class="delete"
+                  icon="mdi:delete"
+                  @click=${() => this._removeRepository(repo.id)}
+                ></ha-icon-button>
+              </paper-icon-item>`
+            )}
+          </div>
           <div class="add">
             <input
               id="add-input"
@@ -176,7 +178,7 @@ export class HacsCustomRepositoriesDialog extends HacsDialogBase {
     return css`
       .content {
         width: 1024px;
-        margin-bottom: -65px;
+        display: contents;
       }
       .list {
         margin-top: 16px;

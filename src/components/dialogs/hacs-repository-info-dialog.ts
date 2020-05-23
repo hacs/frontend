@@ -7,7 +7,6 @@ import {
   css,
 } from "lit-element";
 import memoizeOne from "memoize-one";
-
 import { HacsDialogBase } from "./hacs-dialog-base";
 import { Repository } from "../../data/common";
 import { markdown } from "../../legacy/markdown/markdown";
@@ -86,6 +85,8 @@ export class HacsRepositoryDialog extends HacsDialogBase {
         .narrow=${this.narrow}
         .hass=${this.hass}
         .secondary=${this.secondary}
+        ?hasContent=${this._repository?.additional_info?.length > 100}
+        ?noActions=${this._repository?.installed}
       >
         <div slot="header">${this._repository.name || ""}</div>
         <div class="chips">

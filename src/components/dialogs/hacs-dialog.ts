@@ -14,6 +14,8 @@ import { HacsCommonStyle } from "../../styles/hacs-common-style";
 @customElement("hacs-dialog")
 export class HacsDialog extends HacsDialogBase {
   @property({ type: Boolean }) public noActions: boolean = false;
+  @property({ type: Boolean }) public hasContent: boolean = true;
+  @property({ type: Boolean }) public dynamicHeight: boolean = false;
 
   protected render(): TemplateResult | void {
     if (!this.active) {
@@ -34,6 +36,8 @@ export class HacsDialog extends HacsDialogBase {
         <ha-card
           class=${classMap({
             dialog: true,
+            "has-content": this.hasContent,
+            "dynamic-height": this.dynamicHeight,
             narrow: this.narrow,
           })}
         >
@@ -57,6 +61,7 @@ export class HacsDialog extends HacsDialogBase {
             class=${classMap({
               "card-content": true,
               noactions: this.noActions,
+              "dynamic-height": !this.narrow && this.dynamicHeight,
               "narrow-content": this.narrow,
             })}
           >
@@ -92,6 +97,7 @@ export class HacsDialog extends HacsDialogBase {
       css`
         ha-card {
           background-color: var(--paper-card-background-color);
+          transition: none;
         }
         .header-group {
           position: absolute;
@@ -139,11 +145,15 @@ export class HacsDialog extends HacsDialogBase {
           -webkit-overflow-scrolling: touch;
           margin-top: 65px;
         }
+        ha-card.dynamic-height .noactions {
+          margin-bottom: -65px;
+        }
         .noactions {
           height: calc(100% - 68px);
         }
         .content {
           padding: 8px;
+          height: fit-content;
         }
 
         ::slotted([slot="actions"]) {
@@ -160,10 +170,6 @@ export class HacsDialog extends HacsDialogBase {
           font-family: var(--paper-font-body1_-_font-family);
           padding: 12px 16px;
           box-sizing: border-box;
-        }
-
-        ::slotted:not([slot="actions"]) {
-          display: none;
         }
 
         .backdrop {
@@ -193,7 +199,7 @@ export class HacsDialog extends HacsDialogBase {
         }
 
         .dialog {
-          height: auto;
+          height: 300px;
           margin: auto;
           max-height: calc(100% - 130px);
           max-width: 90%;
@@ -205,6 +211,16 @@ export class HacsDialog extends HacsDialogBase {
           top: 64px;
           width: fit-content;
           z-index: 2;
+        }
+        .has-content {
+          height: var(--hacs-dialog-height, -webkit-fill-available);
+        }
+
+        .dynamic-height {
+          height: auto;
+        }
+        ha-card.dynamic-height {
+          padding-bottom: 65px;
         }
       `,
     ];

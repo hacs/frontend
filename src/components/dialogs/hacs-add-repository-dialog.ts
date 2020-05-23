@@ -83,45 +83,46 @@ export class HacsAddRepositoryDialog extends HacsDialogBase {
             .input=${this._searchInput}
             @input=${this._inputValueChanged}
           ></hacs-search>
-          <div class="list"></div>
-          ${repositories
-            .sort((a, b) => (a.last_updated > b.last_updated ? -1 : 1))
-            .slice(0, 100)
-            .map(
-              (repo) => html`<paper-icon-item
-                class=${classMap({ narrow: this.narrow })}
-                @click=${() => this._openInformation(repo)}
-              >
-                ${repo.category === "integration"
-                  ? html`
-                      <img
-                        src="https://brands.home-assistant.io/_/${repo.domain}/icon.png"
-                        referrerpolicy="no-referrer"
-                        @error=${this._onImageError}
-                        @load=${this._onImageLoad}
-                      />
-                    `
-                  : html`<ha-icon
-                      icon="mdi:github-circle"
-                      slot="item-icon"
-                    ></ha-icon>`}
-                <paper-item-body two-line
-                  >${repo.name}
-                  <div class="category-chip">
-                    <hacs-chip
-                      icon="hacs:hacs"
-                      .value=${localize(`common.${repo.category}`)}
-                    ></hacs-chip>
-                  </div>
-                  <div secondary>${repo.description}</div>
-                </paper-item-body>
-              </paper-icon-item>`
-            )}
-          ${repositories.length === 0
-            ? html`<p>${localize("dialog_add_repo.no_match")}</p>`
-            : repositories.length > 100
-            ? html`<p>${localize("dialog_add_repo.limit")}</p>`
-            : ""}
+          <div class=${classMap({ list: true, narrow: this.narrow })}>
+            ${repositories
+              .sort((a, b) => (a.last_updated > b.last_updated ? -1 : 1))
+              .slice(0, 100)
+              .map(
+                (repo) => html`<paper-icon-item
+                  class=${classMap({ narrow: this.narrow })}
+                  @click=${() => this._openInformation(repo)}
+                >
+                  ${repo.category === "integration"
+                    ? html`
+                        <img
+                          src="https://brands.home-assistant.io/_/${repo.domain}/icon.png"
+                          referrerpolicy="no-referrer"
+                          @error=${this._onImageError}
+                          @load=${this._onImageLoad}
+                        />
+                      `
+                    : html`<ha-icon
+                        icon="mdi:github-circle"
+                        slot="item-icon"
+                      ></ha-icon>`}
+                  <paper-item-body two-line
+                    >${repo.name}
+                    <div class="category-chip">
+                      <hacs-chip
+                        icon="hacs:hacs"
+                        .value=${localize(`common.${repo.category}`)}
+                      ></hacs-chip>
+                    </div>
+                    <div secondary>${repo.description}</div>
+                  </paper-item-body>
+                </paper-icon-item>`
+              )}
+            ${repositories.length === 0
+              ? html`<p>${localize("dialog_add_repo.no_match")}</p>`
+              : repositories.length > 100
+              ? html`<p>${localize("dialog_add_repo.limit")}</p>`
+              : ""}
+          </div>
         </div>
       </hacs-dialog>
     `;
@@ -160,15 +161,16 @@ export class HacsAddRepositoryDialog extends HacsDialogBase {
   static get styles() {
     return css`
       .content {
-        width: 1024px;
+        width: 100%;
         margin-bottom: -65px;
       }
       .narrow {
         min-width: unset !important;
-        width: 100%;
+        width: 100% !important;
       }
       .list {
         margin-top: 16px;
+        width: 1024px;
       }
       .category-chip {
         position: absolute;
