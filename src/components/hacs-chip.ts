@@ -60,7 +60,7 @@ export class HacsChip extends LitElement {
           margin-right: 5px;
         }
         ha-icon {
-          --mdc-icon-size: 18px;
+          --mdc-icon-size: 16px;
         }
       `,
     ];
