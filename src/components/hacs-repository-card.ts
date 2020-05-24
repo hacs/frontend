@@ -58,10 +58,12 @@ export class HacsRepositoryCard extends LitElement {
               <h2 class="pointer" @click=${this._showReopsitoryInfo}>
                 ${this.repository.name}
               </h2>
-              <hacs-chip
-                icon="hacs:hacs"
-                .value=${localize(`common.${this.repository.category}`)}
-              ></hacs-chip>
+              ${this.repository.category !== "integration"
+                ? html` <hacs-chip
+                    icon="hacs:hacs"
+                    .value=${localize(`common.${this.repository.category}`)}
+                  ></hacs-chip>`
+                : ""}
             </div>
           </div>
           <paper-item>
