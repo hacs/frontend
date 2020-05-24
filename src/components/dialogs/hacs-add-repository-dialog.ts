@@ -179,6 +179,7 @@ export class HacsAddRepositoryDialog extends HacsDialogBase {
       .list {
         margin-top: 16px;
         width: 1024px;
+        max-width: 100%;
       }
       .category-chip {
         position: absolute;
