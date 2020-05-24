@@ -37,14 +37,21 @@ export class HacsStorePanel extends LitElement {
   @property() public section!: string;
 
   private _repositoriesInActiveSection = memoizeOne(
-    (repositories: Repository[], sections: any, section: string) =>
-      repositories?.filter(
+    (repositories: Repository[], sections: any, section: string) => {
+      const installedRepositories: Repository[] = repositories?.filter(
         (repo) =>
           sections.panels
             .find((panel) => panel.id === section)
-            .categories?.includes(repo.category) &&
-          (repo.installed || repo.new)
-      )
+            .categories?.includes(repo.category) && repo.installed
+      );
+      const newRepositories: Repository[] = repositories?.filter(
+        (repo) =>
+          sections.panels
+            .find((panel) => panel.id === section)
+            .categories?.includes(repo.category) && repo.new
+      );
+      return [installedRepositories || [], newRepositories || []];
+    }
   );
 
   private _panelsEnabled = memoizeOne(
@@ -60,7 +67,10 @@ export class HacsStorePanel extends LitElement {
   );
 
   protected render(): TemplateResult | void {
-    const repositories = this._repositoriesInActiveSection(
+    const [
+      InstalledRepositories,
+      newRepositories,
+    ] = this._repositoriesInActiveSection(
       this.repositories,
       sections,
       this.section
@@ -86,17 +96,24 @@ export class HacsStorePanel extends LitElement {
       >
       </hacs-tabbed-menu>
 
+      ${newRepositories?.length > 10
+        ? html`<div class="new-repositories">
+            ${localize("store.new_repositories_note")}
+          </div>`
+        : ""}
       <div class="content">
-        ${repositories?.length !== 0
-          ? repositories?.map(
-              (repo) =>
-                html`<hacs-repository-card
-                  .hass=${this.hass}
-                  .repository=${repo}
-                  .narrow=${this.narrow}
-                  .status=${this.status}
-                ></hacs-repository-card>`
-            )
+        ${newRepositories?.concat(InstalledRepositories).length !== 0
+          ? newRepositories
+              ?.concat(InstalledRepositories)
+              ?.map(
+                (repo) =>
+                  html`<hacs-repository-card
+                    .hass=${this.hass}
+                    .repository=${repo}
+                    .narrow=${this.narrow}
+                    .status=${this.status}
+                  ></hacs-repository-card>`
+              )
           : html`<ha-card class="no-repositories">
               <div class="header">${localize("store.no_repositories")} 😕</div>
               <p>
@@ -151,6 +168,9 @@ export class HacsStorePanel extends LitElement {
           width: 100%;
           text-align: center;
           margin-top: 12px;
+        }
+        .new-repositories {
+          margin: 4px 16px 0 16px;
         }
         paper-item {
           cursor: pointer;

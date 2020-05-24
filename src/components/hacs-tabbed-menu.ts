@@ -48,7 +48,7 @@ export class HacsTabbedMenu extends LitElement {
         >
         ${this.repositories?.filter((repo) => repo.new).length !== 0
           ? html` <paper-item @click=${this._clearAllNewRepositories}
-              >${localize("menu.clear")}</paper-item
+              >${localize("menu.dismiss")}</paper-item
             >`
           : ""}
 
