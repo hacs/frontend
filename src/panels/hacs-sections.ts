@@ -1,4 +1,3 @@
-import { Configuration } from "../data/common";
 export const sections = {
   updates: [],
   panels: [
