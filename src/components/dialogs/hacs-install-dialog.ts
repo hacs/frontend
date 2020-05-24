@@ -110,7 +110,7 @@ export class HacsInstallDialog extends HacsDialogBase {
                       id="version"
                       class="version-select-list"
                       slot="dropdown-content"
-                      selected="-1"
+                      selected="0"
                     >
                       ${this._repository.releases.map((release) => {
                         return html`<paper-item
