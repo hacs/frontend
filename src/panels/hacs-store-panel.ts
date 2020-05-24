@@ -48,7 +48,9 @@ export class HacsStorePanel extends LitElement {
         (repo) =>
           sections.panels
             .find((panel) => panel.id === section)
-            .categories?.includes(repo.category) && repo.new
+            .categories?.includes(repo.category) &&
+          repo.new &&
+          !repo.installed
       );
       return [installedRepositories || [], newRepositories || []];
     }
