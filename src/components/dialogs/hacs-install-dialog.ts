@@ -21,6 +21,7 @@ import {
   fetchResources,
   createResource,
 } from "../../data/websocket";
+import { updateLovelaceResources } from "../../tools/update-lovelace-resources";
 import { localize } from "../../localize/localize";
 import { HacsDialogBase } from "./hacs-dialog-base";
 import { Repository } from "../../data/common";
@@ -218,15 +219,7 @@ export class HacsInstallDialog extends HacsDialogBase {
       this._repository.category === "plugin" &&
       this.status.lovelace_mode !== "yaml"
     ) {
-      const resources = await fetchResources(this.hass);
-      if (
-        !resources.map((resource) => resource.url).includes(this._lovelaceUrl())
-      ) {
-        createResource(this.hass, {
-          url: this._lovelaceUrl(),
-          res_type: "module",
-        });
-      }
+      await updateLovelaceResources(this.hass, this._repository);
     }
     this._installing = false;
     if (this._repository.category === "plugin") {

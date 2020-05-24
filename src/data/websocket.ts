@@ -177,6 +177,15 @@ export const createResource = (
     ...values,
   });
 
+export const updateResource = (
+  hass: HomeAssistant,
+  values: LovelaceResourcesMutableParams
+) =>
+  hass.callWS<LovelaceResource>({
+    type: "lovelace/resources/update",
+    ...values,
+  });
+
 export const deleteResource = (hass: HomeAssistant, id: string) =>
   hass.callWS({
     type: "lovelace/resources/delete",

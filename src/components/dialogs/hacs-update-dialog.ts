@@ -12,6 +12,7 @@ import {
   repositoryInstall,
   repositoryInstallVersion,
 } from "../../data/websocket";
+import { updateLovelaceResources } from "../../tools/update-lovelace-resources";
 import { HacsDialogBase } from "./hacs-dialog-base";
 import { Repository } from "../../data/common";
 import { localize } from "../../localize/localize";
@@ -96,6 +97,9 @@ export class HacsUpdateDialog extends HacsDialogBase {
       await repositoryInstall(this.hass, repository.id);
     }
     if (repository.category === "plugin") {
+      if (this.status.lovelace_mode !== "yaml") {
+        await updateLovelaceResources(this.hass, repository);
+      }
       window.location.reload(true);
     }
     this._updating = false;
