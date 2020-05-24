@@ -86,15 +86,18 @@ export class HacsAddRepositoryDialog extends HacsDialogBase {
         .hass=${this.hass}
         @scroll=${this._loadMore}
         noActions
+        hasFilter
       >
         <div slot="header">
           ${localize("dialog_add_repo.title")}
         </div>
-        <div class=${classMap({ content: true, narrow: this.narrow })}>
+        <div slot="filter" class="filter">
           <hacs-search
             .input=${this._searchInput}
             @input=${this._inputValueChanged}
           ></hacs-search>
+        </div>
+        <div class=${classMap({ content: true, narrow: this.narrow })}>
           <div class=${classMap({ list: true, narrow: this.narrow })}>
             ${repositories
               .sort((a, b) => (a.last_updated > b.last_updated ? -1 : 1))
@@ -183,6 +186,11 @@ export class HacsAddRepositoryDialog extends HacsDialogBase {
       .content {
         width: 100%;
         margin-bottom: -65px;
+      }
+      .filter {
+        margin-bottom: -65px;
+        margin-top: 65px;
+        display: flex;
       }
       .narrow {
         min-width: unset !important;
@@ -275,6 +283,9 @@ export class HacsAddRepositoryDialog extends HacsDialogBase {
       }
       paper-dropdown-menu {
         width: 75%;
+      }
+      hacs-search {
+        width: 100%;
       }
     `;
   }
