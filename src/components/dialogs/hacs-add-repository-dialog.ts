@@ -55,7 +55,7 @@ export class HacsAddRepositoryDialog extends HacsDialogBase {
     (repositories: Repository[], filter: string) =>
       repositories?.filter(
         (repo) =>
-          repo.name.includes(filter) ||
+          repo.name?.toLocaleLowerCase().includes(filter) ||
           repo.description?.toLocaleLowerCase().includes(filter) ||
           repo.category.toLocaleLowerCase().includes(filter) ||
           repo.full_name.toLocaleLowerCase().includes(filter) ||
