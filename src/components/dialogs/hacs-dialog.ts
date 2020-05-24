@@ -96,7 +96,10 @@ export class HacsDialog extends HacsDialogBase {
       HacsCommonStyle,
       css`
         ha-card {
-          background-color: var(--paper-card-background-color);
+          background-color: var(
+            --paper-dialog-background-color,
+            var(--card-background-color)
+          );
           transition: none;
         }
         .header-group {
@@ -158,7 +161,7 @@ export class HacsDialog extends HacsDialogBase {
 
         ::slotted([slot="actions"]) {
           position: absolute;
-          width: 100%;
+          width: calc(100% - 32px);
           display: flex;
           justify-content: space-between;
           align-items: center;
