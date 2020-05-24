@@ -74,7 +74,9 @@ export class HacsCustomRepositoriesDialog extends HacsDialogBase {
                       icon="mdi:github-circle"
                       slot="item-icon"
                     ></ha-icon>`}
-                <paper-item-body three-line
+                <paper-item-body
+                  @click=${() => this._showReopsitoryInfo(String(repo.id))}
+                  three-line
                   >${repo.name}
                   <div secondary>${repo.description}</div>
                   <div secondary>
@@ -174,6 +176,19 @@ export class HacsCustomRepositoriesDialog extends HacsDialogBase {
       slot="item-icon"
     ></ha-icon>`;
   }
+
+  private async _showReopsitoryInfo(repository: string) {
+    this.dispatchEvent(
+      new CustomEvent("hacs-dialog-secondary", {
+        detail: {
+          type: "repository-info",
+          repository,
+        },
+        bubbles: true,
+        composed: true,
+      })
+    );
+  }
   static get styles() {
     return css`
       .content {
@@ -199,7 +214,8 @@ export class HacsCustomRepositoriesDialog extends HacsDialogBase {
         max-width: 36px;
         position: absolute;
       }
-      .delete {
+      .delete,
+      paper-item-body {
         cursor: pointer;
       }
       .error {
