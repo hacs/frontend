@@ -126,6 +126,10 @@ export class HacsRepositoryCard extends LitElement {
                   slot="dropdown-trigger"
                 ></ha-icon-button>
                 <paper-listbox slot="dropdown-content">
+                  <paper-item class="pointer" @click=${this._showReopsitoryInfo}
+                    >${localize("repository_card.information")}</paper-item
+                  >
+
                   <paper-item
                     class="pointer"
                     @click=${this._updateReopsitoryInfo}
@@ -134,12 +138,10 @@ export class HacsRepositoryCard extends LitElement {
                     )}</paper-item
                   >
 
-                  <paper-item class="pointer" @click=${this._showReopsitoryInfo}
-                    >${localize("repository_card.information")}</paper-item
-                  >
                   <paper-item @click=${this._installRepository}
                     >${localize("repository_card.reinstall")}</paper-item
                   >
+
                   ${this.repository.category === "plugin"
                     ? html`<hacs-link
                         .url="/hacsfiles/${path.pop()}/${this.repository
@@ -160,6 +162,7 @@ export class HacsRepositoryCard extends LitElement {
                       >${localize("repository_card.open_issue")}</paper-item
                     ></hacs-link
                   >
+
                   ${String(this.repository.id) !== "172733314"
                     ? html`<hacs-link
                           .url="https://github.com/hacs/integration/issues/new?assignees=ludeeus&labels=flag&template=flag.md&title=${this
