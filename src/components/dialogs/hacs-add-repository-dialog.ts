@@ -46,6 +46,7 @@ export class HacsAddRepositoryDialog extends HacsDialogBase {
           sections?.panels
             .find((panel) => panel.id === this.section)
             .categories?.includes(repo.category) &&
+          !repo.installed &&
           categories?.includes(repo.category)
       )
   );
