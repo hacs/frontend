@@ -23,6 +23,7 @@ export class HacsAddRepositoryDialog extends HacsDialogBase {
   @property() private _load: number = 30;
   @property() private _top: number = 0;
   @property() private _searchInput: string = "";
+  @property() private _sortBy: string = "stars";
   @property() public section!: string;
 
   shouldUpdate(changedProperties: PropertyValues) {
@@ -37,7 +38,8 @@ export class HacsAddRepositoryDialog extends HacsDialogBase {
       changedProperties.has("narrow") ||
       changedProperties.has("active") ||
       changedProperties.has("_searchInput") ||
-      changedProperties.has("_load")
+      changedProperties.has("_load") ||
+      changedProperties.has("_sortBy")
     );
   }
 
@@ -96,11 +98,31 @@ export class HacsAddRepositoryDialog extends HacsDialogBase {
             .input=${this._searchInput}
             @input=${this._inputValueChanged}
           ></hacs-search>
+          <paper-dropdown-menu label="${localize("dialog_add_repo.sort_by")}">
+            <paper-listbox slot="dropdown-content" selected="0">
+              <paper-item @click=${() => (this._sortBy = "stars")}
+                >${localize("store.stars")}</paper-item
+              >
+              <paper-item @click=${() => (this._sortBy = "name")}
+                >${localize("store.name")}</paper-item
+              >
+              <paper-item @click=${() => (this._sortBy = "last_updated")}
+                >${localize("store.last_updated")}</paper-item
+              >
+            </paper-listbox>
+          </paper-dropdown-menu>
         </div>
         <div class=${classMap({ content: true, narrow: this.narrow })}>
           <div class=${classMap({ list: true, narrow: this.narrow })}>
             ${repositories
-              .sort((a, b) => (a.last_updated > b.last_updated ? -1 : 1))
+              .sort((a, b) => {
+                if (this._sortBy === "name") {
+                  return a.name.toLocaleLowerCase() < b.name.toLocaleLowerCase()
+                    ? -1
+                    : 1;
+                }
+                return a[this._sortBy] > b[this._sortBy] ? -1 : 1;
+              })
               .slice(0, this._load)
               .map(
                 (repo) => html`<paper-icon-item
@@ -230,6 +252,11 @@ export class HacsAddRepositoryDialog extends HacsDialogBase {
       paper-icon-item {
         cursor: pointer;
         padding: 2px 0;
+      }
+
+      paper-dropdown-menu {
+        max-width: 30%;
+        margin: 11px 4px -5px;
       }
 
       paper-item-body {
