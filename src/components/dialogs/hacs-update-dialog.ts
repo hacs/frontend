@@ -83,10 +83,7 @@ export class HacsUpdateDialog extends HacsDialogBase {
   private async _updateRepository(): Promise<void> {
     this._updating = true;
     const repository = this._getRepository(this.repositories, this.repository);
-    if (
-      repository.version_or_commit !== "commit" &&
-      repository.selected_tag !== repository.available_version
-    ) {
+    if (repository.version_or_commit !== "commit") {
       await repositoryInstallVersion(
         this.hass,
         repository.id,

@@ -87,6 +87,7 @@ export class HacsRepositoryDialog extends HacsDialogBase {
         .secondary=${this.secondary}
         ?hasContent=${this._repository?.additional_info?.length > 100}
         ?noActions=${this._repository?.installed}
+        ?dynamicHeight=${this._repository?.installed}
       >
         <div slot="header">${this._repository.name || ""}</div>
         <div class="chips">
