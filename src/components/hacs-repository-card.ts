@@ -34,7 +34,7 @@ export class HacsRepositoryCard extends LitElement {
         class=${classMap({
           "status-border":
             this.repository.new || this.repository.pending_upgrade,
-          "status-new": this.repository.new,
+          "status-new": this.repository.new && !this.repository.installed,
           "status-update": this.repository.pending_upgrade,
         })}
       >
@@ -73,7 +73,7 @@ export class HacsRepositoryCard extends LitElement {
           >
         </div>
         <div class="card-actions">
-          ${this.repository.new
+          ${this.repository.new && !this.repository.installed
             ? html`<div>
                   <mwc-button @click=${this._installRepository}
                     >${localize("common.install")}</mwc-button
