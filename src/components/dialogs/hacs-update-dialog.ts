@@ -56,6 +56,9 @@ export class HacsUpdateDialog extends HacsDialogBase {
                   .replace("{minversion}", repository.homeassistant)}
               </p>`
             : ""}
+          ${repository.category === "integration"
+            ? html`<p>${localize("dialog_install.restart")}</p>`
+            : ""}
         </div>
         <div slot="actions">
           <mwc-button

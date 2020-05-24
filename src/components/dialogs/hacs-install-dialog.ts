@@ -162,6 +162,9 @@ export class HacsInstallDialog extends HacsDialogBase {
                   </tr>
                 </table>`
               : ""}
+            ${this._repository.category === "integration"
+              ? html`<p>${localize("dialog_install.restart")}</p>`
+              : ""}
           </div>
         </div>
         <div slot="actions">
