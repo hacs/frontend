@@ -139,6 +139,7 @@ export class HacsStorePanel extends LitElement {
         detail: {
           type: "add-repository",
           repositories: this.repositories,
+          section: this.section,
         },
         bubbles: true,
         composed: true,

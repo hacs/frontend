@@ -21,6 +21,8 @@ export class HacsAboutDialog extends HacsDialogBase {
         .active=${this.active}
         .narrow=${this.narrow}
         .hass=${this.hass}
+        noActions
+        dynamicHeight
       >
         <div slot="header">
           ${this.narrow ? "HACS" : "Home Asisstant Community Store"}
