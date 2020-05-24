@@ -14,12 +14,14 @@ import { HacsDialogBase } from "./hacs-dialog-base";
 import { Repository } from "../../data/common";
 
 import { localize } from "../../localize/localize";
+import { sections } from "../../panels/hacs-sections";
 import "../hacs-search";
 import "../hacs-chip";
 
 @customElement("hacs-add-repository-dialog")
 export class HacsAddRepositoryDialog extends HacsDialogBase {
   @property() private _searchInput: string = "";
+  @property() public section!: string;
 
   shouldUpdate(changedProperties: PropertyValues) {
     changedProperties.forEach((_oldValue, propName) => {
@@ -39,7 +41,12 @@ export class HacsAddRepositoryDialog extends HacsDialogBase {
   private _repositoriesInActiveCategory = memoizeOne(
     (repositories: Repository[], categories: string[]) =>
       repositories?.filter(
-        (repo) => !repo.installed && categories.includes(repo.category)
+        (repo) =>
+          !repo.installed &&
+          sections?.panels
+            .find((panel) => panel.id === this.section)
+            .categories?.includes(repo.category) &&
+          categories?.includes(repo.category)
       )
   );
 
