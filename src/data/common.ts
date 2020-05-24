@@ -40,6 +40,7 @@ export interface LovelaceResource {
 }
 
 export interface LovelaceResourcesMutableParams {
+  resource_id?: number;
   res_type: "css" | "js" | "module" | "html";
   url: string;
 }
