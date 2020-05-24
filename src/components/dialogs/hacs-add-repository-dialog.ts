@@ -20,6 +20,8 @@ import "../hacs-chip";
 
 @customElement("hacs-add-repository-dialog")
 export class HacsAddRepositoryDialog extends HacsDialogBase {
+  @property() private _load: number = 30;
+  @property() private _top: number = 0;
   @property() private _searchInput: string = "";
   @property() public section!: string;
 
@@ -34,7 +36,8 @@ export class HacsAddRepositoryDialog extends HacsDialogBase {
       changedProperties.has("sidebarDocked") ||
       changedProperties.has("narrow") ||
       changedProperties.has("active") ||
-      changedProperties.has("_searchInput")
+      changedProperties.has("_searchInput") ||
+      changedProperties.has("_load")
     );
   }
 
@@ -81,6 +84,7 @@ export class HacsAddRepositoryDialog extends HacsDialogBase {
         .active=${this.active}
         .narrow=${this.narrow}
         .hass=${this.hass}
+        @scroll=${this._loadMore}
         noActions
       >
         <div slot="header">
@@ -94,7 +98,7 @@ export class HacsAddRepositoryDialog extends HacsDialogBase {
           <div class=${classMap({ list: true, narrow: this.narrow })}>
             ${repositories
               .sort((a, b) => (a.last_updated > b.last_updated ? -1 : 1))
-              .slice(0, 100)
+              .slice(0, this._load)
               .map(
                 (repo) => html`<paper-icon-item
                   class=${classMap({ narrow: this.narrow })}
@@ -127,13 +131,21 @@ export class HacsAddRepositoryDialog extends HacsDialogBase {
               )}
             ${repositories.length === 0
               ? html`<p>${localize("dialog_add_repo.no_match")}</p>`
-              : repositories.length > 100
-              ? html`<p>${localize("dialog_add_repo.limit")}</p>`
               : ""}
           </div>
         </div>
       </hacs-dialog>
     `;
+  }
+
+  private _loadMore(ev) {
+    const top = ev.detail.target.scrollTop;
+    if (top >= this._top) {
+      this._load += 1;
+    } else {
+      this._load -= 1;
+    }
+    this._top = top;
   }
 
   private _inputValueChanged(ev: any) {
