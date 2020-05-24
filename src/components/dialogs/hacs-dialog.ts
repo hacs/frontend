@@ -22,14 +22,16 @@ export class HacsDialog extends HacsDialogBase {
       return html``;
     }
 
-    const sidebarDocked =
-      window.localStorage.getItem("dockedSidebar") === '"docked"';
+    const sidebar = window.localStorage.getItem("dockedSidebar");
+
+    const sidebarDocked = sidebar === '"docked"';
 
     return html`
       <div
         class=${classMap({
           backdrop: true,
           docked: sidebarDocked,
+          "full-width": sidebar === '"always_hidden"',
           narrow: this.narrow,
         })}
       >
@@ -181,13 +183,8 @@ export class HacsDialog extends HacsDialogBase {
           position: fixed;
           z-index: 1;
           top: 0;
-          left: 64px;
-          width: calc(100% - 64px);
-        }
-
-        .docked {
-          left: 256px !important;
-          width: calc(100% - 256px) !important;
+          left: var(--app-drawer-width);
+          width: calc(100% - var(--app-drawer-width));
         }
 
         .narrow {
@@ -224,6 +221,10 @@ export class HacsDialog extends HacsDialogBase {
         }
         ha-card.dynamic-height {
           padding-bottom: 65px;
+        }
+
+        .full-width {
+          --app-drawer-width: 0%;
         }
       `,
     ];
