@@ -46,7 +46,7 @@ export class HacsRepositoryCard extends LitElement {
                     ${localize("repository_card.pending_update")}
                   </div>
                 `
-              : this.repository.new
+              : this.repository.new && !this.repository.installed
               ? html`
                   <div class="status-header new-header">
                     ${localize("repository_card.new_repository")}
