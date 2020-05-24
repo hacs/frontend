@@ -60,6 +60,7 @@ export class HacsDialog extends HacsDialogBase {
             </div>
           </div>
           <div
+            @scroll=${this._scrollEvent}
             class=${classMap({
               "card-content": true,
               noactions: this.noActions,
@@ -67,7 +68,9 @@ export class HacsDialog extends HacsDialogBase {
               "narrow-content": this.narrow,
             })}
           >
-            <div class="content"><slot></slot></div>
+            <div class="content">
+              <slot></slot>
+            </div>
           </div>
           ${!this.noActions
             ? html` <div
@@ -82,6 +85,18 @@ export class HacsDialog extends HacsDialogBase {
         </ha-card>
       </div>
     `;
+  }
+
+  private _scrollEvent(ev) {
+    this.dispatchEvent(
+      new CustomEvent("scroll", {
+        detail: {
+          target: ev.target,
+        },
+        bubbles: true,
+        composed: true,
+      })
+    );
   }
 
   private _close() {
