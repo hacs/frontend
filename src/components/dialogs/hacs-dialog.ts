@@ -16,6 +16,7 @@ export class HacsDialog extends HacsDialogBase {
   @property({ type: Boolean }) public noActions: boolean = false;
   @property({ type: Boolean }) public hasContent: boolean = true;
   @property({ type: Boolean }) public dynamicHeight: boolean = false;
+  @property({ type: Boolean }) public hasFilter: boolean = false;
 
   protected render(): TemplateResult | void {
     if (!this.active) {
@@ -59,11 +60,12 @@ export class HacsDialog extends HacsDialogBase {
               <slot name="header"></slot>
             </div>
           </div>
+          <slot name="filter"></slot>
           <div
             @scroll=${this._scrollEvent}
             class=${classMap({
               "card-content": true,
-              noactions: this.noActions,
+              noactions: this.noActions && !this.hasFilter,
               "dynamic-height": !this.narrow && this.dynamicHeight,
               "narrow-content": this.narrow,
             })}
@@ -221,7 +223,6 @@ export class HacsDialog extends HacsDialogBase {
           min-width: 350px;
           overflow-x: hidden;
           padding-bottom: 65px;
-          padding: 0;
           padding: unset;
           top: 64px;
           width: fit-content;
