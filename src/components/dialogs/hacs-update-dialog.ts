@@ -35,6 +35,7 @@ export class HacsUpdateDialog extends HacsDialogBase {
         .active=${this.active}
         .narrow=${this.narrow}
         .hass=${this.hass}
+        dynamicHeight
       >
         <div slot="header">${localize("dialog_update.title")}</div>
         <div class="content">

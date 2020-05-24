@@ -87,6 +87,7 @@ export class HacsInstallDialog extends HacsDialogBase {
         .narrow=${this.narrow}
         .hass=${this.hass}
         .secondary=${this.secondary}
+        dynamicHeight
       >
         <div slot="header">${this._repository.name}</div>
         <div class="content">
