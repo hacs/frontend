@@ -32,6 +32,7 @@ export class HacsInstallDialog extends HacsDialogBase {
   @property() public repository?: string;
   @property() public _repository?: Repository;
   @property() private _toggle: boolean = true;
+  @property() private _installing: boolean = false;
   @query("#version") private _version?: any;
 
   shouldUpdate(changedProperties: PropertyValues) {
@@ -52,7 +53,8 @@ export class HacsInstallDialog extends HacsDialogBase {
       changedProperties.has("narrow") ||
       changedProperties.has("active") ||
       changedProperties.has("_toggle") ||
-      changedProperties.has("_repository")
+      changedProperties.has("_repository") ||
+      changedProperties.has("_installing")
     );
   }
 
@@ -163,15 +165,13 @@ export class HacsInstallDialog extends HacsDialogBase {
           </div>
         </div>
         <div slot="actions">
-          ${this._repository.can_install
-            ? html` <mwc-button
-                ?disabled=${this._toggle}
-                @click=${this._installRepository}
-                >${localize("common.install")}</mwc-button
-              >`
-            : html` <mwc-button disabled @click=${this._installRepository}
-                >${localize("common.install")}</mwc-button
-              >`}
+          <mwc-button
+            ?disabled=${!this._repository.can_install || this._toggle}
+            @click=${this._installRepository}
+            >${this._installing
+              ? html`<paper-spinner active></paper-spinner>`
+              : localize("common.install")}</mwc-button
+          >
 
           <hacs-link .url="https://github.com/${this._repository.full_name}"
             ><mwc-button
@@ -197,6 +197,7 @@ export class HacsInstallDialog extends HacsDialogBase {
   }
 
   private async _installRepository(): Promise<void> {
+    this._installing = true;
     if (this._repository.version_or_commit !== "commit") {
       const selectedVersion =
         this._version?.selectedItem?.version ||
@@ -224,6 +225,7 @@ export class HacsInstallDialog extends HacsDialogBase {
         });
       }
     }
+    this._installing = false;
     if (this._repository.category === "plugin") {
       window.location.reload(true);
     }

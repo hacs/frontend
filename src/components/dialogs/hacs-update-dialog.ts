@@ -21,6 +21,7 @@ import "./hacs-dialog";
 @customElement("hacs-update-dialog")
 export class HacsUpdateDialog extends HacsDialogBase {
   @property() public repository?: string;
+  @property() private _updating: boolean = false;
 
   private _getRepository = memoizeOne(
     (repositories: Repository[], repository: string) =>
@@ -57,13 +58,13 @@ export class HacsUpdateDialog extends HacsDialogBase {
             : ""}
         </div>
         <div slot="actions">
-          ${repository.can_install
-            ? html` <mwc-button @click=${this._updateRepository}
-                >${localize("common.update")}</mwc-button
-              >`
-            : html` <mwc-button @click=${this._updateRepository} disabled
-                >${localize("common.update")}</mwc-button
-              >`}
+          <mwc-button
+            ?disabled=${!repository.can_install}
+            @click=${this._updateRepository}
+            >${this._updating
+              ? html`<paper-spinner active></paper-spinner>`
+              : localize("common.update")}</mwc-button
+          >
           <hacs-link .url=${this._getChanglogURL()}
             ><mwc-button
               >${localize("dialog_update.changelog")}</mwc-button
@@ -80,6 +81,7 @@ export class HacsUpdateDialog extends HacsDialogBase {
   }
 
   private async _updateRepository(): Promise<void> {
+    this._updating = true;
     const repository = this._getRepository(this.repositories, this.repository);
     if (
       repository.version_or_commit !== "commit" &&
@@ -96,6 +98,7 @@ export class HacsUpdateDialog extends HacsDialogBase {
     if (repository.category === "plugin") {
       window.location.reload(true);
     }
+    this._updating = false;
     this.dispatchEvent(
       new Event("hacs-dialog-closed", { bubbles: true, composed: true })
     );
