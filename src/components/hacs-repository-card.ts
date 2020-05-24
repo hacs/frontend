@@ -54,9 +54,15 @@ export class HacsRepositoryCard extends LitElement {
                 `
               : html`<div class="status-header default-header"></div>`}
 
-            <h2 class="pointer" @click=${this._showReopsitoryInfo}>
-              ${this.repository.name}
-            </h2>
+            <div class="title">
+              <h2 class="pointer" @click=${this._showReopsitoryInfo}>
+                ${this.repository.name}
+              </h2>
+              <hacs-chip
+                icon="hacs:hacs"
+                .value=${localize(`common.${this.repository.category}`)}
+              ></hacs-chip>
+            </div>
           </div>
           <paper-item>
             <paper-item-body
@@ -254,7 +260,13 @@ export class HacsRepositoryCard extends LitElement {
           flex-direction: column;
           height: 100%;
         }
-
+        hacs-chip {
+          margin: 8px 4px 0 0;
+        }
+        .title {
+          display: flex;
+          justify-content: space-between;
+        }
         .card-content {
           padding: 0 0 3px 0;
           height: 100%;

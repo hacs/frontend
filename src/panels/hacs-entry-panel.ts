@@ -33,11 +33,12 @@ import { sections } from "./hacs-sections";
 export class HacsEntryPanel extends LitElement {
   @property({ attribute: false }) public configuration: Configuration;
   @property({ attribute: false }) public hass!: HomeAssistant;
-  @property({ attribute: false }) public narrow!: boolean;
-  @property({ attribute: false }) public route!: Route;
-  @property({ attribute: false }) public repositories: Repository[];
   @property({ attribute: false }) public lovelace: LovelaceResource[];
+  @property({ attribute: false }) public repositories: Repository[];
+  @property({ attribute: false }) public route!: Route;
   @property({ attribute: false }) public status: Status;
+  @property({ type: Boolean }) public isWide!: boolean;
+  @property({ type: Boolean }) public narrow!: boolean;
 
   private _panelsEnabled = memoizeOne(
     (sections: any, config: Configuration) => {
@@ -81,6 +82,8 @@ export class HacsEntryPanel extends LitElement {
 
   protected render(): TemplateResult | void {
     const messages: Message[] = this._getMessages(this.status);
+    this.isWide =
+      window.localStorage.getItem("dockedSidebar") === '"always_hidden"';
 
     sections.updates = []; // reset so we don't get duplicates
     this.repositories?.forEach((repo) => {
@@ -97,7 +100,8 @@ export class HacsEntryPanel extends LitElement {
         .route=${this.route}
         .narrow=${this.narrow}
         .header=${this.narrow ? "HACS" : "Home Assistant Community Store"}
-        intro="${sections.updates.length === 0 && messages.length === 0
+        intro="${this.isWide ||
+        (sections.updates.length === 0 && messages.length === 0)
           ? localize("entry.intro")
           : ""}"
       >

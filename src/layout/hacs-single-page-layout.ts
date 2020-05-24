@@ -21,6 +21,8 @@ export class HacsSinglePageLayout extends LitElement {
   @property() public intro?: string;
 
   protected render(): TemplateResult | void {
+    this.isWide =
+      window.localStorage.getItem("dockedSidebar") === '"always_hidden"';
     return html`
       <div
         class="content ${classMap({
@@ -28,8 +30,11 @@ export class HacsSinglePageLayout extends LitElement {
         })}"
       >
         <div class="header-group">
-          ${this.narrow
+          ${this.narrow || this.isWide
             ? html`<ha-menu-button
+                class="${classMap({
+                  sidebarhidden: this.isWide && !this.narrow,
+                })}"
                 .hass=${this.hass}
                 .narrow=${this.narrow}
               ></ha-menu-button>`
@@ -39,9 +44,9 @@ export class HacsSinglePageLayout extends LitElement {
         </div>
         <div
           class="together layout ${classMap({
-            narrow: !this.isWide,
-            vertical: !this.isWide,
-            horizontal: this.isWide,
+            narrow: this.narrow,
+            vertical: !this.isWide || this.narrow,
+            horizontal: this.isWide && !this.narrow,
           })}"
         >
           <div class="intro">${this.intro || ""}</div>
@@ -125,6 +130,12 @@ export class HacsSinglePageLayout extends LitElement {
       }
       ha-menu-button {
         --app-header-background-color: var(--primary-background-color);
+      }
+
+      ha-menu-button.sidebarhidden {
+        position: absolute;
+        top: 0;
+        left: 0;
       }
     `;
   }

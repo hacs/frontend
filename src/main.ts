@@ -69,7 +69,6 @@ class HacsFrontend extends LitElement {
         .configuration=${this.configuration}
       ></hacs-resolver>
     `;
-
     return html`
       <hacs-frontendbase
         .hass=${this.hass}
