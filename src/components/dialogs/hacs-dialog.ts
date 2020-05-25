@@ -230,6 +230,7 @@ export class HacsDialog extends HacsDialogBase {
         }
         .has-content {
           height: var(--hacs-dialog-height, -webkit-fill-available);
+          height: var(--hacs-dialog-height, 100%);
         }
 
         .dynamic-height {
