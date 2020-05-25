@@ -12,12 +12,12 @@ export async function updateLovelaceResources(
   repository: Repository
 ): Promise<void> {
   const resources = await fetchResources(hass);
-  const namespace = repository.full_name.split("/")[1];
+  const namespace = `/hacsfiles/${repository.full_name.split("/")[1]}`;
+  const url = `${namespace}/${repository.file_name}`;
   const exsisting = resources.find((resource) =>
     resource.url.includes(namespace)
   );
 
-  const url = `/hacsfiles/${namespace}/${repository.file_name}`;
   if (exsisting && exsisting.url !== url) {
     console.debug(`Updating exsusting resource for ${namespace}`);
     updateResource(hass, {
