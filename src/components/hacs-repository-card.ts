@@ -282,7 +282,7 @@ export class HacsRepositoryCard extends LitElement {
           display: flex;
           justify-content: space-between;
           align-items: center;
-          padding-right: 5px;
+          padding: 5px;
         }
         .group-header {
           height: auto;
