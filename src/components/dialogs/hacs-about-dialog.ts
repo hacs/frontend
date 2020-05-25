@@ -25,7 +25,7 @@ export class HacsAboutDialog extends HacsDialogBase {
         dynamicHeight
       >
         <div slot="header">
-          ${this.narrow ? "HACS" : "Home Asisstant Community Store"}
+          ${this.narrow ? "HACS" : "Home Assistant Community Store"}
         </div>
         <div class="content">
           ${markdown.html(`
