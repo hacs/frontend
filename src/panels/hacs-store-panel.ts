@@ -161,7 +161,7 @@ export class HacsStorePanel extends LitElement {
         }
         .content {
           display: grid;
-          grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+          grid-template-columns: repeat(auto-fit, minmax(360px, 1fr));
           grid-gap: 16px 16px;
           padding: 8px 16px 16px;
           margin-bottom: 64px;
