@@ -13,11 +13,13 @@ export interface Critical {
 export interface Configuration {
   categories: [string];
   country: string;
-  dev: string;
   debug: boolean;
+  dev: string;
   experimental: boolean;
   frontend_compact: boolean;
+  frontend_expected: string;
   frontend_mode: string;
+  frontend_running: string;
   onboarding_done: boolean;
   version: string;
 }

@@ -17,6 +17,9 @@ export const HacsCommonStyle = css`
   .warning {
     color: orange;
   }
+  .error {
+    color: red;
+  }
 
   .header {
     font-size: var(--paper-font-headline_-_font-size);

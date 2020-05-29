@@ -23,7 +23,7 @@ import {
 import "../layout/hacs-single-page-layout";
 
 import { HacsCommonStyle } from "../styles/hacs-common-style";
-
+import { getMessages } from "../tools/get-messages";
 import { localize } from "../localize/localize";
 
 import { sections } from "./hacs-sections";
@@ -52,36 +52,8 @@ export class HacsEntryPanel extends LitElement {
     }
   );
 
-  private _getMessages = memoizeOne((status: Status) => {
-    const messages: Message[] = [];
-    if (status?.startup) {
-      messages.push({
-        title: localize("entry.messages.startup.title"),
-        content: localize("entry.messages.startup.content"),
-        severity: "information",
-      });
-    }
-
-    if (status?.has_pending_tasks) {
-      messages.push({
-        title: localize("entry.messages.has_pending_tasks.title"),
-        content: localize("entry.messages.has_pending_tasks.content"),
-        severity: "warning",
-      });
-    }
-
-    if (status?.disabled) {
-      messages.push({
-        title: localize("entry.messages.disabled.title"),
-        content: localize("entry.messages.disabled.content"),
-        severity: "error",
-      });
-    }
-    return messages;
-  });
-
   protected render(): TemplateResult | void {
-    const messages: Message[] = this._getMessages(this.status);
+    const messages: Message[] = getMessages(this.status, this.configuration);
     this.isWide =
       window.localStorage.getItem("dockedSidebar") === '"always_hidden"';
 
