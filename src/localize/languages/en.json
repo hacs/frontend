@@ -256,6 +256,14 @@
       "disabled": {
         "title": "HACS is disabled",
         "content": "Check your log file for more details"
+      },
+      "wrong_frontend_loaded": {
+        "title": "Unexpected frontend version",
+        "content": "You are running version {running} of the HACS frontend, but version {expected} was expected, you should clear your browser cache."
+      },
+      "wrong_frontend_installed": {
+        "title": "Unexpected frontend version",
+        "content": "You have {running} of the HACS frontend installed, but version {expected} was expected, if this you see this message Home Assistant was not able to install the new version, try restarting Home Assistant."
       }
     },
     "intro": "Updates and important messages will show here if there are any",
