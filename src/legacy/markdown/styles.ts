@@ -326,7 +326,7 @@ const GFM2 = `
   .markdown-body pre {
     font-family: monospace, monospace;
     font-size: 1em;
-    background-color: var(--material-secondary-background-color);
+    background-color: var(--hcv-color-markdown-background);
   }
 
   .markdown-body hr {
@@ -413,7 +413,7 @@ const GFM2 = `
     line-height: 10px;
     color: #444d56;
     vertical-align: middle;
-    background-color: var(--material-secondary-background-color);
+    background-color: var(--hcv-color-markdown-background);
     border: 1px solid #d1d5da;
     border-radius: 3px;
     box-shadow: inset 0 -1px 0 #d1d5da;
@@ -645,7 +645,7 @@ const GFM2 = `
     line-height: 10px;
     color: #444d56;
     vertical-align: middle;
-    background-color: var(--material-secondary-background-color);
+    background-color: var(--hcv-color-markdown-background);
     border: 1px solid #d1d5da;
     border-radius: 3px;
     box-shadow: inset 0 -1px 0 #d1d5da;
@@ -842,7 +842,7 @@ export const GFM3 = `
     padding: 0.2em 0.4em;
     margin: 0;
     font-size: 85%;
-    background-color: var(--material-secondary-background-color);
+    background-color: var(--hcv-color-markdown-background);
     border-radius: 3px;
   }
 
@@ -875,7 +875,7 @@ export const GFM3 = `
     overflow: auto;
     font-size: 85%;
     line-height: 1.45;
-    background-color: var(--material-secondary-background-color, #f6f8fa);
+    background-color: var(--hcv-color-markdown-background);
     border-radius: var(--ha-card-border-radius, 3px);
   }
 

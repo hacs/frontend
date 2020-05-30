@@ -26,12 +26,9 @@ export class HacsChip extends LitElement {
     return [
       css`
         .chip {
-          background-color: var(
-            --hacs-chip-background-color,
-            var(--accent-color)
-          );
+          background-color: var(--hcv-color-chip);
           height: 24px;
-          color: var(--hacs-chip-text-color, var(--text-primary-color));
+          color: var(--hcv-text-color-chip);
           max-width: fit-content;
           display: flex;
           border-radius: 50px;
@@ -40,17 +37,14 @@ export class HacsChip extends LitElement {
         }
         .icon {
           margin: auto;
-          color: var(--hacs-chip-background-color, var(--accent-color));
+          color: var(--hcv-color-chip);
           height: 20px;
           width: 20px;
           line-height: 20px;
           text-align: center;
 
           margin-left: -2px;
-          background-color: var(
-            --hacs-chip-text-color,
-            var(--text-primary-color)
-          );
+          background-color: var(--hcv-text-color-chip);
           border-radius: 50px;
         }
         .value {

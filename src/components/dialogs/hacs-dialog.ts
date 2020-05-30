@@ -9,7 +9,7 @@ import {
 import { classMap } from "lit-html/directives/class-map";
 import { HacsDialogBase } from "./hacs-dialog-base";
 
-import { HacsCommonStyle } from "../../styles/hacs-common-style";
+import { HacsStyles } from "../../styles/hacs-common-style";
 
 @customElement("hacs-dialog")
 export class HacsDialog extends HacsDialogBase {
@@ -112,7 +112,7 @@ export class HacsDialog extends HacsDialogBase {
 
   static get styles(): CSSResultArray {
     return [
-      HacsCommonStyle,
+      HacsStyles,
       css`
         ha-card {
           background-color: var(

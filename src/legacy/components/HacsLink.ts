@@ -1,5 +1,5 @@
 import {
-  CSSResultArray,
+  CSSResult,
   LitElement,
   customElement,
   TemplateResult,
@@ -35,14 +35,12 @@ export class HacsLink extends LitElement {
     `;
   }
 
-  static get styles(): CSSResultArray {
-    return [
-      css`
-        a {
-          color: var(--hacs-link-text-color, var(--accent-color));
-          text-decoration: var(--hacs-link-text-decoration, none);
-        }
-      `,
-    ];
+  static get styles(): CSSResult {
+    return css`
+      a {
+        color: var(--hcv-text-color-link);
+        text-decoration: var(--hcv-text-decoration-link);
+      }
+    `;
   }
 }

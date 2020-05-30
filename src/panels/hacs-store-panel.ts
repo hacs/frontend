@@ -6,7 +6,6 @@ import {
   css,
   TemplateResult,
 } from "lit-element";
-import "@material/mwc-fab";
 import memoizeOne from "memoize-one";
 
 import { HomeAssistant } from "custom-card-helpers";
@@ -20,9 +19,10 @@ import {
 import "../layout/hacs-tabbed-layout";
 import "../components/hacs-repository-card";
 import "../components/hacs-search";
+import "../components/hacs-fab";
 import "../components/hacs-tabbed-menu";
 import { localize } from "../localize/localize";
-import { HacsCommonStyle } from "../styles/hacs-common-style";
+import { HacsStyles } from "../styles/hacs-common-style";
 import { sections } from "./hacs-sections";
 
 @customElement("hacs-store-panel")
@@ -125,17 +125,17 @@ export class HacsStorePanel extends LitElement {
               </p>
             </ha-card>`}
       </div>
-      <mwc-fab
-        ?narrow="${this.narrow}"
-        title="Add integration"
-        @click=${this._addIntegration}
+      <hacs-fab
+        .narrow=${this.narrow}
+        @click=${this._addRepository}
+        icon="mdi:plus"
+        title="Add repository"
       >
-        <ha-icon icon="mdi:plus"></ha-icon>
-      </mwc-fab>
+      </hacs-fab>
     </hacs-tabbed-layout>`;
   }
 
-  private _addIntegration() {
+  private _addRepository() {
     this.dispatchEvent(
       new CustomEvent("hacs-dialog", {
         detail: {
@@ -151,7 +151,7 @@ export class HacsStorePanel extends LitElement {
 
   static get styles() {
     return [
-      HacsCommonStyle,
+      HacsStyles,
       css`
         hacs-repository-card {
           max-width: 500px;
@@ -177,40 +177,8 @@ export class HacsStorePanel extends LitElement {
         paper-item {
           cursor: pointer;
         }
-
-        mwc-fab[narrow] {
-          margin-bottom: 65px;
-        }
-        mwc-fab {
-          position: fixed;
-          bottom: 16px;
-          right: 16px;
-          filter: blur(0.4px);
-          z-index: 1;
-          display: inline-flex;
-          align-items: center;
-          justify-content: center;
-          box-sizing: border-box;
-          width: 56px;
-          height: 56px;
-          fill: currentcolor;
-          cursor: pointer;
-          user-select: none;
-          -webkit-appearance: none;
-          background-color: var(--accent-color);
-          color: var(--text-primary-color) !important;
-          box-shadow: var(
-            --mdc-fab-box-shadow-active,
-            0px 7px 8px -4px rgba(0, 0, 0, 0.2),
-            0px 12px 17px 2px rgba(0, 0, 0, 0.14),
-            0px 5px 22px 4px rgba(0, 0, 0, 0.12)
-          );
-          border-radius: 50%;
-          --mdc-ripple-fg-opacity: 0.24;
-          --mdc-ripple-fg-size: 32px;
-          --mdc-ripple-fg-scale: 1.75;
-          --mdc-ripple-left: 12px;
-          --mdc-ripple-top: 12px;
+        ha-icon {
+          color: var(--hcv-text-color-on-background);
         }
       `,
     ];

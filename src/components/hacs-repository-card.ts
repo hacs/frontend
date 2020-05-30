@@ -9,7 +9,7 @@ import {
 } from "lit-element";
 import { classMap } from "lit-html/directives/class-map";
 import { localize } from "../localize/localize";
-import { HacsCommonStyle } from "../styles/hacs-common-style";
+import { HacsStyles } from "../styles/hacs-common-style";
 import { Repository, Status } from "../data/common";
 import {
   repositorySetNotNew,
@@ -255,7 +255,7 @@ export class HacsRepositoryCard extends LitElement {
 
   static get styles(): CSSResultArray {
     return [
-      HacsCommonStyle,
+      HacsStyles,
       css`
         :host {
           max-width: 500px;
@@ -297,7 +297,6 @@ export class HacsRepositoryCard extends LitElement {
           min-height: 24px;
         }
         paper-menu-button {
-          color: var(--secondary-text-color);
           padding: 0;
           float: right;
         }
@@ -310,21 +309,21 @@ export class HacsRepositoryCard extends LitElement {
         }
 
         .status-new {
-          border-color: var(--hacs-new-color, var(--google-blue-500));
+          border-color: var(--hcv-color-new);
         }
 
         .status-update {
-          border-color: var(--hacs-update-color, var(--google-yellow-500));
+          border-color: var(--hcv-color-update);
         }
 
         .new-header {
-          background-color: var(--hacs-new-color, var(--google-blue-500));
-          color: var(--hacs-new-text-color, var(--text-primary-color));
+          background-color: var(--hcv-color-new);
+          color: var(--hcv-text-color-on-background);
         }
 
         .update-header {
-          background-color: var(--hacs-update-color, var(--google-yellow-500));
-          color: var(--hacs-update-text-color, var(--text-primary-color));
+          background-color: var(--hcv-color-update);
+          color: var(--hcv-text-color-on-background);
         }
 
         .default-header {
@@ -332,14 +331,8 @@ export class HacsRepositoryCard extends LitElement {
         }
 
         mwc-button.update-header {
-          --mdc-theme-primary: var(
-            --hacs-update-color,
-            var(--google-yellow-500)
-          );
-          --mdc-theme-on-primary: var(
-            --hacs-update-text-color,
-            var(--text-primary-color)
-          );
+          --mdc-theme-primary: var(--hcv-color-update);
+          --mdc-theme-on-primary: var(--hcv-text-color-on-background);
         }
 
         .status-border {
@@ -357,9 +350,6 @@ export class HacsRepositoryCard extends LitElement {
           left: 0;
           border-top-left-radius: var(--ha-card-border-radius);
           border-top-right-radius: var(--ha-card-border-radius);
-        }
-        .uninstall {
-          color: var(--hacs-error-color, var(--google-red-500));
         }
       `,
     ];

@@ -9,7 +9,7 @@ import {
   property,
 } from "lit-element";
 
-import { HacsCommonStyle } from "../styles/hacs-common-style";
+import { HacsStyles } from "../styles/hacs-common-style";
 import { localize } from "../localize/localize";
 
 @customElement("hacs-search")
@@ -57,7 +57,7 @@ export class HacsSearch extends LitElement {
 
   static get styles(): CSSResultArray {
     return [
-      HacsCommonStyle,
+      HacsStyles,
       css`
         .searchbar {
           display: flex;

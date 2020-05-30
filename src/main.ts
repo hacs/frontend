@@ -10,6 +10,7 @@ import { HomeAssistant } from "custom-card-helpers";
 import { Route } from "./legacy/data";
 import { Configuration } from "./data/common";
 import { getConfiguration } from "./data/websocket";
+import { hacsStyleVariables } from "./styles/variables";
 import "./legacy/LoadUIElements";
 
 import "./hacs-resolver";
@@ -69,13 +70,8 @@ class HacsFrontend extends LitElement {
         .configuration=${this.configuration}
       ></hacs-resolver>
     `;
-    return html`
-      <hacs-frontendbase
-        .hass=${this.hass}
-        .route=${this.route}
-        .narrow=${this.narrow}
-      >
-      </hacs-frontendbase>
-    `;
+  }
+  static get styles() {
+    return hacsStyleVariables;
   }
 }

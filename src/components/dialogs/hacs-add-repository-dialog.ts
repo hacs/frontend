@@ -228,10 +228,6 @@ export class HacsAddRepositoryDialog extends HacsDialogBase {
         top: 8px;
         right: 8px;
       }
-      ha-icon-button,
-      ha-icon {
-        color: var(--secondary-text-color);
-      }
       ha-icon {
         --mdc-icon-size: 36px;
       }
