@@ -22,7 +22,7 @@ import {
 } from "../data/common";
 import "../layout/hacs-single-page-layout";
 
-import { HacsCommonStyle } from "../styles/hacs-common-style";
+import { HacsStyles } from "../styles/hacs-common-style";
 import { getMessages } from "../tools/get-messages";
 import { localize } from "../localize/localize";
 
@@ -83,7 +83,7 @@ export class HacsEntryPanel extends LitElement {
               ${messages.map(
                 (message) =>
                   html`
-                    <paper-icon-item>
+                    <paper-icon-item information disabled>
                       <ha-icon
                         class="${message.severity}"
                         icon="mdi:alert-circle"
@@ -110,7 +110,7 @@ export class HacsEntryPanel extends LitElement {
                       @click="${() => this._openUpdateDialog(repository)}"
                     >
                       <ha-icon
-                        class="pending_upgrade"
+                        class="pending_update"
                         icon="mdi:arrow-up-circle"
                         slot="item-icon"
                       ></ha-icon>
@@ -192,37 +192,13 @@ export class HacsEntryPanel extends LitElement {
 
   static get styles(): CSSResultArray {
     return [
-      HacsCommonStyle,
+      HacsStyles,
       css`
-        a {
-          text-decoration: none;
-          color: var(--primary-text-color);
-          position: relative;
-          display: block;
-          outline: 0;
-        }
-        ha-icon-button,
-        ha-icon {
-          color: var(--secondary-text-color);
-        }
-
-        .iron-selected paper-item::before {
-          position: absolute;
-          top: 0;
-          right: 0;
-          bottom: 0;
-          left: 0;
-          pointer-events: none;
-          content: "";
-          transition: opacity 15ms linear;
-          will-change: opacity;
-        }
         paper-icon-item {
           cursor: pointer;
         }
-        .iron-selected paper-item:focus::before,
-        .iron-selected:focus paper-item::before {
-          opacity: 0.2;
+        paper-icon-item[information] {
+          cursor: normal;
         }
 
         paper-item-body {
@@ -232,9 +208,12 @@ export class HacsEntryPanel extends LitElement {
           flex-direction: var(--layout-vertical_-_flex-direction);
           justify-content: var(--layout-center-justified_-_justify-content);
         }
+        paper-item-body {
+          color: var(--hcv-text-color-primary);
+        }
         paper-item-body div {
           font-size: 14px;
-          color: var(--secondary-text-color);
+          color: var(--hcv-text-color-secondary);
         }
       `,
     ];

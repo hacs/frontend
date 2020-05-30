@@ -105,7 +105,7 @@ export class HacsTabbedMenu extends LitElement {
   static get styles() {
     return css`
       paper-menu-button {
-        color: var(--secondary-text-color);
+        color: var(--hcv-text-color-secondary);
         padding: 0;
       }
       paper-item {
