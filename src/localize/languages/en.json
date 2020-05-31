@@ -222,6 +222,8 @@
   },
   "repository_card": {
     "pending_update": "Pending update",
+    "pending_restart": "Pending restart",
+    "not_loaded": "Not loaded",
     "new_repository": "New repository",
     "hide": "Hide",
     "dismiss": "dismiss",
@@ -264,6 +266,14 @@
       "wrong_frontend_installed": {
         "title": "Unexpected frontend version",
         "content": "You have {running} of the HACS frontend installed, but version {expected} was expected, if this you see this message Home Assistant was not able to install the new version, try restarting Home Assistant."
+      },
+      "resources": {
+        "title": "Not loaded in Lovelace",
+        "content": "You have {number} Lovelace elements that are not loaded properly in Lovelace."
+      },
+      "restart": {
+        "title": "Pending restart",
+        "content": "You have {number} integrations that requires a restart of Home Assistant, you can do that from the 'Server Controls' section under the configuration part of Home Assistant UI."
       }
     },
     "intro": "Updates and important messages will show here if there are any",

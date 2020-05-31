@@ -26,6 +26,7 @@ export class HacsRepositoryCard extends LitElement {
   @property({ attribute: false }) public repository!: Repository;
   @property({ attribute: false }) public status: Status;
   @property({ type: Boolean }) public narrow!: boolean;
+  @property({ type: Boolean }) public addedToLovelace!: boolean;
 
   protected render(): TemplateResult | void {
     const path = this.repository.local_path.split("/");
@@ -33,27 +34,43 @@ export class HacsRepositoryCard extends LitElement {
       <ha-card
         class=${classMap({
           "status-border":
-            this.repository.new || this.repository.pending_upgrade,
+            this.repository.new ||
+            this.repository.pending_upgrade ||
+            !this.addedToLovelace ||
+            this.repository.status === "pending-restart",
           "status-new": this.repository.new && !this.repository.installed,
           "status-update": this.repository.pending_upgrade,
+          "status-issue":
+            !this.addedToLovelace ||
+            this.repository.status === "pending-restart",
         })}
       >
         <div class="card-content">
           <div class="group-header">
-            ${this.repository.pending_upgrade
-              ? html`
-                  <div class="status-header update-header">
-                    ${localize("repository_card.pending_update")}
-                  </div>
-                `
-              : this.repository.new && !this.repository.installed
-              ? html`
-                  <div class="status-header new-header">
-                    ${localize("repository_card.new_repository")}
-                  </div>
-                `
-              : html`<div class="status-header default-header"></div>`}
-
+            <div
+              class="status-header ${classMap({
+                "default-header":
+                  this.repository.installed &&
+                  this.addedToLovelace &&
+                  !this.repository.pending_upgrade &&
+                  this.repository.status !== "pending-restart",
+                "new-header": this.repository.new && !this.repository.installed,
+                "update-header": this.repository.pending_upgrade,
+                "issue-header":
+                  !this.addedToLovelace ||
+                  this.repository.status === "pending-restart",
+              })}"
+            >
+              ${!this.addedToLovelace
+                ? localize("repository_card.not_loaded")
+                : this.repository.status === "pending-restart"
+                ? localize("repository_card.pending_restart")
+                : this.repository.pending_upgrade
+                ? localize("repository_card.pending_update")
+                : this.repository.new && !this.repository.installed
+                ? localize("repository_card.new_repository")
+                : ""}
+            </div>
             <div class="title">
               <h2 class="pointer" @click=${this._showReopsitoryInfo}>
                 ${this.repository.name}
@@ -316,8 +333,17 @@ export class HacsRepositoryCard extends LitElement {
           border-color: var(--hcv-color-update);
         }
 
+        .status-issue {
+          border-color: var(--hcv-color-error);
+        }
+
         .new-header {
           background-color: var(--hcv-color-new);
+          color: var(--hcv-text-color-on-background);
+        }
+
+        .issue-header {
+          background-color: var(--hcv-color-error);
           color: var(--hcv-text-color-on-background);
         }
 

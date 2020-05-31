@@ -24,6 +24,7 @@ import "../components/hacs-tabbed-menu";
 import { localize } from "../localize/localize";
 import { HacsStyles } from "../styles/hacs-common-style";
 import { sections } from "./hacs-sections";
+import { addedToLovelace } from "../tools/added-to-lovelace";
 
 @customElement("hacs-store-panel")
 export class HacsStorePanel extends LitElement {
@@ -114,6 +115,11 @@ export class HacsStorePanel extends LitElement {
                     .repository=${repo}
                     .narrow=${this.narrow}
                     .status=${this.status}
+                    .addedToLovelace=${addedToLovelace(
+                      this.lovelace,
+                      this.configuration,
+                      repo
+                    )}
                   ></hacs-repository-card>`
               )
           : html`<ha-card class="no-repositories">

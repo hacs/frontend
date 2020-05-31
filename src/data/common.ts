@@ -51,6 +51,7 @@ export interface Message {
   title: string;
   content: string;
   severity: "information" | "warning" | "error" | "critical";
+  path?: string;
 }
 
 export interface LocationChangedEvent {
