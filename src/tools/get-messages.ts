@@ -1,4 +1,5 @@
 import memoizeOne from "memoize-one";
+import { html } from "lit-element";
 import {
   Status,
   Message,
@@ -21,8 +22,8 @@ export const getMessages = memoizeOne(
     const repositoriesNotAddedToLovelace: Repository[] = [];
     const repositoriesRestartPending: Repository[] = [];
 
-    repositories.forEach((repo) => {
-      if (repo.status === "pending_restart") {
+    repositories?.forEach((repo) => {
+      if (repo.status === "pending-restart") {
         repositoriesRestartPending.push(repo);
       }
       if (
@@ -95,6 +96,7 @@ export const getMessages = memoizeOne(
           repositoriesRestartPending.length
         ),
         severity: "error",
+        path: "/config/server_control",
       });
     }
 

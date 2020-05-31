@@ -25,7 +25,7 @@ import "../layout/hacs-single-page-layout";
 import { HacsStyles } from "../styles/hacs-common-style";
 import { getMessages } from "../tools/get-messages";
 import { localize } from "../localize/localize";
-
+import { navigate } from "../tools/navigate";
 import { sections } from "./hacs-sections";
 //import "../components/hacs-link";
 
@@ -88,7 +88,11 @@ export class HacsEntryPanel extends LitElement {
               ${messages.map(
                 (message) =>
                   html`
-                    <paper-icon-item information disabled>
+                    <paper-icon-item
+                      ?disabled=${!message.path}
+                      information
+                      @click=${() => this._navigate(message)}
+                    >
                       <ha-icon
                         class="${message.severity}"
                         icon="mdi:alert-circle"
@@ -193,6 +197,14 @@ export class HacsEntryPanel extends LitElement {
         composed: true,
       })
     );
+  }
+
+  private _navigate(message: Message): void {
+    if (message.path) {
+      console.log(message);
+      navigate(this, message.path);
+      window.location.reload();
+    }
   }
 
   static get styles(): CSSResultArray {

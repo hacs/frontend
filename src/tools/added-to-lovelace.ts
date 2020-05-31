@@ -8,6 +8,12 @@ export const addedToLovelace = (
   if (configuration.frontend_mode === "yaml") {
     return true;
   }
+  if (!repository.installed) {
+    return true;
+  }
+  if (repository.category !== "plugin") {
+    return true;
+  }
   const url = `/hacsfiles/${repository?.full_name.split("/")[1]}/${
     repository?.file_name
   }`;
