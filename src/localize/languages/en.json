@@ -264,6 +264,14 @@
       "wrong_frontend_installed": {
         "title": "Unexpected frontend version",
         "content": "You have {running} of the HACS frontend installed, but version {expected} was expected, if this you see this message Home Assistant was not able to install the new version, try restarting Home Assistant."
+      },
+      "resources": {
+        "title": "Not loaded in Lovelace",
+        "content": "You have {number} Lovelace elements that are not loaded properly in Lovelace."
+      },
+      "restart": {
+        "title": "Pending restart",
+        "content": "You have {number} integrations that requires a restart of Home Assistant."
       }
     },
     "intro": "Updates and important messages will show here if there are any",

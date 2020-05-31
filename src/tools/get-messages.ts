@@ -1,11 +1,39 @@
 import memoizeOne from "memoize-one";
-import { Status, Message, Configuration } from "../data/common";
+import {
+  Status,
+  Message,
+  Configuration,
+  LovelaceResource,
+  Repository,
+} from "../data/common";
 import { localize } from "../localize/localize";
 import { version } from "../version";
+import { addedToLovelace } from "../tools/added-to-lovelace";
 
 export const getMessages = memoizeOne(
-  (status: Status, configuration: Configuration) => {
+  (
+    status: Status,
+    configuration: Configuration,
+    resources: LovelaceResource[],
+    repositories: Repository[]
+  ) => {
     const messages: Message[] = [];
+    const repositoriesNotAddedToLovelace: Repository[] = [];
+    const repositoriesRestartPending: Repository[] = [];
+
+    repositories.forEach((repo) => {
+      if (repo.status === "pending_restart") {
+        repositoriesRestartPending.push(repo);
+      }
+      if (
+        repo.installed &&
+        repo.category === "plugin" &&
+        !addedToLovelace(resources, configuration, repo)
+      ) {
+        repositoriesNotAddedToLovelace.push(repo);
+      }
+    });
+
     if (configuration.frontend_expected !== configuration.frontend_running) {
       messages.push({
         title: localize("entry.messages.wrong_frontend_installed.title"),
@@ -23,6 +51,7 @@ export const getMessages = memoizeOne(
         severity: "error",
       });
     }
+
     if (status?.startup) {
       messages.push({
         title: localize("entry.messages.startup.title"),
@@ -46,6 +75,29 @@ export const getMessages = memoizeOne(
         severity: "error",
       });
     }
+
+    if (repositoriesNotAddedToLovelace.length > 0) {
+      messages.push({
+        title: localize("entry.messages.resources.title"),
+        content: localize("entry.messages.resources.content").replace(
+          "{number}",
+          repositoriesNotAddedToLovelace.length
+        ),
+        severity: "error",
+      });
+    }
+
+    if (repositoriesRestartPending.length > 0) {
+      messages.push({
+        title: localize("entry.messages.restart.title"),
+        content: localize("entry.messages.restart.content").replace(
+          "{number}",
+          repositoriesRestartPending.length
+        ),
+        severity: "error",
+      });
+    }
+
     return messages;
   }
 );

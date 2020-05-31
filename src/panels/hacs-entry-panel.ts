@@ -53,7 +53,12 @@ export class HacsEntryPanel extends LitElement {
   );
 
   protected render(): TemplateResult | void {
-    const messages: Message[] = getMessages(this.status, this.configuration);
+    const messages: Message[] = getMessages(
+      this.status,
+      this.configuration,
+      this.lovelace,
+      this.repositories
+    );
     this.isWide =
       window.localStorage.getItem("dockedSidebar") === '"always_hidden"';
 
