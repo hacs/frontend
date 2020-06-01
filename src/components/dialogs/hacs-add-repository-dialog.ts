@@ -68,7 +68,7 @@ export class HacsAddRepositoryDialog extends HacsDialogBase {
         this.repositories,
         this.configuration?.categories
       ),
-      this._searchInput?.toLocaleLowerCase()
+      this._searchInput
     );
 
     return html`
