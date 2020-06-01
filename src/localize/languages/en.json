@@ -157,6 +157,8 @@
     "no_repositories": "No repositories",
     "no_repositories_desc1": "It seems like you don't have any repositories installed in this section yet.",
     "no_repositories_desc2": "Click on the + in the bottom corner to add your first!",
+    "no_repositories_found_desc1": "No repositories matching \"{searchInput}\" found.",
+    "no_repositories_found_desc2": "Try searching for something else!",
     "new_repositories": "New Repositories",
     "pending_upgrades": "Pending upgrades",
     "placeholder_search": "Please enter a search term...",
