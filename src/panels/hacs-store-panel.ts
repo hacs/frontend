@@ -107,7 +107,7 @@ export class HacsStorePanel extends LitElement {
         ${this.allRepositories.length === 0
           ? this.renderEmpty()
           : this.visibleRepositories.length === 0
-          ? this.renderNotFound()
+          ? this.renderNoResultsFound()
           : this.renderRepositories()}
       </div>
       <hacs-fab
@@ -133,7 +133,7 @@ export class HacsStorePanel extends LitElement {
     );
   }
 
-  private renderNotFound(): TemplateResult {
+  private renderNoResultsFound(): TemplateResult {
     return html`<ha-card class="no-repositories">
       <div class="header">${localize("store.no_repositories")} 😕</div>
       <p>
