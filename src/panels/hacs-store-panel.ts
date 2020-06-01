@@ -12,6 +12,7 @@ import { localize } from "../localize/localize";
 import { HacsStyles } from "../styles/hacs-common-style";
 import { sections } from "./hacs-sections";
 import { addedToLovelace } from "../tools/added-to-lovelace";
+import { filterRepositoriesByInput } from "../tools/filter-repositories-by-input";
 
 @customElement("hacs-store-panel")
 export class HacsStorePanel extends LitElement {
@@ -63,10 +64,10 @@ export class HacsStorePanel extends LitElement {
     return newRepositories.concat(installedRepositories);
   }
 
+  private _filterRepositories = memoizeOne(filterRepositoriesByInput);
+
   private get visibleRepositories(): Repository[] {
-    return this.allRepositories.filter(
-      (repo) => repo.name.toLowerCase().indexOf(this._searchInput.toLowerCase()) > -1
-    );
+    return this._filterRepositories(this.allRepositories, this._searchInput)
   }
 
   protected render(): TemplateResult {
