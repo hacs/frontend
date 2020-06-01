@@ -1,7 +1,7 @@
 import { Repository } from "../data/common";
 
 export function filterRepositoriesByInput(repositories: Repository[], filter: string): Repository[] {
-  const lowcaseFilter = filter.toLowerCase();
+  const lowcaseFilter = filter.toLocaleLowerCase();
   return repositories.filter(
     (repo) =>
       repo.name?.toLocaleLowerCase().includes(lowcaseFilter) ||
