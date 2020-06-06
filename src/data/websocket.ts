@@ -36,10 +36,7 @@ export const getStatus = async (hass: HomeAssistant) => {
   return response;
 };
 
-export const repositoryInstall = async (
-  hass: HomeAssistant,
-  repository: string
-) => {
+export const repositoryInstall = async (hass: HomeAssistant, repository: string) => {
   await hass.connection.sendMessagePromise<void>({
     type: "hacs/repository",
     action: "install",
@@ -47,10 +44,7 @@ export const repositoryInstall = async (
   });
 };
 
-export const repositoryUninstall = async (
-  hass: HomeAssistant,
-  repository: string
-) => {
+export const repositoryUninstall = async (hass: HomeAssistant, repository: string) => {
   await hass.connection.sendMessagePromise<void>({
     type: "hacs/repository",
     action: "uninstall",
@@ -58,10 +52,7 @@ export const repositoryUninstall = async (
   });
 };
 
-export const repositoryToggleBeta = async (
-  hass: HomeAssistant,
-  repository: string
-) => {
+export const repositoryToggleBeta = async (hass: HomeAssistant, repository: string) => {
   await hass.connection.sendMessagePromise<void>({
     type: "hacs/repository",
     action: "toggle_beta",
@@ -95,11 +86,7 @@ export const repositorySetVersion = async (
   });
 };
 
-export const repositoryAdd = async (
-  hass: HomeAssistant,
-  repository: string,
-  category: string
-) => {
+export const repositoryAdd = async (hass: HomeAssistant, repository: string, category: string) => {
   await hass.connection.sendMessagePromise<void>({
     type: "hacs/repository/data",
     action: "add",
@@ -108,10 +95,7 @@ export const repositoryAdd = async (
   });
 };
 
-export const repositorySetNotNew = async (
-  hass: HomeAssistant,
-  repository: string
-) => {
+export const repositorySetNotNew = async (hass: HomeAssistant, repository: string) => {
   await hass.connection.sendMessagePromise<void>({
     type: "hacs/repository",
     action: "not_new",
@@ -119,10 +103,7 @@ export const repositorySetNotNew = async (
   });
 };
 
-export const repositoryUpdate = async (
-  hass: HomeAssistant,
-  repository: string
-) => {
+export const repositoryUpdate = async (hass: HomeAssistant, repository: string) => {
   await hass.connection.sendMessagePromise<void>({
     type: "hacs/repository",
     action: "update",
@@ -130,10 +111,7 @@ export const repositoryUpdate = async (
   });
 };
 
-export const repositoryDelete = async (
-  hass: HomeAssistant,
-  repository: string
-) => {
+export const repositoryDelete = async (hass: HomeAssistant, repository: string) => {
   await hass.connection.sendMessagePromise<void>({
     type: "hacs/repository",
     action: "delete",
@@ -141,18 +119,20 @@ export const repositoryDelete = async (
   });
 };
 
-export const settingsClearAllNewRepositories = async (hass: HomeAssistant) => {
+export const settingsClearAllNewRepositories = async (
+  hass: HomeAssistant,
+  categories: string[]
+) => {
   await hass.connection.sendMessagePromise<void>({
     type: "hacs/settings",
     action: "clear_new",
+    categories,
   });
 };
 
 export const getLovelaceConfiguration = async (hass: HomeAssistant) => {
   try {
-    const response = await hass.connection.sendMessagePromise<
-      LovelaceResource[]
-    >({
+    const response = await hass.connection.sendMessagePromise<LovelaceResource[]>({
       type: "lovelace/resources",
     });
     return response;
@@ -161,26 +141,18 @@ export const getLovelaceConfiguration = async (hass: HomeAssistant) => {
   }
 };
 
-export const fetchResources = (
-  hass: HomeAssistant
-): Promise<LovelaceResource[]> =>
+export const fetchResources = (hass: HomeAssistant): Promise<LovelaceResource[]> =>
   hass.connection.sendMessagePromise({
     type: "lovelace/resources",
   });
 
-export const createResource = (
-  hass: HomeAssistant,
-  values: LovelaceResourcesMutableParams
-) =>
+export const createResource = (hass: HomeAssistant, values: LovelaceResourcesMutableParams) =>
   hass.callWS<LovelaceResource>({
     type: "lovelace/resources/create",
     ...values,
   });
 
-export const updateResource = (
-  hass: HomeAssistant,
-  values: LovelaceResourcesMutableParams
-) =>
+export const updateResource = (hass: HomeAssistant, values: LovelaceResourcesMutableParams) =>
   hass.callWS<LovelaceResource>({
     type: "lovelace/resources/update",
     ...values,
