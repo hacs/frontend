@@ -56,11 +56,11 @@ export class HacsFilter extends LitElement {
       css`
         .filter {
           display: flex;
+          border-bottom: 1px solid var(--divider-color);
           align-items: center;
           font-size: 16px;
           height: 32px;
           background-color: var(--sidebar-background-color);
-          border-bottom: 1px solid var(--divider-color);
           padding: 0 16px;
           box-sizing: border-box;
         }

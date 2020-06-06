@@ -1,26 +1,20 @@
 import "@polymer/paper-item/paper-icon-item";
 import "@polymer/paper-item/paper-item-body";
 import memoizeOne from "memoize-one";
-import {
-  customElement,
-  html,
-  TemplateResult,
-  css,
-  property,
-  PropertyValues,
-} from "lit-element";
+import { customElement, html, TemplateResult, css, property, PropertyValues } from "lit-element";
 import { classMap } from "lit-html/directives/class-map";
 import { HacsDialogBase } from "./hacs-dialog-base";
 import { Repository } from "../../data/common";
 
 import { localize } from "../../localize/localize";
-import { sections } from "../../panels/hacs-sections";
+import { sections, activePanel } from "../../panels/hacs-sections";
 import { filterRepositoriesByInput } from "../../tools/filter-repositories-by-input";
 import "../hacs-search";
 import "../hacs-chip";
 
 @customElement("hacs-add-repository-dialog")
 export class HacsAddRepositoryDialog extends HacsDialogBase {
+  @property({ attribute: false }) public filters: any = [];
   @property() private _load: number = 30;
   @property() private _top: number = 0;
   @property() private _searchInput: string = "";
@@ -30,13 +24,13 @@ export class HacsAddRepositoryDialog extends HacsDialogBase {
   shouldUpdate(changedProperties: PropertyValues) {
     changedProperties.forEach((_oldValue, propName) => {
       if (propName === "hass") {
-        this.sidebarDocked =
-          window.localStorage.getItem("dockedSidebar") === '"docked"';
+        this.sidebarDocked = window.localStorage.getItem("dockedSidebar") === '"docked"';
       }
     });
     return (
       changedProperties.has("sidebarDocked") ||
       changedProperties.has("narrow") ||
+      changedProperties.has("filters") ||
       changedProperties.has("active") ||
       changedProperties.has("_searchInput") ||
       changedProperties.has("_load") ||
@@ -44,18 +38,26 @@ export class HacsAddRepositoryDialog extends HacsDialogBase {
     );
   }
 
-  private _repositoriesInActiveCategory = memoizeOne(
-    (repositories: Repository[], categories: string[]) =>
-      repositories?.filter(
-        (repo) =>
-          !repo.installed &&
-          sections?.panels
-            .find((panel) => panel.id === this.section)
-            .categories?.includes(repo.category) &&
-          !repo.installed &&
-          categories?.includes(repo.category)
-      )
-  );
+  private _repositoriesInActiveCategory = (repositories: Repository[], categories: string[]) =>
+    repositories?.filter(
+      (repo) =>
+        !repo.installed &&
+        sections?.panels
+          .find((panel) => panel.id === this.section)
+          .categories?.includes(repo.category) &&
+        !repo.installed &&
+        categories?.includes(repo.category) &&
+        this.filters.find((filter) => filter.id === repo.category)?.checked
+    );
+
+  protected async firstUpdated() {
+    this.addEventListener("filter-change", (e) => this._updateFilters(e));
+  }
+
+  private _updateFilters(e) {
+    this.filters.find((filter) => filter.id === e.detail.id).checked = e.detail.checked;
+    this.requestUpdate("filters");
+  }
 
   private _filterRepositories = memoizeOne(filterRepositoriesByInput);
 
@@ -63,11 +65,21 @@ export class HacsAddRepositoryDialog extends HacsDialogBase {
     this._searchInput = window.localStorage.getItem("hacs-search") || "";
     if (!this.active) return html``;
 
+    if (this.filters.length === 0) {
+      const categories = activePanel(this.route)?.categories;
+      categories
+        ?.filter((c) => this.configuration.categories.includes(c))
+        .forEach((category) => {
+          this.filters.push({
+            id: category,
+            value: category,
+            checked: true,
+          });
+        });
+    }
+
     const repositories = this._filterRepositories(
-      this._repositoriesInActiveCategory(
-        this.repositories,
-        this.configuration?.categories
-      ),
+      this._repositoriesInActiveCategory(this.repositories, this.configuration?.categories),
       this._searchInput
     );
 
@@ -78,16 +90,14 @@ export class HacsAddRepositoryDialog extends HacsDialogBase {
         .hass=${this.hass}
         @scroll=${this._loadMore}
         noActions
-        hasFilter
+        ?hasFilter=${this.filters.length > 1}
+        hasSearch
       >
         <div slot="header">
           ${localize("dialog_add_repo.title")}
         </div>
-        <div slot="filter" class="filter">
-          <hacs-search
-            .input=${this._searchInput}
-            @input=${this._inputValueChanged}
-          ></hacs-search>
+        <div slot="search" class="filter">
+          <hacs-search .input=${this._searchInput} @input=${this._inputValueChanged}></hacs-search>
           <paper-dropdown-menu label="${localize("dialog_add_repo.sort_by")}">
             <paper-listbox slot="dropdown-content" selected="0">
               <paper-item @click=${() => (this._sortBy = "stars")}
@@ -102,14 +112,17 @@ export class HacsAddRepositoryDialog extends HacsDialogBase {
             </paper-listbox>
           </paper-dropdown-menu>
         </div>
+        ${this.filters.length > 1
+          ? html`<div slot="filter" class="filter">
+              <hacs-filter .filters="${this.filters}"></hacs-filter>
+            </div>`
+          : ""}
         <div class=${classMap({ content: true, narrow: this.narrow })}>
           <div class=${classMap({ list: true, narrow: this.narrow })}>
             ${repositories
               .sort((a, b) => {
                 if (this._sortBy === "name") {
-                  return a.name.toLocaleLowerCase() < b.name.toLocaleLowerCase()
-                    ? -1
-                    : 1;
+                  return a.name.toLocaleLowerCase() < b.name.toLocaleLowerCase() ? -1 : 1;
                 }
                 return a[this._sortBy] > b[this._sortBy] ? -1 : 1;
               })
@@ -128,10 +141,7 @@ export class HacsAddRepositoryDialog extends HacsDialogBase {
                           @load=${this._onImageLoad}
                         />
                       `
-                    : html`<ha-icon
-                        icon="mdi:github-circle"
-                        slot="item-icon"
-                      ></ha-icon>`}
+                    : html`<ha-icon icon="mdi:github-circle" slot="item-icon"></ha-icon>`}
                   <paper-item-body two-line
                     >${repo.name}
                     <div class="category-chip">
@@ -144,9 +154,7 @@ export class HacsAddRepositoryDialog extends HacsDialogBase {
                   </paper-item-body>
                 </paper-icon-item>`
               )}
-            ${repositories.length === 0
-              ? html`<p>${localize("dialog_add_repo.no_match")}</p>`
-              : ""}
+            ${repositories.length === 0 ? html`<p>${localize("dialog_add_repo.no_match")}</p>` : ""}
           </div>
         </div>
       </hacs-dialog>
@@ -297,7 +305,8 @@ export class HacsAddRepositoryDialog extends HacsDialogBase {
       paper-dropdown-menu {
         width: 75%;
       }
-      hacs-search {
+      hacs-search,
+      hacs-filter {
         width: 100%;
       }
     `;

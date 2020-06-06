@@ -138,7 +138,7 @@ export class HacsStorePanel extends LitElement {
 
       <hacs-search .input=${this._searchInput} @input=${this._inputValueChanged}></hacs-search>
       ${this.filters[this.section].length > 1
-        ? html`<hacs-filter .filters="${this.filters[this.section]}"></hacs-filter>`
+        ? html`<hacs-filter class="filter" .filters="${this.filters[this.section]}"></hacs-filter>`
         : ""}
       ${newRepositories?.length > 10
         ? html`<div class="new-repositories">
@@ -223,6 +223,9 @@ export class HacsStorePanel extends LitElement {
           display: flex;
           flex-direction: column;
           justify-content: space-between;
+        }
+        .filter {
+          border-bottom: 1px solid var(--divider-color);
         }
         .content {
           display: grid;
