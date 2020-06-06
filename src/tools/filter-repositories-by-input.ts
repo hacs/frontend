@@ -1,14 +1,21 @@
 import { Repository } from "../data/common";
 
-export function filterRepositoriesByInput(repositories: Repository[], filter: string): Repository[] {
-  const lowcaseFilter = filter.toLocaleLowerCase();
+export function filterRepositoriesByInput(
+  repositories: Repository[],
+  filter: string
+): Repository[] {
+  const _lowcaseFilter = stringify(filter);
   return repositories.filter(
-    (repo) =>
-      repo.name?.toLocaleLowerCase().includes(lowcaseFilter) ||
-      repo.description?.toLocaleLowerCase().includes(lowcaseFilter) ||
-      repo.category.toLocaleLowerCase().includes(lowcaseFilter) ||
-      repo.full_name.toLocaleLowerCase().includes(lowcaseFilter) ||
-      String(repo.authors)?.toLocaleLowerCase().includes(lowcaseFilter) ||
-      repo.domain?.toLocaleLowerCase().includes(lowcaseFilter)
+    (_repo) =>
+      stringify(_repo.name)?.includes(_lowcaseFilter) ||
+      stringify(_repo.description)?.includes(_lowcaseFilter) ||
+      stringify(_repo.category)?.includes(_lowcaseFilter) ||
+      stringify(_repo.full_name)?.includes(_lowcaseFilter) ||
+      stringify(_repo.authors)?.includes(_lowcaseFilter) ||
+      stringify(_repo.domain)?.includes(_lowcaseFilter)
   );
 }
+
+const stringify = (str: any): string => {
+  return String(str).toLocaleLowerCase().replace(/-|_| /g, "");
+};

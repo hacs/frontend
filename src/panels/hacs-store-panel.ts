@@ -67,7 +67,7 @@ export class HacsStorePanel extends LitElement {
   private _filterRepositories = memoizeOne(filterRepositoriesByInput);
 
   private get visibleRepositories(): Repository[] {
-    return this._filterRepositories(this.allRepositories, this._searchInput)
+    return this._filterRepositories(this.allRepositories, this._searchInput);
   }
 
   protected render(): TemplateResult {
@@ -97,19 +97,18 @@ export class HacsStorePanel extends LitElement {
       >
       </hacs-tabbed-menu>
 
+      <hacs-search .input=${this._searchInput} @input=${this._inputValueChanged}></hacs-search>
       ${newRepositories?.length > 10
         ? html`<div class="new-repositories">
             ${localize("store.new_repositories_note")}
           </div>`
         : ""}
-
-      <hacs-search .input=${this._searchInput} @input=${this._inputValueChanged}></hacs-search>
       <div class="content">
         ${this.allRepositories.length === 0
-          ? this.renderEmpty()
+          ? this._renderEmpty()
           : this.visibleRepositories.length === 0
-          ? this.renderNoResultsFound()
-          : this.renderRepositories()}
+          ? this._renderNoResultsFound()
+          : this._renderRepositories()}
       </div>
       <hacs-fab
         .narrow=${this.narrow}
@@ -121,7 +120,7 @@ export class HacsStorePanel extends LitElement {
     </hacs-tabbed-layout>`;
   }
 
-  private renderRepositories(): TemplateResult[] {
+  private _renderRepositories(): TemplateResult[] {
     return this.visibleRepositories.map(
       (repo) =>
         html`<hacs-repository-card
@@ -134,7 +133,7 @@ export class HacsStorePanel extends LitElement {
     );
   }
 
-  private renderNoResultsFound(): TemplateResult {
+  private _renderNoResultsFound(): TemplateResult {
     return html`<ha-card class="no-repositories">
       <div class="header">${localize("store.no_repositories")} 😕</div>
       <p>
@@ -145,7 +144,7 @@ export class HacsStorePanel extends LitElement {
     </ha-card>`;
   }
 
-  private renderEmpty(): TemplateResult {
+  private _renderEmpty(): TemplateResult {
     return html`<ha-card class="no-repositories">
       <div class="header">${localize("store.no_repositories")} 😕</div>
       <p>
