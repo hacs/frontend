@@ -19,6 +19,7 @@ import {
   LovelaceResource,
   Configuration,
   sortRepositoriesByName,
+  RemovedRepository,
 } from "../data/common";
 import "../layout/hacs-single-page-layout";
 
@@ -37,30 +38,27 @@ export class HacsEntryPanel extends LitElement {
   @property({ attribute: false }) public repositories: Repository[];
   @property({ attribute: false }) public route!: Route;
   @property({ attribute: false }) public status: Status;
+  @property({ attribute: false }) public removed: RemovedRepository[];
   @property({ type: Boolean }) public isWide!: boolean;
   @property({ type: Boolean }) public narrow!: boolean;
 
-  private _panelsEnabled = memoizeOne(
-    (sections: any, config: Configuration) => {
-      return sections.panels.filter((panel) => {
-        const categories = panel.categories;
-        if (categories === undefined) return true;
-        return (
-          categories.filter((c) => config?.categories.includes(c)).length !== 0
-        );
-      });
-    }
-  );
+  private _panelsEnabled = memoizeOne((sections: any, config: Configuration) => {
+    return sections.panels.filter((panel) => {
+      const categories = panel.categories;
+      if (categories === undefined) return true;
+      return categories.filter((c) => config?.categories.includes(c)).length !== 0;
+    });
+  });
 
   protected render(): TemplateResult | void {
     const messages: Message[] = getMessages(
       this.status,
       this.configuration,
       this.lovelace,
-      this.repositories
+      this.repositories,
+      this.removed
     );
-    this.isWide =
-      window.localStorage.getItem("dockedSidebar") === '"always_hidden"';
+    this.isWide = window.localStorage.getItem("dockedSidebar") === '"always_hidden"';
 
     sections.updates = []; // reset so we don't get duplicates
     this.repositories?.forEach((repo) => {
@@ -77,8 +75,7 @@ export class HacsEntryPanel extends LitElement {
         .route=${this.route}
         .narrow=${this.narrow}
         .header=${this.narrow ? "HACS" : "Home Assistant Community Store"}
-        intro="${this.isWide ||
-        (sections.updates.length === 0 && messages.length === 0)
+        intro="${this.isWide || (sections.updates.length === 0 && messages.length === 0)
           ? localize("entry.intro")
           : ""}"
       >
@@ -115,9 +112,7 @@ export class HacsEntryPanel extends LitElement {
               ${sortRepositoriesByName(sections.updates).map(
                 (repository) =>
                   html`
-                    <paper-icon-item
-                      @click="${() => this._openUpdateDialog(repository)}"
-                    >
+                    <paper-icon-item @click="${() => this._openUpdateDialog(repository)}">
                       <ha-icon
                         class="pending_update"
                         icon="mdi:arrow-up-circle"
@@ -127,14 +122,8 @@ export class HacsEntryPanel extends LitElement {
                         ${repository.name}
                         <div secondary>
                           ${localize("sections.pending_repository_upgrade")
-                            .replace(
-                              "{installed}",
-                              repository.installed_version
-                            )
-                            .replace(
-                              "{available}",
-                              repository.available_version
-                            )}
+                            .replace("{installed}", repository.installed_version)
+                            .replace("{available}", repository.available_version)}
                         </div>
                       </paper-item-body>
                     </paper-icon-item>

@@ -6,6 +6,7 @@ import {
   Status,
   LovelaceResource,
   LovelaceResourcesMutableParams,
+  RemovedRepository,
 } from "./common";
 
 export const getConfiguration = async (hass: HomeAssistant) => {
@@ -32,6 +33,13 @@ export const getCritical = async (hass: HomeAssistant) => {
 export const getStatus = async (hass: HomeAssistant) => {
   const response = await hass.connection.sendMessagePromise<Status>({
     type: "hacs/status",
+  });
+  return response;
+};
+
+export const getRemovedRepositories = async (hass: HomeAssistant) => {
+  const response = await hass.connection.sendMessagePromise<RemovedRepository[]>({
+    type: "hacs/removed",
   });
   return response;
 };

@@ -1,11 +1,4 @@
-import {
-  LitElement,
-  TemplateResult,
-  html,
-  customElement,
-  query,
-  property,
-} from "lit-element";
+import { LitElement, TemplateResult, html, customElement, query, property } from "lit-element";
 import memoizeOne from "memoize-one";
 
 import { HomeAssistant } from "custom-card-helpers";
@@ -22,6 +15,7 @@ import {
   Repository,
   LocationChangedEvent,
   HacsDialogEvent,
+  RemovedRepository,
 } from "./data/common";
 
 import {
@@ -30,6 +24,7 @@ import {
   getStatus,
   getCritical,
   getLovelaceConfiguration,
+  getRemovedRepositories,
 } from "./data/websocket";
 
 import "./panels/hacs-entry-panel";
@@ -47,6 +42,7 @@ export class HacsResolver extends LitElement {
   @property({ attribute: false }) public repositories: Repository[];
   @property({ attribute: false }) public route!: Route;
   @property({ attribute: false }) public status: Status;
+  @property({ attribute: false }) public removed: RemovedRepository[];
 
   @query("#hacs-dialog") private _hacsDialog?: any;
   @query("#hacs-dialog-secondary") private _hacsDialogSecondary?: any;
@@ -65,9 +61,7 @@ export class HacsResolver extends LitElement {
       this._setRoute(e as LocationChangedEvent)
     );
 
-    this.addEventListener("hacs-dialog", (e) =>
-      this._showDialog(e as HacsDialogEvent)
-    );
+    this.addEventListener("hacs-dialog", (e) => this._showDialog(e as HacsDialogEvent));
     this.addEventListener("hacs-dialog-secondary", (e) =>
       this._showDialogSecondary(e as HacsDialogEvent)
     );
@@ -81,43 +75,33 @@ export class HacsResolver extends LitElement {
     };
 
     /* Backend event subscription */
-    this.hass.connection.subscribeEvents(
-      () => this._updateProperties(),
-      "hacs/config"
-    );
-    this.hass.connection.subscribeEvents(
-      () => this._updateProperties(),
-      "hacs/status"
-    );
+    this.hass.connection.subscribeEvents(async () => await this._updateProperties(), "hacs/config");
+    this.hass.connection.subscribeEvents(async () => await this._updateProperties(), "hacs/status");
 
     this.hass.connection.subscribeEvents(
-      () => this._updateProperties(),
+      async () => await this._updateProperties(),
       "hacs/repository"
     );
     this.hass.connection.subscribeEvents(
-      () => this._updateProperties(),
+      async () => await this._updateProperties(),
       "lovelace_updated"
     );
     await this._updateProperties();
   }
 
   private async _updateProperties() {
-    const [
-      repositories,
-      configuration,
-      status,
-      critical,
-      lovelace,
-    ] = await Promise.all([
+    const [repositories, configuration, status, critical, lovelace, removed] = await Promise.all([
       getRepositories(this.hass),
       getConfiguration(this.hass),
       getStatus(this.hass),
       getCritical(this.hass),
       getLovelaceConfiguration(this.hass),
+      getRemovedRepositories(this.hass),
     ]);
 
     this.configuration = configuration;
     this.status = status;
+    this.removed = removed;
     this.critical = critical;
     this.lovelace = lovelace;
     this.configuration = configuration;
@@ -129,9 +113,7 @@ export class HacsResolver extends LitElement {
       this.route.path = "/dashboard";
     }
 
-    return html`${["/integrations", "/frontend", "/automation"].includes(
-        this.route.path
-      )
+    return html`${["/integrations", "/frontend", "/automation"].includes(this.route.path)
         ? html`<hacs-store-panel
             .hass=${this.hass}
             .route=${this.route}
@@ -140,6 +122,7 @@ export class HacsResolver extends LitElement {
             .lovelace=${this.lovelace}
             .repositories=${this.repositories}
             .status=${this.status}
+            .removed=${this.removed}
             .section=${this.route.path.split("/")[1]}
           ></hacs-store-panel>`
         : html`<hacs-entry-panel
@@ -149,6 +132,7 @@ export class HacsResolver extends LitElement {
             .configuration=${this.configuration}
             .lovelace=${this.lovelace}
             .status=${this.status}
+            .removed=${this.removed}
             .repositories=${this.repositories}
           ></hacs-entry-panel>`}
       <hacs-event-dialog
@@ -158,6 +142,7 @@ export class HacsResolver extends LitElement {
         .configuration=${this.configuration}
         .lovelace=${this.lovelace}
         .status=${this.status}
+        .removed=${this.removed}
         .repositories=${this.repositories}
         id="hacs-dialog"
       ></hacs-event-dialog>
@@ -168,6 +153,7 @@ export class HacsResolver extends LitElement {
         .configuration=${this.configuration}
         .lovelace=${this.lovelace}
         .status=${this.status}
+        .removed=${this.removed}
         .repositories=${this.repositories}
         id="hacs-dialog-secondary"
       ></hacs-event-dialog>`;
@@ -177,10 +163,7 @@ export class HacsResolver extends LitElement {
     const dialogParams = ev.detail;
     this._hacsDialog.active = true;
     this._hacsDialog.params = dialogParams;
-    this.addEventListener(
-      "hacs-dialog-closed",
-      () => (this._hacsDialog.active = false)
-    );
+    this.addEventListener("hacs-dialog-closed", () => (this._hacsDialog.active = false));
   }
 
   private _showDialogSecondary(ev: HacsDialogEvent): void {

@@ -6,6 +6,7 @@ import {
   Configuration,
   LovelaceResource,
   Repository,
+  RemovedRepository,
 } from "../data/common";
 import { localize } from "../localize/localize";
 import { version } from "../version";
@@ -16,7 +17,8 @@ export const getMessages = memoizeOne(
     status: Status,
     configuration: Configuration,
     resources: LovelaceResource[],
-    repositories: Repository[]
+    repositories: Repository[],
+    removed: RemovedRepository[]
   ) => {
     const messages: Message[] = [];
     const repositoriesNotAddedToLovelace: Repository[] = [];
@@ -32,6 +34,9 @@ export const getMessages = memoizeOne(
         !addedToLovelace(resources, configuration, repo)
       ) {
         repositoriesNotAddedToLovelace.push(repo);
+      }
+      if (repo.installed && removed.map((r) => r.repository).includes(repo.full_name)) {
+        const removedrepo = removed.find((r) => r.repository !== repo.full_name);
       }
     });
 

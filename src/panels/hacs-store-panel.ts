@@ -2,7 +2,14 @@ import { LitElement, customElement, property, html, css, TemplateResult } from "
 import memoizeOne from "memoize-one";
 
 import { HomeAssistant } from "custom-card-helpers";
-import { Route, Status, Configuration, Repository, LovelaceResource } from "../data/common";
+import {
+  Route,
+  Status,
+  Configuration,
+  Repository,
+  LovelaceResource,
+  RemovedRepository,
+} from "../data/common";
 import "../layout/hacs-tabbed-layout";
 import "../components/hacs-repository-card";
 import "../components/hacs-search";
@@ -24,6 +31,7 @@ export class HacsStorePanel extends LitElement {
   @property({ attribute: false }) public repositories!: Repository[];
   @property({ attribute: false }) public lovelace: LovelaceResource[];
   @property({ attribute: false }) public status: Status;
+  @property({ attribute: false }) public removed: RemovedRepository[];
   @property() public section!: string;
 
   private _repositoriesInActiveSection = memoizeOne(
@@ -128,6 +136,7 @@ export class HacsStorePanel extends LitElement {
           .repository=${repo}
           .narrow=${this.narrow}
           .status=${this.status}
+          .removed=${this.removed}
           .addedToLovelace=${addedToLovelace(this.lovelace, this.configuration, repo)}
         ></hacs-repository-card>`
     );

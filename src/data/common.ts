@@ -113,9 +113,14 @@ export interface Repository {
   version_or_commit: string;
 }
 
-export const sortRepositoriesByName = (
-  repositories: Repository[]
-): Repository[] => {
+export interface RemovedRepository {
+  link?: string;
+  reason?: string;
+  removal_type: string;
+  repository: string;
+}
+
+export const sortRepositoriesByName = (repositories: Repository[]): Repository[] => {
   return repositories?.sort((a: Repository, b: Repository) =>
     a.name.toLowerCase() > b.name.toLowerCase() ? 1 : -1
   );

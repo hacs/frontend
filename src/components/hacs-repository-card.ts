@@ -10,7 +10,7 @@ import {
 import { classMap } from "lit-html/directives/class-map";
 import { localize } from "../localize/localize";
 import { HacsStyles } from "../styles/hacs-common-style";
-import { Repository, Status } from "../data/common";
+import { Repository, Status, RemovedRepository } from "../data/common";
 import {
   repositorySetNotNew,
   repositoryUninstall,
@@ -25,6 +25,7 @@ export class HacsRepositoryCard extends LitElement {
   @property({ attribute: false }) public hass!: HomeAssistant;
   @property({ attribute: false }) public repository!: Repository;
   @property({ attribute: false }) public status: Status;
+  @property({ attribute: false }) public removed: RemovedRepository[];
   @property({ type: Boolean }) public narrow!: boolean;
   @property({ type: Boolean }) public addedToLovelace!: boolean;
 
@@ -40,9 +41,7 @@ export class HacsRepositoryCard extends LitElement {
             this.repository.status === "pending-restart",
           "status-new": this.repository.new && !this.repository.installed,
           "status-update": this.repository.pending_upgrade,
-          "status-issue":
-            !this.addedToLovelace ||
-            this.repository.status === "pending-restart",
+          "status-issue": !this.addedToLovelace || this.repository.status === "pending-restart",
         })}
       >
         <div class="card-content">
@@ -57,8 +56,7 @@ export class HacsRepositoryCard extends LitElement {
                 "new-header": this.repository.new && !this.repository.installed,
                 "update-header": this.repository.pending_upgrade,
                 "issue-header":
-                  !this.addedToLovelace ||
-                  this.repository.status === "pending-restart",
+                  !this.addedToLovelace || this.repository.status === "pending-restart",
               })}"
             >
               ${!this.addedToLovelace
@@ -84,9 +82,7 @@ export class HacsRepositoryCard extends LitElement {
             </div>
           </div>
           <paper-item>
-            <paper-item-body
-              >${this.repository.description}</paper-item-body
-            ></paper-item
+            <paper-item-body>${this.repository.description}</paper-item-body></paper-item
           >
         </div>
         <div class="card-actions">
@@ -102,11 +98,8 @@ export class HacsRepositoryCard extends LitElement {
                   >
                 </div>
                 <div>
-                  <hacs-link
-                    .url="https://github.com/${this.repository.full_name}"
-                    ><mwc-button
-                      >${localize("common.repository")}</mwc-button
-                    ></hacs-link
+                  <hacs-link .url="https://github.com/${this.repository.full_name}"
+                    ><mwc-button>${localize("common.repository")}</mwc-button></hacs-link
                   >
                 </div>
                 <div>
@@ -116,19 +109,13 @@ export class HacsRepositoryCard extends LitElement {
                 </div>`
             : this.repository.pending_upgrade
             ? html`<div>
-                <mwc-button
-                  class="update-header"
-                  @click=${this._updateRepository}
-                  raised
+                <mwc-button class="update-header" @click=${this._updateRepository} raised
                   >${localize("common.update")}</mwc-button
                 >
               </div>`
             : html`<div>
-                <hacs-link
-                  .url="https://github.com/${this.repository.full_name}"
-                  ><mwc-button
-                    >${localize("common.repository")}</mwc-button
-                  ></hacs-link
+                <hacs-link .url="https://github.com/${this.repository.full_name}"
+                  ><mwc-button>${localize("common.repository")}</mwc-button></hacs-link
                 >
               </div>`}
           ${this.repository.installed
@@ -138,21 +125,14 @@ export class HacsRepositoryCard extends LitElement {
                 vertical-offset="40"
                 close-on-activate
               >
-                <ha-icon-button
-                  icon="hass:dots-vertical"
-                  slot="dropdown-trigger"
-                ></ha-icon-button>
+                <ha-icon-button icon="hass:dots-vertical" slot="dropdown-trigger"></ha-icon-button>
                 <paper-listbox slot="dropdown-content">
                   <paper-item class="pointer" @click=${this._showReopsitoryInfo}
                     >${localize("repository_card.information")}</paper-item
                   >
 
-                  <paper-item
-                    class="pointer"
-                    @click=${this._updateReopsitoryInfo}
-                    >${localize(
-                      "repository_card.update_information"
-                    )}</paper-item
+                  <paper-item class="pointer" @click=${this._updateReopsitoryInfo}
+                    >${localize("repository_card.update_information")}</paper-item
                   >
 
                   <paper-item @click=${this._installRepository}
@@ -161,20 +141,15 @@ export class HacsRepositoryCard extends LitElement {
 
                   ${this.repository.category === "plugin"
                     ? html`<hacs-link
-                        .url="/hacsfiles/${path.pop()}/${this.repository
-                          .file_name}"
+                        .url="/hacsfiles/${path.pop()}/${this.repository.file_name}"
                         newtab
                         ><paper-item class="pointer"
-                          >${localize(
-                            "repository_card.open_source"
-                          )}</paper-item
+                          >${localize("repository_card.open_source")}</paper-item
                         ></hacs-link
                       >`
                     : ""}
 
-                  <hacs-link
-                    .url="https://github.com/${this.repository
-                      .full_name}/issues"
+                  <hacs-link .url="https://github.com/${this.repository.full_name}/issues"
                     ><paper-item class="pointer"
                       >${localize("repository_card.open_issue")}</paper-item
                     ></hacs-link
@@ -188,9 +163,7 @@ export class HacsRepositoryCard extends LitElement {
                             >${localize("repository_card.report")}</paper-item
                           ></hacs-link
                         >
-                        <paper-item
-                          class="pointer uninstall"
-                          @click=${this._uninstallRepository}
+                        <paper-item class="pointer uninstall" @click=${this._uninstallRepository}
                           >${localize("common.uninstall")}</paper-item
                         >`
                     : ""}
@@ -220,9 +193,7 @@ export class HacsRepositoryCard extends LitElement {
   }
 
   private _lovelaceUrl(): string {
-    return `/hacsfiles/${this.repository?.full_name.split("/")[1]}/${
-      this.repository?.file_name
-    }`;
+    return `/hacsfiles/${this.repository?.full_name.split("/")[1]}/${this.repository?.file_name}`;
   }
 
   private async _updateRepository() {
@@ -257,10 +228,7 @@ export class HacsRepositoryCard extends LitElement {
 
   private async _uninstallRepository() {
     await repositoryUninstall(this.hass, this.repository.id);
-    if (
-      this.repository.category === "plugin" &&
-      this.status.lovelace_mode !== "yaml"
-    ) {
+    if (this.repository.category === "plugin" && this.status.lovelace_mode !== "yaml") {
       const resources = await fetchResources(this.hass);
       resources
         .filter((resource) => resource.url === this._lovelaceUrl())

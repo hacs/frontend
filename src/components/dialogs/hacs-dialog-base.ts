@@ -8,6 +8,7 @@ import {
   Status,
   Configuration,
   Repository,
+  RemovedRepository,
 } from "../../data/common";
 
 export class HacsDialogBase extends LitElement {
@@ -18,6 +19,7 @@ export class HacsDialogBase extends LitElement {
   @property({ attribute: false }) public repositories: Repository[];
   @property({ attribute: false }) public route!: Route;
   @property({ attribute: false }) public status: Status;
+  @property({ attribute: false }) public removed: RemovedRepository[];
   @property({ type: Boolean }) public active: boolean = false;
   @property({ type: Boolean }) public secondary: boolean = false;
   @property({ type: Boolean }) public loading: boolean = true;
@@ -27,8 +29,7 @@ export class HacsDialogBase extends LitElement {
   shouldUpdate(changedProperties: PropertyValues) {
     changedProperties.forEach((_oldValue, propName) => {
       if (propName === "hass") {
-        this.sidebarDocked =
-          window.localStorage.getItem("dockedSidebar") === '"docked"';
+        this.sidebarDocked = window.localStorage.getItem("dockedSidebar") === '"docked"';
       }
     });
     return (
@@ -41,7 +42,6 @@ export class HacsDialogBase extends LitElement {
   }
   public connectedCallback() {
     super.connectedCallback();
-    this.sidebarDocked =
-      window.localStorage.getItem("dockedSidebar") === '"docked"';
+    this.sidebarDocked = window.localStorage.getItem("dockedSidebar") === '"docked"';
   }
 }

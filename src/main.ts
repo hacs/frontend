@@ -1,10 +1,4 @@
-import {
-  LitElement,
-  TemplateResult,
-  html,
-  customElement,
-  property,
-} from "lit-element";
+import { LitElement, TemplateResult, html, customElement, property } from "lit-element";
 import { load_lovelace } from "card-tools/src/hass";
 import { HomeAssistant } from "custom-card-helpers";
 import { Route } from "./legacy/data";
