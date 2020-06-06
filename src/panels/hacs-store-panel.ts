@@ -9,7 +9,6 @@ import {
   Repository,
   LovelaceResource,
   RemovedRepository,
-  Filter,
 } from "../data/common";
 import "../layout/hacs-tabbed-layout";
 import "../components/hacs-repository-card";
