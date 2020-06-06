@@ -3,7 +3,6 @@ import {
   CSSResultArray,
   customElement,
   html,
-  query,
   LitElement,
   TemplateResult,
   property,
@@ -11,10 +10,11 @@ import {
 
 import { HacsStyles } from "../styles/hacs-common-style";
 import { Filter } from "../data/common";
+import { localize } from "../localize/localize";
 
 @customElement("hacs-filter")
 export class HacsFilter extends LitElement {
-  @property() public filters: Filter[];
+  @property({ attribute: false }) public filters: Filter[];
 
   protected render(): TemplateResult | void {
     return html`
@@ -29,7 +29,7 @@ export class HacsFilter extends LitElement {
               .name=${filter.id}
               ?checked=${filter.checked || false}
             />
-            <label for="scales">${filter.value}</label>
+            <label for="scales">${localize(`common.${filter.id}`) || filter.value}</label>
           </div>`
         )}
       </div>
@@ -38,7 +38,16 @@ export class HacsFilter extends LitElement {
 
   private _filterClick(ev): void {
     const filter = ev.currentTarget;
-    console.log(filter);
+    this.dispatchEvent(
+      new CustomEvent("filter-change", {
+        detail: {
+          id: filter.id,
+          checked: filter.checked,
+        },
+        bubbles: true,
+        composed: true,
+      })
+    );
   }
 
   static get styles(): CSSResultArray {
