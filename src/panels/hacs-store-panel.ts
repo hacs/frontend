@@ -9,15 +9,18 @@ import {
   Repository,
   LovelaceResource,
   RemovedRepository,
+  Filter,
 } from "../data/common";
 import "../layout/hacs-tabbed-layout";
 import "../components/hacs-repository-card";
 import "../components/hacs-search";
+import "../components/hacs-filter";
 import "../components/hacs-fab";
 import "../components/hacs-tabbed-menu";
+
 import { localize } from "../localize/localize";
 import { HacsStyles } from "../styles/hacs-common-style";
-import { sections } from "./hacs-sections";
+import { sections, activePanel } from "./hacs-sections";
 import { addedToLovelace } from "../tools/added-to-lovelace";
 import { filterRepositoriesByInput } from "../tools/filter-repositories-by-input";
 
@@ -86,6 +89,18 @@ export class HacsStorePanel extends LitElement {
     )[1];
 
     const tabs = this._panelsEnabled(sections, this.configuration);
+    const categories = activePanel(this.route)?.categories;
+    let filter: Filter[] = [];
+
+    categories
+      ?.filter((c) => this.configuration.categories.includes(c))
+      .forEach((category) => {
+        filter.push({
+          id: category,
+          value: category,
+          checked: true,
+        });
+      });
 
     return html`<hacs-tabbed-layout
       .hass=${this.hass}
@@ -106,6 +121,7 @@ export class HacsStorePanel extends LitElement {
       </hacs-tabbed-menu>
 
       <hacs-search .input=${this._searchInput} @input=${this._inputValueChanged}></hacs-search>
+      ${filter.length > 1 ? html`<hacs-filter .filters="${filter}"></hacs-filter>` : ""}
       ${newRepositories?.length > 10
         ? html`<div class="new-repositories">
             ${localize("store.new_repositories_note")}
