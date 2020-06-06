@@ -1,21 +1,8 @@
-import {
-  LitElement,
-  customElement,
-  property,
-  html,
-  css,
-  TemplateResult,
-} from "lit-element";
+import { LitElement, customElement, property, html, css, TemplateResult } from "lit-element";
 import memoizeOne from "memoize-one";
 
 import { HomeAssistant } from "custom-card-helpers";
-import {
-  Route,
-  Status,
-  Configuration,
-  Repository,
-  LovelaceResource,
-} from "../data/common";
+import { Route, Status, Configuration, Repository, LovelaceResource } from "../data/common";
 import "../layout/hacs-tabbed-layout";
 import "../components/hacs-repository-card";
 import "../components/hacs-search";
@@ -25,9 +12,11 @@ import { localize } from "../localize/localize";
 import { HacsStyles } from "../styles/hacs-common-style";
 import { sections } from "./hacs-sections";
 import { addedToLovelace } from "../tools/added-to-lovelace";
+import { filterRepositoriesByInput } from "../tools/filter-repositories-by-input";
 
 @customElement("hacs-store-panel")
 export class HacsStorePanel extends LitElement {
+  @property() private _searchInput: string = "";
   @property({ attribute: false }) public configuration: Configuration;
   @property({ attribute: false }) public hass!: HomeAssistant;
   @property({ attribute: false }) public narrow!: boolean;
@@ -57,27 +46,36 @@ export class HacsStorePanel extends LitElement {
     }
   );
 
-  private _panelsEnabled = memoizeOne(
-    (sections: any, config: Configuration) => {
-      return sections.panels.filter((panel) => {
-        const categories = panel.categories;
-        if (categories === undefined) return true;
-        return (
-          categories.filter((c) => config?.categories.includes(c)).length !== 0
-        );
-      });
-    }
-  );
+  private _panelsEnabled = memoizeOne((sections: any, config: Configuration) => {
+    return sections.panels.filter((panel) => {
+      const categories = panel.categories;
+      if (categories === undefined) return true;
+      return categories.filter((c) => config?.categories.includes(c)).length !== 0;
+    });
+  });
 
-  protected render(): TemplateResult | void {
-    const [
-      InstalledRepositories,
-      newRepositories,
-    ] = this._repositoriesInActiveSection(
+  private get allRepositories(): Repository[] {
+    const [installedRepositories, newRepositories] = this._repositoriesInActiveSection(
       this.repositories,
       sections,
       this.section
     );
+
+    return newRepositories.concat(installedRepositories);
+  }
+
+  private _filterRepositories = memoizeOne(filterRepositoriesByInput);
+
+  private get visibleRepositories(): Repository[] {
+    return this._filterRepositories(this.allRepositories, this._searchInput)
+  }
+
+  protected render(): TemplateResult {
+    const newRepositories = this._repositoriesInActiveSection(
+      this.repositories,
+      sections,
+      this.section
+    )[1];
 
     const tabs = this._panelsEnabled(sections, this.configuration);
 
@@ -104,32 +102,14 @@ export class HacsStorePanel extends LitElement {
             ${localize("store.new_repositories_note")}
           </div>`
         : ""}
+
+      <hacs-search .input=${this._searchInput} @input=${this._inputValueChanged}></hacs-search>
       <div class="content">
-        ${newRepositories?.concat(InstalledRepositories).length !== 0
-          ? newRepositories
-              ?.concat(InstalledRepositories)
-              ?.map(
-                (repo) =>
-                  html`<hacs-repository-card
-                    .hass=${this.hass}
-                    .repository=${repo}
-                    .narrow=${this.narrow}
-                    .status=${this.status}
-                    .addedToLovelace=${addedToLovelace(
-                      this.lovelace,
-                      this.configuration,
-                      repo
-                    )}
-                  ></hacs-repository-card>`
-              )
-          : html`<ha-card class="no-repositories">
-              <div class="header">${localize("store.no_repositories")} 😕</div>
-              <p>
-                ${localize("store.no_repositories_desc1")}<br />${localize(
-                  "store.no_repositories_desc2"
-                )}
-              </p>
-            </ha-card>`}
+        ${this.allRepositories.length === 0
+          ? this.renderEmpty()
+          : this.visibleRepositories.length === 0
+          ? this.renderNoResultsFound()
+          : this.renderRepositories()}
       </div>
       <hacs-fab
         .narrow=${this.narrow}
@@ -139,6 +119,43 @@ export class HacsStorePanel extends LitElement {
       >
       </hacs-fab>
     </hacs-tabbed-layout>`;
+  }
+
+  private renderRepositories(): TemplateResult[] {
+    return this.visibleRepositories.map(
+      (repo) =>
+        html`<hacs-repository-card
+          .hass=${this.hass}
+          .repository=${repo}
+          .narrow=${this.narrow}
+          .status=${this.status}
+          .addedToLovelace=${addedToLovelace(this.lovelace, this.configuration, repo)}
+        ></hacs-repository-card>`
+    );
+  }
+
+  private renderNoResultsFound(): TemplateResult {
+    return html`<ha-card class="no-repositories">
+      <div class="header">${localize("store.no_repositories")} 😕</div>
+      <p>
+        ${localize("store.no_repositories_found_desc1").replace("{searchInput}", this._searchInput)}
+        <br />
+        ${localize("store.no_repositories_found_desc2")}
+      </p>
+    </ha-card>`;
+  }
+
+  private renderEmpty(): TemplateResult {
+    return html`<ha-card class="no-repositories">
+      <div class="header">${localize("store.no_repositories")} 😕</div>
+      <p>
+        ${localize("store.no_repositories_desc1")}<br />${localize("store.no_repositories_desc2")}
+      </p>
+    </ha-card>`;
+  }
+
+  private _inputValueChanged(ev: any) {
+    this._searchInput = ev.target.input;
   }
 
   private _addRepository() {

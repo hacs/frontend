@@ -15,6 +15,7 @@ import { Repository } from "../../data/common";
 
 import { localize } from "../../localize/localize";
 import { sections } from "../../panels/hacs-sections";
+import { filterRepositoriesByInput } from "../../tools/filter-repositories-by-input";
 import "../hacs-search";
 import "../hacs-chip";
 
@@ -56,18 +57,7 @@ export class HacsAddRepositoryDialog extends HacsDialogBase {
       )
   );
 
-  private _filterRepositories = memoizeOne(
-    (repositories: Repository[], filter: string) =>
-      repositories?.filter(
-        (repo) =>
-          repo.name?.toLocaleLowerCase().includes(filter) ||
-          repo.description?.toLocaleLowerCase().includes(filter) ||
-          repo.category.toLocaleLowerCase().includes(filter) ||
-          repo.full_name.toLocaleLowerCase().includes(filter) ||
-          String(repo.authors)?.toLocaleLowerCase().includes(filter) ||
-          repo.domain?.toLocaleLowerCase().includes(filter)
-      )
-  );
+  private _filterRepositories = memoizeOne(filterRepositoriesByInput);
 
   protected render(): TemplateResult | void {
     this._searchInput = window.localStorage.getItem("hacs-search") || "";
@@ -78,7 +68,7 @@ export class HacsAddRepositoryDialog extends HacsDialogBase {
         this.repositories,
         this.configuration?.categories
       ),
-      this._searchInput?.toLocaleLowerCase()
+      this._searchInput
     );
 
     return html`
