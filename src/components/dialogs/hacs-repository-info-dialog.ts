@@ -1,17 +1,11 @@
-import {
-  customElement,
-  html,
-  TemplateResult,
-  property,
-  PropertyValues,
-  css,
-} from "lit-element";
+import { customElement, html, TemplateResult, property, PropertyValues, css } from "lit-element";
 import memoizeOne from "memoize-one";
 import { HacsDialogBase } from "./hacs-dialog-base";
 import { Repository } from "../../data/common";
-import { markdown } from "../../legacy/markdown/markdown";
+import { markdown } from "../../tools/markdown/markdown";
 import { localize } from "../../localize/localize";
-import "../../components/hacs-chip";
+import "../hacs-chip";
+import "../hacs-link";
 
 import { repositoryUpdate, getRepositories } from "../../data/websocket";
 
@@ -20,25 +14,18 @@ export class HacsRepositoryDialog extends HacsDialogBase {
   @property() public repository?: string;
   @property() public _repository?: Repository;
 
-  private _getRepository = memoizeOne(
-    (repositories: Repository[], repository: string) =>
-      repositories?.find((repo) => repo.id === repository)
+  private _getRepository = memoizeOne((repositories: Repository[], repository: string) =>
+    repositories?.find((repo) => repo.id === repository)
   );
 
   private _getAuthors = memoizeOne((repository: Repository) => {
     const authors: string[] = [];
     if (!repository.authors) return authors;
-    repository.authors.forEach((author) =>
-      authors.push(author.replace("@", ""))
-    );
+    repository.authors.forEach((author) => authors.push(author.replace("@", "")));
     if (authors.length === 0) {
       const author = repository.full_name.split("/")[0];
       if (
-        [
-          "custom-cards",
-          "custom-components",
-          "home-assistant-community-themes",
-        ].includes(author)
+        ["custom-cards", "custom-components", "home-assistant-community-themes"].includes(author)
       ) {
         return authors;
       }
@@ -50,14 +37,10 @@ export class HacsRepositoryDialog extends HacsDialogBase {
   shouldUpdate(changedProperties: PropertyValues) {
     changedProperties.forEach((_oldValue, propName) => {
       if (propName === "hass") {
-        this.sidebarDocked =
-          window.localStorage.getItem("dockedSidebar") === '"docked"';
+        this.sidebarDocked = window.localStorage.getItem("dockedSidebar") === '"docked"';
       }
       if (propName === "repositories") {
-        this._repository = this._getRepository(
-          this.repositories,
-          this.repository
-        );
+        this._repository = this._getRepository(this.repositories, this.repository);
       }
     });
     return (
@@ -122,9 +105,7 @@ export class HacsRepositoryDialog extends HacsDialogBase {
             icon="mdi:star"
             .value=${this._repository.stars}
           ></hacs-chip>
-          <hacs-link
-            .url="https://github.com/${this._repository.full_name}/issues"
-          >
+          <hacs-link .url="https://github.com/${this._repository.full_name}/issues">
             <hacs-chip
               title="${localize("dialog_info.open_issues")}"
               icon="mdi:exclamation-thick"
@@ -134,8 +115,7 @@ export class HacsRepositoryDialog extends HacsDialogBase {
         </div>
         ${this._repository.updated_info
           ? markdown.html(
-              this._repository.additional_info ||
-                localize("dialog_info.no_info"),
+              this._repository.additional_info || localize("dialog_info.no_info"),
               this._repository
             )
           : localize("dialog_info.loading")}
@@ -143,11 +123,8 @@ export class HacsRepositoryDialog extends HacsDialogBase {
           ? html` <div slot="actions">
               <mwc-button @click=${this._installRepository} raised
                 >${localize("dialog_info.install")}</mwc-button
-              ><hacs-link
-                .url="https://github.com/${this._repository.full_name}"
-                ><mwc-button
-                  >${localize("dialog_info.open_repo")}</mwc-button
-                ></hacs-link
+              ><hacs-link .url="https://github.com/${this._repository.full_name}"
+                ><mwc-button>${localize("dialog_info.open_repo")}</mwc-button></hacs-link
               >
             </div>`
           : ""}

@@ -5,6 +5,7 @@ import { localize } from "../localize/localize";
 import { settingsClearAllNewRepositories } from "../data/websocket";
 
 import { sections } from "../panels/hacs-sections";
+import "../components/hacs-link";
 
 @customElement("hacs-tabbed-menu")
 export class HacsTabbedMenu extends LitElement {

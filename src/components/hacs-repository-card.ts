@@ -20,6 +20,8 @@ import {
 } from "../data/websocket";
 import { HomeAssistant } from "custom-card-helpers";
 
+import "../components/hacs-link";
+
 @customElement("hacs-repository-card")
 export class HacsRepositoryCard extends LitElement {
   @property({ attribute: false }) public hass!: HomeAssistant;

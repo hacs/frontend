@@ -8,6 +8,7 @@ import { Repository } from "../../data/common";
 import { localize } from "../../localize/localize";
 
 import "./hacs-dialog";
+import "../hacs-link";
 
 @customElement("hacs-update-dialog")
 export class HacsUpdateDialog extends HacsDialogBase {

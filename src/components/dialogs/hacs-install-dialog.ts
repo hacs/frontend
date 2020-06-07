@@ -27,6 +27,7 @@ import { HacsDialogBase } from "./hacs-dialog-base";
 import { Repository } from "../../data/common";
 import { repositoryUpdate } from "../../data/websocket";
 import "./hacs-dialog";
+import "../hacs-link";
 
 @customElement("hacs-install-dialog")
 export class HacsInstallDialog extends HacsDialogBase {
