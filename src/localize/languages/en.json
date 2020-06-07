@@ -220,7 +220,8 @@
     "title": "Update pending",
     "installed_version": "Installed version",
     "available_version": "Available version",
-    "changelog": "Changelog"
+    "changelog": "Changelog",
+    "releasenotes": "Releasenotes for {release}"
   },
   "repository_card": {
     "pending_update": "Pending update",

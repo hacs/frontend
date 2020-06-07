@@ -60,6 +60,15 @@ export const repositoryUninstall = async (hass: HomeAssistant, repository: strin
   });
 };
 
+export const repositoryReleasenotes = async (hass: HomeAssistant, repository: string) => {
+  const response = await hass.connection.sendMessagePromise<{ tag: string; body: string }[]>({
+    type: "hacs/repository",
+    action: "release_notes",
+    repository: repository,
+  });
+  return response;
+};
+
 export const repositoryToggleBeta = async (hass: HomeAssistant, repository: string) => {
   await hass.connection.sendMessagePromise<void>({
     type: "hacs/repository",
