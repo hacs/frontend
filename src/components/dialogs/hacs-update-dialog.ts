@@ -1,17 +1,7 @@
-import {
-  css,
-  CSSResultArray,
-  customElement,
-  html,
-  TemplateResult,
-  property,
-} from "lit-element";
+import { css, CSSResultArray, customElement, html, TemplateResult, property } from "lit-element";
 import memoizeOne from "memoize-one";
 
-import {
-  repositoryInstall,
-  repositoryInstallVersion,
-} from "../../data/websocket";
+import { repositoryInstall, repositoryInstallVersion } from "../../data/websocket";
 import { updateLovelaceResources } from "../../tools/update-lovelace-resources";
 import { HacsDialogBase } from "./hacs-dialog-base";
 import { Repository } from "../../data/common";
@@ -23,22 +13,21 @@ import "./hacs-dialog";
 export class HacsUpdateDialog extends HacsDialogBase {
   @property() public repository?: string;
   @property() private _updating: boolean = false;
+  @property() private _error?: any;
 
-  private _getRepository = memoizeOne(
-    (repositories: Repository[], repository: string) =>
-      repositories?.find((repo) => repo.id === repository)
+  private _getRepository = memoizeOne((repositories: Repository[], repository: string) =>
+    repositories?.find((repo) => repo.id === repository)
   );
+
+  protected async firstUpdated() {
+    this.hass.connection.subscribeEvents((msg) => (this._error = (msg as any).data), "hacs/error");
+  }
 
   protected render(): TemplateResult | void {
     if (!this.active) return html``;
     const repository = this._getRepository(this.repositories, this.repository);
     return html`
-      <hacs-dialog
-        .active=${this.active}
-        .narrow=${this.narrow}
-        .hass=${this.hass}
-        dynamicHeight
-      >
+      <hacs-dialog .active=${this.active} .narrow=${this.narrow} .hass=${this.hass} dynamicHeight>
         <div slot="header">${localize("dialog_update.title")}</div>
         <div class="content">
           ${repository.name}
@@ -60,24 +49,19 @@ export class HacsUpdateDialog extends HacsDialogBase {
           ${repository.category === "integration"
             ? html`<p>${localize("dialog_install.restart")}</p>`
             : ""}
+          ${this._error ? html`<div class="error">${this._error.message}</div>` : ""}
         </div>
         <div slot="actions">
-          <mwc-button
-            ?disabled=${!repository.can_install}
-            @click=${this._updateRepository}
+          <mwc-button ?disabled=${!repository.can_install} @click=${this._updateRepository}
             >${this._updating
               ? html`<paper-spinner active></paper-spinner>`
               : localize("common.update")}</mwc-button
           >
           <hacs-link .url=${this._getChanglogURL()}
-            ><mwc-button
-              >${localize("dialog_update.changelog")}</mwc-button
-            ></hacs-link
+            ><mwc-button>${localize("dialog_update.changelog")}</mwc-button></hacs-link
           >
           <hacs-link .url="https://github.com/${repository.full_name}"
-            ><mwc-button
-              >${localize("common.repository")}</mwc-button
-            ></hacs-link
+            ><mwc-button>${localize("common.repository")}</mwc-button></hacs-link
           >
         </div>
       </hacs-dialog>
@@ -88,11 +72,7 @@ export class HacsUpdateDialog extends HacsDialogBase {
     this._updating = true;
     const repository = this._getRepository(this.repositories, this.repository);
     if (repository.version_or_commit !== "commit") {
-      await repositoryInstallVersion(
-        this.hass,
-        repository.id,
-        repository.available_version
-      );
+      await repositoryInstallVersion(this.hass, repository.id, repository.available_version);
     } else {
       await repositoryInstall(this.hass, repository.id);
     }
@@ -103,9 +83,7 @@ export class HacsUpdateDialog extends HacsDialogBase {
       window.location.reload(true);
     }
     this._updating = false;
-    this.dispatchEvent(
-      new Event("hacs-dialog-closed", { bubbles: true, composed: true })
-    );
+    this.dispatchEvent(new Event("hacs-dialog-closed", { bubbles: true, composed: true }));
   }
 
   private _getChanglogURL(): string {

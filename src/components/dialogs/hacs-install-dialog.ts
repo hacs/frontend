@@ -34,19 +34,17 @@ export class HacsInstallDialog extends HacsDialogBase {
   @property() public _repository?: Repository;
   @property() private _toggle: boolean = true;
   @property() private _installing: boolean = false;
+  @property() private _error?: any;
+
   @query("#version") private _version?: any;
 
   shouldUpdate(changedProperties: PropertyValues) {
     changedProperties.forEach((_oldValue, propName) => {
       if (propName === "hass") {
-        this.sidebarDocked =
-          window.localStorage.getItem("dockedSidebar") === '"docked"';
+        this.sidebarDocked = window.localStorage.getItem("dockedSidebar") === '"docked"';
       }
       if (propName === "repositories") {
-        this._repository = this._getRepository(
-          this.repositories,
-          this.repository
-        );
+        this._repository = this._getRepository(this.repositories, this.repository);
       }
     });
     return (
@@ -54,14 +52,14 @@ export class HacsInstallDialog extends HacsDialogBase {
       changedProperties.has("narrow") ||
       changedProperties.has("active") ||
       changedProperties.has("_toggle") ||
+      changedProperties.has("_error") ||
       changedProperties.has("_repository") ||
       changedProperties.has("_installing")
     );
   }
 
-  private _getRepository = memoizeOne(
-    (repositories: Repository[], repository: string) =>
-      repositories?.find((repo) => repo.id === repository)
+  private _getRepository = memoizeOne((repositories: Repository[], repository: string) =>
+    repositories?.find((repo) => repo.id === repository)
   );
 
   private _getInstallPath = memoizeOne((repository: Repository) => {
@@ -79,6 +77,7 @@ export class HacsInstallDialog extends HacsDialogBase {
       this.repositories = await getRepositories(this.hass);
     }
     this._toggle = false;
+    this.hass.connection.subscribeEvents((msg) => (this._error = (msg as any).data), "hacs/error");
   }
 
   protected render(): TemplateResult | void {
@@ -116,9 +115,7 @@ export class HacsInstallDialog extends HacsDialogBase {
                       selected="0"
                     >
                       ${this._repository.releases.map((release) => {
-                        return html`<paper-item
-                          .version=${release}
-                          class="version-select-item"
+                        return html`<paper-item .version=${release} class="version-select-item"
                           >${release}</paper-item
                         >`;
                       })}
@@ -146,8 +143,7 @@ export class HacsInstallDialog extends HacsDialogBase {
           <div class="note">
             ${localize(`repository.note_installed`)}
             <code>'${installPath}'</code>
-            ${this._repository.category === "plugin" &&
-            this.status.lovelace_mode === "yaml"
+            ${this._repository.category === "plugin" && this.status.lovelace_mode === "yaml"
               ? html` <table class="lovelace">
                   <tr>
                     <td>${localize("dialog_install.url")}:</td>
@@ -167,6 +163,7 @@ export class HacsInstallDialog extends HacsDialogBase {
               ? html`<p>${localize("dialog_install.restart")}</p>`
               : ""}
           </div>
+          ${this._error ? html`<div class="error">${this._error.message}</div>` : ""}
         </div>
         <div slot="actions">
           <mwc-button
@@ -178,9 +175,7 @@ export class HacsInstallDialog extends HacsDialogBase {
           >
 
           <hacs-link .url="https://github.com/${this._repository.full_name}"
-            ><mwc-button
-              >${localize("common.repository")}</mwc-button
-            ></hacs-link
+            ><mwc-button>${localize("common.repository")}</mwc-button></hacs-link
           >
         </div>
       </hacs-dialog>
@@ -188,9 +183,7 @@ export class HacsInstallDialog extends HacsDialogBase {
   }
 
   private _lovelaceUrl(): string {
-    return `/hacsfiles/${this._repository?.full_name.split("/")[1]}/${
-      this._repository?.file_name
-    }`;
+    return `/hacsfiles/${this._repository?.full_name.split("/")[1]}/${this._repository?.file_name}`;
   }
 
   private async _toggleBeta(): Promise<void> {
@@ -207,18 +200,11 @@ export class HacsInstallDialog extends HacsDialogBase {
         this._version?.selectedItem?.version ||
         this._repository.available_version ||
         this._repository.default_branch;
-      await repositoryInstallVersion(
-        this.hass,
-        this._repository.id,
-        selectedVersion
-      );
+      await repositoryInstallVersion(this.hass, this._repository.id, selectedVersion);
     } else {
       await repositoryInstall(this.hass, this._repository.id);
     }
-    if (
-      this._repository.category === "plugin" &&
-      this.status.lovelace_mode !== "yaml"
-    ) {
+    if (this._repository.category === "plugin" && this.status.lovelace_mode !== "yaml") {
       await updateLovelaceResources(this.hass, this._repository);
     }
     this._installing = false;
