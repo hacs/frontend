@@ -1,11 +1,4 @@
-import {
-  css,
-  CSSResultArray,
-  customElement,
-  html,
-  TemplateResult,
-  property,
-} from "lit-element";
+import { css, CSSResultArray, customElement, html, TemplateResult, property } from "lit-element";
 import { classMap } from "lit-html/directives/class-map";
 import { HacsDialogBase } from "./hacs-dialog-base";
 
@@ -16,6 +9,7 @@ export class HacsDialog extends HacsDialogBase {
   @property({ type: Boolean }) public noActions: boolean = false;
   @property({ type: Boolean }) public hasContent: boolean = true;
   @property({ type: Boolean }) public dynamicHeight: boolean = false;
+  @property({ type: Boolean }) public hasSearch: boolean = false;
   @property({ type: Boolean }) public hasFilter: boolean = false;
 
   protected render(): TemplateResult | void {
@@ -45,11 +39,7 @@ export class HacsDialog extends HacsDialogBase {
           })}
         >
           <div class="header-group">
-            <ha-icon-button
-              class="close"
-              icon="mdi:close"
-              @click=${this._close}
-            ></ha-icon-button>
+            <ha-icon-button class="close" icon="mdi:close" @click=${this._close}></ha-icon-button>
 
             <div
               class=${classMap({
@@ -60,12 +50,14 @@ export class HacsDialog extends HacsDialogBase {
               <slot name="header"></slot>
             </div>
           </div>
+          <slot name="search"></slot>
           <slot name="filter"></slot>
           <div
             @scroll=${this._scrollEvent}
             class=${classMap({
               "card-content": true,
-              noactions: this.noActions && !this.hasFilter,
+              noactions: this.noActions && !this.hasSearch,
+              "search-and-filter": this.hasSearch && this.hasFilter,
               "dynamic-height": !this.narrow && this.dynamicHeight,
               "narrow-content": this.narrow,
             })}
@@ -103,10 +95,10 @@ export class HacsDialog extends HacsDialogBase {
 
   private _close() {
     this.dispatchEvent(
-      new Event(
-        this.secondary ? "hacs-secondary-dialog-closed" : "hacs-dialog-closed",
-        { bubbles: true, composed: true }
-      )
+      new Event(this.secondary ? "hacs-secondary-dialog-closed" : "hacs-dialog-closed", {
+        bubbles: true,
+        composed: true,
+      })
     );
   }
 
@@ -115,10 +107,7 @@ export class HacsDialog extends HacsDialogBase {
       HacsStyles,
       css`
         ha-card {
-          background-color: var(
-            --paper-dialog-background-color,
-            var(--card-background-color)
-          );
+          background-color: var(--paper-dialog-background-color, var(--card-background-color));
           transition: none;
         }
         .header-group {
@@ -136,9 +125,7 @@ export class HacsDialog extends HacsDialogBase {
           box-sizing: border-box;
         }
         .header {
-          -webkit-font-smoothing: var(
-            --paper-font-headline_-_-webkit-font-smoothing
-          );
+          -webkit-font-smoothing: var(--paper-font-headline_-_-webkit-font-smoothing);
           font-family: var(--paper-font-headline_-_font-family);
           font-size: var(--paper-font-headline_-_font-size);
           font-weight: var(--paper-font-headline_-_font-weight);
@@ -238,6 +225,10 @@ export class HacsDialog extends HacsDialogBase {
         }
         ha-card.dynamic-height {
           padding-bottom: 65px;
+        }
+
+        .search-and-filter {
+          height: calc(100% - 166px) !important;
         }
 
         .full-width {

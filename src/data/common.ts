@@ -120,6 +120,12 @@ export interface RemovedRepository {
   repository: string;
 }
 
+export interface Filter {
+  id: string;
+  value: string;
+  checked?: boolean;
+}
+
 export const sortRepositoriesByName = (repositories: Repository[]): Repository[] => {
   return repositories?.sort((a: Repository, b: Repository) =>
     a.name.toLowerCase() > b.name.toLowerCase() ? 1 : -1

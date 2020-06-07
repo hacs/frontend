@@ -13,11 +13,13 @@ import {
 import "../layout/hacs-tabbed-layout";
 import "../components/hacs-repository-card";
 import "../components/hacs-search";
+import "../components/hacs-filter";
 import "../components/hacs-fab";
 import "../components/hacs-tabbed-menu";
+
 import { localize } from "../localize/localize";
 import { HacsStyles } from "../styles/hacs-common-style";
-import { sections } from "./hacs-sections";
+import { sections, activePanel } from "./hacs-sections";
 import { addedToLovelace } from "../tools/added-to-lovelace";
 import { filterRepositoriesByInput } from "../tools/filter-repositories-by-input";
 
@@ -32,6 +34,7 @@ export class HacsStorePanel extends LitElement {
   @property({ attribute: false }) public lovelace: LovelaceResource[];
   @property({ attribute: false }) public status: Status;
   @property({ attribute: false }) public removed: RemovedRepository[];
+  @property({ attribute: false }) public filters: any = {};
   @property() public section!: string;
 
   private _repositoriesInActiveSection = memoizeOne(
@@ -75,7 +78,22 @@ export class HacsStorePanel extends LitElement {
   private _filterRepositories = memoizeOne(filterRepositoriesByInput);
 
   private get visibleRepositories(): Repository[] {
-    return this._filterRepositories(this.allRepositories, this._searchInput);
+    const repositories = this.allRepositories.filter(
+      (repo) => this.filters[this.section].find((filter) => filter.id === repo.category).checked
+    );
+    return this._filterRepositories(repositories, this._searchInput);
+  }
+
+  protected async firstUpdated() {
+    this.addEventListener("filter-change", (e) => this._updateFilters(e));
+  }
+
+  private _updateFilters(e) {
+    const current = this.filters[this.section].find((filter) => filter.id === e.detail.id);
+    this.filters[this.section].find(
+      (filter) => filter.id === current.id
+    ).checked = !current.checked;
+    this.requestUpdate();
   }
 
   protected render(): TemplateResult {
@@ -84,6 +102,20 @@ export class HacsStorePanel extends LitElement {
       sections,
       this.section
     )[1];
+
+    if (!this.filters[this.section]) {
+      const categories = activePanel(this.route)?.categories;
+      this.filters[this.section] = [];
+      categories
+        ?.filter((c) => this.configuration.categories.includes(c))
+        .forEach((category) => {
+          this.filters[this.section].push({
+            id: category,
+            value: category,
+            checked: true,
+          });
+        });
+    }
 
     const tabs = this._panelsEnabled(sections, this.configuration);
 
@@ -106,6 +138,9 @@ export class HacsStorePanel extends LitElement {
       </hacs-tabbed-menu>
 
       <hacs-search .input=${this._searchInput} @input=${this._inputValueChanged}></hacs-search>
+      ${this.filters[this.section].length > 1
+        ? html`<hacs-filter class="filter" .filters="${this.filters[this.section]}"></hacs-filter>`
+        : ""}
       ${newRepositories?.length > 10
         ? html`<div class="new-repositories">
             ${localize("store.new_repositories_note")}
@@ -189,6 +224,9 @@ export class HacsStorePanel extends LitElement {
           display: flex;
           flex-direction: column;
           justify-content: space-between;
+        }
+        .filter {
+          border-bottom: 1px solid var(--divider-color);
         }
         .content {
           display: grid;

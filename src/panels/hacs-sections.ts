@@ -1,3 +1,4 @@
+import { Route } from "../data/common";
 export const sections = {
   updates: [],
   panels: [
@@ -17,4 +18,8 @@ export const sections = {
       categories: ["python_script", "appdaemon", "netdaemon"],
     },
   ],
+};
+
+export const activePanel = (route: Route) => {
+  return sections.panels.find((panel) => panel.id === route.path.replace("/", ""));
 };
