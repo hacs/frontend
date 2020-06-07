@@ -55,7 +55,8 @@ export class HacsAddRepositoryDialog extends HacsDialogBase {
   }
 
   private _updateFilters(e) {
-    this.filters.find((filter) => filter.id === e.detail.id).checked = e.detail.checked;
+    const current = this.filters.find((filter) => filter.id === e.detail.id);
+    this.filters.find((filter) => filter.id === current.id).checked = !current.checked;
     this.requestUpdate("filters");
   }
 

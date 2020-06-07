@@ -11,25 +11,28 @@ import {
 import { HacsStyles } from "../styles/hacs-common-style";
 import { Filter } from "../data/common";
 import { localize } from "../localize/localize";
+import "./hacs-checkbox";
 
 @customElement("hacs-filter")
 export class HacsFilter extends LitElement {
   @property({ attribute: false }) public filters: Filter[];
+
+  protected async firstUpdated() {
+    this.addEventListener("checkbox-change", (e) => this._filterClick(e));
+  }
 
   protected render(): TemplateResult | void {
     return html`
       <div class="filter">
         ${this.filters?.map(
           (filter) => html` <div>
-            <input
+            <hacs-checkbox
               class="checkbox"
-              type="checkbox"
-              @change=${this._filterClick}
+              .label=${localize(`common.${filter.id}`) || filter.value}
               .id=${filter.id}
-              .name=${filter.id}
-              ?checked=${filter.checked || false}
+              .checked=${filter.checked || false}
             />
-            <label for="scales">${localize(`common.${filter.id}`) || filter.value}</label>
+            </hacs-checkbox>
           </div>`
         )}
       </div>
@@ -37,12 +40,11 @@ export class HacsFilter extends LitElement {
   }
 
   private _filterClick(ev): void {
-    const filter = ev.currentTarget;
+    const filter = ev.detail;
     this.dispatchEvent(
       new CustomEvent("filter-change", {
         detail: {
           id: filter.id,
-          checked: filter.checked,
         },
         bubbles: true,
         composed: true,
@@ -60,6 +62,7 @@ export class HacsFilter extends LitElement {
           align-items: center;
           font-size: 16px;
           height: 32px;
+          line-height: 4px;
           background-color: var(--sidebar-background-color);
           padding: 0 16px;
           box-sizing: border-box;

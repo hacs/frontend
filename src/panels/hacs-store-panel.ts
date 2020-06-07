@@ -89,8 +89,10 @@ export class HacsStorePanel extends LitElement {
   }
 
   private _updateFilters(e) {
-    this.filters[this.section].find((filter) => filter.id === e.detail.id).checked =
-      e.detail.checked;
+    const current = this.filters[this.section].find((filter) => filter.id === e.detail.id);
+    this.filters[this.section].find(
+      (filter) => filter.id === current.id
+    ).checked = !current.checked;
     this.requestUpdate();
   }
 
