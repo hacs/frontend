@@ -4,11 +4,12 @@ import {
   customElement,
   html,
   LitElement,
-  TemplateResult,
-  property,
-} from "lit-element";
 
+  property, TemplateResult
+} from "lit-element";
+import { ClassInfo, classMap } from "lit-html/directives/class-map";
 import { HacsStyles } from "../styles/hacs-common-style";
+
 
 @customElement("hacs-checkbox")
 export class HacsCheckbox extends LitElement {
@@ -16,13 +17,20 @@ export class HacsCheckbox extends LitElement {
   @property({ attribute: false }) public label: string;
   @property({ attribute: false }) public id: string;
 
+  private get _checkboxClass(): ClassInfo {
+    return {
+      'checkbox': true,
+      'checked': this.checked,
+    };
+  }
+
   protected render(): TemplateResult | void {
     return html`
       <div class="checkbox-container">
-        <div class="checkbox" @click=${this._checkboxClicked}>
+        <div class=${classMap(this._checkboxClass)} @click=${this._checkboxClicked}>
           <div class="value">${this.checked ? "✔" : ""}</div>
         </div>
-        <div class="label">
+        <div class="label" @click=${this._checkboxClicked}>
           ${this.label}
         </div>
       </div>
@@ -61,9 +69,11 @@ export class HacsCheckbox extends LitElement {
           font-family: var(--paper-font-subhead_-_font-family);
           -webkit-font-smoothing: var(--paper-font-subhead_-_-webkit-font-smoothing);
           font-size: var(--paper-font-subhead_-_font-size);
+          cursor: pointer;
         }
+
         .value {
-          margin: 1px 0 0 2px;
+          margin: 0 0 0 2px;
           color: var(--hcv-text-color-on-background);
         }
 
@@ -72,10 +82,16 @@ export class HacsCheckbox extends LitElement {
           height: 16px;
           width: 16px;
           font-size: 14px;
-          margin: 0 8px;
-          background-color: var(--accent-color);
-          border-radius: 6px;
+          margin-right: 8px;
+          background-color: var(--primary-background-color);
+          border: 1px solid var(--divider-color);
+          border-radius: 4px;
           line-height: 16px;
+        }
+
+        .checkbox.checked {
+          border-color: var(--accent-color);
+          background-color: var(--accent-color);
         }
       `,
     ];
