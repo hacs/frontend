@@ -10,7 +10,6 @@ import {
 import { ClassInfo, classMap } from "lit-html/directives/class-map";
 import { HacsStyles } from "../styles/hacs-common-style";
 
-
 @customElement("hacs-checkbox")
 export class HacsCheckbox extends LitElement {
   @property({ attribute: false }) public checked: boolean;
@@ -73,7 +72,7 @@ export class HacsCheckbox extends LitElement {
         }
 
         .value {
-          margin: 0 0 0 2px;
+          margin-left: 2px;
           color: var(--hcv-text-color-on-background);
         }
 
