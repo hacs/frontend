@@ -4,8 +4,8 @@ import {
   customElement,
   html,
   LitElement,
-
-  property, TemplateResult
+  property,
+  TemplateResult
 } from "lit-element";
 import { ClassInfo, classMap } from "lit-html/directives/class-map";
 import { HacsStyles } from "../styles/hacs-common-style";
