@@ -1,12 +1,6 @@
-import {
-  css,
-  CSSResultArray,
-  customElement,
-  html,
-  TemplateResult,
-} from "lit-element";
+import { css, CSSResultArray, customElement, html, TemplateResult } from "lit-element";
 
-import { markdown } from "../../legacy/markdown/markdown";
+import { markdown } from "../../tools/markdown/markdown";
 import { localize } from "../../localize/localize";
 import { version } from "../../version";
 import { HacsDialogBase } from "./hacs-dialog-base";
@@ -29,9 +23,7 @@ export class HacsAboutDialog extends HacsDialogBase {
         </div>
         <div class="content">
           ${markdown.html(`
-**${localize("dialog_about.integration_version")}:** | ${
-            this.configuration.version
-          }
+**${localize("dialog_about.integration_version")}:** | ${this.configuration.version}
 --|--
 **${localize("dialog_about.frontend_version")}:** | ${version}
 **${localize("common.repositories")}:** | ${this.repositories.length}
