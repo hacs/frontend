@@ -16,7 +16,7 @@
   },
   "homepage": "https://github.com/hacs/frontend#readme",
   "devDependencies": {
-    "@rollup/plugin-json": "^4.0.3",
+    "@rollup/plugin-json": "^4.1.0",
     "@typescript-eslint/eslint-plugin": "^2.34.0",
     "@typescript-eslint/parser": "^2.34.0",
     "card-tools": "github:thomasloven/card-tools",

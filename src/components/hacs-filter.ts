@@ -25,15 +25,14 @@ export class HacsFilter extends LitElement {
     return html`
       <div class="filter">
         ${this.filters?.map(
-          (filter) => html` <div>
+          (filter) => html`
             <hacs-checkbox
               class="checkbox"
               .label=${localize(`common.${filter.id}`) || filter.value}
               .id=${filter.id}
               .checked=${filter.checked || false}
             />
-            </hacs-checkbox>
-          </div>`
+            </hacs-checkbox>`
         )}
       </div>
     `;
@@ -67,8 +66,9 @@ export class HacsFilter extends LitElement {
           padding: 0 16px;
           box-sizing: border-box;
         }
-        .checkbox {
-          margin-left: 12px;
+
+        .checkbox:not(:first-child) {
+          margin-left: 20px;
         }
       `,
     ];
