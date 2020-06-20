@@ -1,11 +1,19 @@
-import { LitElement, TemplateResult, html, customElement, property } from "lit-element";
-import { load_lovelace } from "card-tools/src/hass";
+import {
+  LitElement,
+  TemplateResult,
+  html,
+  customElement,
+  property,
+  PropertyValues,
+} from "lit-element";
+
 import { HomeAssistant } from "custom-card-helpers";
 import { Configuration, Route } from "./data/common";
 import { getConfiguration } from "./data/websocket";
 import { hacsStyleVariables } from "./styles/variables";
 
 import "./hacs-resolver";
+import { applyThemesOnElement } from "../frontend/src/common/dom/apply_themes_on_element";
 
 @customElement("hacs-frontend")
 class HacsFrontend extends LitElement {
@@ -16,8 +24,16 @@ class HacsFrontend extends LitElement {
 
   public async connectedCallback() {
     super.connectedCallback();
-    load_lovelace();
     this.configuration = await getConfiguration(this.hass);
+  }
+
+  protected firstUpdated(changedProps: PropertyValues) {
+    super.firstUpdated(changedProps);
+    applyThemesOnElement(
+      this.parentElement,
+      this.hass.themes,
+      this.hass.selectedTheme || this.hass.themes.default_theme
+    );
   }
 
   protected render(): TemplateResult | void {

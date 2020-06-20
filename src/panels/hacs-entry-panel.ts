@@ -23,6 +23,8 @@ import {
 } from "../data/common";
 import "../layout/hacs-single-page-layout";
 
+import "../../frontend/src/components/ha-card";
+
 import { HacsStyles } from "../styles/hacs-common-style";
 import { getMessages } from "../tools/get-messages";
 import { localize } from "../localize/localize";
