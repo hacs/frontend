@@ -217,6 +217,9 @@ export class HacsEntryPanel extends LitElement {
           font-size: 14px;
           color: var(--hcv-text-color-secondary);
         }
+        div[secondary] {
+          white-space: normal;
+        }
       `,
     ];
   }

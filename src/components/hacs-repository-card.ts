@@ -7,7 +7,7 @@ import {
   TemplateResult,
   property,
 } from "lit-element";
-import { classMap } from "lit-html/directives/class-map";
+import { classMap, ClassInfo } from "lit-html/directives/class-map";
 import { localize } from "../localize/localize";
 import { HacsStyles } from "../styles/hacs-common-style";
 import { Repository, Status, RemovedRepository } from "../data/common";
@@ -31,45 +31,61 @@ export class HacsRepositoryCard extends LitElement {
   @property({ type: Boolean }) public narrow!: boolean;
   @property({ type: Boolean }) public addedToLovelace!: boolean;
 
+  private get _borderClass(): ClassInfo {
+    const classes = {};
+    if (!this.addedToLovelace || this.repository.status === "pending-restart") {
+      classes["status-issue"] = true;
+    } else if (this.repository.pending_upgrade) {
+      classes["status-update"] = true;
+    } else if (this.repository.new && !this.repository.installed) {
+      classes["status-new"] = true;
+    }
+    if (Object.keys(classes).length !== 0) {
+      classes["status-border"] = true;
+    }
+
+    return classes;
+  }
+
+  private get _headerClass(): ClassInfo {
+    const classes = {};
+    if (!this.addedToLovelace || this.repository.status === "pending-restart") {
+      classes["issue-header"] = true;
+    } else if (this.repository.pending_upgrade) {
+      classes["update-header"] = true;
+    } else if (this.repository.new && !this.repository.installed) {
+      classes["new-header"] = true;
+    } else {
+      classes["default-header"] = true;
+    }
+
+    return classes;
+  }
+
+  private get _headerTitle(): string {
+    if (!this.addedToLovelace) {
+      return localize("repository_card.not_loaded");
+    }
+    if (this.repository.status === "pending-restart") {
+      return localize("repository_card.pending_restart");
+    }
+    if (this.repository.pending_upgrade) {
+      return localize("repository_card.pending_update");
+    }
+    if (this.repository.new && !this.repository.installed) {
+      return localize("repository_card.new_repository");
+    }
+    return "";
+  }
+
   protected render(): TemplateResult | void {
     const path = this.repository.local_path.split("/");
     return html`
-      <ha-card
-        class=${classMap({
-          "status-border":
-            this.repository.new ||
-            this.repository.pending_upgrade ||
-            !this.addedToLovelace ||
-            this.repository.status === "pending-restart",
-          "status-new": this.repository.new && !this.repository.installed,
-          "status-update": this.repository.pending_upgrade,
-          "status-issue": !this.addedToLovelace || this.repository.status === "pending-restart",
-        })}
-      >
+      <ha-card class=${classMap(this._borderClass)}>
         <div class="card-content">
           <div class="group-header">
-            <div
-              class="status-header ${classMap({
-                "default-header":
-                  this.repository.installed &&
-                  this.addedToLovelace &&
-                  !this.repository.pending_upgrade &&
-                  this.repository.status !== "pending-restart",
-                "new-header": this.repository.new && !this.repository.installed,
-                "update-header": this.repository.pending_upgrade,
-                "issue-header":
-                  !this.addedToLovelace || this.repository.status === "pending-restart",
-              })}"
-            >
-              ${!this.addedToLovelace
-                ? localize("repository_card.not_loaded")
-                : this.repository.status === "pending-restart"
-                ? localize("repository_card.pending_restart")
-                : this.repository.pending_upgrade
-                ? localize("repository_card.pending_update")
-                : this.repository.new && !this.repository.installed
-                ? localize("repository_card.new_repository")
-                : ""}
+            <div class="status-header ${classMap(this._headerClass)}">
+              ${this._headerTitle}
             </div>
             <div class="title">
               <h2 class="pointer" @click=${this._showReopsitoryInfo}>
@@ -109,7 +125,7 @@ export class HacsRepositoryCard extends LitElement {
                     >${localize("repository_card.dismiss")}</mwc-button
                   >
                 </div>`
-            : this.repository.pending_upgrade
+            : this.repository.pending_upgrade && this.addedToLovelace
             ? html`<div>
                 <mwc-button class="update-header" @click=${this._updateRepository} raised
                   >${localize("common.update")}</mwc-button
@@ -129,15 +145,15 @@ export class HacsRepositoryCard extends LitElement {
               >
                 <ha-icon-button icon="hass:dots-vertical" slot="dropdown-trigger"></ha-icon-button>
                 <paper-listbox slot="dropdown-content">
-                  <paper-item class="pointer" @click=${this._showReopsitoryInfo}
+                  <paper-item class="pointer" @tap=${this._showReopsitoryInfo}
                     >${localize("repository_card.information")}</paper-item
                   >
 
-                  <paper-item class="pointer" @click=${this._updateReopsitoryInfo}
+                  <paper-item class="pointer" @tap=${this._updateReopsitoryInfo}
                     >${localize("repository_card.update_information")}</paper-item
                   >
 
-                  <paper-item @click=${this._installRepository}
+                  <paper-item @tap=${this._installRepository}
                     >${localize("repository_card.reinstall")}</paper-item
                   >
 
@@ -165,7 +181,7 @@ export class HacsRepositoryCard extends LitElement {
                             >${localize("repository_card.report")}</paper-item
                           ></hacs-link
                         >
-                        <paper-item class="pointer uninstall" @click=${this._uninstallRepository}
+                        <paper-item class="pointer uninstall" @tap=${this._uninstallRepository}
                           >${localize("common.uninstall")}</paper-item
                         >`
                     : ""}
