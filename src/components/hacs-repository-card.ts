@@ -129,15 +129,15 @@ export class HacsRepositoryCard extends LitElement {
               >
                 <ha-icon-button icon="hass:dots-vertical" slot="dropdown-trigger"></ha-icon-button>
                 <paper-listbox slot="dropdown-content">
-                  <paper-item class="pointer" @click=${this._showReopsitoryInfo}
+                  <paper-item class="pointer" @tap=${this._showReopsitoryInfo}
                     >${localize("repository_card.information")}</paper-item
                   >
 
-                  <paper-item class="pointer" @click=${this._updateReopsitoryInfo}
+                  <paper-item class="pointer" @tap=${this._updateReopsitoryInfo}
                     >${localize("repository_card.update_information")}</paper-item
                   >
 
-                  <paper-item @click=${this._installRepository}
+                  <paper-item @tap=${this._installRepository}
                     >${localize("repository_card.reinstall")}</paper-item
                   >
 
@@ -165,7 +165,7 @@ export class HacsRepositoryCard extends LitElement {
                             >${localize("repository_card.report")}</paper-item
                           ></hacs-link
                         >
-                        <paper-item class="pointer uninstall" @click=${this._uninstallRepository}
+                        <paper-item class="pointer uninstall" @tap=${this._uninstallRepository}
                           >${localize("common.uninstall")}</paper-item
                         >`
                     : ""}

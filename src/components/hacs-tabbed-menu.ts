@@ -30,11 +30,11 @@ export class HacsTabbedMenu extends LitElement {
         <hacs-link url="https://hacs.xyz/"
           ><paper-item>${localize("menu.documentation")}</paper-item></hacs-link
         >
-        <paper-item @click=${() => window.location.reload(true)}
+        <paper-item @tap=${() => window.location.reload(true)}
           >${localize("menu.reload")}</paper-item
         >
         ${this.repositories?.filter((repo) => repo.new).length !== 0
-          ? html` <paper-item @click=${this._clearAllNewRepositories}
+          ? html` <paper-item @tap=${this._clearAllNewRepositories}
               >${localize("menu.dismiss")}</paper-item
             >`
           : ""}
@@ -44,12 +44,12 @@ export class HacsTabbedMenu extends LitElement {
           ><paper-item>${localize("menu.open_issue")}</paper-item></hacs-link
         >
         ${!this.status?.disabled && !this.status?.background_task
-          ? html`<paper-item @click=${this._showCustomRepositoriesDialog}
+          ? html`<paper-item @tap=${this._showCustomRepositoriesDialog}
               >${localize("menu.custom_repositories")}</paper-item
             >`
           : ""}
 
-        <paper-item @click=${this._showAboutDialog}>${localize("menu.about")}</paper-item>
+        <paper-item @tap=${this._showAboutDialog}>${localize("menu.about")}</paper-item>
       </paper-listbox>
     </paper-menu-button>`;
   }

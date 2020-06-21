@@ -90,6 +90,7 @@ export const getMessages = memoizeOne(
           repositoriesNotAddedToLovelace.length
         ),
         severity: "error",
+        path: "/hacs/frontend",
       });
     }
 
