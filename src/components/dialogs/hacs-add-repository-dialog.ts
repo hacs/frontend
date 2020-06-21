@@ -101,13 +101,13 @@ export class HacsAddRepositoryDialog extends HacsDialogBase {
           <hacs-search .input=${this._searchInput} @input=${this._inputValueChanged}></hacs-search>
           <paper-dropdown-menu label="${localize("dialog_add_repo.sort_by")}">
             <paper-listbox slot="dropdown-content" selected="0">
-              <paper-item @click=${() => (this._sortBy = "stars")}
+              <paper-item @tap=${() => (this._sortBy = "stars")}
                 >${localize("store.stars")}</paper-item
               >
-              <paper-item @click=${() => (this._sortBy = "name")}
+              <paper-item @tap=${() => (this._sortBy = "name")}
                 >${localize("store.name")}</paper-item
               >
-              <paper-item @click=${() => (this._sortBy = "last_updated")}
+              <paper-item @tap=${() => (this._sortBy = "last_updated")}
                 >${localize("store.last_updated")}</paper-item
               >
             </paper-listbox>

@@ -30,7 +30,7 @@ export class HacsTabbedMenu extends LitElement {
         <hacs-link url="https://hacs.xyz/"
           ><paper-item>${localize("menu.documentation")}</paper-item></hacs-link
         >
-        <paper-item @click=${() => window.location.reload(true)}
+        <paper-item @tap=${() => window.location.reload(true)}
           >${localize("menu.reload")}</paper-item
         >
         ${this.repositories?.filter((repo) => repo.new).length !== 0
@@ -49,7 +49,7 @@ export class HacsTabbedMenu extends LitElement {
             >`
           : ""}
 
-        <paper-item @click=${this._showAboutDialog}>${localize("menu.about")}</paper-item>
+        <paper-item @tap=${this._showAboutDialog}>${localize("menu.about")}</paper-item>
       </paper-listbox>
     </paper-menu-button>`;
   }

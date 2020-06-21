@@ -13,31 +13,29 @@ export class HacsLink extends LitElement {
   @property({ type: Boolean }) public newtab: boolean = false;
   @property() private url!: string;
   protected render(): TemplateResult | void {
+    return html`<div @tap=${this._open} class="link"><slot></slot></div>`;
+  }
+
+  private _open(): void {
     const external = this.url.includes("http");
+    let features = "";
+    let target = "_blank";
+
     if (external) {
-      return html`
-        <a href="${this.url}" target="_blank" rel="noreferrer">
-          <slot></slot>
-        </a>
-      `;
+      features = "noreferrer=true";
     }
-    if (this.newtab) {
-      return html`
-        <a href="${this.url}" target="_blank">
-          <slot></slot>
-        </a>
-      `;
+    if (!external && !this.newtab) {
+      target = "_top";
     }
-    return html`
-      <a href="${this.url}" target="_top">
-        <slot></slot>
-      </a>
-    `;
+
+    console.log(this.url, target, features);
+    window.open(this.url, target, features);
   }
 
   static get styles(): CSSResult {
     return css`
-      a {
+      .link {
+        cursor: pointer;
         color: var(--hcv-text-color-link);
         text-decoration: var(--hcv-text-decoration-link);
       }
