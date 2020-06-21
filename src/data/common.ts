@@ -1,3 +1,9 @@
+import { PageNavigation } from "../../homeassistant-frontend/src/layouts/hass-tabs-subpage";
+
+export interface HacsPageNavigation extends PageNavigation {
+  class?: string;
+  categories?: string[];
+}
 export interface Route {
   path: string;
   prefix: string;
@@ -48,8 +54,8 @@ export interface LovelaceResourcesMutableParams {
 }
 
 export interface Message {
-  title: string;
-  content: string;
+  name: string;
+  info: string;
   severity: "information" | "warning" | "error" | "critical";
   path?: string;
 }

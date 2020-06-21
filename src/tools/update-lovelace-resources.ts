@@ -1,11 +1,6 @@
-import { HomeAssistant } from "custom-card-helpers";
-
+import { HomeAssistant } from "../../homeassistant-frontend/src/types";
 import { Repository } from "../data/common";
-import {
-  createResource,
-  fetchResources,
-  updateResource,
-} from "../data/websocket";
+import { createResource, fetchResources, updateResource } from "../data/websocket";
 
 export async function updateLovelaceResources(
   hass: HomeAssistant,
@@ -14,9 +9,7 @@ export async function updateLovelaceResources(
   const resources = await fetchResources(hass);
   const namespace = `/hacsfiles/${repository.full_name.split("/")[1]}`;
   const url = `${namespace}/${repository.file_name}`;
-  const exsisting = resources.find((resource) =>
-    resource.url.includes(namespace)
-  );
+  const exsisting = resources.find((resource) => resource.url.includes(namespace));
 
   if (exsisting && exsisting.url !== url) {
     console.debug(`Updating exsusting resource for ${namespace}`);

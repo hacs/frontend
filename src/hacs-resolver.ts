@@ -1,7 +1,7 @@
 import { LitElement, TemplateResult, html, customElement, query, property } from "lit-element";
 import memoizeOne from "memoize-one";
 
-import { HomeAssistant } from "custom-card-helpers";
+import { HomeAssistant } from "../homeassistant-frontend/src/types";
 import { HacsLogger } from "./components/HacsLogger";
 
 import { navigate } from "./tools/navigate";

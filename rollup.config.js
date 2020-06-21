@@ -6,7 +6,6 @@ import gzipPlugin from "rollup-plugin-gzip";
 import json from "@rollup/plugin-json";
 import nodeResolve from "rollup-plugin-node-resolve";
 import progress from "rollup-plugin-progress";
-import sizes from "rollup-plugin-sizes";
 import typescript from "rollup-plugin-typescript2";
 
 const isdev = process.env.ROLLUP_WATCH;
@@ -33,10 +32,6 @@ const opts_cleanup = {
   comments: "none",
 };
 
-const opts_sizes = {
-  details: true,
-};
-
 const AwesomePlugins = [
   progress(),
   nodeResolve(),
@@ -45,8 +40,6 @@ const AwesomePlugins = [
   json(opts_json),
   !isdev && terser(opts_terser),
   !isdev && cleanup(opts_cleanup),
-  isdev && sizes(),
-  isdev && sizes(opts_sizes),
   isdev && serve(serveopts),
   !isdev && gzipPlugin(),
 ];
@@ -61,6 +54,7 @@ export default [
     input: ["src/main.ts"],
     output: {
       file: `hacs_frontend/main.js`,
+      intro: "const __DEMO__ = false;",
       format: "iife",
     },
     plugins: [...AwesomePlugins],

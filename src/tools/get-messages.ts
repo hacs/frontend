@@ -1,5 +1,4 @@
 import memoizeOne from "memoize-one";
-import { html } from "lit-element";
 import {
   Status,
   Message,
@@ -42,16 +41,16 @@ export const getMessages = memoizeOne(
 
     if (configuration.frontend_expected !== configuration.frontend_running) {
       messages.push({
-        title: localize("entry.messages.wrong_frontend_installed.title"),
-        content: localize("entry.messages.wrong_frontend_installed.content")
+        name: localize("entry.messages.wrong_frontend_installed.title"),
+        info: localize("entry.messages.wrong_frontend_installed.content")
           .replace("{running}", configuration.frontend_running)
           .replace("{expected}", configuration.frontend_expected),
         severity: "error",
       });
     } else if (configuration.frontend_expected !== version) {
       messages.push({
-        title: localize("entry.messages.wrong_frontend_loaded.title"),
-        content: localize("entry.messages.wrong_frontend_loaded.content")
+        name: localize("entry.messages.wrong_frontend_loaded.title"),
+        info: localize("entry.messages.wrong_frontend_loaded.content")
           .replace("{running}", version)
           .replace("{expected}", configuration.frontend_expected),
         severity: "error",
@@ -60,32 +59,32 @@ export const getMessages = memoizeOne(
 
     if (status?.startup) {
       messages.push({
-        title: localize("entry.messages.startup.title"),
-        content: localize("entry.messages.startup.content"),
+        name: localize("entry.messages.startup.title"),
+        info: localize("entry.messages.startup.content"),
         severity: "information",
       });
     }
 
     if (status?.has_pending_tasks) {
       messages.push({
-        title: localize("entry.messages.has_pending_tasks.title"),
-        content: localize("entry.messages.has_pending_tasks.content"),
+        name: localize("entry.messages.has_pending_tasks.title"),
+        info: localize("entry.messages.has_pending_tasks.content"),
         severity: "warning",
       });
     }
 
     if (status?.disabled) {
       messages.push({
-        title: localize("entry.messages.disabled.title"),
-        content: localize("entry.messages.disabled.content"),
+        name: localize("entry.messages.disabled.title"),
+        info: localize("entry.messages.disabled.content"),
         severity: "error",
       });
     }
 
     if (repositoriesNotAddedToLovelace.length > 0) {
       messages.push({
-        title: localize("entry.messages.resources.title"),
-        content: localize("entry.messages.resources.content").replace(
+        name: localize("entry.messages.resources.title"),
+        info: localize("entry.messages.resources.content").replace(
           "{number}",
           repositoriesNotAddedToLovelace.length
         ),
@@ -95,8 +94,8 @@ export const getMessages = memoizeOne(
 
     if (repositoriesRestartPending.length > 0) {
       messages.push({
-        title: localize("entry.messages.restart.title"),
-        content: localize("entry.messages.restart.content").replace(
+        name: localize("entry.messages.restart.title"),
+        info: localize("entry.messages.restart.content").replace(
           "{number}",
           repositoriesRestartPending.length
         ),

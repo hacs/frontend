@@ -18,7 +18,7 @@ import {
   fetchResources,
   deleteResource,
 } from "../data/websocket";
-import { HomeAssistant } from "custom-card-helpers";
+import { HomeAssistant } from "../../homeassistant-frontend/src/types";
 
 import "../components/hacs-link";
 

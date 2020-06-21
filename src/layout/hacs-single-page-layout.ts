@@ -7,8 +7,7 @@ import {
   TemplateResult,
   property,
 } from "lit-element";
-import { HomeAssistant } from "custom-card-helpers";
-import { Route } from "../data/common";
+import { HomeAssistant, Route } from "../../homeassistant-frontend/src/types";
 import { classMap } from "lit-html/directives/class-map";
 
 @customElement("hacs-single-page-layout")
@@ -21,8 +20,7 @@ export class HacsSinglePageLayout extends LitElement {
   @property() public intro?: string;
 
   protected render(): TemplateResult | void {
-    this.isWide =
-      window.localStorage.getItem("dockedSidebar") === '"always_hidden"';
+    this.isWide = window.localStorage.getItem("dockedSidebar") === '"always_hidden"';
     return html`
       <div
         class="content ${classMap({
@@ -84,9 +82,7 @@ export class HacsSinglePageLayout extends LitElement {
       }
       .header {
         font-family: var(--paper-font-headline_-_font-family);
-        -webkit-font-smoothing: var(
-          --paper-font-headline_-_-webkit-font-smoothing
-        );
+        -webkit-font-smoothing: var(--paper-font-headline_-_-webkit-font-smoothing);
         font-size: var(--paper-font-headline_-_font-size);
         font-weight: var(--paper-font-headline_-_font-weight);
         letter-spacing: var(--paper-font-headline_-_letter-spacing);
@@ -98,9 +94,7 @@ export class HacsSinglePageLayout extends LitElement {
       }
       .intro {
         font-family: var(--paper-font-subhead_-_font-family);
-        -webkit-font-smoothing: var(
-          --paper-font-subhead_-_-webkit-font-smoothing
-        );
+        -webkit-font-smoothing: var(--paper-font-subhead_-_-webkit-font-smoothing);
         font-weight: var(--paper-font-subhead_-_font-weight);
         line-height: var(--paper-font-subhead_-_line-height);
         width: 100%;

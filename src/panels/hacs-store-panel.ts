@@ -1,9 +1,8 @@
 import { LitElement, customElement, property, html, css, TemplateResult } from "lit-element";
 import memoizeOne from "memoize-one";
 
-import { HomeAssistant } from "custom-card-helpers";
+import { HomeAssistant, Route } from "../../homeassistant-frontend/src/types";
 import {
-  Route,
   Status,
   Configuration,
   Repository,

@@ -7,13 +7,15 @@ import {
   PropertyValues,
 } from "lit-element";
 
-import { HomeAssistant } from "custom-card-helpers";
-import { Configuration, Route } from "./data/common";
+import { HomeAssistant, Route } from "../homeassistant-frontend/src/types";
+import { Configuration, LocationChangedEvent } from "./data/common";
 import { getConfiguration } from "./data/websocket";
 import { hacsStyleVariables } from "./styles/variables";
 
-import "./hacs-resolver";
-import { applyThemesOnElement } from "../frontend/src/common/dom/apply_themes_on_element";
+import "./hacs-router";
+
+import { navigate } from "../homeassistant-frontend/src/common/navigate";
+import { applyThemesOnElement } from "../homeassistant-frontend/src/common/dom/apply_themes_on_element";
 
 @customElement("hacs-frontend")
 class HacsFrontend extends LitElement {
@@ -25,6 +27,10 @@ class HacsFrontend extends LitElement {
   public async connectedCallback() {
     super.connectedCallback();
     this.configuration = await getConfiguration(this.hass);
+
+    this.addEventListener("hacs-location-changed", (e) =>
+      this._setRoute(e as LocationChangedEvent)
+    );
   }
 
   protected firstUpdated(changedProps: PropertyValues) {
@@ -34,20 +40,29 @@ class HacsFrontend extends LitElement {
       this.hass.themes,
       this.hass.selectedTheme || this.hass.themes.default_theme
     );
+    if (this.route.path === "") {
+      navigate(this, "/hacs/entry", true);
+    }
   }
 
   protected render(): TemplateResult | void {
     if (!this.hass || !this.configuration) return html``;
     return html`
-      <hacs-resolver
+      <hacs-router
         .hass=${this.hass}
         .route=${this.route}
         .narrow=${this.narrow}
         .configuration=${this.configuration}
-      ></hacs-resolver>
+      ></hacs-router>
     `;
   }
   static get styles() {
     return hacsStyleVariables;
+  }
+
+  private _setRoute(ev: LocationChangedEvent): void {
+    this.route = ev.detail.route;
+    navigate(this, this.route.path, true);
+    this.requestUpdate();
   }
 }

@@ -1,6 +1,6 @@
 import { LitElement, customElement, property, html, css, TemplateResult } from "lit-element";
-import { HomeAssistant } from "custom-card-helpers";
-import { Route, Status, Configuration, Repository, LovelaceResource } from "../data/common";
+import { HomeAssistant, Route } from "../../homeassistant-frontend/src/types";
+import { Status, Configuration, Repository, LovelaceResource } from "../data/common";
 import { localize } from "../localize/localize";
 import { settingsClearAllNewRepositories } from "../data/websocket";
 
@@ -55,8 +55,8 @@ export class HacsTabbedMenu extends LitElement {
   }
 
   private async _clearAllNewRepositories() {
-    const section = sections.panels.find((s) => s.id === this.route.path.replace("/", ""));
-    await settingsClearAllNewRepositories(this.hass, section.categories);
+    //const section = sections.panels.find((s) => s.id === this.route.path.replace("/", ""));
+    //await settingsClearAllNewRepositories(this.hass, section.categories);
   }
 
   private _showAboutDialog() {

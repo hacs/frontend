@@ -1,14 +1,6 @@
-import {
-  LitElement,
-  customElement,
-  property,
-  html,
-  css,
-  TemplateResult,
-} from "lit-element";
-import { HomeAssistant } from "custom-card-helpers";
+import { LitElement, customElement, property, html, css, TemplateResult } from "lit-element";
+import { HomeAssistant, Route } from "../../homeassistant-frontend/src/types";
 import { classMap } from "lit-html/directives/class-map";
-import { Route } from "../data/common";
 import { localize } from "../localize/localize";
 
 @customElement("hacs-tabbed-layout")
@@ -23,9 +15,7 @@ export class HacsTabbedLayout extends LitElement {
     return html`
       <div class="main">
         <div class="toolbar">
-        <ha-icon-button icon="mdi:chevron-left" @click=${
-          this._goBack
-        }></ha-icon-button>
+        <ha-icon-button icon="mdi:chevron-left" @click=${this._goBack}></ha-icon-button>
                 ${
                   this.narrow
                     ? html`
@@ -47,9 +37,7 @@ export class HacsTabbedLayout extends LitElement {
                 >
                   ${this.narrow
                     ? html`<ha-icon-button .icon=${tab.icon}></ha-icon-button
-                        ><span class="name"
-                          >${localize(`sections.${tab.id}.title`)}</span
-                        >`
+                        ><span class="name">${localize(`sections.${tab.id}.title`)}</span>`
                     : localize(`sections.${tab.id}.title`)}
                 </div>
               `
@@ -159,9 +147,7 @@ export class HacsTabbedLayout extends LitElement {
       }
 
       .main-title {
-        -webkit-font-smoothing: var(
-          --paper-font-headline_-_-webkit-font-smoothing
-        );
+        -webkit-font-smoothing: var(--paper-font-headline_-_-webkit-font-smoothing);
         flex: 1;
         font-family: var(--paper-font-headline_-_font-family);
         font-size: var(--paper-font-headline_-_font-size);

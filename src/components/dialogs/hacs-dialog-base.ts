@@ -1,8 +1,7 @@
 import { LitElement, property, PropertyValues } from "lit-element";
-import { HomeAssistant } from "custom-card-helpers";
+import { HomeAssistant, Route } from "../../../homeassistant-frontend/src/types";
 
 import {
-  Route,
   Critical,
   LovelaceResource,
   Status,

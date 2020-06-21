@@ -3,3 +3,4 @@ package-lock.json
 build
 hacs_frontend/*.js
 hacs_frontend/*.gz
+yarn-error.log

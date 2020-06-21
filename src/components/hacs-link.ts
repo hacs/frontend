@@ -13,7 +13,7 @@ export class HacsLink extends LitElement {
   @property({ type: Boolean }) public newtab: boolean = false;
   @property() private url!: string;
   protected render(): TemplateResult | void {
-    const external = this.url.includes("http");
+    const external = this.url?.includes("http");
     if (external) {
       return html`
         <a href="${this.url}" target="_blank" rel="noreferrer">
