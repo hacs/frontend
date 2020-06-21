@@ -34,7 +34,7 @@ export class HacsTabbedMenu extends LitElement {
           >${localize("menu.reload")}</paper-item
         >
         ${this.repositories?.filter((repo) => repo.new).length !== 0
-          ? html` <paper-item @click=${this._clearAllNewRepositories}
+          ? html` <paper-item @tap=${this._clearAllNewRepositories}
               >${localize("menu.dismiss")}</paper-item
             >`
           : ""}
@@ -44,7 +44,7 @@ export class HacsTabbedMenu extends LitElement {
           ><paper-item>${localize("menu.open_issue")}</paper-item></hacs-link
         >
         ${!this.status?.disabled && !this.status?.background_task
-          ? html`<paper-item @click=${this._showCustomRepositoriesDialog}
+          ? html`<paper-item @tap=${this._showCustomRepositoriesDialog}
               >${localize("menu.custom_repositories")}</paper-item
             >`
           : ""}
