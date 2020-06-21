@@ -33,15 +33,14 @@ export class HacsRepositoryCard extends LitElement {
 
   private get _borderClass(): ClassInfo {
     const classes = {};
-
-    if (this.repository.pending_upgrade) {
+    if (!this.addedToLovelace || this.repository.status === "pending-restart") {
+      classes["status-issue"] = true;
+    } else if (this.repository.pending_upgrade) {
       classes["status-update"] = true;
     } else if (this.repository.new && !this.repository.installed) {
       classes["status-new"] = true;
-    } else if (!this.addedToLovelace || this.repository.status === "pending-restart") {
-      classes["status-issue"] = true;
     }
-    if (classes) {
+    if (Object.keys(classes).length !== 0) {
       classes["status-border"] = true;
     }
 
@@ -50,12 +49,12 @@ export class HacsRepositoryCard extends LitElement {
 
   private get _headerClass(): ClassInfo {
     const classes = {};
-    if (this.repository.pending_upgrade) {
+    if (!this.addedToLovelace || this.repository.status === "pending-restart") {
+      classes["issue-header"] = true;
+    } else if (this.repository.pending_upgrade) {
       classes["update-header"] = true;
     } else if (this.repository.new && !this.repository.installed) {
       classes["new-header"] = true;
-    } else if (!this.addedToLovelace || this.repository.status === "pending-restart") {
-      classes["issue-header"] = true;
     } else {
       classes["default-header"] = true;
     }
@@ -64,17 +63,17 @@ export class HacsRepositoryCard extends LitElement {
   }
 
   private get _headerTitle(): string {
-    if (this.repository.pending_upgrade) {
-      return localize("repository_card.pending_update");
-    }
-    if (this.repository.new && !this.repository.installed) {
-      return localize("repository_card.new_repository");
-    }
     if (!this.addedToLovelace) {
       return localize("repository_card.not_loaded");
     }
     if (this.repository.status === "pending-restart") {
       return localize("repository_card.pending_restart");
+    }
+    if (this.repository.pending_upgrade) {
+      return localize("repository_card.pending_update");
+    }
+    if (this.repository.new && !this.repository.installed) {
+      return localize("repository_card.new_repository");
     }
     return "";
   }
@@ -126,7 +125,7 @@ export class HacsRepositoryCard extends LitElement {
                     >${localize("repository_card.dismiss")}</mwc-button
                   >
                 </div>`
-            : this.repository.pending_upgrade
+            : this.repository.pending_upgrade && this.addedToLovelace
             ? html`<div>
                 <mwc-button class="update-header" @click=${this._updateRepository} raised
                   >${localize("common.update")}</mwc-button
