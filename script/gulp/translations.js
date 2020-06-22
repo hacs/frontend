@@ -1,7 +1,6 @@
 const gulp = require("gulp");
 const fs = require("fs-extra");
 const del = require("del");
-const log = require("fancy-log");
 
 gulp.task("generate-translations", async function (task) {
   del.sync("./src/localize/generated.ts");
@@ -9,7 +8,11 @@ gulp.task("generate-translations", async function (task) {
   const languages = {};
   files.forEach((file) => {
     const lang = file.split(".")[0];
-    languages[lang] = fs.readJSONSync(`./src/localize/languages/${file}`, "utf-8");
+    const path = `./src/localize/languages/${file}`;
+    languages[lang] = fs.readJSONSync(path, "utf-8");
+    if (lang !== "en") {
+      del.sync(path);
+    }
   });
   await fs.writeFile(
     "./src/localize/generated.ts",
