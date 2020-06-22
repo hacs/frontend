@@ -11,6 +11,7 @@ import { HomeAssistant, Route } from "../homeassistant-frontend/src/types";
 import { Configuration, LocationChangedEvent } from "./data/common";
 import { getConfiguration } from "./data/websocket";
 import { hacsStyleVariables } from "./styles/variables";
+import { HacsStyles } from "./styles/hacs-common-style";
 
 import "./hacs-router";
 
@@ -57,7 +58,7 @@ class HacsFrontend extends LitElement {
     `;
   }
   static get styles() {
-    return hacsStyleVariables;
+    return [HacsStyles, hacsStyleVariables];
   }
 
   private _setRoute(ev: LocationChangedEvent): void {

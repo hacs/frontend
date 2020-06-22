@@ -23,7 +23,8 @@ class HacsSectionNavigation extends LitElement {
 
   protected render(): TemplateResult {
     return html`
-      <ha-card .header=${this.header}>
+      <ha-card>
+        ${this.header ? html`<div class="card-header">${this.header}</div>` : ""}
         ${this.pages.map(
           (page) =>
             html`
@@ -84,6 +85,22 @@ class HacsSectionNavigation extends LitElement {
       }
       div[secondary] {
         white-space: normal;
+      }
+      ha-svg-icon.warning {
+        color: var(--hcv-color-warning);
+      }
+      ha-svg-icon.error {
+        color: var(--hcv-color-error);
+      }
+
+      .card-header {
+        color: var(--ha-card-header-color, --primary-text-color);
+        font-family: var(--ha-card-header-font-family, inherit);
+        font-size: var(--ha-card-header-font-size, 24px);
+        letter-spacing: -0.012em;
+        line-height: 32px;
+        display: block;
+        padding: 8px 16px 0;
       }
     `;
   }

@@ -7,6 +7,7 @@ import { HomeAssistant, Route } from "../homeassistant-frontend/src/types";
 import { listenMediaQuery } from "../homeassistant-frontend/src/common/dom/media_query";
 
 import { Configuration } from "./data/common";
+import { sections } from "./panels/hacs-sections";
 
 import "./panels/hacs-entry-panel";
 import "./panels/hacs-store-panel";
@@ -45,7 +46,6 @@ class HacsRouter extends HassRouterPage {
 
   protected routerOptions: RouterOptions = {
     defaultPage: "entry",
-    showLoading: true,
     routes: {
       entry: {
         tag: "hacs-entry-panel",
@@ -63,11 +63,15 @@ class HacsRouter extends HassRouterPage {
   };
 
   protected updatePageEl(el) {
+    const section = this.route.path.split("/")[0];
     const isWide = this.hass.dockedSidebar === "docked" ? this._wideSidebar : this._wide;
     el.hass = this.hass;
     el.route = this.route;
     el.narrow = this.narrow;
     el.isWide = isWide;
     el.configuration = this.configuration;
+
+    el.sections = sections.subsections.main;
+    el.section = section;
   }
 }

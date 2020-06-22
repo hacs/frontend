@@ -2,6 +2,7 @@ import { LitElement, customElement, property, html, css, TemplateResult } from "
 import memoizeOne from "memoize-one";
 
 import { HomeAssistant, Route } from "../../homeassistant-frontend/src/types";
+import "../../homeassistant-frontend/src/layouts/hass-tabs-subpage";
 import {
   Status,
   Configuration,
@@ -18,6 +19,7 @@ import "../components/hacs-tabbed-menu";
 
 import { localize } from "../localize/localize";
 import { HacsStyles } from "../styles/hacs-common-style";
+import { hassTabsSubpage } from "../styles/element-styles";
 import { sections, activePanel } from "./hacs-sections";
 import { addedToLovelace } from "../tools/added-to-lovelace";
 import { filterRepositoriesByInput } from "../tools/filter-repositories-by-input";
@@ -34,6 +36,7 @@ export class HacsStorePanel extends LitElement {
   @property({ attribute: false }) public status: Status;
   @property({ attribute: false }) public removed: RemovedRepository[];
   @property({ attribute: false }) public filters: any = {};
+  @property({ attribute: false }) public sections!: any;
   @property() public section!: string;
 
   private _repositoriesInActiveSection = memoizeOne(
@@ -57,6 +60,7 @@ export class HacsStorePanel extends LitElement {
   );
 
   private _panelsEnabled = memoizeOne((sections: any, config: Configuration) => {
+    return sections;
     return sections.panels.filter((panel) => {
       const categories = panel.categories;
       if (categories === undefined) return true;
@@ -116,11 +120,17 @@ export class HacsStorePanel extends LitElement {
         });
     }
 
-    const tabs = this._panelsEnabled(sections, this.configuration);
+    return html`<hass-tabs-subpage
+      back-path="/hacs/entry"
+      .hass=${this.hass}
+      .narrow=${this.narrow}
+      .route=${this.route}
+      .tabs=${this.sections}
+    >
+    </hass-tabs-subpage>`;
 
     return html`<hacs-tabbed-layout
       .hass=${this.hass}
-      .tabs=${tabs}
       .route=${this.route}
       .narrow=${this.narrow}
       .selected=${this.section}
@@ -217,13 +227,8 @@ export class HacsStorePanel extends LitElement {
   static get styles() {
     return [
       HacsStyles,
+      hassTabsSubpage,
       css`
-        hacs-repository-card {
-          max-width: 500px;
-          display: flex;
-          flex-direction: column;
-          justify-content: space-between;
-        }
         .filter {
           border-bottom: 1px solid var(--divider-color);
         }

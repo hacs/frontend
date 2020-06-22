@@ -1,129 +1,85 @@
-const path = require("path");
 const gulp = require("gulp");
 const rollup = require("rollup");
-const handler = require("serve-handler");
 const http = require("http");
 const log = require("fancy-log");
-const open = require("open");
-const commonjs = require("@rollup/plugin-commonjs");
-const resolve = require("@rollup/plugin-node-resolve");
+const handler = require("serve-handler");
 const json = require("@rollup/plugin-json");
-const babel = require("rollup-plugin-babel");
 const typescript = require("rollup-plugin-typescript2");
-const replace = require("@rollup/plugin-replace");
-const { string } = require("rollup-plugin-string");
-const { terser } = require("rollup-plugin-terser");
+const commonjs = require("rollup-plugin-commonjs");
+const nodeResolve = require("rollup-plugin-node-resolve");
 
-const extensions = [".js", ".ts"];
+const CommonPlugins = [
+  nodeResolve(),
+  commonjs(),
+  typescript(),
+  json({
+    compact: true,
+    preferConst: true,
+  }),
+];
 
-const bothBuilds = (createConfigFunc, params) =>
-  gulp.series(
-    async function buildLatest() {
-      await buildRollup(
-        createConfigFunc({
-          ...params,
-          latestBuild: true,
-        })
-      );
-    },
-    async function buildES5() {
-      await buildRollup(
-        createConfigFunc({
-          ...params,
-          latestBuild: false,
-        })
-      );
-    }
-  );
+const DevelopPlugins = CommonPlugins.concat([]);
+const BuildPlugins = CommonPlugins.concat([]);
 
-function createServer(serveOptions) {
+const inputconfig = {
+  input: "./src/main.ts",
+  plugins: (process.env.NODE_ENV = "production" ? BuildPlugins : DevelopPlugins),
+};
+const outputconfig = {
+  file: "./hacs_frontend/main.js",
+  format: "iife",
+  intro: "const __DEMO__ = false;",
+};
+
+function createServer() {
   const server = http.createServer((request, response) => {
     return handler(request, response, {
-      public: serveOptions.root,
+      public: "./hacs_frontend/",
     });
   });
 
-  server.listen(serveOptions.port, serveOptions.networkAccess ? "0.0.0.0" : undefined, () => {
-    log.info(`Available at http://localhost:${serveOptions.port}`);
-    open(`http://localhost:${serveOptions.port}`);
+  server.listen(5000, true, () => {
+    log.info(`File will be served to http://127.0.0.1:5000/main.js`);
   });
 }
 
-function watchRollup(createConfig) {
-  const { inputOptions, outputOptions } = createConfig;
-
+gulp.task("rollup-develop", () => {
   const watcher = rollup.watch({
-    ...inputOptions,
-    output: [outputOptions],
+    input: inputconfig.input,
+    plugins: inputconfig.plugins,
+    output: outputconfig,
     watch: {
-      chokidar: {
-        usePolling: true,
-      },
-      include: ["src/**"],
+      chokidar: { usePolling: true },
+      include: ["./src/**"],
+      clearScreen: true,
     },
   });
 
   let startedHttp = false;
+  let first = true;
 
   watcher.on("event", (event) => {
-    if (event.code === "BUNDLE_END") {
+    if (!startedHttp) {
+      startedHttp = true;
+      createServer();
+    }
+    if (event.code === "BUNDLE_START") {
+      log(`Build started @ ${new Date().toLocaleTimeString()}`);
+    } else if (event.code === "BUNDLE_END") {
       log(`Build done @ ${new Date().toLocaleTimeString()}`);
+      if (first) {
+        log("You can now use the generated file");
+        log("A new file will be generated if you change something");
+        first = false;
+      }
     } else if (event.code === "ERROR") {
       log.error(event.error);
-    } else if (event.code === "END") {
-      if (startedHttp) {
-        return;
-      }
-      startedHttp = true;
-      createServer(serveOptions);
     }
   });
-}
-gulp.task("rollup-watch-app", () => {
-  watchRollup({
-    inputOptions: {
-      input: "./src/main.ts",
-      preserveEntrySignatures: false,
-      plugins: [
-        resolve({
-          extensions,
-          preferBuiltins: false,
-          browser: true,
-          rootDir: "./src",
-        }),
-        commonjs({
-          namedExports: {
-            "js-yaml": ["safeDump", "safeLoad"],
-          },
-        }),
-        json(),
-        babel({
-          babelrc: false,
-          presets: [
-            [require("@babel/preset-env").default, { modules: false }],
-            require("@babel/preset-typescript").default,
-          ].filter(Boolean),
-          plugins: [
-            // Part of ES2018. Converts {...a, b: 2} to Object.assign({}, a, {b: 2})
-            ["@babel/plugin-proposal-object-rest-spread", { loose: true, useBuiltIns: true }],
-            // Only support the syntax, Webpack will handle it.
-            "@babel/syntax-dynamic-import",
-            "@babel/plugin-proposal-optional-chaining",
-            "@babel/plugin-proposal-nullish-coalescing-operator",
-            [
-              require("@babel/plugin-proposal-decorators").default,
-              { decoratorsBeforeExport: true },
-            ],
-            [require("@babel/plugin-proposal-class-properties").default, { loose: true }],
-          ],
-        }),
-        replace(),
-      ],
-    },
-    outputOptions: {
-      dir: "./hacs_frontend/",
-      format: "es",
-      sourcemap: "inline",
-    },
-  });
+});
+
+gulp.task("rollup-build", async function (task) {
+  const bundle = await rollup.rollup(inputconfig);
+  await bundle.write(outputconfig);
+  task();
 });

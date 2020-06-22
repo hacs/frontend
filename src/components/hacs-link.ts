@@ -28,7 +28,6 @@ export class HacsLink extends LitElement {
       target = "_top";
     }
 
-    console.log(this.url, target, features);
     window.open(this.url, target, features);
   }
 

@@ -13,6 +13,7 @@ export const sections = {
         info: localize("sections.integrations.description"),
         name: localize("sections.integrations.title"),
         path: "/hacs/integrations",
+        core: true,
       },
       {
         categories: ["plugin", "theme"],
@@ -21,6 +22,7 @@ export const sections = {
         info: localize("sections.frontend.description"),
         name: localize("sections.frontend.title"),
         path: "/hacs/frontend",
+        core: true,
       },
       {
         categories: ["python_script", "appdaemon", "netdaemon"],
@@ -29,6 +31,7 @@ export const sections = {
         info: localize("sections.automation.description"),
         name: localize("sections.automation.title"),
         path: "/hacs/automations",
+        core: true,
       },
     ],
   },
