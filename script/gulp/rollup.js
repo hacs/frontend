@@ -5,13 +5,12 @@ const log = require("fancy-log");
 const handler = require("serve-handler");
 const json = require("@rollup/plugin-json");
 const babel = require("rollup-plugin-babel");
-const commonjs = require("@rollup/plugin-commonjs");
 const resolve = require("@rollup/plugin-node-resolve");
-const cleanup = require("rollup-plugin-cleanup");
 const gzipPlugin = require("rollup-plugin-gzip");
 const { terser } = require("rollup-plugin-terser");
 
 const extensions = [".js", ".ts"];
+const isProd = process.env.NODE_ENV === "production";
 
 const DevelopPlugins = [
   resolve({
@@ -20,7 +19,6 @@ const DevelopPlugins = [
     browser: true,
     rootDir: "./src",
   }),
-  commonjs(),
   json({
     compact: true,
     preferConst: true,
@@ -41,9 +39,8 @@ const DevelopPlugins = [
 ];
 
 const BuildPlugins = DevelopPlugins.concat([
-  terser(),
-  cleanup({
-    comments: "none",
+  terser({
+    output: { comments: false },
   }),
   gzipPlugin.default(),
 ]);
@@ -52,7 +49,7 @@ const DebugPlugins = DevelopPlugins.concat([gzipPlugin.default()]);
 
 const inputconfig = {
   input: "./src/main.ts",
-  plugins: process.env.NODE_ENV === "production" ? BuildPlugins : DevelopPlugins,
+  plugins: isProd ? BuildPlugins : DevelopPlugins,
 };
 const outputconfig = {
   file: "./hacs_frontend/main.js",

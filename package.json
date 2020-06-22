@@ -48,13 +48,8 @@
     "prettier": "^2.0.5",
     "rollup": "^1.24.0",
     "rollup-plugin-babel": "^4.4.0",
-    "rollup-plugin-cleanup": "^3.1.1",
     "rollup-plugin-gzip": "^2.5.0",
-    "rollup-plugin-serve": "^1.0.1",
-    "rollup-plugin-sizes": "^1.0.1",
     "rollup-plugin-terser": "^5.1.2",
-    "rollup-plugin-typescript2": "^0.27.1",
-    "sweetalert": "^2.1.2",
     "typescript": "^3.9.5"
   },
   "dependencies": {
