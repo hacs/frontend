@@ -8,11 +8,7 @@ gulp.task("generate-translations", async function (task) {
   const languages = {};
   files.forEach((file) => {
     const lang = file.split(".")[0];
-    const path = `./src/localize/languages/${file}`;
-    languages[lang] = fs.readJSONSync(path, "utf-8");
-    if (lang !== "en") {
-      del.sync(path);
-    }
+    languages[lang] = fs.readJSONSync(`./src/localize/languages/${file}`, "utf-8");
   });
   await fs.writeFile(
     "./src/localize/generated.ts",
