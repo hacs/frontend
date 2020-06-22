@@ -1,3 +1,9 @@
+import "@polymer/paper-menu-button/paper-menu-button";
+import "@polymer/paper-listbox/paper-listbox";
+import "@polymer/paper-item/paper-item";
+
+import { mdiDotsVertical } from "@mdi/js";
+
 import { LitElement, customElement, property, html, css, TemplateResult } from "lit-element";
 import { HomeAssistant, Route } from "../../homeassistant-frontend/src/types";
 import { Status, Configuration, Repository, LovelaceResource } from "../data/common";
@@ -5,7 +11,11 @@ import { localize } from "../localize/localize";
 import { settingsClearAllNewRepositories } from "../data/websocket";
 
 import { sections } from "../panels/hacs-sections";
+
+import "../../homeassistant-frontend/src/components/ha-icon-button";
+
 import "../components/hacs-link";
+import "../components/hacs-icon-button";
 
 @customElement("hacs-tabbed-menu")
 export class HacsTabbedMenu extends LitElement {
@@ -25,7 +35,7 @@ export class HacsTabbedMenu extends LitElement {
       vertical-offset="40"
       close-on-activate
     >
-      <ha-icon-button icon="hass:dots-vertical" slot="dropdown-trigger"></ha-icon-button>
+      <hacs-icon-button .icon=${mdiDotsVertical} slot="dropdown-trigger"></hacs-icon-button>
       <paper-listbox slot="dropdown-content">
         <hacs-link url="https://hacs.xyz/"
           ><paper-item>${localize("menu.documentation")}</paper-item></hacs-link

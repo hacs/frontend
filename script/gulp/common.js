@@ -3,6 +3,7 @@ const del = require("del");
 const fs = require("fs-extra");
 const makeDir = require("make-dir");
 require("./rollup.js");
+require("./translations");
 
 gulp.task("cleanup", (task) => {
   del.sync(["./homeassistant-frontend/build/**", "./homeassistant-frontend/build"]);
@@ -19,4 +20,4 @@ gulp.task("create-icon-metadata", async function (task) {
   task();
 });
 
-gulp.task("common", gulp.series("cleanup", "create-icon-metadata"));
+gulp.task("common", gulp.series("cleanup", "create-icon-metadata", "generate-translations"));

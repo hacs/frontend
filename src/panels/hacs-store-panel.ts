@@ -127,6 +127,17 @@ export class HacsStorePanel extends LitElement {
       .route=${this.route}
       .tabs=${this.sections}
     >
+      <hacs-tabbed-menu
+        slot="toolbar-icon"
+        .hass=${this.hass}
+        .route=${this.route}
+        .narrow=${this.narrow}
+        .configuration=${this.configuration}
+        .lovelace=${this.lovelace}
+        .status=${this.status}
+        .repositories=${this.repositories}
+      >
+      </hacs-tabbed-menu>
     </hass-tabs-subpage>`;
 
     return html`<hacs-tabbed-layout

@@ -1,5 +1,5 @@
 {
-  "name": "hacs-frontend-elements",
+  "name": "hacs-frontend",
   "description": "Frontend of HACS",
   "source": "src/main.ts",
   "scripts": {
@@ -12,9 +12,9 @@
     "url": "git+https://github.com/hacs/frontend.git"
   },
   "bugs": {
-    "url": "https://github.com/hacs/frontend/issues"
+    "url": "https://github.com/hacs/integration/issues"
   },
-  "homepage": "https://github.com/hacs/frontend#readme",
+  "homepage": "https://hacs.xyz/",
   "devDependencies": {
     "@mdi/js": "4.9.95",
     "@rollup/plugin-json": "^4.1.0",
@@ -57,6 +57,8 @@
     "@polymer/iron-icon": "^3.0.1",
     "@polymer/paper-input": "^3.2.1",
     "@polymer/paper-item": "^3.0.1",
+    "@polymer/paper-listbox": "^3.0.1",
+    "@polymer/paper-menu-button": "^3.0.1",
     "@polymer/paper-spinner": "^3.0.2",
     "@rollup/plugin-typescript": "^4.1.2",
     "comlink": "^4.3.0",
