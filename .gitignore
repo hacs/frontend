@@ -1,6 +1,7 @@
 node_modules
 package-lock.json
 build
+!script/build
 hacs_frontend/*.js
 hacs_frontend/*.gz
 yarn-error.log

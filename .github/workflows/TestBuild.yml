@@ -18,6 +18,6 @@ jobs:
       - name: Checkout submodules
         uses: textbook/git-checkout-submodule-action@master
       - name: Install dependencies
-        run: yarn
+        run: script/bootstrap
       - name: Build
-        run: yarn build
+        run: script/build

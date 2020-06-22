@@ -56,11 +56,11 @@ jobs:
         run: |
           python -m pip install --upgrade pip
           pip install setuptools wheel twine
-          yarn
+          script/bootstrap
           yarn postinstall
 
       - name: Build
-        run: yarn build
+        run: script/build
 
       - name: Publish to PyPi
         env:
