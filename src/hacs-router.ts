@@ -6,7 +6,14 @@ import {
 import { HomeAssistant, Route } from "../homeassistant-frontend/src/types";
 import { listenMediaQuery } from "../homeassistant-frontend/src/common/dom/media_query";
 
-import { Configuration } from "./data/common";
+import {
+  Configuration,
+  Critical,
+  LovelaceResource,
+  Repository,
+  RemovedRepository,
+  Status,
+} from "./data/common";
 import { sections } from "./panels/hacs-sections";
 
 import "./panels/hacs-entry-panel";
@@ -14,10 +21,16 @@ import "./panels/hacs-store-panel";
 
 @customElement("hacs-router")
 class HacsRouter extends HassRouterPage {
+  @property({ attribute: false }) public configuration: Configuration;
+  @property({ attribute: false }) public critical!: Critical[];
   @property({ attribute: false }) public hass!: HomeAssistant;
+  @property({ attribute: false }) public lovelace: LovelaceResource[];
+  @property({ attribute: false }) public removed: RemovedRepository[];
+  @property({ attribute: false }) public repositories: Repository[];
   @property({ attribute: false }) public route!: Route;
-  @property({ attribute: false }) public configuration!: Configuration;
+  @property({ attribute: false }) public status: Status;
   @property({ type: Boolean }) public narrow!: boolean;
+
   @property() private _wideSidebar = false;
   @property() private _wide = false;
 
@@ -63,13 +76,18 @@ class HacsRouter extends HassRouterPage {
   };
 
   protected updatePageEl(el) {
-    const section = this.route.path.split("/")[0];
+    const section = this.route.path.replace("/", "");
     const isWide = this.hass.dockedSidebar === "docked" ? this._wideSidebar : this._wide;
     el.hass = this.hass;
     el.route = this.route;
     el.narrow = this.narrow;
     el.isWide = isWide;
     el.configuration = this.configuration;
+    el.critical = this.critical;
+    el.lovelace = this.lovelace;
+    el.removed = this.removed;
+    el.repositories = this.repositories;
+    el.status = this.status;
 
     el.sections = sections.subsections.main;
     el.section = section;

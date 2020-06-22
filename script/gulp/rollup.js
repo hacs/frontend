@@ -4,20 +4,39 @@ const http = require("http");
 const log = require("fancy-log");
 const handler = require("serve-handler");
 const json = require("@rollup/plugin-json");
-const typescript = require("rollup-plugin-typescript2");
-const commonjs = require("rollup-plugin-commonjs");
-const nodeResolve = require("rollup-plugin-node-resolve");
+const babel = require("rollup-plugin-babel");
+const commonjs = require("@rollup/plugin-commonjs");
+const resolve = require("@rollup/plugin-node-resolve");
 const cleanup = require("rollup-plugin-cleanup");
 const gzipPlugin = require("rollup-plugin-gzip");
 const { terser } = require("rollup-plugin-terser");
 
+const extensions = [".js", ".ts"];
+
 const DevelopPlugins = [
-  nodeResolve(),
+  resolve({
+    extensions,
+    preferBuiltins: false,
+    browser: true,
+    rootDir: "./src",
+  }),
   commonjs(),
-  typescript(),
   json({
     compact: true,
     preferConst: true,
+  }),
+  babel({
+    babelrc: false,
+    presets: [require("@babel/preset-typescript").default].filter(Boolean),
+    plugins: [
+      "@babel/syntax-dynamic-import",
+      "@babel/plugin-proposal-optional-chaining",
+      "@babel/plugin-proposal-nullish-coalescing-operator",
+      [require("@babel/plugin-proposal-decorators").default, { decoratorsBeforeExport: true }],
+      [require("@babel/plugin-proposal-class-properties").default, { loose: true }],
+    ].filter(Boolean),
+    extensions,
+    exclude: [require.resolve("@mdi/js/mdi.js")],
   }),
 ];
 
@@ -33,7 +52,7 @@ const DebugPlugins = DevelopPlugins.concat([gzipPlugin.default()]);
 
 const inputconfig = {
   input: "./src/main.ts",
-  plugins: (process.env.NODE_ENV = "production" ? BuildPlugins : DevelopPlugins),
+  plugins: process.env.NODE_ENV === "production" ? BuildPlugins : DevelopPlugins,
 };
 const outputconfig = {
   file: "./hacs_frontend/main.js",

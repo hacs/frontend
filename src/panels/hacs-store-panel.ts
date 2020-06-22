@@ -10,7 +10,7 @@ import {
   LovelaceResource,
   RemovedRepository,
 } from "../data/common";
-import "../layout/hacs-tabbed-layout";
+
 import "../components/hacs-repository-card";
 import "../components/hacs-search";
 import "../components/hacs-filter";
@@ -43,15 +43,12 @@ export class HacsStorePanel extends LitElement {
     (repositories: Repository[], sections: any, section: string) => {
       const installedRepositories: Repository[] = repositories?.filter(
         (repo) =>
-          sections.panels
-            .find((panel) => panel.id === section)
-            .categories?.includes(repo.category) && repo.installed
+          sections.find((panel) => panel.id === section).categories?.includes(repo.category) &&
+          repo.installed
       );
       const newRepositories: Repository[] = repositories?.filter(
         (repo) =>
-          sections.panels
-            .find((panel) => panel.id === section)
-            .categories?.includes(repo.category) &&
+          sections.find((panel) => panel.id === section).categories?.includes(repo.category) &&
           repo.new &&
           !repo.installed
       );
@@ -59,19 +56,10 @@ export class HacsStorePanel extends LitElement {
     }
   );
 
-  private _panelsEnabled = memoizeOne((sections: any, config: Configuration) => {
-    return sections;
-    return sections.panels.filter((panel) => {
-      const categories = panel.categories;
-      if (categories === undefined) return true;
-      return categories.filter((c) => config?.categories.includes(c)).length !== 0;
-    });
-  });
-
   private get allRepositories(): Repository[] {
     const [installedRepositories, newRepositories] = this._repositoriesInActiveSection(
       this.repositories,
-      sections,
+      this.sections,
       this.section
     );
 
@@ -82,7 +70,8 @@ export class HacsStorePanel extends LitElement {
 
   private get visibleRepositories(): Repository[] {
     const repositories = this.allRepositories.filter(
-      (repo) => this.filters[this.section].find((filter) => filter.id === repo.category).checked
+      (repo) =>
+        this.filters[this.section].find((filter) => filter.id === repo.category)?.checked || true
     );
     return this._filterRepositories(repositories, this._searchInput);
   }
@@ -102,7 +91,7 @@ export class HacsStorePanel extends LitElement {
   protected render(): TemplateResult {
     const newRepositories = this._repositoriesInActiveSection(
       this.repositories,
-      sections,
+      this.sections,
       this.section
     )[1];
 
@@ -138,6 +127,13 @@ export class HacsStorePanel extends LitElement {
         .repositories=${this.repositories}
       >
       </hacs-tabbed-menu>
+      <div class="content">
+        ${this.allRepositories.length === 0
+          ? this._renderEmpty()
+          : this.visibleRepositories.length === 0
+          ? this._renderNoResultsFound()
+          : this._renderRepositories()}
+      </div>
     </hass-tabs-subpage>`;
 
     return html`<hacs-tabbed-layout

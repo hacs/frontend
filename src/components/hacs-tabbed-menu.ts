@@ -40,9 +40,6 @@ export class HacsTabbedMenu extends LitElement {
         <hacs-link url="https://hacs.xyz/"
           ><paper-item>${localize("menu.documentation")}</paper-item></hacs-link
         >
-        <paper-item @tap=${() => window.location.reload(true)}
-          >${localize("menu.reload")}</paper-item
-        >
         ${this.repositories?.filter((repo) => repo.new).length !== 0
           ? html` <paper-item @tap=${this._clearAllNewRepositories}
               >${localize("menu.dismiss")}</paper-item

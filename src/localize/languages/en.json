@@ -139,7 +139,6 @@
     "missing_category": "You need to select a category",
     "open_repository": "Open repository",
     "reload_data": "Reload data",
-    "reload_window": "Reload window",
     "repository_configuration": "Repository configuration",
     "save": "Save",
     "table_view": "Table view",
@@ -245,7 +244,6 @@
     "custom_repositories": "Custom repositories",
     "open_issue": "Open issue",
     "dismiss": "Dismiss all new repositories",
-    "reload": "Reload window",
     "documentation": "Documentation"
   },
   "entry": {

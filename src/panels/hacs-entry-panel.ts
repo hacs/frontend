@@ -12,8 +12,16 @@ import {
   TemplateResult,
   property,
 } from "lit-element";
-import memoizeOne from "memoize-one";
+import { mdiAlertCircle } from "@mdi/js";
+
+import { haStyle } from "../../homeassistant-frontend/src/resources/styles";
 import { HomeAssistant, Route } from "../../homeassistant-frontend/src/types";
+
+import "../../homeassistant-frontend/src/components/ha-card";
+import "../../homeassistant-frontend/src/components/ha-svg-icon";
+import "../../homeassistant-frontend/src/components/ha-menu-button";
+import "../../homeassistant-frontend/src/panels/config/ha-config-section";
+
 import {
   Status,
   Message,
@@ -23,20 +31,12 @@ import {
   sortRepositoriesByName,
   RemovedRepository,
 } from "../data/common";
-import "../layout/hacs-single-page-layout";
-
-import "../../homeassistant-frontend/src/components/ha-card";
-import "../../homeassistant-frontend/src/components/ha-svg-icon";
-import "../../homeassistant-frontend/src/components/ha-menu-button";
-
-import "../../homeassistant-frontend/src/panels/config/ha-config-section";
-import "../components/hacs-section-navigation";
-import { haStyle } from "../../homeassistant-frontend/src/resources/styles";
-import { mdiAlertCircle } from "@mdi/js";
 import { HacsStyles } from "../styles/hacs-common-style";
 import { getMessages } from "../tools/get-messages";
 import { localize } from "../localize/localize";
-import { sections } from "./hacs-sections";
+import { sections, sectionsEnabled } from "./hacs-sections";
+
+import "../components/hacs-section-navigation";
 
 @customElement("hacs-entry-panel")
 export class HacsEntryPanel extends LitElement {
@@ -49,14 +49,6 @@ export class HacsEntryPanel extends LitElement {
   @property({ attribute: false }) public removed: RemovedRepository[];
   @property({ type: Boolean }) public isWide!: boolean;
   @property({ type: Boolean }) public narrow!: boolean;
-
-  private _panelsEnabled = memoizeOne((sections: any, config: Configuration) => {
-    return sections.panels.filter((panel) => {
-      const categories = panel.categories;
-      if (categories === undefined) return true;
-      return categories.filter((c) => config?.categories.includes(c)).length !== 0;
-    });
-  });
 
   protected render(): TemplateResult | void {
     sections.updates = []; // reset so we don't get duplicates
@@ -85,7 +77,7 @@ export class HacsEntryPanel extends LitElement {
       });
     });
 
-    //const enabledSections = this._panelsEnabled(sections, this.configuration);
+    const enabledSections = sectionsEnabled(sections, this.configuration);
 
     return html`
       <app-header-layout has-scrolling-region>
@@ -121,11 +113,11 @@ export class HacsEntryPanel extends LitElement {
                   (repository) =>
                     html`
                       <paper-icon-item @click="${() => this._openUpdateDialog(repository)}">
-                        <ha-icon
+                        <ha-svg-icon
                           class="pending_update"
-                          icon="mdi:arrow-up-circle"
+                          .path=${mdiAlertCircle}
                           slot="item-icon"
-                        ></ha-icon>
+                        ></ha-svg-icon>
                         <paper-item-body two-line>
                           ${repository.name}
                           <div secondary>
@@ -139,7 +131,7 @@ export class HacsEntryPanel extends LitElement {
                 )}
               </ha-card>`
             : ""}
-          <hacs-section-navigation .pages=${sections.subsections.main}></hacs-section-navigation>
+          <hacs-section-navigation .pages=${enabledSections}></hacs-section-navigation>
           <ha-card>
             <paper-icon-item @click=${this._openAboutDialog}>
               <ha-svg-icon .path=${mdiAlertCircle} slot="item-icon"></ha-svg-icon>

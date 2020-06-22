@@ -1,6 +1,11 @@
-import { Route } from "../data/common";
+import memoizeOne from "memoize-one";
 import { mdiPuzzle, mdiPalette, mdiRobot } from "@mdi/js";
+
+import { Route } from "../../homeassistant-frontend/src/types";
+
+import { Configuration } from "../data/common";
 import { localize } from "../localize/localize";
+
 export const sections = {
   updates: [],
   messages: [],
@@ -36,6 +41,14 @@ export const sections = {
     ],
   },
 };
+
+export const sectionsEnabled = memoizeOne((sections: any, config: Configuration) => {
+  return sections.subsections.main.filter((section) => {
+    const categories = section.categories;
+    if (categories === undefined) return true;
+    return categories.filter((category) => config?.categories.includes(category)).length !== 0;
+  });
+});
 
 export const activePanel = (route: Route) => {
   console.log(route);
