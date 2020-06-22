@@ -23,7 +23,7 @@
     "chokidar": "^3.4.0",
     "custom-card-helpers": "^1.6.4",
     "eslint": "^6.5.1",
-    "eslint-config-airbnb-base": "^14.0.0",
+    "eslint-config-airbnb-base": "^14.2.0",
     "eslint-plugin-import": "^2.21.2",
     "highlight.js": "^10.1.1",
     "lit-element": "^2.3.1",
