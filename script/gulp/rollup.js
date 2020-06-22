@@ -7,8 +7,11 @@ const json = require("@rollup/plugin-json");
 const typescript = require("rollup-plugin-typescript2");
 const commonjs = require("rollup-plugin-commonjs");
 const nodeResolve = require("rollup-plugin-node-resolve");
+const cleanup = require("rollup-plugin-cleanup");
+const gzipPlugin = require("rollup-plugin-gzip");
+const { terser } = require("rollup-plugin-terser");
 
-const CommonPlugins = [
+const DevelopPlugins = [
   nodeResolve(),
   commonjs(),
   typescript(),
@@ -18,8 +21,15 @@ const CommonPlugins = [
   }),
 ];
 
-const DevelopPlugins = CommonPlugins.concat([]);
-const BuildPlugins = CommonPlugins.concat([]);
+const BuildPlugins = DevelopPlugins.concat([
+  terser(),
+  cleanup({
+    comments: "none",
+  }),
+  gzipPlugin.default(),
+]);
+
+const DebugPlugins = DevelopPlugins.concat([gzipPlugin.default()]);
 
 const inputconfig = {
   input: "./src/main.ts",
@@ -79,6 +89,14 @@ gulp.task("rollup-develop", () => {
 });
 
 gulp.task("rollup-build", async function (task) {
+  const bundle = await rollup.rollup(inputconfig);
+  await bundle.write(outputconfig);
+  task();
+});
+
+gulp.task("rollup-build-debug", async function (task) {
+  inputconfig.plugins = DebugPlugins;
+  outputconfig.file = "./hacs_frontend/debug.js";
   const bundle = await rollup.rollup(inputconfig);
   await bundle.write(outputconfig);
   task();
