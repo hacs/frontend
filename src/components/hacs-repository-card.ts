@@ -266,7 +266,7 @@ export class HacsRepositoryCard extends LitElement {
       HacsStyles,
       css`
         :host {
-          max-width: 500px;
+          width: 480px;
         }
         ha-card {
           display: flex;
