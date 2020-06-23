@@ -1,4 +1,4 @@
-import { customElement, html, TemplateResult, property } from "lit-element";
+import { css, customElement, html, TemplateResult, property } from "lit-element";
 import { HacsDialogBase } from "./hacs-dialog-base";
 
 import { createCloseHeading } from "../../../homeassistant-frontend/src/components/ha-dialog";
@@ -7,7 +7,7 @@ import "../hacs-icon-button";
 
 @customElement("hacs-dialog")
 export class HacsDialog extends HacsDialogBase {
-  @property({ type: Boolean }) public stacked: boolean = false;
+  @property({ type: Boolean }) public hideActions: boolean = false;
   @property() public title!: string;
 
   protected render(): TemplateResult | void {
@@ -17,7 +17,8 @@ export class HacsDialog extends HacsDialogBase {
 
     return html` <ha-dialog
       open
-      ?stacked=${this.stacked}
+      stacked
+      ?hideActions=${this.hideActions}
       .heading=${createCloseHeading(this.hass, this.title)}
     >
       <div class="content" @scroll=${this._scrollEvent}>
@@ -26,6 +27,15 @@ export class HacsDialog extends HacsDialogBase {
       <slot name="primaryAction"></slot>
       <slot name="secondaryAction"></slot>
     </ha-dialog>`;
+  }
+
+  static get styles() {
+    return css`
+      ha-dialog {
+        --mdc-dialog-max-width: var(--hacs-dialog-max-width, fit-content);
+        --mdc-dialog-min-width: var(--hacs-dialog-max-width, 280px);
+      }
+    `;
   }
 
   private _scrollEvent(ev) {

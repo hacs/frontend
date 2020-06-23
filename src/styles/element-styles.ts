@@ -30,3 +30,36 @@ export const hassTabsSubpage = css`
     line-height: var(--paper-font-body1_-_line-height);
   }
 `;
+
+export const fabStyles = css`
+  mwc-fab {
+    position: fixed;
+    bottom: 100px;
+    right: 24px;
+    z-index: 1;
+    margin-bottom: -80px;
+    transition: margin-bottom 0.3s;
+  }
+
+  mwc-fab[is-wide] {
+    bottom: 100px;
+    right: 24px;
+  }
+  mwc-fab[narrow] {
+    bottom: 140px;
+  }
+  mwc-fab[dirty] {
+    margin-bottom: 0;
+  }
+
+  mwc-fab.rtl {
+    right: auto;
+    right: 24px;
+  }
+
+  mwc-fab[is-wide].rtl {
+    bottom: 100px;
+    right: auto;
+    left: 24px;
+  }
+`;

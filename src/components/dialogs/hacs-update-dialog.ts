@@ -81,7 +81,6 @@ export class HacsUpdateDialog extends HacsDialogBase {
             : ""}
           ${this._error ? html`<div class="error">${this._error.message}</div>` : ""}
         </div>
-
         <mwc-button
           slot="primaryAction"
           ?disabled=${!repository.can_install}

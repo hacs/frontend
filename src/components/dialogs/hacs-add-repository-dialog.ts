@@ -5,13 +5,15 @@ import { customElement, html, TemplateResult, css, property, PropertyValues } fr
 import { classMap } from "lit-html/directives/class-map";
 import { HacsDialogBase } from "./hacs-dialog-base";
 import { Repository } from "../../data/common";
-
+import { mdiGithub } from "@mdi/js";
 import { localize } from "../../localize/localize";
 import { sections, activePanel } from "../../panels/hacs-sections";
 import { filterRepositoriesByInput } from "../../tools/filter-repositories-by-input";
 import "../hacs-search";
 import "../hacs-chip";
 import { hacsIcon } from "../hacs-icon";
+import "../../../homeassistant-frontend/src/common/search/search-input";
+import "../../../homeassistant-frontend/src/components/ha-svg-icon";
 
 @customElement("hacs-add-repository-dialog")
 export class HacsAddRepositoryDialog extends HacsDialogBase {
@@ -43,12 +45,11 @@ export class HacsAddRepositoryDialog extends HacsDialogBase {
     repositories?.filter(
       (repo) =>
         !repo.installed &&
-        sections?.panels
+        sections.subsections.main
           .find((panel) => panel.id === this.section)
           .categories?.includes(repo.category) &&
         !repo.installed &&
-        categories?.includes(repo.category) &&
-        this.filters.find((filter) => filter.id === repo.category)?.checked
+        categories?.includes(repo.category)
     );
 
   protected async firstUpdated() {
@@ -91,15 +92,15 @@ export class HacsAddRepositoryDialog extends HacsDialogBase {
         .narrow=${this.narrow}
         .hass=${this.hass}
         @scroll=${this._loadMore}
-        noActions
-        ?hasFilter=${this.filters.length > 1}
-        hasSearch
+        .title=${localize("dialog_add_repo.title")}
       >
-        <div slot="header">
-          ${localize("dialog_add_repo.title")}
-        </div>
+        <search-input
+          dialogInitialFocus
+          no-label-float
+          .filter=${this._searchInput || ""}
+          @value-changed=${this._inputValueChanged}
+        ></search-input>
         <div slot="search" class="filter">
-          <hacs-search .input=${this._searchInput} @input=${this._inputValueChanged}></hacs-search>
           <paper-dropdown-menu label="${localize("dialog_add_repo.sort_by")}">
             <paper-listbox slot="dropdown-content" selected="0">
               <paper-item @tap=${() => (this._sortBy = "stars")}
@@ -143,7 +144,7 @@ export class HacsAddRepositoryDialog extends HacsDialogBase {
                           @load=${this._onImageLoad}
                         />
                       `
-                    : html`<ha-icon icon="mdi:github-circle" slot="item-icon"></ha-icon>`}
+                    : html`<ha-svg-icon .path=${mdiGithub} slot="item-icon"></ha-svg-icon>`}
                   <paper-item-body two-line
                     >${repo.name}
                     <div class="category-chip">
@@ -174,7 +175,7 @@ export class HacsAddRepositoryDialog extends HacsDialogBase {
   }
 
   private _inputValueChanged(ev: any) {
-    this._searchInput = ev.target.input;
+    this._searchInput = ev.detail.value;
     window.localStorage.setItem("hacs-search", this._searchInput);
   }
 
@@ -197,10 +198,7 @@ export class HacsAddRepositoryDialog extends HacsDialogBase {
 
   private _onImageError(ev) {
     if (ev.target) {
-      ev.target.outerHTML = `<ha-icon
-    icon="mdi:github-circle"
-    slot="item-icon"
-  ></ha-icon>`;
+      ev.target.outerHTML = `<ha-svg-icon .path=${mdiGithub} slot="item-icon"></ha-svg-icon>`;
     }
   }
   static get styles() {
@@ -310,6 +308,9 @@ export class HacsAddRepositoryDialog extends HacsDialogBase {
       hacs-search,
       hacs-filter {
         width: 100%;
+      }
+      div[secondary] {
+        width: 88%;
       }
     `;
   }

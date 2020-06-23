@@ -1,8 +1,11 @@
 import { LitElement, customElement, property, html, css, TemplateResult } from "lit-element";
 import memoizeOne from "memoize-one";
-
+import "@material/mwc-fab";
+import { mdiPlus } from "@mdi/js";
+import { computeRTL } from "../../homeassistant-frontend/src/common/util/compute_rtl";
 import { HomeAssistant, Route } from "../../homeassistant-frontend/src/types";
 import "../../homeassistant-frontend/src/layouts/hass-tabs-subpage";
+import "../../homeassistant-frontend/src/common/search/search-input";
 import {
   Status,
   Configuration,
@@ -19,7 +22,7 @@ import "../components/hacs-tabbed-menu";
 
 import { localize } from "../localize/localize";
 import { HacsStyles } from "../styles/hacs-common-style";
-import { hassTabsSubpage } from "../styles/element-styles";
+import { hassTabsSubpage, fabStyles } from "../styles/element-styles";
 import { sections, activePanel } from "./hacs-sections";
 import { addedToLovelace } from "../tools/added-to-lovelace";
 import { filterRepositoriesByInput } from "../tools/filter-repositories-by-input";
@@ -30,6 +33,7 @@ export class HacsStorePanel extends LitElement {
   @property({ attribute: false }) public configuration: Configuration;
   @property({ attribute: false }) public hass!: HomeAssistant;
   @property({ attribute: false }) public narrow!: boolean;
+  @property({ attribute: false }) public isWide!: boolean;
   @property({ attribute: false }) public route!: Route;
   @property({ attribute: false }) public repositories!: Repository[];
   @property({ attribute: false }) public lovelace: LovelaceResource[];
@@ -115,6 +119,7 @@ export class HacsStorePanel extends LitElement {
       .narrow=${this.narrow}
       .route=${this.route}
       .tabs=${this.sections}
+      hasFab
     >
       <hacs-tabbed-menu
         slot="toolbar-icon"
@@ -127,6 +132,11 @@ export class HacsStorePanel extends LitElement {
         .repositories=${this.repositories}
       >
       </hacs-tabbed-menu>
+      <search-input
+        no-label-float
+        .filter=${this._searchInput || ""}
+        @value-changed=${this._inputValueChanged}
+      ></search-input>
       <div class="content">
         ${this.allRepositories.length === 0
           ? this._renderEmpty()
@@ -134,6 +144,9 @@ export class HacsStorePanel extends LitElement {
           ? this._renderNoResultsFound()
           : this._renderRepositories()}
       </div>
+      <mwc-fab ?is-wide=${this.isWide} ?narrow=${this.narrow} @click=${this._addRepository}>
+        <ha-svg-icon slot="icon" path=${mdiPlus}></ha-svg-icon>
+      </mwc-fab>
     </hass-tabs-subpage>`;
 
     return html`<hacs-tabbed-layout
@@ -223,7 +236,8 @@ export class HacsStorePanel extends LitElement {
   }
 
   private _inputValueChanged(ev: any) {
-    this._searchInput = ev.target.input;
+    this._searchInput = ev.detail.value;
+    window.localStorage.setItem("hacs-search", this._searchInput);
   }
 
   private _addRepository() {
@@ -244,6 +258,7 @@ export class HacsStorePanel extends LitElement {
     return [
       HacsStyles,
       hassTabsSubpage,
+      fabStyles,
       css`
         .filter {
           border-bottom: 1px solid var(--divider-color);

@@ -13,9 +13,9 @@ export class HacsAboutDialog extends HacsDialogBase {
     return html`
       <hacs-dialog
         .active=${this.active}
-        .narrow=${this.narrow}
         .hass=${this.hass}
         .title=${this.narrow ? "HACS" : "Home Assistant Community Store"}
+        hideActions
       >
         <div class="content">
           ${markdown.html(`
