@@ -46,7 +46,7 @@ export const fabStyles = css`
     right: 24px;
   }
   mwc-fab[narrow] {
-    bottom: 140px;
+    bottom: 152px;
   }
   mwc-fab[dirty] {
     margin-bottom: 0;
@@ -61,5 +61,24 @@ export const fabStyles = css`
     bottom: 100px;
     right: auto;
     left: 24px;
+  }
+`;
+
+export const searchStyles = css`
+  search-input.header {
+    display: block;
+    position: relative;
+    top: -14px;
+    left: -15px;
+    color: var(--secondary-text-color);
+  }
+  .search {
+    padding: 0 16px;
+    background: var(--sidebar-background-color);
+    border-bottom: 1px solid var(--divider-color);
+  }
+  .search search-input {
+    position: relative;
+    top: 2px;
   }
 `;

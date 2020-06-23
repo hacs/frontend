@@ -35,18 +35,20 @@ export const sections = {
         id: "automation",
         info: localize("sections.automation.description"),
         name: localize("sections.automation.title"),
-        path: "/hacs/automations",
+        path: "/hacs/automation",
         core: true,
       },
     ],
   },
 };
 
-export const sectionsEnabled = memoizeOne((sections: any, config: Configuration) => {
+export const sectionsEnabled = memoizeOne((config: Configuration) => {
   return sections.subsections.main.filter((section) => {
     const categories = section.categories;
     if (categories === undefined) return true;
-    return categories.filter((category) => config?.categories.includes(category)).length !== 0;
+    if (config === undefined) return true;
+    if (config.categories === undefined) return true;
+    return categories.filter((category) => config.categories.includes(category)).length !== 0;
   });
 });
 
@@ -58,7 +60,7 @@ export const activePanel = (route: Route) => {
     id: "automation",
     info: localize("sections.automation.description"),
     name: localize("sections.automation.title"),
-    path: "/hacs/automations",
+    path: "/hacs/automation",
     core: true,
   };
 };

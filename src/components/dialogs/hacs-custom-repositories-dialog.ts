@@ -11,11 +11,7 @@ import {
 } from "lit-element";
 import { HacsDialogBase } from "./hacs-dialog-base";
 
-import {
-  repositoryDelete,
-  getRepositories,
-  repositoryAdd,
-} from "../../data/websocket";
+import { repositoryDelete, getRepositories, repositoryAdd } from "../../data/websocket";
 
 import { localize } from "../../localize/localize";
 
@@ -29,8 +25,7 @@ export class HacsCustomRepositoriesDialog extends HacsDialogBase {
   shouldUpdate(changedProperties: PropertyValues) {
     changedProperties.forEach((_oldValue, propName) => {
       if (propName === "hass") {
-        this.sidebarDocked =
-          window.localStorage.getItem("dockedSidebar") === '"docked"';
+        this.sidebarDocked = window.localStorage.getItem("dockedSidebar") === '"docked"';
       }
     });
     return (
@@ -48,16 +43,12 @@ export class HacsCustomRepositoriesDialog extends HacsDialogBase {
     return html`
       <hacs-dialog
         .active=${this.active}
-        .narrow=${this.narrow}
         .hass=${this.hass}
+        .title=${localize("dialog_custom_repositories.title")}
         noActions
-        dynamicHeight
       >
-        <div slot="header">${localize("dialog_custom_repositories.title")}</div>
         <div class="content">
-          ${this._error
-            ? html`<div class="error">${this._error.message}</div>`
-            : ""}
+          ${this._error ? html`<div class="error">${this._error.message}</div>` : ""}
           <div class="list">
             ${repositories?.map(
               (repo) => html`<paper-icon-item>
@@ -70,10 +61,7 @@ export class HacsCustomRepositoriesDialog extends HacsDialogBase {
                         @load=${this._onImageLoad}
                       />
                     `
-                  : html`<ha-icon
-                      icon="mdi:github-circle"
-                      slot="item-icon"
-                    ></ha-icon>`}
+                  : html`<ha-icon icon="mdi:github-circle" slot="item-icon"></ha-icon>`}
                 <paper-item-body
                   @click=${() => this._showReopsitoryInfo(String(repo.id))}
                   three-line
@@ -94,9 +82,7 @@ export class HacsCustomRepositoriesDialog extends HacsDialogBase {
             <input
               id="add-input"
               class="add-input"
-              placeholder="${localize(
-                "dialog_custom_repositories.url_placeholder"
-              )}"
+              placeholder="${localize("dialog_custom_repositories.url_placeholder")}"
               .value=${this._inputRepository || ""}
               @input=${this._inputValueChanged}
             />
@@ -106,11 +92,7 @@ export class HacsCustomRepositoriesDialog extends HacsDialogBase {
               class="category"
               label="${localize("dialog_custom_repositories.category")}"
             >
-              <paper-listbox
-                id="category"
-                slot="dropdown-content"
-                selected="-1"
-              >
+              <paper-listbox id="category" slot="dropdown-content" selected="-1">
                 ${this.configuration.categories.map(
                   (category) => html`
                     <paper-item class="categoryitem" .category=${category}>
@@ -120,9 +102,7 @@ export class HacsCustomRepositoriesDialog extends HacsDialogBase {
                 )}
               </paper-listbox>
             </paper-dropdown-menu>
-            <mwc-button raised @click=${this._addRepository}
-              >${localize("common.add")}</mwc-button
-            >
+            <mwc-button raised @click=${this._addRepository}>${localize("common.add")}</mwc-button>
           </div>
         </div>
       </hacs-dialog>
@@ -130,10 +110,7 @@ export class HacsCustomRepositoriesDialog extends HacsDialogBase {
   }
 
   protected firstUpdated() {
-    this.hass.connection.subscribeEvents(
-      (msg) => (this._error = (msg as any).data),
-      "hacs/error"
-    );
+    this.hass.connection.subscribeEvents((msg) => (this._error = (msg as any).data), "hacs/error");
   }
 
   private _inputValueChanged() {

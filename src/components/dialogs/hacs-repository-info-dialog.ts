@@ -64,7 +64,12 @@ export class HacsRepositoryDialog extends HacsDialogBase {
     if (!this.active) return html``;
     const authors = this._getAuthors(this._repository);
     return html`
-      <hacs-dialog .active=${this.active} .title=${this._repository.name || ""} .hass=${this.hass}>
+      <hacs-dialog
+        .noActions=${this._repository.installed}
+        .active=${this.active}
+        .title=${this._repository.name || ""}
+        .hass=${this.hass}
+      >
         <div class="chips">
           ${this._repository.installed
             ? html`<hacs-chip

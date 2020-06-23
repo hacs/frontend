@@ -20,9 +20,10 @@ export class HacsDialog extends HacsDialogBase {
       stacked
       ?hideActions=${this.hideActions}
       .heading=${createCloseHeading(this.hass, this.title)}
+      @scroll=${() => console.log("scroll")}
     >
-      <div class="content" @scroll=${this._scrollEvent}>
-        <slot></slot>
+      <div class="content" @scroll=${() => console.log("scroll")}>
+        <slot @scroll=${() => console.log("scroll")}></slot>
       </div>
       <slot name="primaryAction"></slot>
       <slot name="secondaryAction"></slot>
@@ -32,7 +33,7 @@ export class HacsDialog extends HacsDialogBase {
   static get styles() {
     return css`
       ha-dialog {
-        --mdc-dialog-max-width: var(--hacs-dialog-max-width, fit-content);
+        --mdc-dialog-max-width: var(--hacs-dialog-max-width, 990px);
         --mdc-dialog-min-width: var(--hacs-dialog-max-width, 280px);
       }
     `;

@@ -7,8 +7,9 @@ import { HacsDialogBase } from "./hacs-dialog-base";
 import { Repository } from "../../data/common";
 import { mdiGithub } from "@mdi/js";
 import { localize } from "../../localize/localize";
-import { sections, activePanel } from "../../panels/hacs-sections";
+import { sectionsEnabled, activePanel } from "../../panels/hacs-sections";
 import { filterRepositoriesByInput } from "../../tools/filter-repositories-by-input";
+import { searchStyles } from "../../styles/element-styles";
 import "../hacs-search";
 import "../hacs-chip";
 import { hacsIcon } from "../hacs-icon";
@@ -31,7 +32,6 @@ export class HacsAddRepositoryDialog extends HacsDialogBase {
       }
     });
     return (
-      changedProperties.has("sidebarDocked") ||
       changedProperties.has("narrow") ||
       changedProperties.has("filters") ||
       changedProperties.has("active") ||
@@ -45,8 +45,8 @@ export class HacsAddRepositoryDialog extends HacsDialogBase {
     repositories?.filter(
       (repo) =>
         !repo.installed &&
-        sections.subsections.main
-          .find((panel) => panel.id === this.section)
+        sectionsEnabled(this.configuration)
+          .find((section) => section.id === this.section)
           .categories?.includes(repo.category) &&
         !repo.installed &&
         categories?.includes(repo.category)
@@ -89,13 +89,12 @@ export class HacsAddRepositoryDialog extends HacsDialogBase {
     return html`
       <hacs-dialog
         .active=${this.active}
-        .narrow=${this.narrow}
         .hass=${this.hass}
-        @scroll=${this._loadMore}
         .title=${localize("dialog_add_repo.title")}
+        hideActions
+        @scroll=${() => console.log("scroll")}
       >
         <search-input
-          dialogInitialFocus
           no-label-float
           .filter=${this._searchInput || ""}
           @value-changed=${this._inputValueChanged}
@@ -165,6 +164,7 @@ export class HacsAddRepositoryDialog extends HacsDialogBase {
   }
 
   private _loadMore(ev) {
+    console.log("scroll");
     const top = ev.detail.target.scrollTop;
     if (top >= this._top) {
       this._load += 1;
@@ -202,116 +202,118 @@ export class HacsAddRepositoryDialog extends HacsDialogBase {
     }
   }
   static get styles() {
-    return css`
-      .content {
-        width: 100%;
-        margin-bottom: -65px;
-      }
-      .filter {
-        margin-bottom: -65px;
-        margin-top: 65px;
-        display: flex;
-      }
-      .narrow {
-        min-width: unset !important;
-        width: 100% !important;
-      }
-      .list {
-        margin-top: 16px;
-        width: 1024px;
-        max-width: 100%;
-      }
-      .category-chip {
-        position: absolute;
-        top: 8px;
-        right: 8px;
-      }
-      ha-icon {
-        --mdc-icon-size: 36px;
-      }
-      img {
-        align-items: center;
-        display: block;
-        justify-content: center;
-        margin-bottom: 16px;
-        max-height: 36px;
-        max-width: 36px;
-        position: absolute;
-      }
+    return [
+      searchStyles,
+      css`
+        .content {
+          width: 100%;
+        }
+        .filter {
+          margin-bottom: -65px;
+          margin-top: 65px;
+          display: flex;
+        }
+        .narrow {
+          min-width: unset !important;
+          width: 100% !important;
+        }
+        .list {
+          margin-top: 16px;
+          width: 1024px;
+          max-width: 100%;
+        }
+        .category-chip {
+          position: absolute;
+          top: 8px;
+          right: 8px;
+        }
+        ha-icon {
+          --mdc-icon-size: 36px;
+        }
+        img {
+          align-items: center;
+          display: block;
+          justify-content: center;
+          margin-bottom: 16px;
+          max-height: 36px;
+          max-width: 36px;
+          position: absolute;
+        }
 
-      paper-icon-item:focus {
-        background-color: var(--divider-color);
-      }
+        paper-icon-item:focus {
+          background-color: var(--divider-color);
+        }
 
-      paper-icon-item {
-        cursor: pointer;
-        padding: 2px 0;
-      }
+        paper-icon-item {
+          cursor: pointer;
+          padding: 2px 0;
+        }
 
-      paper-dropdown-menu {
-        max-width: 30%;
-        margin: 11px 4px -5px;
-      }
+        paper-dropdown-menu {
+          max-width: 30%;
+          margin: 11px 4px -5px;
+        }
 
-      paper-item-body {
-        width: 100%;
-        min-height: var(--paper-item-body-two-line-min-height, 72px);
-        display: var(--layout-vertical_-_display);
-        flex-direction: var(--layout-vertical_-_flex-direction);
-        justify-content: var(--layout-center-justified_-_justify-content);
-      }
-      paper-icon-item.narrow {
-        border-bottom: 1px solid var(--divider-color);
-        padding: 8px 0;
-      }
-      paper-item-body div {
-        font-size: 14px;
-        color: var(--secondary-text-color);
-      }
-      .add {
-        border-top: 1px solid var(--divider-color);
-        margin-top: 32px;
-      }
-      .add-actions {
-        justify-content: space-between;
-      }
-      .add,
-      .add-actions {
-        display: flex;
-        align-items: center;
-        font-size: 20px;
-        height: 65px;
-        background-color: var(--sidebar-background-color);
-        border-bottom: 1px solid var(--divider-color);
-        padding: 0 16px;
-        box-sizing: border-box;
-      }
-      .add-input {
-        width: calc(100% - 80px);
-        height: 40px;
-        border: 0;
-        padding: 0 16px;
-        font-size: initial;
-        color: var(--sidebar-text-color);
-        font-family: var(--paper-font-body1_-_font-family);
-      }
-      input:focus {
-        outline-offset: 0;
-        outline: 0;
-      }
-      input {
-        background-color: var(--sidebar-background-color);
-      }
-      paper-dropdown-menu {
-        width: 75%;
-      }
-      hacs-search,
-      hacs-filter {
-        width: 100%;
-      }
-      div[secondary] {
-        width: 88%;
-      }
-    `;
+        paper-item-body {
+          width: 100%;
+          min-height: var(--paper-item-body-two-line-min-height, 72px);
+          display: var(--layout-vertical_-_display);
+          flex-direction: var(--layout-vertical_-_flex-direction);
+          justify-content: var(--layout-center-justified_-_justify-content);
+        }
+        paper-icon-item.narrow {
+          border-bottom: 1px solid var(--divider-color);
+          padding: 8px 0;
+        }
+        paper-item-body div {
+          font-size: 14px;
+          color: var(--secondary-text-color);
+        }
+        .add {
+          border-top: 1px solid var(--divider-color);
+          margin-top: 32px;
+        }
+        .add-actions {
+          justify-content: space-between;
+        }
+        .add,
+        .add-actions {
+          display: flex;
+          align-items: center;
+          font-size: 20px;
+          height: 65px;
+          background-color: var(--sidebar-background-color);
+          border-bottom: 1px solid var(--divider-color);
+          padding: 0 16px;
+          box-sizing: border-box;
+        }
+        .add-input {
+          width: calc(100% - 80px);
+          height: 40px;
+          border: 0;
+          padding: 0 16px;
+          font-size: initial;
+          color: var(--sidebar-text-color);
+          font-family: var(--paper-font-body1_-_font-family);
+        }
+        input:focus {
+          outline-offset: 0;
+          outline: 0;
+        }
+        input {
+          background-color: var(--sidebar-background-color);
+        }
+        paper-dropdown-menu {
+          width: 75%;
+        }
+        hacs-search,
+        hacs-filter {
+          width: 100%;
+        }
+        div[secondary] {
+          width: 88%;
+        }
+      `,
+    ];
   }
 }

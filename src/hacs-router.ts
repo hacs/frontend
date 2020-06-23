@@ -14,7 +14,7 @@ import {
   RemovedRepository,
   Status,
 } from "./data/common";
-import { sections } from "./panels/hacs-sections";
+import { sectionsEnabled } from "./panels/hacs-sections";
 
 import "./panels/hacs-entry-panel";
 import "./panels/hacs-store-panel";
@@ -69,7 +69,7 @@ class HacsRouter extends HassRouterPage {
       frontend: {
         tag: "hacs-store-panel",
       },
-      automations: {
+      automation: {
         tag: "hacs-store-panel",
       },
     },
@@ -89,7 +89,7 @@ class HacsRouter extends HassRouterPage {
     el.repositories = this.repositories;
     el.status = this.status;
 
-    el.sections = sections.subsections.main;
+    el.sections = sectionsEnabled(this.configuration);
     el.section = section;
   }
 }
