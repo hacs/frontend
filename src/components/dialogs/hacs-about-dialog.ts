@@ -15,12 +15,8 @@ export class HacsAboutDialog extends HacsDialogBase {
         .active=${this.active}
         .narrow=${this.narrow}
         .hass=${this.hass}
-        noActions
-        dynamicHeight
+        .title=${this.narrow ? "HACS" : "Home Assistant Community Store"}
       >
-        <div slot="header">
-          ${this.narrow ? "HACS" : "Home Assistant Community Store"}
-        </div>
         <div class="content">
           ${markdown.html(`
 **${localize("dialog_about.integration_version")}:** | ${this.configuration.version}
@@ -49,16 +45,5 @@ _The HACS and Home Assistant teams do not support **anything** you find here._
         </div>
       </hacs-dialog>
     `;
-  }
-
-  static get styles(): CSSResultArray {
-    return [
-      css`
-        .content {
-          font-size: 16px;
-          padding-top: 16px;
-        }
-      `,
-    ];
   }
 }

@@ -11,6 +11,7 @@ import { sections, activePanel } from "../../panels/hacs-sections";
 import { filterRepositoriesByInput } from "../../tools/filter-repositories-by-input";
 import "../hacs-search";
 import "../hacs-chip";
+import { hacsIcon } from "../hacs-icon";
 
 @customElement("hacs-add-repository-dialog")
 export class HacsAddRepositoryDialog extends HacsDialogBase {
@@ -147,7 +148,7 @@ export class HacsAddRepositoryDialog extends HacsDialogBase {
                     >${repo.name}
                     <div class="category-chip">
                       <hacs-chip
-                        icon="hacs:hacs"
+                        .icon=${hacsIcon}
                         .value=${localize(`common.${repo.category}`)}
                       ></hacs-chip>
                     </div>

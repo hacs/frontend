@@ -217,15 +217,4 @@ export class HacsEntryPanel extends LitElement {
       `,
     ];
   }
-
-  private _changeLocation(id: string): void {
-    this.route.path = `/${id}`;
-    this.dispatchEvent(
-      new CustomEvent("hacs-location-changed", {
-        detail: { route: this.route },
-        bubbles: true,
-        composed: true,
-      })
-    );
-  }
 }

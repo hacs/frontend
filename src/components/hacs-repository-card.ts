@@ -19,7 +19,9 @@ import {
   deleteResource,
 } from "../data/websocket";
 import { HomeAssistant } from "../../homeassistant-frontend/src/types";
-
+import { mdiDotsVertical } from "@mdi/js";
+import { hacsIcon } from "./hacs-icon";
+import "../components/hacs-icon-button";
 import "../components/hacs-link";
 
 @customElement("hacs-repository-card")
@@ -93,7 +95,7 @@ export class HacsRepositoryCard extends LitElement {
               </h2>
               ${this.repository.category !== "integration"
                 ? html` <hacs-chip
-                    icon="hacs:hacs"
+                    .icon=${hacsIcon}
                     .value=${localize(`common.${this.repository.category}`)}
                   ></hacs-chip>`
                 : ""}
@@ -143,7 +145,10 @@ export class HacsRepositoryCard extends LitElement {
                 vertical-offset="40"
                 close-on-activate
               >
-                <ha-icon-button icon="hass:dots-vertical" slot="dropdown-trigger"></ha-icon-button>
+                <hacs-icon-button
+                  .icon=${mdiDotsVertical}
+                  slot="dropdown-trigger"
+                ></hacs-icon-button>
                 <paper-listbox slot="dropdown-content">
                   <paper-item class="pointer" @tap=${this._showReopsitoryInfo}
                     >${localize("repository_card.information")}</paper-item

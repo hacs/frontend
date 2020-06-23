@@ -1,5 +1,6 @@
 import { customElement, html, TemplateResult, property, PropertyValues, css } from "lit-element";
 import memoizeOne from "memoize-one";
+import { mdiCube, mdiAccount, mdiStar, mdiExclamationThick, mdiArrowDownBold } from "@mdi/js";
 import { HacsDialogBase } from "./hacs-dialog-base";
 import { Repository } from "../../data/common";
 import { markdown } from "../../tools/markdown/markdown";
@@ -63,22 +64,12 @@ export class HacsRepositoryDialog extends HacsDialogBase {
     if (!this.active) return html``;
     const authors = this._getAuthors(this._repository);
     return html`
-      <hacs-dialog
-        .active=${this.active}
-        .narrow=${this.narrow}
-        .hass=${this.hass}
-        .secondary=${this.secondary}
-        ?hasContent=${this._repository?.additional_info?.length > 100}
-        ?noActions=${this._repository?.installed}
-        ?dynamicHeight=${this._repository?.installed &&
-        this._repository?.additional_info?.length < 100}
-      >
-        <div slot="header">${this._repository.name || ""}</div>
+      <hacs-dialog .active=${this.active} .title=${this._repository.name || ""} .hass=${this.hass}>
         <div class="chips">
           ${this._repository.installed
             ? html`<hacs-chip
                 title="${localize("dialog_info.version_installed")}"
-                icon="mdi:cube"
+                .icon=${mdiCube}
                 .value=${this._repository.installed_version}
               ></hacs-chip>`
             : ""}
@@ -87,7 +78,7 @@ export class HacsRepositoryDialog extends HacsDialogBase {
                 (author) => html`<hacs-link .url="https://github.com/${author}"
                   ><hacs-chip
                     title="${localize("dialog_info.author")}"
-                    icon="mdi:account"
+                    .icon=${mdiAccount}
                     .value="@${author}"
                   ></hacs-chip
                 ></hacs-link>`
@@ -96,19 +87,19 @@ export class HacsRepositoryDialog extends HacsDialogBase {
           ${this._repository.downloads
             ? html` <hacs-chip
                 title="${localize("dialog_info.downloads")}"
-                icon="mdi:arrow-down-bold"
+                .icon=${mdiArrowDownBold}
                 .value=${this._repository.downloads}
               ></hacs-chip>`
             : ""}
           <hacs-chip
             title="${localize("dialog_info.stars")}"
-            icon="mdi:star"
+            .icon=${mdiStar}
             .value=${this._repository.stars}
           ></hacs-chip>
           <hacs-link .url="https://github.com/${this._repository.full_name}/issues">
             <hacs-chip
               title="${localize("dialog_info.open_issues")}"
-              icon="mdi:exclamation-thick"
+              .icon=${mdiExclamationThick}
               .value=${this._repository.issues}
             ></hacs-chip
           ></hacs-link>
@@ -137,7 +128,6 @@ export class HacsRepositoryDialog extends HacsDialogBase {
         max-width: 100%;
       }
       .chips {
-        margin: 0 -4px;
         display: flex;
         padding-bottom: 8px;
       }
@@ -145,7 +135,7 @@ export class HacsRepositoryDialog extends HacsDialogBase {
         margin: 0 4px;
       }
       div.chips hacs-link {
-        margin: -17px 4px;
+        margin: -24px 4px;
       }
     `;
   }

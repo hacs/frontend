@@ -8,6 +8,8 @@ import {
   property,
 } from "lit-element";
 
+import "../../homeassistant-frontend/src/components/ha-svg-icon";
+
 @customElement("hacs-chip")
 export class HacsChip extends LitElement {
   @property() public icon!: string;
@@ -16,7 +18,7 @@ export class HacsChip extends LitElement {
   protected render(): TemplateResult | void {
     return html`
       <div class="chip">
-        <div class="icon"><ha-icon .icon=${this.icon}></ha-icon></div>
+        <div class="icon"><ha-svg-icon .path=${this.icon}></ha-svg-icon></div>
         <div class="value">${String(this.value) || ""}</div>
       </div>
     `;
@@ -53,7 +55,7 @@ export class HacsChip extends LitElement {
           margin-left: 5px;
           margin-right: 5px;
         }
-        ha-icon {
+        ha-svg-icon {
           --mdc-icon-size: 16px;
         }
       `,

@@ -43,12 +43,9 @@ export class HacsUpdateDialog extends HacsDialogBase {
     return html`
       <hacs-dialog
         .active=${this.active}
-        .narrow=${this.narrow}
+        .title=${localize("dialog_update.title")}
         .hass=${this.hass}
-        ?dynamicHeight=${this._releaseNotes.length === 0}
-        ?hasContent=${this._releaseNotes.length > 0}
       >
-        <div slot="header">${localize("dialog_update.title")}</div>
         <div class="content">
           ${repository.name}
           <p>
@@ -84,19 +81,21 @@ export class HacsUpdateDialog extends HacsDialogBase {
             : ""}
           ${this._error ? html`<div class="error">${this._error.message}</div>` : ""}
         </div>
-        <div slot="actions">
-          <mwc-button ?disabled=${!repository.can_install} @click=${this._updateRepository}
-            >${this._updating
-              ? html`<paper-spinner active></paper-spinner>`
-              : localize("common.update")}</mwc-button
-          >
-          <hacs-link .url=${this._getChanglogURL()}
-            ><mwc-button>${localize("dialog_update.changelog")}</mwc-button></hacs-link
-          >
-          <hacs-link .url="https://github.com/${repository.full_name}"
-            ><mwc-button>${localize("common.repository")}</mwc-button></hacs-link
-          >
-        </div>
+
+        <mwc-button
+          slot="primaryAction"
+          ?disabled=${!repository.can_install}
+          @click=${this._updateRepository}
+          >${this._updating
+            ? html`<paper-spinner active></paper-spinner>`
+            : localize("common.update")}</mwc-button
+        >
+        <hacs-link slot="secondaryAction" .url=${this._getChanglogURL()}
+          ><mwc-button>${localize("dialog_update.changelog")}</mwc-button></hacs-link
+        >
+        <hacs-link slot="secondaryAction" .url="https://github.com/${repository.full_name}"
+          ><mwc-button>${localize("common.repository")}</mwc-button></hacs-link
+        >
       </hacs-dialog>
     `;
   }
