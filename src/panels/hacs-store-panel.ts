@@ -14,7 +14,6 @@ import {
 } from "../data/common";
 
 import "../components/hacs-repository-card";
-import "../components/hacs-search";
 import "../components/hacs-filter";
 import "../components/hacs-fab";
 import "../components/hacs-tabbed-menu";

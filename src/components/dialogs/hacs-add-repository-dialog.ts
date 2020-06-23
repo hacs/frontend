@@ -10,7 +10,6 @@ import { localize } from "../../localize/localize";
 import { sectionsEnabled, activePanel } from "../../panels/hacs-sections";
 import { filterRepositoriesByInput } from "../../tools/filter-repositories-by-input";
 import { searchStyles } from "../../styles/element-styles";
-import "../hacs-search";
 import "../hacs-chip";
 import { hacsIcon } from "../hacs-icon";
 import "../../../homeassistant-frontend/src/common/search/search-input";
