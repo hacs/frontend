@@ -1,8 +1,10 @@
 import { css, CSSResultArray, customElement, html, TemplateResult, property } from "lit-element";
 import { classMap } from "lit-html/directives/class-map";
+import { mdiClose } from "@mdi/js";
 import { HacsDialogBase } from "./hacs-dialog-base";
 
 import { HacsStyles } from "../../styles/hacs-common-style";
+import "../hacs-icon-button";
 
 @customElement("hacs-dialog")
 export class HacsDialog extends HacsDialogBase {
@@ -17,16 +19,10 @@ export class HacsDialog extends HacsDialogBase {
       return html``;
     }
 
-    const sidebar = window.localStorage.getItem("dockedSidebar");
-
-    const sidebarDocked = sidebar === '"docked"';
-
     return html`
       <div
         class=${classMap({
           backdrop: true,
-          docked: sidebarDocked,
-          "full-width": sidebar === '"always_hidden"',
           narrow: this.narrow,
         })}
       >
@@ -39,7 +35,11 @@ export class HacsDialog extends HacsDialogBase {
           })}
         >
           <div class="header-group">
-            <ha-icon-button class="close" icon="mdi:close" @click=${this._close}></ha-icon-button>
+            <hacs-icon-button
+              class="close"
+              .icon=${mdiClose}
+              @click=${this._close}
+            ></hacs-icon-button>
 
             <div
               class=${classMap({
@@ -187,8 +187,7 @@ export class HacsDialog extends HacsDialogBase {
           position: fixed;
           z-index: 1;
           top: 0;
-          left: var(--app-drawer-width);
-          width: calc(100% - var(--app-drawer-width));
+          width: 100%;
         }
 
         .narrow {
@@ -229,10 +228,6 @@ export class HacsDialog extends HacsDialogBase {
 
         .search-and-filter {
           height: calc(100% - 166px) !important;
-        }
-
-        .full-width {
-          --app-drawer-width: 0%;
         }
       `,
     ];

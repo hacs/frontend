@@ -161,7 +161,7 @@ export class HacsEntryPanel extends LitElement {
     );
   }
 
-  private _openAboutDialog() {
+  private async _openAboutDialog() {
     this.dispatchEvent(
       new CustomEvent("hacs-dialog", {
         detail: {
@@ -193,6 +193,8 @@ export class HacsEntryPanel extends LitElement {
 
         ha-config-section {
           color: var(--primary-text-color);
+          padding-bottom: 24px;
+          margin-top: -24px;
         }
 
         paper-item-body {

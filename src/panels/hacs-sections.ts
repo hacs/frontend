@@ -53,9 +53,12 @@ export const sectionsEnabled = memoizeOne((sections: any, config: Configuration)
 export const activePanel = (route: Route) => {
   console.log(route);
   return {
-    iconPath: "mdi:robot",
-    path: "/hacs/automations",
-    id: "automation",
     categories: ["python_script", "appdaemon", "netdaemon"],
+    iconPath: mdiRobot,
+    id: "automation",
+    info: localize("sections.automation.description"),
+    name: localize("sections.automation.title"),
+    path: "/hacs/automations",
+    core: true,
   };
 };

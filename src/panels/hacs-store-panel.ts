@@ -154,25 +154,34 @@ export class HacsStorePanel extends LitElement {
       </hacs-tabbed-menu>
 
       <hacs-search .input=${this._searchInput} @input=${this._inputValueChanged}></hacs-search>
-      ${this.filters[this.section].length > 1
-        ? html`<hacs-filter class="filter" .filters="${this.filters[this.section]}"></hacs-filter>`
-        : ""}
-      ${newRepositories?.length > 10
-        ? html`<div class="new-repositories">
-            ${localize("store.new_repositories_note")}
-          </div>`
-        : ""}
+      ${
+        this.filters[this.section].length > 1
+          ? html`<hacs-filter
+              class="filter"
+              .filters="${this.filters[this.section]}"
+            ></hacs-filter>`
+          : ""
+      }
+      ${
+        newRepositories?.length > 10
+          ? html`<div class="new-repositories">
+              ${localize("store.new_repositories_note")}
+            </div>`
+          : ""
+      }
       <div class="content">
-        ${this.allRepositories.length === 0
-          ? this._renderEmpty()
-          : this.visibleRepositories.length === 0
-          ? this._renderNoResultsFound()
-          : this._renderRepositories()}
+        ${
+          this.allRepositories.length === 0
+            ? this._renderEmpty()
+            : this.visibleRepositories.length === 0
+            ? this._renderNoResultsFound()
+            : this._renderRepositories()
+        }
       </div>
       <hacs-fab
         .narrow=${this.narrow}
         @click=${this._addRepository}
-        icon="mdi:plus"
+        //icon="mdi:plus"
         title="Add repository"
       >
       </hacs-fab>

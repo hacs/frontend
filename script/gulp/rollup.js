@@ -4,7 +4,12 @@ const http = require("http");
 const log = require("fancy-log");
 const handler = require("serve-handler");
 const json = require("@rollup/plugin-json");
+const commonjs = require("@rollup/plugin-commonjs");
 const babel = require("rollup-plugin-babel");
+const babelTypescript = require("@babel/preset-typescript");
+const babelDecorators = require("@babel/plugin-proposal-decorators");
+const babelClassProperties = require("@babel/plugin-proposal-class-properties");
+
 const resolve = require("@rollup/plugin-node-resolve");
 const gzipPlugin = require("rollup-plugin-gzip");
 const { terser } = require("rollup-plugin-terser");
@@ -13,6 +18,7 @@ const extensions = [".js", ".ts"];
 const isProd = process.env.NODE_ENV === "production";
 
 const DevelopPlugins = [
+  commonjs(),
   resolve({
     extensions,
     preferBuiltins: false,
@@ -25,13 +31,13 @@ const DevelopPlugins = [
   }),
   babel({
     babelrc: false,
-    presets: [require("@babel/preset-typescript").default].filter(Boolean),
+    presets: [babelTypescript.default],
     plugins: [
       "@babel/syntax-dynamic-import",
       "@babel/plugin-proposal-optional-chaining",
       "@babel/plugin-proposal-nullish-coalescing-operator",
-      [require("@babel/plugin-proposal-decorators").default, { decoratorsBeforeExport: true }],
-      [require("@babel/plugin-proposal-class-properties").default, { loose: true }],
+      [babelDecorators.default, { decoratorsBeforeExport: true }],
+      [babelClassProperties.default, { loose: true }],
     ].filter(Boolean),
     extensions,
     exclude: [require.resolve("@mdi/js/mdi.js")],
@@ -65,7 +71,7 @@ function createServer() {
   });
 
   server.listen(5000, true, () => {
-    log.info(`File will be served to http://127.0.0.1:5000/main.js`);
+    log.info("File will be served to http://127.0.0.1:5000/main.js");
   });
 }
 
@@ -77,7 +83,6 @@ gulp.task("rollup-develop", () => {
     watch: {
       chokidar: { usePolling: true },
       include: ["./src/**"],
-      clearScreen: true,
     },
   });
 
