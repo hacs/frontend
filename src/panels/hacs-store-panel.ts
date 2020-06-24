@@ -5,13 +5,7 @@ import { mdiPlus } from "@mdi/js";
 import { HomeAssistant, Route } from "../../homeassistant-frontend/src/types";
 import "../../homeassistant-frontend/src/layouts/hass-tabs-subpage";
 import "../../homeassistant-frontend/src/common/search/search-input";
-import {
-  Status,
-  Configuration,
-  Repository,
-  LovelaceResource,
-  RemovedRepository,
-} from "../data/common";
+import { Repository } from "../data/common";
 
 import "../components/hacs-repository-card";
 import "../components/hacs-filter";
@@ -22,21 +16,18 @@ import { localize } from "../localize/localize";
 import { HacsStyles } from "../styles/hacs-common-style";
 import { hassTabsSubpage, fabStyles, searchStyles } from "../styles/element-styles";
 import { activePanel } from "./hacs-sections";
-import { addedToLovelace } from "../tools/added-to-lovelace";
 import { filterRepositoriesByInput } from "../tools/filter-repositories-by-input";
+import { Hacs } from "../data/hacs";
 
 @customElement("hacs-store-panel")
 export class HacsStorePanel extends LitElement {
+  @property({ attribute: false }) public hacs?: Hacs;
   @property() private _searchInput: string = "";
-  @property({ attribute: false }) public configuration: Configuration;
   @property({ attribute: false }) public hass!: HomeAssistant;
   @property({ attribute: false }) public narrow!: boolean;
   @property({ attribute: false }) public isWide!: boolean;
-  @property({ attribute: false }) public route!: Route;
   @property({ attribute: false }) public repositories!: Repository[];
-  @property({ attribute: false }) public lovelace: LovelaceResource[];
-  @property({ attribute: false }) public status: Status;
-  @property({ attribute: false }) public removed: RemovedRepository[];
+  @property({ attribute: false }) public route!: Route;
   @property({ attribute: false }) public filters: any = {};
   @property({ attribute: false }) public sections!: any;
   @property() public section!: string;
@@ -101,7 +92,7 @@ export class HacsStorePanel extends LitElement {
       const categories = activePanel(this.route)?.categories;
       this.filters[this.section] = [];
       categories
-        ?.filter((c) => this.configuration.categories.includes(c))
+        ?.filter((c) => this.hacs.configuration?.categories?.includes(c))
         .forEach((category) => {
           this.filters[this.section].push({
             id: category,
@@ -124,9 +115,9 @@ export class HacsStorePanel extends LitElement {
         .hass=${this.hass}
         .route=${this.route}
         .narrow=${this.narrow}
-        .configuration=${this.configuration}
-        .lovelace=${this.lovelace}
-        .status=${this.status}
+        .configuration=${this.hacs.configuration}
+        .lovelace=${this.hacs.resources}
+        .status=${this.hacs.status}
         .repositories=${this.repositories}
       >
       </hacs-tabbed-menu>
@@ -136,8 +127,8 @@ export class HacsStorePanel extends LitElement {
               <slot name="header">
                 <search-input
                   class="header"
-                  no-underline
                   no-label-float
+                  no-underline
                   .filter=${this._searchInput || ""}
                   @value-changed=${this._inputValueChanged}
                 ></search-input>
@@ -145,8 +136,8 @@ export class HacsStorePanel extends LitElement {
             </div>
           `
         : html`<search-input
-            no-underline
             no-label-float
+            no-underline
             .filter=${this._searchInput || ""}
             @value-changed=${this._inputValueChanged}
           ></search-input>`}
@@ -155,7 +146,7 @@ export class HacsStorePanel extends LitElement {
             ${localize("store.new_repositories_note")}
           </div>`
         : ""}
-      <div class="container">
+      <div class="container ${this.narrow ? "narrow" : ""}">
         ${this.allRepositories.length === 0
           ? this._renderEmpty()
           : this.visibleRepositories.length === 0
@@ -175,9 +166,10 @@ export class HacsStorePanel extends LitElement {
           .hass=${this.hass}
           .repository=${repo}
           .narrow=${this.narrow}
-          .status=${this.status}
-          .removed=${this.removed}
-          .addedToLovelace=${addedToLovelace(this.lovelace, this.configuration, repo)}
+          ?narrow=${this.narrow}
+          .status=${this.hacs.status}
+          .removed=${this.hacs.removed}
+          .addedToLovelace=${this.hacs.addedToLovelace(this.hacs, repo)}
         ></hacs-repository-card>`
     );
   }
@@ -253,6 +245,13 @@ export class HacsStorePanel extends LitElement {
           display: flex;
           flex-direction: column;
           justify-content: space-between;
+        }
+        hacs-repository-card[narow] {
+          padding: 4px;
+        }
+        .narrow {
+          width: 100%;
+          display: block;
         }
       `,
     ];

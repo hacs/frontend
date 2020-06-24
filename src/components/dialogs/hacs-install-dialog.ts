@@ -166,7 +166,7 @@ export class HacsInstallDialog extends HacsDialogBase {
           </div>
           ${this._error ? html`<div class="error">${this._error.message}</div>` : ""}
         </div>
-        <div slot="actions">
+        <div slot="primaryAction">
           <mwc-button
             ?disabled=${!this._repository.can_install || this._toggle}
             @click=${this._installRepository}

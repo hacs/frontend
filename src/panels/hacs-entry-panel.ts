@@ -8,6 +8,7 @@ import {
   CSSResultArray,
   customElement,
   html,
+  PropertyValues,
   LitElement,
   TemplateResult,
   property,
@@ -34,16 +35,17 @@ import {
 import { HacsStyles } from "../styles/hacs-common-style";
 import { getMessages } from "../tools/get-messages";
 import { localize } from "../localize/localize";
-import { sections, sectionsEnabled } from "./hacs-sections";
+import { Hacs } from "../hacs";
 
 import "../components/hacs-section-navigation";
 
 @customElement("hacs-entry-panel")
 export class HacsEntryPanel extends LitElement {
+  @property({ attribute: false }) public hacs?: Hacs;
   @property({ attribute: false }) public configuration: Configuration;
+  @property({ attribute: false }) public repositories: Repository[];
   @property({ attribute: false }) public hass!: HomeAssistant;
   @property({ attribute: false }) public lovelace: LovelaceResource[];
-  @property({ attribute: false }) public repositories: Repository[];
   @property({ attribute: false }) public route!: Route;
   @property({ attribute: false }) public status: Status;
   @property({ attribute: false }) public removed: RemovedRepository[];
@@ -51,24 +53,18 @@ export class HacsEntryPanel extends LitElement {
   @property({ type: Boolean }) public narrow!: boolean;
 
   protected render(): TemplateResult | void {
-    sections.updates = []; // reset so we don't get duplicates
-    sections.messages = []; // reset so we don't get duplicates
-    const messages: Message[] = getMessages(
-      this.status,
-      this.configuration,
-      this.lovelace,
-      this.repositories,
-      this.removed
-    );
+    const updates = [];
+    const messages = [];
+    const allMessages: Message[] = getMessages(this.hacs, this.repositories);
 
     this.repositories?.forEach((repo) => {
       if (repo.pending_upgrade) {
-        sections.updates.push(repo);
+        updates.push(repo);
       }
     });
 
-    messages?.forEach((message) => {
-      sections.messages.push({
+    allMessages?.forEach((message) => {
+      messages.push({
         iconPath: mdiAlertCircle,
         name: message.name,
         info: message.info,
@@ -77,7 +73,13 @@ export class HacsEntryPanel extends LitElement {
       });
     });
 
-    const enabledSections = sectionsEnabled(sections, this.configuration);
+    this.dispatchEvent(
+      new CustomEvent("update-hacs", {
+        detail: { messages, updates },
+        bubbles: true,
+        composed: true,
+      })
+    );
 
     return html`
       <app-header-layout has-scrolling-region>
@@ -92,24 +94,24 @@ export class HacsEntryPanel extends LitElement {
           </div>
 
           <div slot="introduction">
-            ${this.isWide || (sections.updates.length === 0 && messages.length === 0)
+            ${this.isWide || (this.hacs.updates.length === 0 && this.hacs.messages?.length === 0)
               ? localize("entry.intro")
               : ""}
           </div>
 
-          ${sections.messages.length !== 0
+          ${this.hacs.messages?.length !== 0
             ? html`
                 <hacs-section-navigation
                   .header=${localize("entry.information")}
-                  .pages=${sections.messages}
+                  .pages=${this.hacs.messages}
                   noNext
                 ></hacs-section-navigation>
               `
             : ""}
-          ${sections.updates.length !== 0
+          ${this.hacs.updates?.length !== 0
             ? html` <ha-card>
                 <div class="header">${localize("entry.pending_updates")}</div>
-                ${sortRepositoriesByName(sections.updates).map(
+                ${sortRepositoriesByName(this.hacs.updates).map(
                   (repository) =>
                     html`
                       <paper-icon-item @click="${() => this._openUpdateDialog(repository)}">
@@ -131,7 +133,7 @@ export class HacsEntryPanel extends LitElement {
                 )}
               </ha-card>`
             : ""}
-          <hacs-section-navigation .pages=${enabledSections}></hacs-section-navigation>
+          <hacs-section-navigation .pages=${this.hacs.sections}></hacs-section-navigation>
           <ha-card>
             <paper-icon-item @click=${this._openAboutDialog}>
               <ha-svg-icon .path=${mdiAlertCircle} slot="item-icon"></ha-svg-icon>

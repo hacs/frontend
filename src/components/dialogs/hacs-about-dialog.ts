@@ -19,7 +19,7 @@ export class HacsAboutDialog extends HacsDialogBase {
       >
         <div class="content">
           ${markdown.html(`
-**${localize("dialog_about.integration_version")}:** | ${this.configuration.version}
+**${localize("dialog_about.integration_version")}:** | ${this.hacs.configuration.version}
 --|--
 **${localize("dialog_about.frontend_version")}:** | ${version}
 **${localize("common.repositories")}:** | ${this.repositories.length}

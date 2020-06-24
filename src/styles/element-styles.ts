@@ -82,3 +82,17 @@ export const searchStyles = css`
     top: 2px;
   }
 `;
+
+export const scrollBarStyle = css`
+  *::-webkit-scrollbar {
+    width: 0.2em;
+  }
+
+  *::-webkit-scrollbar-track {
+    box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+  }
+
+  *::-webkit-scrollbar-thumb {
+    background-color: var(--accent-color);
+  }
+`;

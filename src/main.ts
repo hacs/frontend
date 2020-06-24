@@ -1,12 +1,4 @@
-import {
-  customElement,
-  html,
-  LitElement,
-  property,
-  PropertyValues,
-  query,
-  TemplateResult,
-} from "lit-element";
+import { customElement, html, property, PropertyValues, query, TemplateResult } from "lit-element";
 import memoizeOne from "memoize-one";
 
 import { HomeAssistant, Route } from "../homeassistant-frontend/src/types";
@@ -32,12 +24,12 @@ import {
 } from "./data/websocket";
 import { hacsStyleVariables } from "./styles/variables";
 import { HacsStyles } from "./styles/hacs-common-style";
-
+import { HacsElement, Hacs } from "./hacs";
 import "./hacs-router";
 import "./components/dialogs/hacs-event-dialog";
 
 @customElement("hacs-frontend")
-class HacsFrontend extends LitElement {
+class HacsFrontend extends HacsElement {
   @property({ attribute: false }) public configuration: Configuration;
   @property({ attribute: false }) public critical!: Critical[];
   @property({ attribute: false }) public hass!: HomeAssistant;
@@ -83,8 +75,19 @@ class HacsFrontend extends LitElement {
   }
 
   private async _updateProperties(prop: string = "all") {
+    let repositories: Repository[];
+    const updates: any = {};
+    const fetch: any = {};
+
     if (prop === "all") {
-      const [repositories, configuration, status, critical, lovelace, removed] = await Promise.all([
+      [
+        repositories,
+        fetch.configuration,
+        fetch.status,
+        fetch.critical,
+        fetch.lovelace,
+        fetch.removed,
+      ] = await Promise.all([
         getRepositories(this.hass),
         getConfiguration(this.hass),
         getStatus(this.hass),
@@ -93,21 +96,27 @@ class HacsFrontend extends LitElement {
         getRemovedRepositories(this.hass),
       ]);
 
-      this.configuration = configuration;
-      this.status = status;
-      this.removed = removed;
-      this.critical = critical;
-      this.lovelace = lovelace;
-      this.configuration = configuration;
-      this.repositories = this._sortRepositoriesByName(repositories);
+      //this.removed = removed;
+      //this.critical = critical;
+      //this.lovelace = lovelace;
+      this.repositories = repositories;
     } else if (prop === "configuration") {
-      this.configuration = await getConfiguration(this.hass);
+      fetch.configuration = await getConfiguration(this.hass);
     } else if (prop === "status") {
-      this.status = await getStatus(this.hass);
+      fetch.status = await getStatus(this.hass);
     } else if (prop === "repositories") {
       this.repositories = await getRepositories(this.hass);
     } else if (prop === "lovelace") {
-      this.lovelace = await getLovelaceConfiguration(this.hass);
+      fetch.lovelace = await getLovelaceConfiguration(this.hass);
+    }
+
+    Object.keys(fetch).forEach((update) => {
+      if (fetch[update] !== undefined) {
+        updates[update] = fetch[update];
+      }
+    });
+    if (updates) {
+      this._updateHacs(updates);
     }
   }
 
@@ -124,10 +133,11 @@ class HacsFrontend extends LitElement {
   }
 
   protected render(): TemplateResult | void {
-    if (!this.hass || !this.configuration) return html``;
+    if (!this.hass || !this.hacs) return html``;
     return html`
       <hacs-router
         .hass=${this.hass}
+        .hacs=${this.hacs}
         .route=${this.route}
         .narrow=${this.narrow}
         .configuration=${this.configuration}
@@ -139,6 +149,7 @@ class HacsFrontend extends LitElement {
       ></hacs-router>
       <hacs-event-dialog
         .hass=${this.hass}
+        .hacs=${this.hacs}
         .route=${this.route}
         .narrow=${this.narrow}
         .configuration=${this.configuration}
@@ -150,6 +161,7 @@ class HacsFrontend extends LitElement {
       ></hacs-event-dialog>
       <hacs-event-dialog
         .hass=${this.hass}
+        .hacs=${this.hacs}
         .route=${this.route}
         .narrow=${this.narrow}
         .configuration=${this.configuration}

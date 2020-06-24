@@ -9,7 +9,7 @@ import { mdiGithub } from "@mdi/js";
 import { localize } from "../../localize/localize";
 import { sectionsEnabled, activePanel } from "../../panels/hacs-sections";
 import { filterRepositoriesByInput } from "../../tools/filter-repositories-by-input";
-import { searchStyles } from "../../styles/element-styles";
+import { searchStyles, scrollBarStyle } from "../../styles/element-styles";
 import "../hacs-chip";
 import { hacsIcon } from "../hacs-icon";
 import "../../../homeassistant-frontend/src/common/search/search-input";
@@ -44,7 +44,7 @@ export class HacsAddRepositoryDialog extends HacsDialogBase {
     repositories?.filter(
       (repo) =>
         !repo.installed &&
-        sectionsEnabled(this.configuration)
+        sectionsEnabled(this.hacs.configuration)
           .find((section) => section.id === this.section)
           .categories?.includes(repo.category) &&
         !repo.installed &&
@@ -70,7 +70,7 @@ export class HacsAddRepositoryDialog extends HacsDialogBase {
     if (this.filters.length === 0) {
       const categories = activePanel(this.route)?.categories;
       categories
-        ?.filter((c) => this.configuration.categories.includes(c))
+        ?.filter((c) => this.hacs.configuration?.categories.includes(c))
         .forEach((category) => {
           this.filters.push({
             id: category,
@@ -81,7 +81,7 @@ export class HacsAddRepositoryDialog extends HacsDialogBase {
     }
 
     const repositories = this._filterRepositories(
-      this._repositoriesInActiveCategory(this.repositories, this.configuration?.categories),
+      this._repositoriesInActiveCategory(this.repositories, this.hacs.configuration?.categories),
       this._searchInput
     );
 
@@ -203,9 +203,12 @@ export class HacsAddRepositoryDialog extends HacsDialogBase {
   static get styles() {
     return [
       searchStyles,
+      scrollBarStyle,
       css`
         .content {
           width: 100%;
+          overflow: auto;
+          max-height: 570px;
         }
         .filter {
           margin-bottom: -65px;

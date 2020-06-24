@@ -15,12 +15,14 @@ import {
   Status,
 } from "./data/common";
 import { sectionsEnabled } from "./panels/hacs-sections";
+import { Hacs } from "./hacs";
 
 import "./panels/hacs-entry-panel";
 import "./panels/hacs-store-panel";
 
 @customElement("hacs-router")
 class HacsRouter extends HassRouterPage {
+  @property({ attribute: false }) public hacs?: Hacs;
   @property({ attribute: false }) public configuration: Configuration;
   @property({ attribute: false }) public critical!: Critical[];
   @property({ attribute: false }) public hass!: HomeAssistant;
@@ -79,6 +81,7 @@ class HacsRouter extends HassRouterPage {
     const section = this.route.path.replace("/", "");
     const isWide = this.hass.dockedSidebar === "docked" ? this._wideSidebar : this._wide;
     el.hass = this.hass;
+    el.hacs = this.hacs;
     el.route = this.route;
     el.narrow = this.narrow;
     el.isWide = isWide;

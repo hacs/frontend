@@ -1,5 +1,6 @@
 import { LitElement, property, PropertyValues } from "lit-element";
 import { HomeAssistant, Route } from "../../../homeassistant-frontend/src/types";
+import { Hacs } from "../../data/hacs";
 
 import {
   Critical,
@@ -12,6 +13,7 @@ import {
 
 export class HacsDialogBase extends LitElement {
   @property({ attribute: false }) public configuration: Configuration;
+  @property({ attribute: false }) public hacs: Hacs;
   @property({ attribute: false }) public critical!: Critical[];
   @property({ attribute: false }) public hass!: HomeAssistant;
   @property({ attribute: false }) public lovelace: LovelaceResource[];
