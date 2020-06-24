@@ -91,7 +91,6 @@ export class HacsAddRepositoryDialog extends HacsDialogBase {
         .hass=${this.hass}
         .title=${localize("dialog_add_repo.title")}
         hideActions
-        @scroll=${() => console.log("scroll")}
       >
         <search-input
           no-label-float
@@ -118,7 +117,7 @@ export class HacsAddRepositoryDialog extends HacsDialogBase {
               <hacs-filter .filters="${this.filters}"></hacs-filter>
             </div>`
           : ""}
-        <div class=${classMap({ content: true, narrow: this.narrow })}>
+        <div class=${classMap({ content: true, narrow: this.narrow })} @scroll=${this._loadMore}>
           <div class=${classMap({ list: true, narrow: this.narrow })}>
             ${repositories
               .sort((a, b) => {
@@ -163,8 +162,7 @@ export class HacsAddRepositoryDialog extends HacsDialogBase {
   }
 
   private _loadMore(ev) {
-    console.log("scroll");
-    const top = ev.detail.target.scrollTop;
+    const top = ev.target.scrollTop;
     if (top >= this._top) {
       this._load += 1;
     } else {

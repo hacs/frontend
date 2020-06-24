@@ -20,10 +20,9 @@ export class HacsDialog extends HacsDialogBase {
       stacked
       ?hideActions=${this.hideActions}
       .heading=${createCloseHeading(this.hass, this.title)}
-      @scroll=${() => console.log("scroll")}
     >
-      <div class="content" @scroll=${() => console.log("scroll")}>
-        <slot @scroll=${() => console.log("scroll")}></slot>
+      <div class="content">
+        <slot></slot>
       </div>
       <slot name="primaryAction"></slot>
       <slot name="secondaryAction"></slot>

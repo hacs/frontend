@@ -15,7 +15,6 @@ export class HacsElement extends LitElement {
     );
 
     if (this.hacs === undefined) {
-      // Initialize
       this.hacs = {
         messages: [],
         updates: [],

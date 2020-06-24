@@ -147,7 +147,9 @@ export class HacsStorePanel extends LitElement {
           </div>`
         : ""}
       <div class="container ${this.narrow ? "narrow" : ""}">
-        ${this.allRepositories.length === 0
+        ${this.repositories === undefined
+          ? ""
+          : this.allRepositories.length === 0
           ? this._renderEmpty()
           : this.visibleRepositories.length === 0
           ? this._renderNoResultsFound()
