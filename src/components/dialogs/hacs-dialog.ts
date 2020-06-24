@@ -1,6 +1,6 @@
 import { css, customElement, html, TemplateResult, property } from "lit-element";
 import { HacsDialogBase } from "./hacs-dialog-base";
-
+import { scrollBarStyle } from "../../styles/element-styles";
 import { createCloseHeading } from "../../../homeassistant-frontend/src/components/ha-dialog";
 
 import "../hacs-icon-button";
@@ -17,36 +17,29 @@ export class HacsDialog extends HacsDialogBase {
 
     return html` <ha-dialog
       open
-      stacked
       ?hideActions=${this.hideActions}
       .heading=${createCloseHeading(this.hass, this.title)}
     >
-      <div class="content">
+      <div class="content" ?narrow=${this.narrow}>
         <slot></slot>
       </div>
-      <slot name="primaryAction"></slot>
-      <slot name="secondaryAction"></slot>
+      <slot class="primary" name="primaryaction" slot="primaryAction"></slot>
+      <slot name="secondaryaction" slot="secondaryAction"></slot>
     </ha-dialog>`;
   }
 
   static get styles() {
-    return css`
-      ha-dialog {
-        --mdc-dialog-max-width: var(--hacs-dialog-max-width, 990px);
-        --mdc-dialog-min-width: var(--hacs-dialog-max-width, 280px);
-      }
-    `;
-  }
-
-  private _scrollEvent(ev) {
-    this.dispatchEvent(
-      new CustomEvent("scroll", {
-        detail: {
-          target: ev.target,
-        },
-        bubbles: true,
-        composed: true,
-      })
-    );
+    return [
+      scrollBarStyle,
+      css`
+        ha-dialog {
+          --mdc-dialog-max-width: var(--hacs-dialog-max-width, 990px);
+          --mdc-dialog-min-width: var(--hacs-dialog-max-width, 280px);
+        }
+        .primary {
+          margin-left: 52px;
+        }
+      `,
+    ];
   }
 }

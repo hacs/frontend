@@ -1,5 +1,7 @@
 import "@polymer/paper-item/paper-icon-item";
 import "@polymer/paper-item/paper-item-body";
+import "@polymer/paper-dropdown-menu/paper-dropdown-menu";
+import "@polymer/paper-listbox/paper-listbox";
 import memoizeOne from "memoize-one";
 import { customElement, html, TemplateResult, css, property, PropertyValues } from "lit-element";
 import { classMap } from "lit-html/directives/class-map";
@@ -97,7 +99,7 @@ export class HacsAddRepositoryDialog extends HacsDialogBase {
           .filter=${this._searchInput || ""}
           @value-changed=${this._inputValueChanged}
         ></search-input>
-        <div slot="search" class="filter">
+        <div class="filter">
           <paper-dropdown-menu label="${localize("dialog_add_repo.sort_by")}">
             <paper-listbox slot="dropdown-content" selected="0">
               <paper-item @tap=${() => (this._sortBy = "stars")}
@@ -206,14 +208,16 @@ export class HacsAddRepositoryDialog extends HacsDialogBase {
         .content {
           width: 100%;
           overflow: auto;
-          max-height: 570px;
+          max-height: 870px;
         }
+
         .filter {
           margin-bottom: -65px;
           margin-top: 65px;
           display: flex;
         }
         .narrow {
+          max-height: 480px;
           min-width: unset !important;
           width: 100% !important;
         }

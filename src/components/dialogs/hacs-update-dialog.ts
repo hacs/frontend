@@ -1,6 +1,9 @@
 import { css, CSSResultArray, customElement, html, TemplateResult, property } from "lit-element";
 import memoizeOne from "memoize-one";
-
+import "@polymer/paper-dropdown-menu/paper-dropdown-menu";
+import "@polymer/paper-listbox/paper-listbox";
+import { classMap } from "lit-html/directives/class-map";
+import { scrollBarStyle } from "../../styles/element-styles";
 import {
   repositoryInstall,
   repositoryInstallVersion,
@@ -46,7 +49,7 @@ export class HacsUpdateDialog extends HacsDialogBase {
         .title=${localize("dialog_update.title")}
         .hass=${this.hass}
       >
-        <div class="content">
+        <div class=${classMap({ content: true, narrow: this.narrow })}>
           ${repository.name}
           <p>
             <b>${localize("dialog_update.installed_version")}:</b>
@@ -82,17 +85,17 @@ export class HacsUpdateDialog extends HacsDialogBase {
           ${this._error ? html`<div class="error">${this._error.message}</div>` : ""}
         </div>
         <mwc-button
-          slot="primaryAction"
+          slot="primaryaction"
           ?disabled=${!repository.can_install}
           @click=${this._updateRepository}
           >${this._updating
             ? html`<paper-spinner active></paper-spinner>`
             : localize("common.update")}</mwc-button
         >
-        <hacs-link slot="secondaryAction" .url=${this._getChanglogURL()}
+        <hacs-link slot="secondaryaction" .url=${this._getChanglogURL()}
           ><mwc-button>${localize("dialog_update.changelog")}</mwc-button></hacs-link
         >
-        <hacs-link slot="secondaryAction" .url="https://github.com/${repository.full_name}"
+        <hacs-link slot="secondaryaction" .url="https://github.com/${repository.full_name}"
           ><mwc-button>${localize("common.repository")}</mwc-button></hacs-link
         >
       </hacs-dialog>
@@ -127,6 +130,7 @@ export class HacsUpdateDialog extends HacsDialogBase {
 
   static get styles(): CSSResultArray {
     return [
+      scrollBarStyle,
       css`
         .content {
           padding: 32px 8px;

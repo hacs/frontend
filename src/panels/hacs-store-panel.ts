@@ -14,7 +14,7 @@ import "../components/hacs-tabbed-menu";
 
 import { localize } from "../localize/localize";
 import { HacsStyles } from "../styles/hacs-common-style";
-import { hassTabsSubpage, fabStyles, searchStyles } from "../styles/element-styles";
+import { hassTabsSubpage, fabStyles, searchStyles, scrollBarStyle } from "../styles/element-styles";
 import { activePanel } from "./hacs-sections";
 import { filterRepositoriesByInput } from "../tools/filter-repositories-by-input";
 import { Hacs } from "../data/hacs";
@@ -135,25 +135,30 @@ export class HacsStorePanel extends LitElement {
               </slot>
             </div>
           `
-        : html`<search-input
-            no-label-float
-            no-underline
-            .filter=${this._searchInput || ""}
-            @value-changed=${this._inputValueChanged}
-          ></search-input>`}
-      ${newRepositories?.length > 10
-        ? html`<div class="new-repositories">
-            ${localize("store.new_repositories_note")}
-          </div>`
         : ""}
-      <div class="container ${this.narrow ? "narrow" : ""}">
-        ${this.repositories === undefined
-          ? ""
-          : this.allRepositories.length === 0
-          ? this._renderEmpty()
-          : this.visibleRepositories.length === 0
-          ? this._renderNoResultsFound()
-          : this._renderRepositories()}
+      <div class="content ${this.narrow ? "narrow-content" : ""}">
+        ${!this.narrow
+          ? html`<search-input
+              no-label-float
+              no-underline
+              .filter=${this._searchInput || ""}
+              @value-changed=${this._inputValueChanged}
+            ></search-input>`
+          : ""}
+        ${newRepositories?.length > 10
+          ? html`<div class="new-repositories">
+              ${localize("store.new_repositories_note")}
+            </div>`
+          : ""}
+        <div class="container ${this.narrow ? "narrow" : ""}">
+          ${this.repositories === undefined
+            ? ""
+            : this.allRepositories.length === 0
+            ? this._renderEmpty()
+            : this.visibleRepositories.length === 0
+            ? this._renderNoResultsFound()
+            : this._renderRepositories()}
+        </div>
       </div>
       <mwc-fab ?is-wide=${this.isWide} ?narrow=${this.narrow} @click=${this._addRepository}>
         <ha-svg-icon slot="icon" path=${mdiPlus}></ha-svg-icon>
@@ -221,9 +226,17 @@ export class HacsStorePanel extends LitElement {
       hassTabsSubpage,
       fabStyles,
       searchStyles,
+      scrollBarStyle,
       css`
         .filter {
           border-bottom: 1px solid var(--divider-color);
+        }
+        .content {
+          height: calc(100vh - 65px);
+          overflow: auto;
+        }
+        .narrow-content {
+          height: calc(100vh - 128px);
         }
         .container {
           display: grid;
@@ -248,12 +261,25 @@ export class HacsStorePanel extends LitElement {
           flex-direction: column;
           justify-content: space-between;
         }
-        hacs-repository-card[narow] {
-          padding: 4px;
+        hacs-repository-card[narrow] {
+          width: 100%;
+        }
+        hacs-repository-card[narrow]:last-of-type {
+          margin-bottom: 64px;
         }
         .narrow {
           width: 100%;
           display: block;
+          padding: 0px;
+          margin: 0;
+        }
+
+        .container .narrow {
+          margin-bottom: 128px;
+        }
+
+        .bottom-bar {
+          position: fixed !important;
         }
       `,
     ];

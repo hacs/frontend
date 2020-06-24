@@ -4,7 +4,9 @@ import { mdiCube, mdiAccount, mdiStar, mdiExclamationThick, mdiArrowDownBold } f
 import { HacsDialogBase } from "./hacs-dialog-base";
 import { Repository } from "../../data/common";
 import { markdown } from "../../tools/markdown/markdown";
+import { classMap } from "lit-html/directives/class-map";
 import { localize } from "../../localize/localize";
+import { scrollBarStyle } from "../../styles/element-styles";
 import "../hacs-chip";
 import "../hacs-link";
 
@@ -69,80 +71,99 @@ export class HacsRepositoryDialog extends HacsDialogBase {
         .active=${this.active}
         .title=${this._repository.name || ""}
         .hass=${this.hass}
-      >
-        <div class="chips">
-          ${this._repository.installed
-            ? html`<hacs-chip
-                title="${localize("dialog_info.version_installed")}"
-                .icon=${mdiCube}
-                .value=${this._repository.installed_version}
-              ></hacs-chip>`
-            : ""}
-          ${authors
-            ? authors.map(
-                (author) => html`<hacs-link .url="https://github.com/${author}"
-                  ><hacs-chip
-                    title="${localize("dialog_info.author")}"
-                    .icon=${mdiAccount}
-                    .value="@${author}"
-                  ></hacs-chip
-                ></hacs-link>`
-              )
-            : ""}
-          ${this._repository.downloads
-            ? html` <hacs-chip
-                title="${localize("dialog_info.downloads")}"
-                .icon=${mdiArrowDownBold}
-                .value=${this._repository.downloads}
-              ></hacs-chip>`
-            : ""}
-          <hacs-chip
-            title="${localize("dialog_info.stars")}"
-            .icon=${mdiStar}
-            .value=${this._repository.stars}
-          ></hacs-chip>
-          <hacs-link .url="https://github.com/${this._repository.full_name}/issues">
+        ><div class=${classMap({ content: true, narrow: this.narrow })}>
+          <div class="chips">
+            ${this._repository.installed
+              ? html`<hacs-chip
+                  title="${localize("dialog_info.version_installed")}"
+                  .icon=${mdiCube}
+                  .value=${this._repository.installed_version}
+                ></hacs-chip>`
+              : ""}
+            ${authors
+              ? authors.map(
+                  (author) => html`<hacs-link .url="https://github.com/${author}"
+                    ><hacs-chip
+                      title="${localize("dialog_info.author")}"
+                      .icon=${mdiAccount}
+                      .value="@${author}"
+                    ></hacs-chip
+                  ></hacs-link>`
+                )
+              : ""}
+            ${this._repository.downloads
+              ? html` <hacs-chip
+                  title="${localize("dialog_info.downloads")}"
+                  .icon=${mdiArrowDownBold}
+                  .value=${this._repository.downloads}
+                ></hacs-chip>`
+              : ""}
             <hacs-chip
-              title="${localize("dialog_info.open_issues")}"
-              .icon=${mdiExclamationThick}
-              .value=${this._repository.issues}
-            ></hacs-chip
-          ></hacs-link>
+              title="${localize("dialog_info.stars")}"
+              .icon=${mdiStar}
+              .value=${this._repository.stars}
+            ></hacs-chip>
+            <hacs-link .url="https://github.com/${this._repository.full_name}/issues">
+              <hacs-chip
+                title="${localize("dialog_info.open_issues")}"
+                .icon=${mdiExclamationThick}
+                .value=${this._repository.issues}
+              ></hacs-chip
+            ></hacs-link>
+          </div>
+          ${this._repository.updated_info
+            ? markdown.html(
+                this._repository.additional_info || localize("dialog_info.no_info"),
+                this._repository
+              )
+            : localize("dialog_info.loading")}
         </div>
-        ${this._repository.updated_info
-          ? markdown.html(
-              this._repository.additional_info || localize("dialog_info.no_info"),
-              this._repository
-            )
-          : localize("dialog_info.loading")}
         ${!this._repository.installed && this._repository.updated_info
-          ? html` <div slot="actions">
-              <mwc-button @click=${this._installRepository} raised
+          ? html`
+              <mwc-button slot="primaryaction" @click=${this._installRepository}
                 >${localize("dialog_info.install")}</mwc-button
-              ><hacs-link .url="https://github.com/${this._repository.full_name}"
+              ><hacs-link
+                slot="secondaryaction"
+                .url="https://github.com/${this._repository.full_name}"
                 ><mwc-button>${localize("dialog_info.open_repo")}</mwc-button></hacs-link
               >
-            </div>`
+            `
           : ""}
       </hacs-dialog>
     `;
   }
   static get styles() {
-    return css`
-      img {
-        max-width: 100%;
-      }
-      .chips {
-        display: flex;
-        padding-bottom: 8px;
-      }
-      hacs-chip {
-        margin: 0 4px;
-      }
-      div.chips hacs-link {
-        margin: -24px 4px;
-      }
-    `;
+    return [
+      scrollBarStyle,
+      css`
+        .content {
+          width: 100%;
+          overflow: auto;
+          max-height: 870px;
+        }
+        .narrow {
+          max-height: 480px;
+          min-width: unset !important;
+          width: 100% !important;
+        }
+        img {
+          max-width: 100%;
+        }
+        .chips {
+          display: flex;
+          padding-bottom: 8px;
+        }
+        hacs-chip {
+          margin: 0 4px;
+        }
+        div.chips hacs-link {
+          margin: -24px 4px;
+        }
+        hacs-link mwc-button {
+          margin-top: -18px;
+        }
+      `,
+    ];
   }
 
   private async _installRepository(): Promise<void> {

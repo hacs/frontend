@@ -271,9 +271,7 @@ export class HacsRepositoryCard extends LitElement {
           height: 100%;
           width: 480px;
         }
-        ha-card[narrow] {
-          width: 100%;
-        }
+
         hacs-chip {
           margin: 8px 4px 0 0;
         }
@@ -368,6 +366,11 @@ export class HacsRepositoryCard extends LitElement {
           left: 0;
           border-top-left-radius: var(--ha-card-border-radius);
           border-top-right-radius: var(--ha-card-border-radius);
+        }
+
+        ha-card[narrow] {
+          width: calc(100% - 24px);
+          margin: 11px;
         }
       `,
     ];
