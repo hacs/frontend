@@ -90,9 +90,9 @@ export class HacsRepositoryCard extends LitElement {
               ${this._headerTitle}
             </div>
             <div class="title">
-              <h2 class="pointer" @click=${this._showReopsitoryInfo}>
+              <h1 class="pointer" @click=${this._showReopsitoryInfo}>
                 ${this.repository.name}
-              </h2>
+              </h1>
               ${this.repository.category !== "integration"
                 ? html` <hacs-chip
                     .icon=${hacsIcon}
@@ -295,11 +295,11 @@ export class HacsRepositoryCard extends LitElement {
           height: auto;
           align-content: center;
         }
-        .group-header h2 {
+        .group-header h1 {
           margin: 0;
           padding: 8px 16px;
         }
-        h2 {
+        h1 {
           margin-top: 0;
           min-height: 24px;
         }
@@ -330,6 +330,7 @@ export class HacsRepositoryCard extends LitElement {
         .new-header {
           background-color: var(--hcv-color-new);
           color: var(--hcv-text-color-on-background);
+          border-radius: var(--ha-card-border-radius, 4px);
         }
 
         .issue-header {

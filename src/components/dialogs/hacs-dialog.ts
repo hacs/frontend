@@ -1,6 +1,6 @@
 import { css, customElement, html, TemplateResult, property } from "lit-element";
 import { HacsDialogBase } from "./hacs-dialog-base";
-import { scrollBarStyle } from "../../styles/element-styles";
+import { hacsStyleDialog, scrollBarStyle } from "../../styles/element-styles";
 import { createCloseHeading } from "../../../homeassistant-frontend/src/components/ha-dialog";
 
 import "../hacs-icon-button";
@@ -30,6 +30,7 @@ export class HacsDialog extends HacsDialogBase {
 
   static get styles() {
     return [
+      hacsStyleDialog,
       scrollBarStyle,
       css`
         ha-dialog {

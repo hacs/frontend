@@ -1,5 +1,6 @@
 import { css, CSSResultArray } from "lit-element";
 import { hacsIconStyle, hacsButtonStyle, hacsLinkStyle } from "./element-styles";
+import { haStyle } from "../../homeassistant-frontend/src/resources/styles";
 
 export const hacsCommonClasses = css`
   .warning {
@@ -20,20 +21,10 @@ export const hacsCommonClasses = css`
   }
 `;
 
-export const hacsRoot = css`
-  :root {
-    font-family: var(--paper-font-body1_-_font-family);
-    -webkit-font-smoothing: var(--paper-font-body1_-_-webkit-font-smoothing);
-    font-size: var(--paper-font-body1_-_font-size);
-    font-weight: var(--paper-font-body1_-_font-weight);
-    line-height: var(--paper-font-body1_-_line-height);
-  }
-`;
-
 export const HacsStyles: CSSResultArray = [
+  haStyle,
   hacsIconStyle,
   hacsButtonStyle,
   hacsCommonClasses,
   hacsLinkStyle,
-  hacsRoot,
 ];

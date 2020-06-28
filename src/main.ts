@@ -4,6 +4,7 @@ import memoizeOne from "memoize-one";
 import { HomeAssistant, Route } from "../homeassistant-frontend/src/types";
 import { navigate } from "../homeassistant-frontend/src/common/navigate";
 import { applyThemesOnElement } from "../homeassistant-frontend/src/common/dom/apply_themes_on_element";
+import "../homeassistant-frontend/src/resources/ha-style";
 import {
   Configuration,
   Critical,
@@ -24,7 +25,7 @@ import {
 } from "./data/websocket";
 import { hacsStyleVariables } from "./styles/variables";
 import { HacsStyles } from "./styles/hacs-common-style";
-import { HacsElement, Hacs } from "./hacs";
+import { HacsElement } from "./hacs";
 import "./hacs-router";
 import "./components/dialogs/hacs-event-dialog";
 

@@ -1,4 +1,5 @@
 import { css } from "lit-element";
+import { haStyleDialog } from "../../homeassistant-frontend/src/resources/styles";
 
 export const hacsLinkStyle = css`
   a {
@@ -68,9 +69,10 @@ export const searchStyles = css`
   search-input.header {
     display: block;
     position: relative;
-    top: -14px;
-    left: -15px;
+    left: -22px;
+    top: -15px;
     color: var(--secondary-text-color);
+    margin-left: 0;
   }
   .search {
     padding: 0 16px;
@@ -96,3 +98,5 @@ export const scrollBarStyle = css`
     background-color: var(--accent-color);
   }
 `;
+
+export const hacsStyleDialog = [haStyleDialog, css``];

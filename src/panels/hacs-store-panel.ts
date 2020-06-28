@@ -135,16 +135,15 @@ export class HacsStorePanel extends LitElement {
               </slot>
             </div>
           `
-        : ""}
-      <div class="content ${this.narrow ? "narrow-content" : ""}">
-        ${!this.narrow
-          ? html`<search-input
+        : html`<div class="search">
+            <search-input
               no-label-float
               no-underline
               .filter=${this._searchInput || ""}
               @value-changed=${this._inputValueChanged}
-            ></search-input>`
-          : ""}
+            ></search-input>
+          </div>`}
+      <div class="content ${this.narrow ? "narrow-content" : ""}">
         ${newRepositories?.length > 10
           ? html`<div class="new-repositories">
               ${localize("store.new_repositories_note")}
@@ -232,7 +231,7 @@ export class HacsStorePanel extends LitElement {
           border-bottom: 1px solid var(--divider-color);
         }
         .content {
-          height: calc(100vh - 65px);
+          height: calc(100vh - 128px);
           overflow: auto;
         }
         .narrow-content {
