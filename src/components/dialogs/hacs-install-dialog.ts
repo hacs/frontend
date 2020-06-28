@@ -144,21 +144,14 @@ export class HacsInstallDialog extends HacsDialogBase {
           <div class="note">
             ${localize(`repository.note_installed`)}
             <code>'${installPath}'</code>
-            ${this._repository.category === "plugin" && this.status.lovelace_mode === "yaml"
-              ? html` <table class="lovelace">
-                  <tr>
-                    <td>${localize("dialog_install.url")}:</td>
-                    <td>
-                      <code>${this._lovelaceUrl()}</code>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>${localize("dialog_install.type")}:</td>
-                    <td>
-                      module
-                    </td>
-                  </tr>
-                </table>`
+            ${this._repository.category === "plugin" && this.hacs.status.lovelace_mode !== "storage"
+              ? html`
+                  <pre>
+                url: ${this._lovelaceUrl()}
+                type: module
+                </pre
+                  >
+                `
               : ""}
             ${this._repository.category === "integration"
               ? html`<p>${localize("dialog_install.restart")}</p>`
@@ -166,19 +159,17 @@ export class HacsInstallDialog extends HacsDialogBase {
           </div>
           ${this._error ? html`<div class="error">${this._error.message}</div>` : ""}
         </div>
-        <div slot="primaryaction">
-          <mwc-button
-            ?disabled=${!this._repository.can_install || this._toggle}
-            @click=${this._installRepository}
-            >${this._installing
-              ? html`<paper-spinner active></paper-spinner>`
-              : localize("common.install")}</mwc-button
-          >
-
-          <hacs-link .url="https://github.com/${this._repository.full_name}"
-            ><mwc-button>${localize("common.repository")}</mwc-button></hacs-link
-          >
-        </div>
+        <mwc-button
+          slot="primaryaction"
+          ?disabled=${!this._repository.can_install || this._toggle}
+          @click=${this._installRepository}
+          >${this._installing
+            ? html`<paper-spinner active></paper-spinner>`
+            : localize("common.install")}</mwc-button
+        >
+        <hacs-link slot="secondaryaction" .url="https://github.com/${this._repository.full_name}"
+          ><mwc-button>${localize("common.repository")}</mwc-button></hacs-link
+        >
       </hacs-dialog>
     `;
   }
@@ -205,12 +196,14 @@ export class HacsInstallDialog extends HacsDialogBase {
     } else {
       await repositoryInstall(this.hass, this._repository.id);
     }
-    if (this._repository.category === "plugin" && this.status.lovelace_mode !== "yaml") {
+    this.hacs.log.debug(this._repository.category, "_installRepository");
+    this.hacs.log.debug(this.hacs.status.lovelace_mode, "_installRepository");
+    if (this._repository.category === "plugin" && this.hacs.status.lovelace_mode === "storage") {
       await updateLovelaceResources(this.hass, this._repository);
     }
     this._installing = false;
     if (this._repository.category === "plugin") {
-      window.location.reload(true);
+      //window.location.reload(true);
     }
     this.dispatchEvent(
       new Event("hacs-secondary-dialog-closed", {
@@ -254,6 +247,10 @@ export class HacsInstallDialog extends HacsDialogBase {
         }
         paper-item-body {
           opacity: var(--dark-primary-opacity);
+        }
+        pre {
+          white-space: pre-line;
+          user-select: all;
         }
       `,
     ];

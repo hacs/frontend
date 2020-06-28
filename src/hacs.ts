@@ -2,6 +2,7 @@ import { LitElement, property } from "lit-element";
 import { Hacs } from "./data/hacs";
 import { sectionsEnabled } from "./panels/hacs-sections";
 import { addedToLovelace } from "./tools/added-to-lovelace";
+import { HacsLogger } from "./tools/hacs-logger";
 import { localize } from "./localize/localize";
 
 export class HacsElement extends LitElement {
@@ -15,6 +16,7 @@ export class HacsElement extends LitElement {
     );
 
     if (this.hacs === undefined) {
+      const log = new HacsLogger();
       this.hacs = {
         messages: [],
         updates: [],
@@ -25,6 +27,7 @@ export class HacsElement extends LitElement {
         status: {} as any,
         localize,
         addedToLovelace,
+        log,
       };
     }
   }

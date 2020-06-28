@@ -10,4 +10,5 @@ export interface Hacs {
   status?: Status;
   localize?(string: string, search?: string, replace?: string): string;
   addedToLovelace?(hacs: Hacs, repository: Repository): boolean;
+  log?: any;
 }

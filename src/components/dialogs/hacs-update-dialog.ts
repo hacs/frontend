@@ -111,7 +111,7 @@ export class HacsUpdateDialog extends HacsDialogBase {
       await repositoryInstall(this.hass, repository.id);
     }
     if (repository.category === "plugin") {
-      if (this.status.lovelace_mode !== "yaml") {
+      if (this.status.lovelace_mode === "storage") {
         await updateLovelaceResources(this.hass, repository);
       }
       window.location.reload(true);

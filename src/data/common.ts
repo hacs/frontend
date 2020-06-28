@@ -33,7 +33,7 @@ export interface Configuration {
 export interface Status {
   background_task: boolean;
   disabled: boolean;
-  lovelace_mode: "storage" | "yaml";
+  lovelace_mode: "storage" | "yaml" | "auto-gen";
   reloading_data: boolean;
   startup: boolean;
   manage_mode: boolean;
