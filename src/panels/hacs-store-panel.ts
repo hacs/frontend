@@ -170,6 +170,7 @@ export class HacsStorePanel extends LitElement {
       (repo) =>
         html`<hacs-repository-card
           .hass=${this.hass}
+          .hacs=${this.hacs}
           .repository=${repo}
           .narrow=${this.narrow}
           ?narrow=${this.narrow}

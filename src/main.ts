@@ -77,17 +77,17 @@ class HacsFrontend extends HacsElement {
 
   private async _updateProperties(prop: string = "all") {
     let repositories: Repository[];
-    const updates: any = {};
-    const fetch: any = {};
+    const _updates: any = {};
+    const _fetch: any = {};
 
     if (prop === "all") {
       [
         repositories,
-        fetch.configuration,
-        fetch.status,
-        fetch.critical,
-        fetch.lovelace,
-        fetch.removed,
+        _fetch.configuration,
+        _fetch.status,
+        _fetch.critical,
+        _fetch.resources,
+        _fetch.removed,
       ] = await Promise.all([
         getRepositories(this.hass),
         getConfiguration(this.hass),
@@ -99,25 +99,25 @@ class HacsFrontend extends HacsElement {
 
       //this.removed = removed;
       //this.critical = critical;
-      //this.lovelace = lovelace;
+      this.lovelace = _fetch.resources;
       this.repositories = repositories;
     } else if (prop === "configuration") {
-      fetch.configuration = await getConfiguration(this.hass);
+      _fetch.configuration = await getConfiguration(this.hass);
     } else if (prop === "status") {
-      fetch.status = await getStatus(this.hass);
+      _fetch.status = await getStatus(this.hass);
     } else if (prop === "repositories") {
       this.repositories = await getRepositories(this.hass);
     } else if (prop === "lovelace") {
-      fetch.lovelace = await getLovelaceConfiguration(this.hass);
+      _fetch.resources = await getLovelaceConfiguration(this.hass);
     }
 
-    Object.keys(fetch).forEach((update) => {
-      if (fetch[update] !== undefined) {
-        updates[update] = fetch[update];
+    Object.keys(_fetch).forEach((update) => {
+      if (_fetch[update] !== undefined) {
+        _updates[update] = _fetch[update];
       }
     });
-    if (updates) {
-      this._updateHacs(updates);
+    if (_updates) {
+      this._updateHacs(_updates);
     }
   }
 

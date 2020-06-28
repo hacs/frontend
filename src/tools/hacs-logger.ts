@@ -9,12 +9,12 @@ export class HacsLogger {
   }
 
   public log(log: any, prefix: string = "") {
-    const _prefix = prefix ? `[${this.prefix}:${prefix}] ` : `[${this.prefix}] `;
+    const _prefix = prefix ? `[${this.prefix}:${prefix}]` : `[${this.prefix}]`;
     console.log(_prefix, log);
   }
 
   public debug(log: any, prefix: string = "") {
-    const _prefix = prefix ? `[${this.prefix}:${prefix}] ` : `[${this.prefix}] `;
+    const _prefix = prefix ? `[${this.prefix}:${prefix}]` : `[${this.prefix}]`;
     console.debug(_prefix, log);
   }
 }
