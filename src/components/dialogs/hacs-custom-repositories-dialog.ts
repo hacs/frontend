@@ -10,10 +10,15 @@ import {
   PropertyValues,
 } from "lit-element";
 import { HacsDialogBase } from "./hacs-dialog-base";
+import { scrollBarStyle } from "../../styles/element-styles";
+import "../../../homeassistant-frontend/src/components/ha-svg-icon";
+import { mdiGithub, mdiDelete } from "@mdi/js";
 
 import { repositoryDelete, getRepositories, repositoryAdd } from "../../data/websocket";
 
 import { localize } from "../../localize/localize";
+
+import "../hacs-icon-button";
 
 @customElement("hacs-custom-repositories-dialog")
 export class HacsCustomRepositoriesDialog extends HacsDialogBase {
@@ -23,13 +28,7 @@ export class HacsCustomRepositoriesDialog extends HacsDialogBase {
   @query("#category") private _addCategory?: any;
 
   shouldUpdate(changedProperties: PropertyValues) {
-    changedProperties.forEach((_oldValue, propName) => {
-      if (propName === "hass") {
-        this.sidebarDocked = window.localStorage.getItem("dockedSidebar") === '"docked"';
-      }
-    });
     return (
-      changedProperties.has("sidebarDocked") ||
       changedProperties.has("narrow") ||
       changedProperties.has("active") ||
       changedProperties.has("_error") ||
@@ -45,11 +44,10 @@ export class HacsCustomRepositoriesDialog extends HacsDialogBase {
         .active=${this.active}
         .hass=${this.hass}
         .title=${localize("dialog_custom_repositories.title")}
-        noActions
       >
         <div class="content">
-          ${this._error ? html`<div class="error">${this._error.message}</div>` : ""}
           <div class="list">
+            ${this._error ? html`<div class="error">${this._error.message}</div>` : ""}
             ${repositories?.map(
               (repo) => html`<paper-icon-item>
                 ${repo.category === "integration"
@@ -61,7 +59,7 @@ export class HacsCustomRepositoriesDialog extends HacsDialogBase {
                         @load=${this._onImageLoad}
                       />
                     `
-                  : html`<ha-icon icon="mdi:github-circle" slot="item-icon"></ha-icon>`}
+                  : html`<ha-svg-icon .path=${mdiGithub} slot="item-icon"></ha-svg-icon>`}
                 <paper-item-body
                   @click=${() => this._showReopsitoryInfo(String(repo.id))}
                   three-line
@@ -70,40 +68,42 @@ export class HacsCustomRepositoriesDialog extends HacsDialogBase {
                   <div secondary>
                     Category: ${repo.category}
                   </div></paper-item-body
-                ><ha-icon-button
+                ><hacs-icon-button
                   class="delete"
-                  icon="mdi:delete"
+                  .icon=${mdiDelete}
                   @click=${() => this._removeRepository(repo.id)}
-                ></ha-icon-button>
+                ></hacs-icon-button>
               </paper-icon-item>`
             )}
           </div>
-          <div class="add">
-            <input
-              id="add-input"
-              class="add-input"
-              placeholder="${localize("dialog_custom_repositories.url_placeholder")}"
-              .value=${this._inputRepository || ""}
-              @input=${this._inputValueChanged}
-            />
-          </div>
-          <div class="add-actions">
-            <paper-dropdown-menu
-              class="category"
-              label="${localize("dialog_custom_repositories.category")}"
-            >
-              <paper-listbox id="category" slot="dropdown-content" selected="-1">
-                ${this.configuration.categories.map(
-                  (category) => html`
-                    <paper-item class="categoryitem" .category=${category}>
-                      ${localize(`common.${category}`)}
-                    </paper-item>
-                  `
-                )}
-              </paper-listbox>
-            </paper-dropdown-menu>
-            <mwc-button raised @click=${this._addRepository}>${localize("common.add")}</mwc-button>
-          </div>
+        </div>
+        <input
+          id="add-input"
+          class="add-input"
+          slot="secondaryaction"
+          placeholder="${localize("dialog_custom_repositories.url_placeholder")}"
+          .value=${this._inputRepository || ""}
+          @input=${this._inputValueChanged}
+        />
+
+        <div class="add" slot="primaryaction">
+          <paper-dropdown-menu
+            class="category"
+            label="${localize("dialog_custom_repositories.category")}"
+          >
+            <paper-listbox id="category" slot="dropdown-content" selected="-1">
+              ${this.hacs.configuration.categories.map(
+                (category) => html`
+                  <paper-item class="categoryitem" .category=${category}>
+                    ${localize(`common.${category}`)}
+                  </paper-item>
+                `
+              )}
+            </paper-listbox>
+          </paper-dropdown-menu>
+          <mwc-button slot="primaryaction" raised @click=${this._addRepository}
+            >${localize("common.add")}</mwc-button
+          >
         </div>
       </hacs-dialog>
     `;
@@ -167,88 +167,89 @@ export class HacsCustomRepositoriesDialog extends HacsDialogBase {
     );
   }
   static get styles() {
-    return css`
-      .content {
-        width: 1024px;
-        display: contents;
-      }
-      .list {
-        margin-top: 16px;
-      }
-      ha-icon-button,
-      ha-icon {
-        color: var(--secondary-text-color);
-      }
-      ha-icon {
-        --mdc-icon-size: 36px;
-      }
-      img {
-        align-items: center;
-        display: block;
-        justify-content: center;
-        margin-bottom: 16px;
-        max-height: 36px;
-        max-width: 36px;
-        position: absolute;
-      }
-      .delete,
-      paper-item-body {
-        cursor: pointer;
-      }
-      .error {
-        line-height: 0px;
-        margin: 12px;
-        color: var(--hacs-error-color, var(--google-red-500));
-      }
+    return [
+      scrollBarStyle,
+      css`
+        .content {
+          width: 1024px;
+          display: contents;
+        }
+        .list {
+          position: relative;
+          margin-top: 16px;
+          max-height: 870px;
+          overflow: auto;
+        }
+        ha-icon-button,
+        ha-icon {
+          color: var(--secondary-text-color);
+        }
+        ha-icon {
+          --mdc-icon-size: 36px;
+        }
+        img {
+          align-items: center;
+          display: block;
+          justify-content: center;
+          margin-bottom: 16px;
+          max-height: 36px;
+          max-width: 36px;
+          position: absolute;
+        }
+        .delete,
+        paper-item-body {
+          cursor: pointer;
+        }
+        .error {
+          line-height: 0px;
+          margin: 12px;
+          color: var(--hacs-error-color, var(--google-red-500));
+        }
 
-      paper-item-body {
-        width: 100%;
-        min-height: var(--paper-item-body-two-line-min-height, 72px);
-        display: var(--layout-vertical_-_display);
-        flex-direction: var(--layout-vertical_-_flex-direction);
-        justify-content: var(--layout-center-justified_-_justify-content);
-      }
-      paper-item-body div {
-        font-size: 14px;
-        color: var(--secondary-text-color);
-      }
-      .add {
-        border-top: 1px solid var(--divider-color);
-        margin-top: 32px;
-      }
-      .add-actions {
-        justify-content: space-between;
-      }
-      .add,
-      .add-actions {
-        display: flex;
-        align-items: center;
-        font-size: 20px;
-        height: 65px;
-        background-color: var(--sidebar-background-color);
-        border-bottom: 1px solid var(--divider-color);
-        padding: 0 16px;
-        box-sizing: border-box;
-      }
-      .add-input {
-        width: calc(100% - 80px);
-        height: 40px;
-        border: 0;
-        padding: 0 16px;
-        font-size: initial;
-        color: var(--sidebar-text-color);
-        font-family: var(--paper-font-body1_-_font-family);
-      }
-      input:focus {
-        outline-offset: 0;
-        outline: 0;
-      }
-      input {
-        background-color: var(--sidebar-background-color);
-      }
-      paper-dropdown-menu {
-        width: 75%;
-      }
-    `;
+        paper-item-body {
+          width: 100%;
+          min-height: var(--paper-item-body-two-line-min-height, 72px);
+          display: var(--layout-vertical_-_display);
+          flex-direction: var(--layout-vertical_-_flex-direction);
+          justify-content: var(--layout-center-justified_-_justify-content);
+        }
+        paper-item-body div {
+          font-size: 14px;
+          color: var(--secondary-text-color);
+        }
+        .add {
+          display: flex;
+          width: 100%;
+          align-items: center;
+        }
+
+        .add-input {
+          width: 100%;
+          height: 40px;
+          border: 0;
+          padding: 0;
+          text-align: left;
+          padding-right: 71px;
+          font-size: initial;
+          color: var(--sidebar-text-color);
+          font-family: var(--paper-font-body1_-_font-family);
+        }
+        input:focus {
+          outline-offset: 0;
+          outline: 0;
+        }
+        input {
+          background-color: var(--sidebar-background-color);
+        }
+        paper-dropdown-menu {
+          width: 100%;
+          left: -50px;
+          top: -8px;
+        }
+        mwc-button {
+          margin-right: 10px;
+        }
+      `,
+    ];
   }
 }
