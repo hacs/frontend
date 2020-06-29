@@ -24,7 +24,7 @@
     "custom-card-helpers": "^1.6.4",
     "eslint": "^6.5.1",
     "eslint-config-airbnb-base": "^14.0.0",
-    "eslint-plugin-import": "^2.21.2",
+    "eslint-plugin-import": "^2.22.0",
     "highlight.js": "^10.1.1",
     "lit-element": "^2.3.1",
     "lit-html": "^1.2.1",
