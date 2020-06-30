@@ -4,7 +4,7 @@
   "image": "ludeeus/container:frontend",
   "context": "..",
   "appPort": ["5000:5000"],
-  "postCreateCommand": "yarn; yarn postinstall",
+  "postCreateCommand": "make init",
   "runArgs": [
     "-v",
     "${env:HOME}${env:USERPROFILE}/.ssh:/tmp/.ssh"
