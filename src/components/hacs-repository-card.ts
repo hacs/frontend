@@ -245,7 +245,6 @@ export class HacsRepositoryCard extends LitElement {
   }
 
   private async _uninstallRepository() {
-    await repositoryUninstall(this.hass, this.repository.id);
     if (this.repository.category === "plugin" && this.status.lovelace_mode !== "yaml") {
       const resources = await fetchResources(this.hass);
       resources
@@ -254,6 +253,7 @@ export class HacsRepositoryCard extends LitElement {
           deleteResource(this.hass, String(resource.id));
         });
     }
+    await repositoryUninstall(this.hass, this.repository.id);
   }
 
   static get styles(): CSSResultArray {
