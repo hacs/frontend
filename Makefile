@@ -8,13 +8,13 @@ help: ## Shows help message.
 init: bootstrap
 
 start: ## Start the frontend
-	yarn start;
+	@ yarn start;
 
 bootstrap: ## Run yarn
-	yarn;
+	@ yarn;
 
 build: ## Build the frontend
-	yarn build;
+	@ yarn build;
 
 update: ## Pull master from hacs/frontend
-	git pull upstream master;
+	@ git pull upstream master;
