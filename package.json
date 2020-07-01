@@ -21,7 +21,7 @@
     "@typescript-eslint/parser": "^2.34.0",
     "card-tools": "github:thomasloven/card-tools",
     "chokidar": "^3.4.0",
-    "custom-card-helpers": "^1.6.4",
+    "custom-card-helpers": "^1.6.5",
     "eslint": "^6.5.1",
     "eslint-config-airbnb-base": "^14.0.0",
     "eslint-plugin-import": "^2.21.2",
