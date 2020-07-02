@@ -252,17 +252,13 @@ export class HacsRepositoryCard extends LitElement {
   }
 
   private async _uninstallRepository() {
-    if (this.repository.category === "plugin" && this.status.lovelace_mode === "storage") {
-      const url = lovelaceURL(this.repository);
-      const _removable = this.hacs.resources.filter((resource) => resource.url === url);
-      this.hacs.log.debug(this.hacs.resources, "_uninstallRepository");
-      this.hacs.log.debug(_removable, "_uninstallRepository");
-      this.hacs.log.debug(this.repository, "_uninstallRepository");
-
-      _removable.forEach((resource) => {
-        this.hacs.log.debug(`removing ${resource.url} (${resource.id} )`, "_uninstallRepository");
-        deleteResource(this.hass, String(resource.id));
-      });
+    if (this.repository.category === "plugin" && this.status.lovelace_mode !== "yaml") {
+      const resources = await fetchResources(this.hass);
+      resources
+        .filter((resource) => resource.url === this._lovelaceUrl())
+        .forEach((resource) => {
+          deleteResource(this.hass, String(resource.id));
+        });
     }
     await repositoryUninstall(this.hass, this.repository.id);
   }
