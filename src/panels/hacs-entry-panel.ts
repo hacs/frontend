@@ -35,7 +35,7 @@ import {
 import { HacsStyles } from "../styles/hacs-common-style";
 import { getMessages } from "../tools/get-messages";
 import { localize } from "../localize/localize";
-import { Hacs } from "../hacs";
+import { Hacs } from "../data/hacs";
 
 import "../components/hacs-section-navigation";
 
@@ -191,6 +191,14 @@ export class HacsEntryPanel extends LitElement {
 
         app-header-layout {
           display: contents;
+        }
+        app-header,
+        app-toolbar {
+          background-color: var(--hcv-primary-background-color);
+        }
+
+        ha-svg-icon {
+          color: var(--secondary-text-color);
         }
 
         ha-config-section {

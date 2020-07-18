@@ -2,6 +2,7 @@ const gulp = require("gulp");
 const rollup = require("rollup");
 const http = require("http");
 const log = require("fancy-log");
+const { string } = require("rollup-plugin-string");
 const handler = require("serve-handler");
 const json = require("@rollup/plugin-json");
 const commonjs = require("@rollup/plugin-commonjs");
@@ -28,6 +29,9 @@ const DevelopPlugins = [
   json({
     compact: true,
     preferConst: true,
+  }),
+  string({
+    include: ["node_modules/**/*.css"],
   }),
   babel({
     babelrc: false,

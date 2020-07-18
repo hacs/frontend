@@ -70,7 +70,7 @@ export const searchStyles = css`
     display: block;
     position: relative;
     left: -22px;
-    top: -15px;
+    top: -7px;
     color: var(--secondary-text-color);
     margin-left: 0;
   }
@@ -82,6 +82,10 @@ export const searchStyles = css`
   .search search-input {
     position: relative;
     top: 2px;
+  }
+
+  search-input {
+    --layout-fit_-_right: 100vw;
   }
 `;
 
