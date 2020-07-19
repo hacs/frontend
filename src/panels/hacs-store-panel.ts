@@ -145,7 +145,7 @@ export class HacsStorePanel extends LitElement {
             ></search-input>
           </div>`}
       <div class="content ${this.narrow ? "narrow-content" : ""}">
-        ${this.filters[this.section].length > 1
+        ${this.filters[this.section]?.length > 1
           ? html`<div class="filters">
               <hacs-filter .filters="${this.filters[this.section]}"></hacs-filter>
             </div>`

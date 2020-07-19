@@ -87,9 +87,10 @@ export class HacsAddRepositoryDialog extends HacsDialogBase {
       this._repositoriesInActiveCategory(this.repositories, this.hacs.configuration?.categories),
       this._searchInput
     );
+
     if (this.filters.length !== 0) {
       repositories = repositories.filter(
-        (repository) => this.filters.find((filter) => (filter.id = repository.category))?.checked
+        (repository) => this.filters.find((filter) => filter.id === repository.category)?.checked
       );
     }
 
