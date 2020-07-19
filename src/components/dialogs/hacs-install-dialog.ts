@@ -18,14 +18,15 @@ import {
   repositoryInstall,
   getRepositories,
   repositoryInstallVersion,
-  fetchResources,
-  createResource,
 } from "../../data/websocket";
 import { updateLovelaceResources } from "../../tools/update-lovelace-resources";
 import { localize } from "../../localize/localize";
 import { HacsDialogBase } from "./hacs-dialog-base";
 import { Repository } from "../../data/common";
 import { repositoryUpdate } from "../../data/websocket";
+import "../../../homeassistant-frontend/src/components/ha-switch";
+import "../../../homeassistant-frontend/src/components/ha-formfield";
+import "../../../homeassistant-frontend/src/components/ha-circular-progress";
 import "./hacs-dialog";
 import "../hacs-link";
 
@@ -96,12 +97,13 @@ export class HacsInstallDialog extends HacsDialogBase {
         <div class="content">
           ${this._repository.version_or_commit === "version"
             ? html`<div class="beta-container">
-                  <ha-switch
-                    ?disabled=${this._toggle}
-                    .checked=${this._repository.beta}
-                    @change=${this._toggleBeta}
-                    >${localize("dialog_install.show_beta")}</ha-switch
-                  >
+                  <ha-formfield .label=${localize("dialog_install.show_beta")}>
+                    <ha-switch
+                      ?disabled=${this._toggle}
+                      .checked=${this._repository.beta}
+                      @change=${this._toggleBeta}
+                    ></ha-switch>
+                  </ha-formfield>
                 </div>
                 <div class="version-select-container">
                   <paper-dropdown-menu
@@ -164,7 +166,7 @@ export class HacsInstallDialog extends HacsDialogBase {
           ?disabled=${!this._repository.can_install || this._toggle}
           @click=${this._installRepository}
           >${this._installing
-            ? html`<paper-spinner active></paper-spinner>`
+            ? html`<ha-circular-progress active></ha-circular-progress>`
             : localize("common.install")}</mwc-button
         >
         <hacs-link slot="secondaryaction" .url="https://github.com/${this._repository.full_name}"
