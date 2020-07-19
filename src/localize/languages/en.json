@@ -237,7 +237,9 @@
     "update_information": "Update information"
   },
   "search": {
-    "placeholder": "Search for repository"
+    "placeholder": "Search for repository",
+    "installed": "Search for installed repositories",
+    "installed_new": "Search for installed or new repositories"
   },
   "menu": {
     "about": "About HACS",

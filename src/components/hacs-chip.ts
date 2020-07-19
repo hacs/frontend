@@ -8,20 +8,36 @@ import {
   property,
 } from "lit-element";
 
+import { classMap } from "lit-html/directives/class-map";
+
 import "../../homeassistant-frontend/src/components/ha-svg-icon";
 
 @customElement("hacs-chip")
 export class HacsChip extends LitElement {
   @property() public icon!: string;
   @property() public value!: any;
+  @property() public url?: string;
 
   protected render(): TemplateResult | void {
     return html`
-      <div class="chip">
+      <div
+        class="chip ${classMap({
+          pointer: this.url !== undefined,
+        })}"
+        @tap=${this._openURL}
+      >
         <div class="icon"><ha-svg-icon .path=${this.icon}></ha-svg-icon></div>
         <div class="value">${String(this.value) || ""}</div>
       </div>
     `;
+  }
+
+  private _openURL(ev: Event): void {
+    ev.stopPropagation();
+    if (this.url === undefined) {
+      return;
+    }
+    window.open(this.url, "_blank", "rel=noreferer");
   }
 
   static get styles(): CSSResultArray {
@@ -51,9 +67,10 @@ export class HacsChip extends LitElement {
         }
         .value {
           width: max-content;
-          margin: auto;
-          margin-left: 5px;
-          margin-right: 5px;
+          margin: 2px 5px auto;
+        }
+        .pointer {
+          cursor: pointer;
         }
         ha-svg-icon {
           --mdc-icon-size: 16px;

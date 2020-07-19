@@ -82,13 +82,12 @@ export class HacsRepositoryDialog extends HacsDialogBase {
               : ""}
             ${authors
               ? authors.map(
-                  (author) => html`<hacs-link .url="https://github.com/${author}"
-                    ><hacs-chip
-                      title="${localize("dialog_info.author")}"
-                      .icon=${mdiAccount}
-                      .value="@${author}"
-                    ></hacs-chip
-                  ></hacs-link>`
+                  (author) => html`<hacs-chip
+                    title="${localize("dialog_info.author")}"
+                    .url="https://github.com/${author}"
+                    .icon=${mdiAccount}
+                    .value="@${author}"
+                  ></hacs-chip>`
                 )
               : ""}
             ${this._repository.downloads
@@ -103,13 +102,12 @@ export class HacsRepositoryDialog extends HacsDialogBase {
               .icon=${mdiStar}
               .value=${this._repository.stars}
             ></hacs-chip>
-            <hacs-link .url="https://github.com/${this._repository.full_name}/issues">
-              <hacs-chip
-                title="${localize("dialog_info.open_issues")}"
-                .icon=${mdiExclamationThick}
-                .value=${this._repository.issues}
-              ></hacs-chip
-            ></hacs-link>
+            <hacs-chip
+              title="${localize("dialog_info.open_issues")}"
+              .icon=${mdiExclamationThick}
+              .value=${this._repository.issues}
+              .url="https://github.com/${this._repository.full_name}/issues"
+            ></hacs-chip>
           </div>
           ${this._repository.updated_info
             ? markdown.html(

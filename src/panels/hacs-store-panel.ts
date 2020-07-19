@@ -21,6 +21,7 @@ import { Hacs } from "../data/hacs";
 
 @customElement("hacs-store-panel")
 export class HacsStorePanel extends LitElement {
+  @property({ attribute: false }) public filters: any = {};
   @property({ attribute: false }) public hacs?: Hacs;
   @property() private _searchInput: string = "";
   @property({ attribute: false }) public hass!: HomeAssistant;
@@ -28,7 +29,6 @@ export class HacsStorePanel extends LitElement {
   @property({ attribute: false }) public isWide!: boolean;
   @property({ attribute: false }) public repositories!: Repository[];
   @property({ attribute: false }) public route!: Route;
-  @property({ attribute: false }) public filters: any = {};
   @property({ attribute: false }) public sections!: any;
   @property() public section!: string;
 
@@ -63,8 +63,7 @@ export class HacsStorePanel extends LitElement {
 
   private get visibleRepositories(): Repository[] {
     const repositories = this.allRepositories.filter(
-      (repo) =>
-        this.filters[this.section].find((filter) => filter.id === repo.category)?.checked || true
+      (repo) => this.filters[this.section]?.find((filter) => filter.id === repo.category)?.checked
     );
     return this._filterRepositories(repositories, this._searchInput);
   }
@@ -74,7 +73,7 @@ export class HacsStorePanel extends LitElement {
   }
 
   private _updateFilters(e) {
-    const current = this.filters[this.section].find((filter) => filter.id === e.detail.id);
+    const current = this.filters[this.section]?.find((filter) => filter.id === e.detail.id);
     this.filters[this.section].find(
       (filter) => filter.id === current.id
     ).checked = !current.checked;
@@ -88,11 +87,11 @@ export class HacsStorePanel extends LitElement {
       this.section
     )[1];
 
-    if (!this.filters[this.section]) {
+    if (!this.filters[this.section] && this.hacs.configuration.categories) {
       const categories = activePanel(this.route)?.categories;
       this.filters[this.section] = [];
       categories
-        ?.filter((c) => this.hacs.configuration?.categories?.includes(c))
+        ?.filter((c) => this.hacs.configuration?.categories.includes(c))
         .forEach((category) => {
           this.filters[this.section].push({
             id: category,
@@ -128,7 +127,7 @@ export class HacsStorePanel extends LitElement {
                 <search-input
                   class="header"
                   no-label-float
-                  no-underline
+                  .label=${this.hacs.localize("search.installed")}
                   .filter=${this._searchInput || ""}
                   @value-changed=${this._inputValueChanged}
                 ></search-input>
@@ -138,12 +137,19 @@ export class HacsStorePanel extends LitElement {
         : html`<div class="search">
             <search-input
               no-label-float
-              no-underline
+              .label=${newRepositories.length === 0
+                ? this.hacs.localize("search.installed")
+                : this.hacs.localize("search.installed_new")}
               .filter=${this._searchInput || ""}
               @value-changed=${this._inputValueChanged}
             ></search-input>
           </div>`}
       <div class="content ${this.narrow ? "narrow-content" : ""}">
+        ${this.filters[this.section].length > 1
+          ? html`<div class="filters">
+              <hacs-filter .filters="${this.filters[this.section]}"></hacs-filter>
+            </div>`
+          : ""}
         ${newRepositories?.length > 10
           ? html`<div class="new-repositories">
               ${localize("store.new_repositories_note")}

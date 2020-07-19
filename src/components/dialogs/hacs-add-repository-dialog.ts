@@ -13,6 +13,7 @@ import { sectionsEnabled, activePanel } from "../../panels/hacs-sections";
 import { filterRepositoriesByInput } from "../../tools/filter-repositories-by-input";
 import { searchStyles, scrollBarStyle } from "../../styles/element-styles";
 import "../hacs-chip";
+import "../hacs-filter";
 import { hacsIcon } from "../hacs-icon";
 import "../../../homeassistant-frontend/src/common/search/search-input";
 import "../../../homeassistant-frontend/src/components/ha-svg-icon";
@@ -20,8 +21,8 @@ import "../../../homeassistant-frontend/src/components/ha-svg-icon";
 @customElement("hacs-add-repository-dialog")
 export class HacsAddRepositoryDialog extends HacsDialogBase {
   @property({ attribute: false }) public filters: any = [];
-  @property() private _load: number = 30;
-  @property() private _top: number = 0;
+  @property({ type: Number }) private _load: number = 30;
+  @property({ type: Number }) private _top: number = 0;
   @property() private _searchInput: string = "";
   @property() private _sortBy: string = "stars";
   @property() public section!: string;
@@ -55,6 +56,19 @@ export class HacsAddRepositoryDialog extends HacsDialogBase {
 
   protected async firstUpdated() {
     this.addEventListener("filter-change", (e) => this._updateFilters(e));
+    if (this.filters?.length === 0) {
+      const categories = activePanel(this.route)?.categories;
+      categories
+        ?.filter((c) => this.hacs.configuration?.categories.includes(c))
+        .forEach((category) => {
+          this.filters.push({
+            id: category,
+            value: category,
+            checked: true,
+          });
+        });
+      this.requestUpdate("filters");
+    }
   }
 
   private _updateFilters(e) {
@@ -66,26 +80,18 @@ export class HacsAddRepositoryDialog extends HacsDialogBase {
   private _filterRepositories = memoizeOne(filterRepositoriesByInput);
 
   protected render(): TemplateResult | void {
-    this._searchInput = window.localStorage.getItem("hacs-search") || "";
     if (!this.active) return html``;
+    this._searchInput = window.localStorage.getItem("hacs-search") || "";
 
-    if (this.filters.length === 0) {
-      const categories = activePanel(this.route)?.categories;
-      categories
-        ?.filter((c) => this.hacs.configuration?.categories.includes(c))
-        .forEach((category) => {
-          this.filters.push({
-            id: category,
-            value: category,
-            checked: true,
-          });
-        });
-    }
-
-    const repositories = this._filterRepositories(
+    let repositories = this._filterRepositories(
       this._repositoriesInActiveCategory(this.repositories, this.hacs.configuration?.categories),
       this._searchInput
     );
+    if (this.filters.length !== 0) {
+      repositories = repositories.filter(
+        (repository) => this.filters.find((filter) => (filter.id = repository.category))?.checked
+      );
+    }
 
     return html`
       <hacs-dialog
@@ -94,28 +100,35 @@ export class HacsAddRepositoryDialog extends HacsDialogBase {
         .title=${localize("dialog_add_repo.title")}
         hideActions
       >
-        <search-input
-          no-label-float
-          .filter=${this._searchInput || ""}
-          @value-changed=${this._inputValueChanged}
-        ></search-input>
-        <div class="filter">
-          <paper-dropdown-menu label="${localize("dialog_add_repo.sort_by")}">
-            <paper-listbox slot="dropdown-content" selected="0">
-              <paper-item @tap=${() => (this._sortBy = "stars")}
-                >${localize("store.stars")}</paper-item
-              >
-              <paper-item @tap=${() => (this._sortBy = "name")}
-                >${localize("store.name")}</paper-item
-              >
-              <paper-item @tap=${() => (this._sortBy = "last_updated")}
-                >${localize("store.last_updated")}</paper-item
-              >
-            </paper-listbox>
-          </paper-dropdown-menu>
+        <div class="searchandfilter">
+          <search-input
+            no-label-float
+            .label=${localize("search.placeholder")}
+            .filter=${this._searchInput || ""}
+            @value-changed=${this._inputValueChanged}
+            ?narrow=${this.narrow}
+          ></search-input>
+          <div class="filter" ?narrow=${this.narrow}>
+            <paper-dropdown-menu
+              label="${localize("dialog_add_repo.sort_by")}"
+              ?narrow=${this.narrow}
+            >
+              <paper-listbox slot="dropdown-content" selected="0">
+                <paper-item @tap=${() => (this._sortBy = "stars")}
+                  >${localize("store.stars")}</paper-item
+                >
+                <paper-item @tap=${() => (this._sortBy = "name")}
+                  >${localize("store.name")}</paper-item
+                >
+                <paper-item @tap=${() => (this._sortBy = "last_updated")}
+                  >${localize("store.last_updated")}</paper-item
+                >
+              </paper-listbox>
+            </paper-dropdown-menu>
+          </div>
         </div>
         ${this.filters.length > 1
-          ? html`<div slot="filter" class="filter">
+          ? html`<div class="filters">
               <hacs-filter .filters="${this.filters}"></hacs-filter>
             </div>`
           : ""}
@@ -212,10 +225,12 @@ export class HacsAddRepositoryDialog extends HacsDialogBase {
         }
 
         .filter {
-          margin-bottom: -65px;
-          margin-top: 65px;
+          margin-top: -12px;
           display: flex;
+          width: 200px;
+          float: right;
         }
+
         .narrow {
           max-height: 480px;
           min-width: unset !important;
@@ -233,6 +248,15 @@ export class HacsAddRepositoryDialog extends HacsDialogBase {
         }
         ha-icon {
           --mdc-icon-size: 36px;
+        }
+        search-input {
+          float: left;
+          width: 60%;
+        }
+        search-input[narrow],
+        div.filter[narrow],
+        paper-dropdown-menu[narrow] {
+          width: 100%;
         }
         img {
           align-items: center;
@@ -254,8 +278,7 @@ export class HacsAddRepositoryDialog extends HacsDialogBase {
         }
 
         paper-dropdown-menu {
-          max-width: 30%;
-          margin: 11px 4px -5px;
+          margin: 0 12px 4px 0;
         }
 
         paper-item-body {
@@ -276,6 +299,10 @@ export class HacsAddRepositoryDialog extends HacsDialogBase {
         .add {
           border-top: 1px solid var(--divider-color);
           margin-top: 32px;
+        }
+        .filters {
+          width: 100%;
+          display: flex;
         }
         .add-actions {
           justify-content: space-between;
@@ -307,10 +334,7 @@ export class HacsAddRepositoryDialog extends HacsDialogBase {
         input {
           background-color: var(--sidebar-background-color);
         }
-        paper-dropdown-menu {
-          width: 75%;
-        }
-        hacs-search,
+
         hacs-filter {
           width: 100%;
         }

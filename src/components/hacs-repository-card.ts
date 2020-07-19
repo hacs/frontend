@@ -375,6 +375,9 @@ export class HacsRepositoryCard extends LitElement {
           width: calc(100% - 24px);
           margin: 11px;
         }
+        hacs-icon-button {
+          color: var(--accent-color);
+        }
       `,
     ];
   }
