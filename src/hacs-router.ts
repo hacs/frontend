@@ -15,7 +15,7 @@ import {
   Status,
 } from "./data/common";
 import { sectionsEnabled } from "./panels/hacs-sections";
-import { Hacs } from "./hacs";
+import { Hacs } from "./data/hacs";
 
 import "./panels/hacs-entry-panel";
 import "./panels/hacs-store-panel";

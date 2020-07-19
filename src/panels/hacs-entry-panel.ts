@@ -8,7 +8,6 @@ import {
   CSSResultArray,
   customElement,
   html,
-  PropertyValues,
   LitElement,
   TemplateResult,
   property,
@@ -193,8 +192,10 @@ export class HacsEntryPanel extends LitElement {
           display: contents;
         }
         app-header,
-        app-toolbar {
-          background-color: var(--hcv-primary-background-color);
+        app-toolbar,
+        ha-menu-button {
+          background-color: var(--primary-background-color);
+          --app-header-background-color: var(--primary-background-color);
         }
 
         ha-svg-icon {

@@ -92,12 +92,14 @@ export class HacsUpdateDialog extends HacsDialogBase {
             ? html`<paper-spinner active></paper-spinner>`
             : localize("common.update")}</mwc-button
         >
-        <hacs-link slot="secondaryaction" .url=${this._getChanglogURL()}
-          ><mwc-button>${localize("dialog_update.changelog")}</mwc-button></hacs-link
-        >
-        <hacs-link slot="secondaryaction" .url="https://github.com/${repository.full_name}"
-          ><mwc-button>${localize("common.repository")}</mwc-button></hacs-link
-        >
+        <div class="secondary" slot="secondaryaction">
+          <hacs-link .url=${this._getChanglogURL()}
+            ><mwc-button>${localize("dialog_update.changelog")}</mwc-button></hacs-link
+          >
+          <hacs-link .url="https://github.com/${repository.full_name}"
+            ><mwc-button>${localize("common.repository")}</mwc-button></hacs-link
+          >
+        </div>
       </hacs-dialog>
     `;
   }
@@ -144,6 +146,9 @@ export class HacsUpdateDialog extends HacsDialogBase {
         summary {
           padding: 4px;
           cursor: pointer;
+        }
+        .secondary {
+          display: flex;
         }
       `,
     ];

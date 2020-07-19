@@ -24,7 +24,7 @@ export class HacsDialog extends HacsDialogBase {
         <slot></slot>
       </div>
       <slot class="primary" name="primaryaction" slot="primaryAction"></slot>
-      <slot name="secondaryaction" slot="secondaryAction"></slot>
+      <slot class="secondary" name="secondaryaction" slot="secondaryAction"></slot>
     </ha-dialog>`;
   }
 

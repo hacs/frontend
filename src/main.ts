@@ -201,10 +201,4 @@ class HacsFrontend extends HacsElement {
     navigate(this, this.route.path, true);
     this.requestUpdate();
   }
-
-  private _sortRepositoriesByName = memoizeOne((repositories: Repository[]) =>
-    repositories.sort((a: Repository, b: Repository) =>
-      a.name.toLowerCase() > b.name.toLowerCase() ? 1 : -1
-    )
-  );
 }

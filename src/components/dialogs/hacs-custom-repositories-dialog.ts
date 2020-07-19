@@ -84,10 +84,12 @@ export class HacsCustomRepositoriesDialog extends HacsDialogBase {
           placeholder="${localize("dialog_custom_repositories.url_placeholder")}"
           .value=${this._inputRepository || ""}
           @input=${this._inputValueChanged}
+          ?narrow=${this.narrow}
         />
 
-        <div class="add" slot="primaryaction">
+        <div class="add" slot="primaryaction" ?narrow=${this.narrow}>
           <paper-dropdown-menu
+            ?narrow=${this.narrow}
             class="category"
             label="${localize("dialog_custom_repositories.category")}"
           >
@@ -101,7 +103,11 @@ export class HacsCustomRepositoriesDialog extends HacsDialogBase {
               )}
             </paper-listbox>
           </paper-dropdown-menu>
-          <mwc-button slot="primaryaction" raised @click=${this._addRepository}
+          <mwc-button
+            ?narrow=${this.narrow}
+            slot="primaryaction"
+            raised
+            @click=${this._addRepository}
             >${localize("common.add")}</mwc-button
           >
         </div>
@@ -248,6 +254,21 @@ export class HacsCustomRepositoriesDialog extends HacsDialogBase {
         }
         mwc-button {
           margin-right: 10px;
+        }
+
+        input[narrow],
+        .add[narrow],
+        paper-dropdown-menu[narrow],
+        mwc-button[narrow] {
+          margin: 0;
+          padding: 0;
+          left: 0;
+          top: 0;
+          width: 100%;
+          max-width: 100%;
+        }
+        .add[narrow] {
+          display: contents;
         }
       `,
     ];

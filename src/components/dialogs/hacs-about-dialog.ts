@@ -1,4 +1,4 @@
-import { css, CSSResultArray, customElement, html, TemplateResult } from "lit-element";
+import { customElement, html, TemplateResult } from "lit-element";
 
 import { markdown } from "../../tools/markdown/markdown";
 import { localize } from "../../localize/localize";

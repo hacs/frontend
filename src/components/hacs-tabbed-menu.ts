@@ -8,10 +8,6 @@ import { LitElement, customElement, property, html, css, TemplateResult } from "
 import { HomeAssistant, Route } from "../../homeassistant-frontend/src/types";
 import { Status, Configuration, Repository, LovelaceResource } from "../data/common";
 import { localize } from "../localize/localize";
-import { settingsClearAllNewRepositories } from "../data/websocket";
-
-import { sections } from "../panels/hacs-sections";
-
 import "../../homeassistant-frontend/src/components/ha-icon-button";
 
 import "../components/hacs-link";
@@ -98,6 +94,9 @@ export class HacsTabbedMenu extends LitElement {
       paper-menu-button {
         color: var(--hcv-text-color-secondary);
         padding: 0;
+      }
+      hacs-icon-button {
+        color: var(--secondary-text-color);
       }
       paper-item {
         cursor: pointer;

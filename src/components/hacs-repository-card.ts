@@ -21,7 +21,6 @@ import {
 import { HomeAssistant } from "../../homeassistant-frontend/src/types";
 import { mdiDotsVertical } from "@mdi/js";
 import { hacsIcon } from "./hacs-icon";
-import { lovelaceURL } from "../tools/added-to-lovelace";
 import "../components/hacs-icon-button";
 import "../components/hacs-link";
 
