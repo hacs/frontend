@@ -96,7 +96,7 @@ export class HacsTabbedMenu extends LitElement {
         padding: 0;
       }
       hacs-icon-button {
-        color: var(--secondary-text-color);
+        color: var(--sidebar-icon-color);
       }
       paper-item {
         cursor: pointer;

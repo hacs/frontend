@@ -1,5 +1,4 @@
 import { customElement, html, property, PropertyValues, query, TemplateResult } from "lit-element";
-import memoizeOne from "memoize-one";
 
 import { HomeAssistant, Route } from "../homeassistant-frontend/src/types";
 import { navigate } from "../homeassistant-frontend/src/common/navigate";
