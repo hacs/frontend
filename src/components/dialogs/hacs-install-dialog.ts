@@ -91,9 +91,9 @@ export class HacsInstallDialog extends HacsDialogBase {
         .narrow=${this.narrow}
         .hass=${this.hass}
         .secondary=${this.secondary}
+        .title=${this._repository.name}
         dynamicHeight
       >
-        <div slot="header">${this._repository.name}</div>
         <div class="content">
           ${this._repository.version_or_commit === "version"
             ? html`<div class="beta-container">
@@ -148,6 +148,7 @@ export class HacsInstallDialog extends HacsDialogBase {
             <code>'${installPath}'</code>
             ${this._repository.category === "plugin" && this.hacs.status.lovelace_mode !== "storage"
               ? html`
+                  <p>${localize(`repository.lovelace_instruction`)}</p>
                   <pre>
                 url: ${this._lovelaceUrl()}
                 type: module
