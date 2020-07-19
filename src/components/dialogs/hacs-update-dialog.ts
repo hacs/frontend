@@ -15,6 +15,8 @@ import { Repository } from "../../data/common";
 import { localize } from "../../localize/localize";
 import { markdown } from "../../tools/markdown/markdown";
 
+import "../../../homeassistant-frontend/src/components/ha-circular-progress";
+
 import "./hacs-dialog";
 import "../hacs-link";
 
@@ -89,7 +91,7 @@ export class HacsUpdateDialog extends HacsDialogBase {
           ?disabled=${!repository.can_install}
           @click=${this._updateRepository}
           >${this._updating
-            ? html`<paper-spinner active></paper-spinner>`
+            ? html`<ha-circular-progress active></ha-circular-progress>`
             : localize("common.update")}</mwc-button
         >
         <div class="secondary" slot="secondaryaction">
