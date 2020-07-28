@@ -11,7 +11,7 @@ const babelTypescript = require("@babel/preset-typescript");
 const babelDecorators = require("@babel/plugin-proposal-decorators");
 const babelClassProperties = require("@babel/plugin-proposal-class-properties");
 
-const resolve = require("@rollup/plugin-node-resolve");
+const { nodeResolve } = require("@rollup/plugin-node-resolve");
 const gzipPlugin = require("rollup-plugin-gzip");
 const { terser } = require("rollup-plugin-terser");
 
@@ -20,7 +20,7 @@ const isProd = process.env.NODE_ENV === "production";
 
 const DevelopPlugins = [
   commonjs(),
-  resolve({
+  nodeResolve({
     extensions,
     preferBuiltins: false,
     browser: true,

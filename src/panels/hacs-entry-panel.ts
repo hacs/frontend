@@ -194,6 +194,7 @@ export class HacsEntryPanel extends LitElement {
         app-header,
         app-toolbar,
         ha-menu-button {
+          color: var(--secondary-text-color);
           background-color: var(--primary-background-color);
           --app-header-background-color: var(--primary-background-color);
         }
