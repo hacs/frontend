@@ -42,6 +42,9 @@ export class markdown {
 
     // Handle convertion to raw GitHub URL
     input = input.replace(/(https:\/\/github\.com\/.*.\/blob*.[^\s]+)/g, function (x) {
+      if (x.includes(".md")) {
+        return x;
+      }
       let url = x
         .replace("https://github.com/", "https://raw.githubusercontent.com/")
         .replace("/blob/", "/");
