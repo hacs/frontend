@@ -20,4 +20,5 @@ update: ## Pull master from hacs/frontend
 	git pull upstream master;
 
 update-submodule: ## Udpate submodules
+	rm -R homeassistant-frontend;
 	git submodule update --init --recursive --remote;
