@@ -130,10 +130,15 @@ export class HacsRepositoryCard extends LitElement {
                 </div>`
             : this.repository.pending_upgrade && this.addedToLovelace
             ? html`<div>
-                <mwc-button class="update-header" @click=${this._updateRepository} raised
-                  >${localize("common.update")}</mwc-button
-                >
-              </div>`
+                  <mwc-button class="update-header" @click=${this._updateRepository} raised
+                    >${localize("common.update")}</mwc-button
+                  >
+                </div>
+                <div>
+                  <hacs-link .url="https://github.com/${this.repository.full_name}"
+                    ><mwc-button>${localize("common.repository")}</mwc-button></hacs-link
+                  >
+                </div>`
             : html`<div>
                 <hacs-link .url="https://github.com/${this.repository.full_name}"
                   ><mwc-button>${localize("common.repository")}</mwc-button></hacs-link
