@@ -17,7 +17,7 @@ export class HacsLink extends LitElement {
   }
 
   private _open(): void {
-    const external = this.url.includes("http");
+    const external = this.url?.includes("http");
     let features = "";
     let target = "_blank";
 
@@ -28,7 +28,6 @@ export class HacsLink extends LitElement {
       target = "_top";
     }
 
-    console.log(this.url, target, features);
     window.open(this.url, target, features);
   }
 

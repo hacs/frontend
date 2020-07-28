@@ -11,20 +11,23 @@ import { classMap, ClassInfo } from "lit-html/directives/class-map";
 import { localize } from "../localize/localize";
 import { HacsStyles } from "../styles/hacs-common-style";
 import { Repository, Status, RemovedRepository } from "../data/common";
+import { Hacs } from "../data/hacs";
 import {
   repositorySetNotNew,
   repositoryUninstall,
   repositoryUpdate,
-  fetchResources,
   deleteResource,
 } from "../data/websocket";
-import { HomeAssistant } from "custom-card-helpers";
-
+import { HomeAssistant } from "../../homeassistant-frontend/src/types";
+import { mdiDotsVertical } from "@mdi/js";
+import { hacsIcon } from "./hacs-icon";
+import "../components/hacs-icon-button";
 import "../components/hacs-link";
 
 @customElement("hacs-repository-card")
 export class HacsRepositoryCard extends LitElement {
   @property({ attribute: false }) public hass!: HomeAssistant;
+  @property({ attribute: false }) public hacs!: Hacs;
   @property({ attribute: false }) public repository!: Repository;
   @property({ attribute: false }) public status: Status;
   @property({ attribute: false }) public removed: RemovedRepository[];
@@ -81,19 +84,19 @@ export class HacsRepositoryCard extends LitElement {
   protected render(): TemplateResult | void {
     const path = this.repository.local_path.split("/");
     return html`
-      <ha-card class=${classMap(this._borderClass)}>
+      <ha-card class=${classMap(this._borderClass)} ?narrow=${this.narrow}>
         <div class="card-content">
           <div class="group-header">
             <div class="status-header ${classMap(this._headerClass)}">
               ${this._headerTitle}
             </div>
             <div class="title">
-              <h2 class="pointer" @click=${this._showReopsitoryInfo}>
+              <h1 class="pointer" @click=${this._showReopsitoryInfo}>
                 ${this.repository.name}
-              </h2>
+              </h1>
               ${this.repository.category !== "integration"
                 ? html` <hacs-chip
-                    icon="hacs:hacs"
+                    .icon=${hacsIcon}
                     .value=${localize(`common.${this.repository.category}`)}
                   ></hacs-chip>`
                 : ""}
@@ -127,10 +130,15 @@ export class HacsRepositoryCard extends LitElement {
                 </div>`
             : this.repository.pending_upgrade && this.addedToLovelace
             ? html`<div>
-                <mwc-button class="update-header" @click=${this._updateRepository} raised
-                  >${localize("common.update")}</mwc-button
-                >
-              </div>`
+                  <mwc-button class="update-header" @click=${this._updateRepository} raised
+                    >${localize("common.update")}</mwc-button
+                  >
+                </div>
+                <div>
+                  <hacs-link .url="https://github.com/${this.repository.full_name}"
+                    ><mwc-button>${localize("common.repository")}</mwc-button></hacs-link
+                  >
+                </div>`
             : html`<div>
                 <hacs-link .url="https://github.com/${this.repository.full_name}"
                   ><mwc-button>${localize("common.repository")}</mwc-button></hacs-link
@@ -143,7 +151,10 @@ export class HacsRepositoryCard extends LitElement {
                 vertical-offset="40"
                 close-on-activate
               >
-                <ha-icon-button icon="hass:dots-vertical" slot="dropdown-trigger"></ha-icon-button>
+                <hacs-icon-button
+                  .icon=${mdiDotsVertical}
+                  slot="dropdown-trigger"
+                ></hacs-icon-button>
                 <paper-listbox slot="dropdown-content">
                   <paper-item class="pointer" @tap=${this._showReopsitoryInfo}
                     >${localize("repository_card.information")}</paper-item
@@ -260,14 +271,13 @@ export class HacsRepositoryCard extends LitElement {
     return [
       HacsStyles,
       css`
-        :host {
-          max-width: 500px;
-        }
         ha-card {
           display: flex;
           flex-direction: column;
           height: 100%;
+          width: 480px;
         }
+
         hacs-chip {
           margin: 8px 4px 0 0;
         }
@@ -291,11 +301,11 @@ export class HacsRepositoryCard extends LitElement {
           height: auto;
           align-content: center;
         }
-        .group-header h2 {
+        .group-header h1 {
           margin: 0;
           padding: 8px 16px;
         }
-        h2 {
+        h1 {
           margin-top: 0;
           min-height: 24px;
         }
@@ -326,6 +336,7 @@ export class HacsRepositoryCard extends LitElement {
         .new-header {
           background-color: var(--hcv-color-new);
           color: var(--hcv-text-color-on-background);
+          border-radius: var(--ha-card-border-radius, 4px);
         }
 
         .issue-header {
@@ -362,6 +373,14 @@ export class HacsRepositoryCard extends LitElement {
           left: 0;
           border-top-left-radius: var(--ha-card-border-radius);
           border-top-right-radius: var(--ha-card-border-radius);
+        }
+
+        ha-card[narrow] {
+          width: calc(100% - 24px);
+          margin: 11px;
+        }
+        hacs-icon-button {
+          color: var(--accent-color);
         }
       `,
     ];

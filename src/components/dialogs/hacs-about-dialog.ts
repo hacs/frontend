@@ -1,4 +1,4 @@
-import { css, CSSResultArray, customElement, html, TemplateResult } from "lit-element";
+import { customElement, html, TemplateResult } from "lit-element";
 
 import { markdown } from "../../tools/markdown/markdown";
 import { localize } from "../../localize/localize";
@@ -13,17 +13,13 @@ export class HacsAboutDialog extends HacsDialogBase {
     return html`
       <hacs-dialog
         .active=${this.active}
-        .narrow=${this.narrow}
         .hass=${this.hass}
-        noActions
-        dynamicHeight
+        .title=${this.narrow ? "HACS" : "Home Assistant Community Store"}
+        hideActions
       >
-        <div slot="header">
-          ${this.narrow ? "HACS" : "Home Assistant Community Store"}
-        </div>
         <div class="content">
           ${markdown.html(`
-**${localize("dialog_about.integration_version")}:** | ${this.configuration.version}
+**${localize("dialog_about.integration_version")}:** | ${this.hacs.configuration.version}
 --|--
 **${localize("dialog_about.frontend_version")}:** | ${version}
 **${localize("common.repositories")}:** | ${this.repositories.length}
@@ -49,16 +45,5 @@ _The HACS and Home Assistant teams do not support **anything** you find here._
         </div>
       </hacs-dialog>
     `;
-  }
-
-  static get styles(): CSSResultArray {
-    return [
-      css`
-        .content {
-          font-size: 16px;
-          padding-top: 16px;
-        }
-      `,
-    ];
   }
 }

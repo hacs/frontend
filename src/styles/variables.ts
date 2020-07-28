@@ -14,6 +14,9 @@ export const hacsStyleVariables = css`
     --hcv-text-color-secondary: var(--secondary-text-color);
     --hcv-text-color-link: var(--link-text-color, var(--accent-color));
 
+    --mdc-dialog-heading-ink-color: var(--hcv-text-color-primary);
+    --mdc-dialog-content-ink-color: var(--hcv-text-color-primary);
+
     /*hacs-fab*/
     --hcv-color-fab: var(--hacs-fab-color, var(--accent-color));
     --hcv-text-color-fab: var(--hacs-fab-text-color, var(--hcv-text-color-on-background));
@@ -22,8 +25,7 @@ export const hacsStyleVariables = css`
     --hcv-color-chip: var(--hacs-chip-color, var(--accent-color));
     --hcv-text-color-chip: var(--hacs-chip-text-color, var(--hcv-text-color-on-background));
 
-    /*hacs-fab*/
+    /*hacs-link*/
     --hcv-text-decoration-link: var(--hacs-link-text-decoration, none);
-    /*hacs-fab*/
   }
 `;

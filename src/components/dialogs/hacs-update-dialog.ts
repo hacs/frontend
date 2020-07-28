@@ -1,6 +1,9 @@
 import { css, CSSResultArray, customElement, html, TemplateResult, property } from "lit-element";
 import memoizeOne from "memoize-one";
-
+import "@polymer/paper-dropdown-menu/paper-dropdown-menu";
+import "@polymer/paper-listbox/paper-listbox";
+import { classMap } from "lit-html/directives/class-map";
+import { scrollBarStyle } from "../../styles/element-styles";
 import {
   repositoryInstall,
   repositoryInstallVersion,
@@ -11,6 +14,8 @@ import { HacsDialogBase } from "./hacs-dialog-base";
 import { Repository } from "../../data/common";
 import { localize } from "../../localize/localize";
 import { markdown } from "../../tools/markdown/markdown";
+
+import "../../../homeassistant-frontend/src/components/ha-circular-progress";
 
 import "./hacs-dialog";
 import "../hacs-link";
@@ -43,13 +48,10 @@ export class HacsUpdateDialog extends HacsDialogBase {
     return html`
       <hacs-dialog
         .active=${this.active}
-        .narrow=${this.narrow}
+        .title=${localize("dialog_update.title")}
         .hass=${this.hass}
-        ?dynamicHeight=${this._releaseNotes.length === 0}
-        ?hasContent=${this._releaseNotes.length > 0}
       >
-        <div slot="header">${localize("dialog_update.title")}</div>
-        <div class="content">
+        <div class=${classMap({ content: true, narrow: this.narrow })}>
           ${repository.name}
           <p>
             <b>${localize("dialog_update.installed_version")}:</b>
@@ -84,12 +86,15 @@ export class HacsUpdateDialog extends HacsDialogBase {
             : ""}
           ${this._error ? html`<div class="error">${this._error.message}</div>` : ""}
         </div>
-        <div slot="actions">
-          <mwc-button ?disabled=${!repository.can_install} @click=${this._updateRepository}
-            >${this._updating
-              ? html`<paper-spinner active></paper-spinner>`
-              : localize("common.update")}</mwc-button
-          >
+        <mwc-button
+          slot="primaryaction"
+          ?disabled=${!repository.can_install}
+          @click=${this._updateRepository}
+          >${this._updating
+            ? html`<ha-circular-progress active></ha-circular-progress>`
+            : localize("common.update")}</mwc-button
+        >
+        <div class="secondary" slot="secondaryaction">
           <hacs-link .url=${this._getChanglogURL()}
             ><mwc-button>${localize("dialog_update.changelog")}</mwc-button></hacs-link
           >
@@ -110,7 +115,7 @@ export class HacsUpdateDialog extends HacsDialogBase {
       await repositoryInstall(this.hass, repository.id);
     }
     if (repository.category === "plugin") {
-      if (this.status.lovelace_mode !== "yaml") {
+      if (this.status.lovelace_mode === "storage") {
         await updateLovelaceResources(this.hass, repository);
       }
       window.location.reload(true);
@@ -129,6 +134,7 @@ export class HacsUpdateDialog extends HacsDialogBase {
 
   static get styles(): CSSResultArray {
     return [
+      scrollBarStyle,
       css`
         .content {
           padding: 32px 8px;
@@ -142,6 +148,9 @@ export class HacsUpdateDialog extends HacsDialogBase {
         summary {
           padding: 4px;
           cursor: pointer;
+        }
+        .secondary {
+          display: flex;
         }
       `,
     ];

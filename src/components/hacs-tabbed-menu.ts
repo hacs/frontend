@@ -1,11 +1,17 @@
-import { LitElement, customElement, property, html, css, TemplateResult } from "lit-element";
-import { HomeAssistant } from "custom-card-helpers";
-import { Route, Status, Configuration, Repository, LovelaceResource } from "../data/common";
-import { localize } from "../localize/localize";
-import { settingsClearAllNewRepositories } from "../data/websocket";
+import "@polymer/paper-menu-button/paper-menu-button";
+import "@polymer/paper-listbox/paper-listbox";
+import "@polymer/paper-item/paper-item";
 
-import { sections } from "../panels/hacs-sections";
+import { mdiDotsVertical } from "@mdi/js";
+
+import { LitElement, customElement, property, html, css, TemplateResult } from "lit-element";
+import { HomeAssistant, Route } from "../../homeassistant-frontend/src/types";
+import { Status, Configuration, Repository, LovelaceResource } from "../data/common";
+import { localize } from "../localize/localize";
+import "../../homeassistant-frontend/src/components/ha-icon-button";
+
 import "../components/hacs-link";
+import "../components/hacs-icon-button";
 
 @customElement("hacs-tabbed-menu")
 export class HacsTabbedMenu extends LitElement {
@@ -25,13 +31,10 @@ export class HacsTabbedMenu extends LitElement {
       vertical-offset="40"
       close-on-activate
     >
-      <ha-icon-button icon="hass:dots-vertical" slot="dropdown-trigger"></ha-icon-button>
+      <hacs-icon-button .icon=${mdiDotsVertical} slot="dropdown-trigger"></hacs-icon-button>
       <paper-listbox slot="dropdown-content">
         <hacs-link url="https://hacs.xyz/"
           ><paper-item>${localize("menu.documentation")}</paper-item></hacs-link
-        >
-        <paper-item @tap=${() => window.location.reload(true)}
-          >${localize("menu.reload")}</paper-item
         >
         ${this.repositories?.filter((repo) => repo.new).length !== 0
           ? html` <paper-item @tap=${this._clearAllNewRepositories}
@@ -55,8 +58,8 @@ export class HacsTabbedMenu extends LitElement {
   }
 
   private async _clearAllNewRepositories() {
-    const section = sections.panels.find((s) => s.id === this.route.path.replace("/", ""));
-    await settingsClearAllNewRepositories(this.hass, section.categories);
+    //const section = sections.panels.find((s) => s.id === this.route.path.replace("/", ""));
+    //await settingsClearAllNewRepositories(this.hass, section.categories);
   }
 
   private _showAboutDialog() {
@@ -91,6 +94,9 @@ export class HacsTabbedMenu extends LitElement {
       paper-menu-button {
         color: var(--hcv-text-color-secondary);
         padding: 0;
+      }
+      hacs-icon-button {
+        color: var(--sidebar-icon-color);
       }
       paper-item {
         cursor: pointer;

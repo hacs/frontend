@@ -14,8 +14,10 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v1
+      - uses: actions/checkout@v2
+      - name: Checkout submodules
+        uses: textbook/git-checkout-submodule-action@master
       - name: Install dependencies
-        run: yarn
+        run: script/bootstrap
       - name: Build
-        run: yarn build
+        run: script/build

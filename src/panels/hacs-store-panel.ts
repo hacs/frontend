@@ -1,55 +1,47 @@
 import { LitElement, customElement, property, html, css, TemplateResult } from "lit-element";
 import memoizeOne from "memoize-one";
+import "@material/mwc-fab";
+import { mdiPlus } from "@mdi/js";
+import { HomeAssistant, Route } from "../../homeassistant-frontend/src/types";
+import "../../homeassistant-frontend/src/layouts/hass-tabs-subpage";
+import "../../homeassistant-frontend/src/common/search/search-input";
+import { Repository } from "../data/common";
 
-import { HomeAssistant } from "custom-card-helpers";
-import {
-  Route,
-  Status,
-  Configuration,
-  Repository,
-  LovelaceResource,
-  RemovedRepository,
-} from "../data/common";
-import "../layout/hacs-tabbed-layout";
 import "../components/hacs-repository-card";
-import "../components/hacs-search";
 import "../components/hacs-filter";
 import "../components/hacs-fab";
 import "../components/hacs-tabbed-menu";
 
 import { localize } from "../localize/localize";
 import { HacsStyles } from "../styles/hacs-common-style";
-import { sections, activePanel } from "./hacs-sections";
-import { addedToLovelace } from "../tools/added-to-lovelace";
+import { hassTabsSubpage, fabStyles, searchStyles, scrollBarStyle } from "../styles/element-styles";
+import { activePanel } from "./hacs-sections";
 import { filterRepositoriesByInput } from "../tools/filter-repositories-by-input";
+import { Hacs } from "../data/hacs";
 
 @customElement("hacs-store-panel")
 export class HacsStorePanel extends LitElement {
+  @property({ attribute: false }) public filters: any = {};
+  @property({ attribute: false }) public hacs?: Hacs;
   @property() private _searchInput: string = "";
-  @property({ attribute: false }) public configuration: Configuration;
   @property({ attribute: false }) public hass!: HomeAssistant;
   @property({ attribute: false }) public narrow!: boolean;
-  @property({ attribute: false }) public route!: Route;
+  @property({ attribute: false }) public isWide!: boolean;
   @property({ attribute: false }) public repositories!: Repository[];
-  @property({ attribute: false }) public lovelace: LovelaceResource[];
-  @property({ attribute: false }) public status: Status;
-  @property({ attribute: false }) public removed: RemovedRepository[];
-  @property({ attribute: false }) public filters: any = {};
+  @property({ attribute: false }) public route!: Route;
+  @property({ attribute: false }) public sections!: any;
   @property() public section!: string;
 
   private _repositoriesInActiveSection = memoizeOne(
     (repositories: Repository[], sections: any, section: string) => {
       const installedRepositories: Repository[] = repositories?.filter(
         (repo) =>
-          sections.panels
-            .find((panel) => panel.id === section)
-            .categories?.includes(repo.category) && repo.installed
+          sections.find((panel) => panel.id === section).categories?.includes(repo.category) &&
+          repo.installed
       );
       const newRepositories: Repository[] = repositories?.filter(
         (repo) =>
-          sections.panels
-            .find((panel) => panel.id === section)
-            .categories?.includes(repo.category) &&
+          sections.find((panel) => panel.id === section).categories?.includes(repo.category) &&
           repo.new &&
           !repo.installed
       );
@@ -57,18 +49,10 @@ export class HacsStorePanel extends LitElement {
     }
   );
 
-  private _panelsEnabled = memoizeOne((sections: any, config: Configuration) => {
-    return sections.panels.filter((panel) => {
-      const categories = panel.categories;
-      if (categories === undefined) return true;
-      return categories.filter((c) => config?.categories.includes(c)).length !== 0;
-    });
-  });
-
   private get allRepositories(): Repository[] {
     const [installedRepositories, newRepositories] = this._repositoriesInActiveSection(
       this.repositories,
-      sections,
+      this.sections,
       this.section
     );
 
@@ -79,7 +63,7 @@ export class HacsStorePanel extends LitElement {
 
   private get visibleRepositories(): Repository[] {
     const repositories = this.allRepositories.filter(
-      (repo) => this.filters[this.section].find((filter) => filter.id === repo.category).checked
+      (repo) => this.filters[this.section]?.find((filter) => filter.id === repo.category)?.checked
     );
     return this._filterRepositories(repositories, this._searchInput);
   }
@@ -89,7 +73,7 @@ export class HacsStorePanel extends LitElement {
   }
 
   private _updateFilters(e) {
-    const current = this.filters[this.section].find((filter) => filter.id === e.detail.id);
+    const current = this.filters[this.section]?.find((filter) => filter.id === e.detail.id);
     this.filters[this.section].find(
       (filter) => filter.id === current.id
     ).checked = !current.checked;
@@ -99,15 +83,15 @@ export class HacsStorePanel extends LitElement {
   protected render(): TemplateResult {
     const newRepositories = this._repositoriesInActiveSection(
       this.repositories,
-      sections,
+      this.sections,
       this.section
     )[1];
 
-    if (!this.filters[this.section]) {
+    if (!this.filters[this.section] && this.hacs.configuration.categories) {
       const categories = activePanel(this.route)?.categories;
       this.filters[this.section] = [];
       categories
-        ?.filter((c) => this.configuration.categories.includes(c))
+        ?.filter((c) => this.hacs.configuration?.categories.includes(c))
         .forEach((category) => {
           this.filters[this.section].push({
             id: category,
@@ -117,50 +101,74 @@ export class HacsStorePanel extends LitElement {
         });
     }
 
-    const tabs = this._panelsEnabled(sections, this.configuration);
-
-    return html`<hacs-tabbed-layout
+    return html`<hass-tabs-subpage
+      back-path="/hacs/entry"
       .hass=${this.hass}
-      .tabs=${tabs}
-      .route=${this.route}
       .narrow=${this.narrow}
-      .selected=${this.section}
-      ><hacs-tabbed-menu
+      .route=${this.route}
+      .tabs=${this.sections}
+      hasFab
+    >
+      <hacs-tabbed-menu
         slot="toolbar-icon"
         .hass=${this.hass}
         .route=${this.route}
         .narrow=${this.narrow}
-        .configuration=${this.configuration}
-        .lovelace=${this.lovelace}
-        .status=${this.status}
+        .configuration=${this.hacs.configuration}
+        .lovelace=${this.hacs.resources}
+        .status=${this.hacs.status}
         .repositories=${this.repositories}
       >
       </hacs-tabbed-menu>
-
-      <hacs-search .input=${this._searchInput} @input=${this._inputValueChanged}></hacs-search>
-      ${this.filters[this.section].length > 1
-        ? html`<hacs-filter class="filter" .filters="${this.filters[this.section]}"></hacs-filter>`
-        : ""}
-      ${newRepositories?.length > 10
-        ? html`<div class="new-repositories">
-            ${localize("store.new_repositories_note")}
-          </div>`
-        : ""}
-      <div class="content">
-        ${this.allRepositories.length === 0
-          ? this._renderEmpty()
-          : this.visibleRepositories.length === 0
-          ? this._renderNoResultsFound()
-          : this._renderRepositories()}
+      ${this.narrow
+        ? html`
+            <div slot="header">
+              <slot name="header">
+                <search-input
+                  class="header"
+                  no-label-float
+                  .label=${this.hacs.localize("search.installed")}
+                  .filter=${this._searchInput || ""}
+                  @value-changed=${this._inputValueChanged}
+                ></search-input>
+              </slot>
+            </div>
+          `
+        : html`<div class="search">
+            <search-input
+              no-label-float
+              .label=${newRepositories.length === 0
+                ? this.hacs.localize("search.installed")
+                : this.hacs.localize("search.installed_new")}
+              .filter=${this._searchInput || ""}
+              @value-changed=${this._inputValueChanged}
+            ></search-input>
+          </div>`}
+      <div class="content ${this.narrow ? "narrow-content" : ""}">
+        ${this.filters[this.section]?.length > 1
+          ? html`<div class="filters">
+              <hacs-filter .filters="${this.filters[this.section]}"></hacs-filter>
+            </div>`
+          : ""}
+        ${newRepositories?.length > 10
+          ? html`<div class="new-repositories">
+              ${localize("store.new_repositories_note")}
+            </div>`
+          : ""}
+        <div class="container ${this.narrow ? "narrow" : ""}">
+          ${this.repositories === undefined
+            ? ""
+            : this.allRepositories.length === 0
+            ? this._renderEmpty()
+            : this.visibleRepositories.length === 0
+            ? this._renderNoResultsFound()
+            : this._renderRepositories()}
+        </div>
       </div>
-      <hacs-fab
-        .narrow=${this.narrow}
-        @click=${this._addRepository}
-        icon="mdi:plus"
-        title="Add repository"
-      >
-      </hacs-fab>
-    </hacs-tabbed-layout>`;
+      <mwc-fab ?is-wide=${this.isWide} ?narrow=${this.narrow} @click=${this._addRepository}>
+        <ha-svg-icon slot="icon" path=${mdiPlus}></ha-svg-icon>
+      </mwc-fab>
+    </hass-tabs-subpage>`;
   }
 
   private _renderRepositories(): TemplateResult[] {
@@ -168,11 +176,13 @@ export class HacsStorePanel extends LitElement {
       (repo) =>
         html`<hacs-repository-card
           .hass=${this.hass}
+          .hacs=${this.hacs}
           .repository=${repo}
           .narrow=${this.narrow}
-          .status=${this.status}
-          .removed=${this.removed}
-          .addedToLovelace=${addedToLovelace(this.lovelace, this.configuration, repo)}
+          ?narrow=${this.narrow}
+          .status=${this.hacs.status}
+          .removed=${this.hacs.removed}
+          .addedToLovelace=${this.hacs.addedToLovelace(this.hacs, repo)}
         ></hacs-repository-card>`
     );
   }
@@ -198,7 +208,8 @@ export class HacsStorePanel extends LitElement {
   }
 
   private _inputValueChanged(ev: any) {
-    this._searchInput = ev.target.input;
+    this._searchInput = ev.detail.value;
+    window.localStorage.setItem("hacs-search", this._searchInput);
   }
 
   private _addRepository() {
@@ -218,20 +229,26 @@ export class HacsStorePanel extends LitElement {
   static get styles() {
     return [
       HacsStyles,
+      hassTabsSubpage,
+      fabStyles,
+      searchStyles,
+      scrollBarStyle,
       css`
-        hacs-repository-card {
-          max-width: 500px;
-          display: flex;
-          flex-direction: column;
-          justify-content: space-between;
-        }
         .filter {
           border-bottom: 1px solid var(--divider-color);
         }
         .content {
+          height: calc(100vh - 128px);
+          overflow: auto;
+        }
+        .narrow-content {
+          height: calc(100vh - 128px);
+        }
+        .container {
           display: grid;
-          grid-template-columns: repeat(auto-fit, minmax(360px, 1fr));
-          grid-gap: 16px 16px;
+          grid-template-columns: repeat(auto-fit, minmax(480px, 1fr));
+          justify-items: center;
+          grid-gap: 8px 8px;
           padding: 8px 16px 16px;
           margin-bottom: 64px;
         }
@@ -242,12 +259,33 @@ export class HacsStorePanel extends LitElement {
         }
         .new-repositories {
           margin: 4px 16px 0 16px;
+          color: var(--hcv-text-color-primary);
         }
-        paper-item {
-          cursor: pointer;
+        hacs-repository-card {
+          max-width: 500px;
+          display: flex;
+          flex-direction: column;
+          justify-content: space-between;
         }
-        ha-icon {
-          color: var(--hcv-text-color-on-background);
+        hacs-repository-card[narrow] {
+          width: 100%;
+        }
+        hacs-repository-card[narrow]:last-of-type {
+          margin-bottom: 64px;
+        }
+        .narrow {
+          width: 100%;
+          display: block;
+          padding: 0px;
+          margin: 0;
+        }
+
+        .container .narrow {
+          margin-bottom: 128px;
+        }
+
+        .bottom-bar {
+          position: fixed !important;
         }
       `,
     ];

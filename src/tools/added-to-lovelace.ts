@@ -1,11 +1,12 @@
-import { Configuration, LovelaceResource, Repository } from "../data/common";
+import { Repository } from "../data/common";
+import { Hacs } from "../data/hacs";
 
-export const addedToLovelace = (
-  resources: LovelaceResource[],
-  configuration: Configuration,
-  repository: Repository
-) => {
-  if (configuration.frontend_mode === "yaml") {
+export const lovelaceURL = (repository: Repository) => {
+  return `/hacsfiles/${repository?.full_name.split("/")[1]}/${repository?.file_name}`;
+};
+
+export const addedToLovelace = (hacs: Hacs, repository: Repository) => {
+  if (hacs.status?.lovelace_mode !== "storage") {
     return true;
   }
   if (!repository.installed) {
@@ -14,8 +15,6 @@ export const addedToLovelace = (
   if (repository.category !== "plugin") {
     return true;
   }
-  const url = `/hacsfiles/${repository?.full_name.split("/")[1]}/${
-    repository?.file_name
-  }`;
-  return resources.map((resource) => resource.url).includes(url);
+  const url = `/hacsfiles/${repository?.full_name.split("/")[1]}/${repository?.file_name}`;
+  return hacs.resources?.map((resource) => resource.url).includes(url);
 };

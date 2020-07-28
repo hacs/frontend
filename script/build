@@ -1,0 +1,15 @@
+#!/bin/sh
+# Run the frontend development server
+
+# Stop on errors
+set -e
+
+cd "$(dirname "$0")/.."
+
+if [ ! -d "./node_modules" ]; then
+    echo "Directory /node_modules DOES NOT exists."
+    echo "Running yarn install"
+    yarn install
+fi
+
+./node_modules/.bin/gulp build

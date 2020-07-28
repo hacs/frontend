@@ -15,11 +15,10 @@ export class HacsEventDialog extends HacsDialogBase {
 
   protected render(): TemplateResult | void {
     if (!this.active) return html``;
-    const el: any = document.createElement(
-      `hacs-${this.params.type || "generic"}-dialog`
-    );
+    const el: any = document.createElement(`hacs-${this.params.type || "generic"}-dialog`);
     el.active = true;
     el.hass = this.hass;
+    el.hacs = this.hacs;
     el.narrow = this.narrow;
     el.configuration = this.configuration;
     el.lovelace = this.lovelace;
