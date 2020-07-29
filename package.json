@@ -80,7 +80,7 @@
     "typescript": "^3.9.7"
   },
   "dependencies": {
-    "@material/circular-progress": "=8.0.0-canary.a78ceb112.0",
+    "@material/circular-progress": "=8.0.0-canary.75553837c.0",
     "@material/mwc-button": "^0.17.2",
     "@material/mwc-dialog": "^0.17.2",
     "@material/mwc-fab": "^0.17.2",
