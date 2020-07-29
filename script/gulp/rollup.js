@@ -19,6 +19,9 @@ const extensions = [".js", ".ts"];
 const isProd = process.env.NODE_ENV === "production";
 
 const DevelopPlugins = [
+  string({
+    include: ["node_modules/**/*.css"],
+  }),
   commonjs(),
   nodeResolve({
     extensions,
@@ -29,9 +32,6 @@ const DevelopPlugins = [
   json({
     compact: true,
     preferConst: true,
-  }),
-  string({
-    include: ["node_modules/**/*.css"],
   }),
   babel({
     babelrc: false,
@@ -59,7 +59,7 @@ const DebugPlugins = DevelopPlugins.concat([gzipPlugin.default()]);
 
 const inputconfig = {
   input: "./src/main.ts",
-  plugins: isProd ? BuildPlugins : DevelopPlugins,
+  plugins: DevelopPlugins,
 };
 const outputconfig = {
   file: "./hacs_frontend/main.js",
@@ -85,7 +85,6 @@ gulp.task("rollup-develop", () => {
     plugins: inputconfig.plugins,
     output: outputconfig,
     watch: {
-      chokidar: { usePolling: true },
       include: ["./src/**"],
     },
   });
@@ -114,6 +113,7 @@ gulp.task("rollup-develop", () => {
 });
 
 gulp.task("rollup-build", async function (task) {
+  inputconfig.plugins = BuildPlugins;
   const bundle = await rollup.rollup(inputconfig);
   await bundle.write(outputconfig);
   task();
