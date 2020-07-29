@@ -7,7 +7,9 @@ import { mdiDotsVertical } from "@mdi/js";
 import { LitElement, customElement, property, html, css, TemplateResult } from "lit-element";
 import { HomeAssistant, Route } from "../../homeassistant-frontend/src/types";
 import { Status, Configuration, Repository, LovelaceResource } from "../data/common";
+import { settingsClearAllNewRepositories } from "../data/websocket";
 import { localize } from "../localize/localize";
+import { activePanel } from "../panels/hacs-sections";
 import "../../homeassistant-frontend/src/components/ha-icon-button";
 
 import "../components/hacs-link";
@@ -58,8 +60,7 @@ export class HacsTabbedMenu extends LitElement {
   }
 
   private async _clearAllNewRepositories() {
-    //const section = sections.panels.find((s) => s.id === this.route.path.replace("/", ""));
-    //await settingsClearAllNewRepositories(this.hass, section.categories);
+    await settingsClearAllNewRepositories(this.hass, activePanel(this.route).categories);
   }
 
   private _showAboutDialog() {
