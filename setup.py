@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 
 setup(
     name="hacs-frontend",
-    version="master",
+    version="main",
     description="The HACS frontend",
     url="https://github.com/hacs/frontend",
     author="Joakim Sorensen",

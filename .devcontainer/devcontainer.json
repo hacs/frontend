@@ -4,11 +4,8 @@
   "image": "ludeeus/container:frontend",
   "context": "..",
   "appPort": ["5000:5000"],
-  "postCreateCommand": "make init",
-  "runArgs": [
-    "-v",
-    "${env:HOME}${env:USERPROFILE}/.ssh:/tmp/.ssh"
-  ],
+  "postCreateCommand": "apk add make && make init",
+  "runArgs": ["-v", "${env:HOME}${env:USERPROFILE}/.ssh:/tmp/.ssh"],
   "extensions": [
     "github.vscode-pull-request-github",
     "tabnine.tabnine-vscode",

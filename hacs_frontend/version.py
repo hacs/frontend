@@ -1,1 +1,1 @@
-VERSION="master"
+VERSION="main"

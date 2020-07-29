@@ -16,8 +16,8 @@ bootstrap: ## Run yarn
 build: ## Build the frontend
 	yarn build;
 
-update: ## Pull master from hacs/frontend
-	git pull upstream master;
+update: ## Pull main from hacs/frontend
+	git pull upstream main;
 
 update-submodule: ## Udpate submodules
 	rm -R homeassistant-frontend;

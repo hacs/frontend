@@ -44,9 +44,9 @@ jobs:
       - name: "Set version number"
         run: |
           export version=${{ github.ref }}
-          sed -i "s|master|${version##*/}|" ./setup.py
-          sed -i "s|master|${version##*/}|" ./hacs_frontend/version.py
-          sed -i "s|master|${version##*/}|" ./src/version.ts
+          sed -i "s|main|${version##*/}|" ./setup.py
+          sed -i "s|main|${version##*/}|" ./hacs_frontend/version.py
+          sed -i "s|main|${version##*/}|" ./src/version.ts
 
           cat ./setup.py
           cat ./hacs_frontend/version.py
@@ -56,10 +56,10 @@ jobs:
         run: |
           python -m pip install --upgrade pip
           pip install setuptools wheel twine
-          script/bootstrap
+          make bootstrap
 
       - name: Build
-        run: script/build
+        run: make build
 
       - name: Publish to PyPi
         env:
