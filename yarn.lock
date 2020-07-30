@@ -1337,10 +1337,10 @@
     "@material/feature-targeting" "8.0.0-canary.a78ceb112.0"
     "@material/theme" "8.0.0-canary.a78ceb112.0"
 
-"@mdi/js@5.4.45":
-  version "5.4.45"
-  resolved "https://registry.yarnpkg.com/@mdi/js/-/js-5.4.45.tgz#f907d5dee76e831763fc2f799a35bbe0dc6280f8"
-  integrity sha512-KjWT28n9dKTECgEIoIcAy4itwFjg8w0QCYSNkGcOiDxNkXfdYpXX29mmWBsfUzWMF3S2j5LgBFhlHz1D9CeZ1w==
+"@mdi/js@5.4.55":
+  version "5.4.55"
+  resolved "https://registry.yarnpkg.com/@mdi/js/-/js-5.4.55.tgz#7798c38da36a705ee6d635eb4507be63e914b05f"
+  integrity sha512-9kWM1mGB8KiiKgGjPV1CRoF4aQifzAegvIR2zODm6VpuXDHDOVn7yOFH4D/K6imKVp9HE02N9uxHuxUKB0gjRg==
 
 "@mdi/svg@5.4.55":
   version "5.4.55"
