@@ -15,6 +15,7 @@
     "documentation": "Documentation",
     "element": "element",
     "hacs_is_disabled": "HACS is disabled",
+    "ignore": "Ignore",
     "install": "Install",
     "installed": "installed",
     "integration": "Integration",
