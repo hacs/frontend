@@ -3,6 +3,7 @@ import { customElement, html, TemplateResult, property } from "lit-element";
 import { HacsDialogBase } from "./hacs-dialog-base";
 import "./hacs-generic-dialog";
 import "./hacs-about-dialog";
+import "./hacs-removed-dialog";
 import "./hacs-update-dialog";
 import "./hacs-repository-info-dialog";
 import "./hacs-custom-repositories-dialog";

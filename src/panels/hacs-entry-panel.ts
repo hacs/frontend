@@ -69,6 +69,8 @@ export class HacsEntryPanel extends LitElement {
         info: message.info,
         path: message.path || "",
         class: message.severity,
+        dialog: message.dialog,
+        repository: message.repository,
       });
     });
 

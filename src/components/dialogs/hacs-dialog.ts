@@ -1,6 +1,7 @@
 import { css, customElement, html, TemplateResult, property } from "lit-element";
 import { HacsDialogBase } from "./hacs-dialog-base";
 import { hacsStyleDialog, scrollBarStyle } from "../../styles/element-styles";
+import { HacsStyles } from "../../styles//hacs-common-style";
 import { createCloseHeading } from "../../../homeassistant-frontend/src/components/ha-dialog";
 
 import "../hacs-icon-button";
@@ -32,6 +33,7 @@ export class HacsDialog extends HacsDialogBase {
     return [
       hacsStyleDialog,
       scrollBarStyle,
+      HacsStyles,
       css`
         .content {
           overflow: auto;

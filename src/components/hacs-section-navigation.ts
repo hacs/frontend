@@ -29,7 +29,11 @@ class HacsSectionNavigation extends LitElement {
           (page) =>
             html`
               <hacs-link .url=${page.path}>
-                <paper-icon-item>
+                <paper-icon-item
+                  @tap=${() => {
+                    this._openDialog(page);
+                  }}
+                >
                   <ha-svg-icon
                     .path=${page.iconPath}
                     slot="item-icon"
@@ -48,6 +52,22 @@ class HacsSectionNavigation extends LitElement {
         )}
       </ha-card>
     `;
+  }
+
+  private _openDialog(page: HacsPageNavigation) {
+    if (!page.dialog) {
+      return;
+    }
+    this.dispatchEvent(
+      new CustomEvent("hacs-dialog", {
+        detail: {
+          type: page.dialog,
+          repository: page.repository,
+        },
+        bubbles: true,
+        composed: true,
+      })
+    );
   }
 
   static get styles(): CSSResult {
