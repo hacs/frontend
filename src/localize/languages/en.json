@@ -190,6 +190,12 @@
     "no_match": "No repositories found matching your filter",
     "sort_by": "Sort by"
   },
+  "dialog_removed": {
+    "name": "Repository name",
+    "type": "Removal type",
+    "reason": "Removal reason",
+    "link": "External link to more information"
+  },
   "dialog_custom_repositories": {
     "title": "Custom repositories",
     "url_placeholder": "Add custom repository URL",
@@ -277,7 +283,8 @@
       "restart": {
         "title": "Pending restart",
         "content": "You have {number} integrations that requires a restart of Home Assistant, you can do that from the 'Server Controls' section under the configuration part of Home Assistant UI."
-      }
+      },
+      "removed": "Removed repository '{repository}'"
     },
     "intro": "Updates and important messages will show here if there are any",
     "information": "Information",

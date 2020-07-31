@@ -16,15 +16,21 @@ export const getMessages = memoizeOne((hacs: Hacs, repositories: Repository[]) =
     if (repo.installed && repo.category === "plugin" && !addedToLovelace(hacs, repo)) {
       repositoriesNotAddedToLovelace.push(repo);
     }
-    if (repo.installed && hacs.removed.map((r) => r.repository).includes(repo.full_name)) {
+    if (repo.installed && !hacs.removed.map((r) => r.repository).includes(repo.full_name)) {
       const removedrepo = hacs.removed.find((r) => r.repository !== repo.full_name);
+      messages.push({
+        name: hacs
+          .localize("entry.messages.removed")
+          .replace("{repository}", removedrepo.repository),
+        info: removedrepo.reason,
+        severity: "error",
+        dialog: "removed",
+        repository: repo,
+      });
     }
   });
 
-  if (
-    hacs.configuration &&
-    hacs.configuration.frontend_expected !== hacs.configuration.frontend_running
-  ) {
+  if (hacs.configuration.frontend_expected !== hacs.configuration.frontend_running) {
     messages.push({
       name: hacs.localize("entry.messages.wrong_frontend_installed.title"),
       info: hacs
@@ -33,7 +39,10 @@ export const getMessages = memoizeOne((hacs: Hacs, repositories: Repository[]) =
         .replace("{expected}", hacs.configuration.frontend_expected),
       severity: "error",
     });
-  } else if (hacs.configuration && hacs.configuration.frontend_expected !== version) {
+  } else if (
+    hacs.configuration.frontend_expected !== version &&
+    hacs.configuration.frontend_expected !== undefined
+  ) {
     messages.push({
       name: hacs.localize("entry.messages.wrong_frontend_loaded.title"),
       info: hacs
