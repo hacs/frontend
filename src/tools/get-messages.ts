@@ -21,7 +21,10 @@ export const getMessages = memoizeOne((hacs: Hacs, repositories: Repository[]) =
     }
   });
 
-  if (hacs.configuration.frontend_expected !== hacs.configuration.frontend_running) {
+  if (
+    hacs.configuration &&
+    hacs.configuration.frontend_expected !== hacs.configuration.frontend_running
+  ) {
     messages.push({
       name: hacs.localize("entry.messages.wrong_frontend_installed.title"),
       info: hacs
@@ -30,7 +33,7 @@ export const getMessages = memoizeOne((hacs: Hacs, repositories: Repository[]) =
         .replace("{expected}", hacs.configuration.frontend_expected),
       severity: "error",
     });
-  } else if (hacs.configuration.frontend_expected !== version) {
+  } else if (hacs.configuration && hacs.configuration.frontend_expected !== version) {
     messages.push({
       name: hacs.localize("entry.messages.wrong_frontend_loaded.title"),
       info: hacs

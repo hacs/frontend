@@ -8,6 +8,8 @@ import {
   property,
 } from "lit-element";
 
+import { navigate } from "../../homeassistant-frontend/src/common/navigate";
+
 @customElement("hacs-link")
 export class HacsLink extends LitElement {
   @property({ type: Boolean }) public newtab: boolean = false;
@@ -17,6 +19,10 @@ export class HacsLink extends LitElement {
   }
 
   private _open(): void {
+    if (this.url.startsWith("/")) {
+      navigate(this, this.url, true);
+      return;
+    }
     const external = this.url?.includes("http");
     let features = "";
     let target = "_blank";
@@ -24,6 +30,7 @@ export class HacsLink extends LitElement {
     if (external) {
       features = "noreferrer=true";
     }
+
     if (!external && !this.newtab) {
       target = "_top";
     }
