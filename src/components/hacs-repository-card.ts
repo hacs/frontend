@@ -17,6 +17,7 @@ import {
   repositoryUninstall,
   repositoryUpdate,
   deleteResource,
+  fetchResources,
 } from "../data/websocket";
 import { HomeAssistant } from "../../homeassistant-frontend/src/types";
 import { mdiDotsVertical } from "@mdi/js";
