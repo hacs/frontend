@@ -125,7 +125,8 @@ class HacsFrontend extends HacsElement {
     applyThemesOnElement(
       this.parentElement,
       this.hass.themes,
-      this.hass.selectedTheme || this.hass.themes.default_theme
+      this.hass.selectedTheme?.theme || this.hass.themes.default_theme,
+      this.hass.selectedTheme
     );
     if (this.route.path === "") {
       navigate(this, "/hacs/entry", true);
