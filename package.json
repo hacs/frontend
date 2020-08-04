@@ -89,7 +89,7 @@
     "@material/mwc-list": "^0.17.2",
     "@material/mwc-menu": "^0.17.2",
     "@material/mwc-ripple": "^0.17.2",
-    "@material/mwc-switch": "^0.17.2",
+    "@material/mwc-switch": "^0.18.0",
     "@material/mwc-tab": "^0.17.2",
     "@material/mwc-tab-bar": "^0.17.2",
     "@material/top-app-bar": "=8.0.0-canary.a78ceb112.0",
