@@ -84,7 +84,7 @@
     "@material/mwc-button": "^0.17.2",
     "@material/mwc-dialog": "^0.17.2",
     "@material/mwc-fab": "^0.17.2",
-    "@material/mwc-formfield": "^0.17.2",
+    "@material/mwc-formfield": "^0.18.0",
     "@material/mwc-icon-button": "^0.17.2",
     "@material/mwc-list": "^0.17.2",
     "@material/mwc-menu": "^0.17.2",
