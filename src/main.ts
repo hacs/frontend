@@ -4,6 +4,7 @@ import { HomeAssistant, Route } from "../homeassistant-frontend/src/types";
 import { navigate } from "../homeassistant-frontend/src/common/navigate";
 import { applyThemesOnElement } from "../homeassistant-frontend/src/common/dom/apply_themes_on_element";
 import "../homeassistant-frontend/src/resources/ha-style";
+import { atLeastVersion } from "../homeassistant-frontend/src/common/config/version";
 import {
   Configuration,
   Critical,
@@ -122,12 +123,16 @@ class HacsFrontend extends HacsElement {
 
   protected firstUpdated(changedProps: PropertyValues) {
     super.firstUpdated(changedProps);
+
     applyThemesOnElement(
       this.parentElement,
       this.hass.themes,
-      this.hass.selectedTheme?.theme || this.hass.themes.default_theme,
+      atLeastVersion(this.hass.config.version, 0, 114)
+        ? this.hass.selectedTheme?.theme
+        : ((this.hass.selectedTheme as unknown) as string),
       this.hass.selectedTheme
     );
+
     if (this.route.path === "") {
       navigate(this, "/hacs/entry", true);
     }
