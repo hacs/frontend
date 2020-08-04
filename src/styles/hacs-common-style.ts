@@ -13,6 +13,7 @@ export const hacsCommonClasses = css`
   .error,
   .uninstall {
     color: var(--hcv-color-error);
+    --mdc-theme-primary: var(--hcv-color-error);
   }
   .header {
     font-size: var(--paper-font-headline_-_font-size);

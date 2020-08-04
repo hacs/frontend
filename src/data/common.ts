@@ -3,6 +3,8 @@ import { PageNavigation } from "../../homeassistant-frontend/src/layouts/hass-ta
 export interface HacsPageNavigation extends PageNavigation {
   class?: string;
   categories?: string[];
+  dialog?: string;
+  repository?: Repository;
 }
 export interface Route {
   path: string;
@@ -58,6 +60,8 @@ export interface Message {
   info: string;
   severity: "information" | "warning" | "error" | "critical";
   path?: string;
+  dialog?: string;
+  repository?: Repository;
 }
 
 export interface LocationChangedEvent {
