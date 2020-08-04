@@ -127,9 +127,9 @@ class HacsFrontend extends HacsElement {
     applyThemesOnElement(
       this.parentElement,
       this.hass.themes,
-      atLeastVersion(this.hass.config.version, 0, 114)
+      (atLeastVersion(this.hass.config.version, 0, 114)
         ? this.hass.selectedTheme?.theme
-        : ((this.hass.selectedTheme as unknown) as string),
+        : ((this.hass.selectedTheme as unknown) as string)) || this.hass.themes.default_theme,
       this.hass.selectedTheme
     );
 
