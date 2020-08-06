@@ -74,7 +74,7 @@
     "rollup-plugin-terser": "^6.1.0",
     "serve": "^11.3.0",
     "source-map-url": "^0.4.0",
-    "systemjs": "^6.4.1",
+    "systemjs": "^6.4.2",
     "ts-lit-plugin": "^1.2.0",
     "tslib": "^2.0.0",
     "typescript": "^3.9.7"
