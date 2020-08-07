@@ -91,7 +91,7 @@ export const searchStyles = css`
 
 export const scrollBarStyle = css`
   *::-webkit-scrollbar {
-    width: 0.2em;
+    width: 0.8em;
   }
 
   *::-webkit-scrollbar-track {
