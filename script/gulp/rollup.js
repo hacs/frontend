@@ -16,7 +16,6 @@ const gzipPlugin = require("rollup-plugin-gzip");
 const { terser } = require("rollup-plugin-terser");
 
 const extensions = [".js", ".ts"];
-const isProd = process.env.NODE_ENV === "production";
 
 const DevelopPlugins = [
   string({
