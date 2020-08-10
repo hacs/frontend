@@ -91,15 +91,17 @@ export const searchStyles = css`
 
 export const scrollBarStyle = css`
   *::-webkit-scrollbar {
-    width: 0.2em;
+    width: 0.6em;
   }
 
   *::-webkit-scrollbar-track {
-    box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+    color: rgba(0, 0, 0, 0.3);
+    border-radius: 0.3em;
   }
 
   *::-webkit-scrollbar-thumb {
     background-color: var(--accent-color);
+    border-radius: 0.3em;
   }
 `;
 
