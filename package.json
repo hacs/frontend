@@ -93,7 +93,7 @@
     "@material/mwc-tab": "^0.18.0",
     "@material/mwc-tab-bar": "^0.18.0",
     "@material/top-app-bar": "=8.0.0-canary.a78ceb112.0",
-    "@mdi/js": "5.4.55",
+    "@mdi/js": "5.5.55",
     "@mdi/svg": "5.4.55",
     "@polymer/app-layout": "^3.1.0",
     "@polymer/app-route": "^3.0.2",
