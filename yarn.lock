@@ -7343,10 +7343,10 @@ sver-compat@^1.5.0:
     es6-iterator "^2.0.1"
     es6-symbol "^3.1.1"
 
-systemjs@^6.4.3:
-  version "6.4.3"
-  resolved "https://registry.yarnpkg.com/systemjs/-/systemjs-6.4.3.tgz#e5c2fe72b1a030039bcffab2cfdbed01f340169f"
-  integrity sha512-eVSgK0Wlv0grceIoKRVoY04HXvnv0o/mf7BREJMomjEjBH8dyf/YvIgdF0KH9kk5Py9B6GVECRido94L2idlrA==
+systemjs@^6.5.0:
+  version "6.5.0"
+  resolved "https://registry.yarnpkg.com/systemjs/-/systemjs-6.5.0.tgz#42e5e19e324e99b6e96a946697fddb3de9f6f3d5"
+  integrity sha512-B+NzKJD1srC/URfNVBdDExAUAsAVXpVQxZxX54AtqU0xiK9imkqurQu3qi6JdyA2GBAw2ssjolYIa7kh+xY1uw==
 
 table@^5.2.3:
   version "5.4.6"
