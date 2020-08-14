@@ -28,7 +28,7 @@
     "@babel/preset-typescript": "^7.9.0",
     "@rollup/plugin-commonjs": "^14.0.0",
     "@rollup/plugin-json": "^4.1.0",
-    "@rollup/plugin-node-resolve": "^8.4.0",
+    "@rollup/plugin-node-resolve": "^9.0.0",
     "@rollup/plugin-replace": "^2.3.2",
     "@types/hls.js": "^0.13.0",
     "@types/js-yaml": "^3.12.1",
