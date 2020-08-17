@@ -67,7 +67,7 @@
     "patch-package": "^6.2.0",
     "prettier": "^2.0.5",
     "require-dir": "^1.2.0",
-    "rollup": "^2.23.1",
+    "rollup": "^2.26.3",
     "rollup-plugin-babel": "^4.4.0",
     "rollup-plugin-gzip": "^2.5.0",
     "rollup-plugin-string": "^3.0.0",
