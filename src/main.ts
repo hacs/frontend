@@ -124,18 +124,11 @@ class HacsFrontend extends HacsElement {
   protected firstUpdated(changedProps: PropertyValues) {
     super.firstUpdated(changedProps);
 
-    applyThemesOnElement(
-      this.parentElement,
-      this.hass.themes,
-      (atLeastVersion(this.hass.config.version, 0, 114)
-        ? this.hass.selectedTheme?.theme
-        : ((this.hass.selectedTheme as unknown) as string)) || this.hass.themes.default_theme,
-      this.hass.selectedTheme
-    );
-
     if (this.route.path === "") {
       navigate(this, "/hacs/entry", true);
     }
+
+    this._applyTheme();
   }
 
   protected render(): TemplateResult | void {
@@ -205,5 +198,31 @@ class HacsFrontend extends HacsElement {
     this.route = ev.detail.route;
     navigate(this, this.route.path, true);
     this.requestUpdate();
+  }
+
+  private _applyTheme() {
+    let themeName: string;
+    let options: Partial<HomeAssistant["selectedTheme"]> | undefined;
+
+    if (atLeastVersion(this.hass.config.version, 0, 114)) {
+      themeName =
+        this.hass.selectedTheme?.theme ||
+        (this.hass.themes.darkMode && this.hass.themes.default_dark_theme
+          ? this.hass.themes.default_dark_theme!
+          : this.hass.themes.default_theme);
+
+      options = this.hass.selectedTheme;
+      if (themeName === "default" && options?.dark === undefined) {
+        options = {
+          ...this.hass.selectedTheme,
+          dark: this.hass.themes.darkMode,
+        };
+      }
+    } else {
+      themeName =
+        ((this.hass.selectedTheme as unknown) as string) || this.hass.themes.default_theme;
+    }
+
+    applyThemesOnElement(this.parentElement, this.hass.themes, themeName, options);
   }
 }
