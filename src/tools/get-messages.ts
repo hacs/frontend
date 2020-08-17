@@ -17,7 +17,7 @@ export const getMessages = memoizeOne((hacs: Hacs, repositories: Repository[]) =
       repositoriesNotAddedToLovelace.push(repo);
     }
     if (repo.installed && hacs.removed.map((r) => r.repository).includes(repo.full_name)) {
-      const removedrepo = hacs.removed.find((r) => r.repository !== repo.full_name);
+      const removedrepo = hacs.removed.find((r) => r.repository === repo.full_name);
       messages.push({
         name: hacs
           .localize("entry.messages.removed")
