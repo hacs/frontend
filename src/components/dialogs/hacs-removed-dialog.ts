@@ -12,7 +12,7 @@ export class HacsRemovedDialog extends HacsDialogBase {
 
   protected render(): TemplateResult | void {
     if (!this.active) return html``;
-    const removedrepo = this.hacs.removed.find((r) => r.repository !== this.repository.full_name);
+    const removedrepo = this.hacs.removed.find((r) => r.repository === this.repository.full_name);
     return html`
       <hacs-dialog
         .active=${this.active}
