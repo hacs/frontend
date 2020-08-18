@@ -33,7 +33,7 @@
     "@types/hls.js": "^0.13.0",
     "@types/js-yaml": "^3.12.1",
     "@types/memoize-one": "5.1.2",
-    "@types/mocha": "^8.0.1",
+    "@types/mocha": "^8.0.3",
     "@types/resize-observer-browser": "^0.1.3",
     "@typescript-eslint/eslint-plugin": "^3.9.0",
     "@typescript-eslint/parser": "^3.9.0",
