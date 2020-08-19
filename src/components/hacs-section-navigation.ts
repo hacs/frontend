@@ -14,42 +14,49 @@ import "../../homeassistant-frontend/src/components/ha-card";
 import "../../homeassistant-frontend/src/components/ha-icon-next";
 import "../../homeassistant-frontend/src/components/ha-svg-icon";
 import { HacsPageNavigation } from "../data/common";
+import { isComponentLoaded } from "../../homeassistant-frontend/src/common/config/is_component_loaded";
+import { HomeAssistant } from "../../homeassistant-frontend/src/types";
 
 @customElement("hacs-section-navigation")
 class HacsSectionNavigation extends LitElement {
+  @property({ attribute: false }) public hass!: HomeAssistant;
   @property({ attribute: false }) public pages!: HacsPageNavigation[];
   @property() public header: string;
-  @property({ type: Boolean }) public noNext: boolean = false;
+  @property({ type: Boolean, attribute: "no-next" }) public noNext: boolean = false;
 
   protected render(): TemplateResult {
     return html`
       <ha-card>
         ${this.header ? html`<div class="card-header">${this.header}</div>` : ""}
-        ${this.pages.map(
-          (page) =>
-            html`
-              <hacs-link .url=${page.path}>
-                <paper-icon-item
-                  @tap=${() => {
-                    this._openDialog(page);
-                  }}
-                >
-                  <ha-svg-icon
-                    .path=${page.iconPath}
-                    slot="item-icon"
-                    class="${page.class || ""}"
-                  ></ha-svg-icon>
-                  <paper-item-body two-line>
-                    ${page.name}
-                    <div secondary>
-                      ${page.info ? page.info : ""}
-                    </div>
-                  </paper-item-body>
-                  ${!this.noNext ? html`<ha-icon-next></ha-icon-next>` : ""}
-                </paper-icon-item>
-              </hacs-link>
-            `
-        )}
+        ${this.pages
+          .filter((page) =>
+            page.integration ? isComponentLoaded(this.hass, page.integration) : true
+          )
+          .map(
+            (page) =>
+              html`
+                <hacs-link .url=${page.path}>
+                  <paper-icon-item
+                    @tap=${() => {
+                      this._openDialog(page);
+                    }}
+                  >
+                    <ha-svg-icon
+                      .path=${page.iconPath}
+                      slot="item-icon"
+                      class="${page.class || ""}"
+                    ></ha-svg-icon>
+                    <paper-item-body two-line>
+                      ${page.name}
+                      <div secondary>
+                        ${page.info ? page.info : ""}
+                      </div>
+                    </paper-item-body>
+                    ${!this.noNext ? html`<ha-icon-next></ha-icon-next>` : ""}
+                  </paper-icon-item>
+                </hacs-link>
+              `
+          )}
       </ha-card>
     `;
   }

@@ -1,5 +1,5 @@
 import memoizeOne from "memoize-one";
-import { mdiPuzzle, mdiPalette, mdiRobot } from "@mdi/js";
+import { mdiPuzzle, mdiPalette, mdiRobot, mdiHomeAssistant } from "@mdi/js";
 
 import { Route } from "../../homeassistant-frontend/src/types";
 
@@ -38,6 +38,14 @@ export const sections = {
         path: "/hacs/automation",
         core: true,
       },
+      {
+        iconPath: mdiHomeAssistant,
+        id: "addon",
+        info: localize("sections.addon.description"),
+        name: localize("sections.addon.title"),
+        path: "/hassio/dashboard",
+        integration: "hassio",
+      },
     ],
   },
 };
@@ -48,6 +56,7 @@ export const sectionsEnabled = memoizeOne((config: Configuration) => {
     if (categories === undefined) return true;
     if (config === undefined) return true;
     if (config.categories === undefined) return true;
+    if (categories === undefined) return true;
     return categories.filter((category) => config.categories.includes(category)).length !== 0;
   });
 });

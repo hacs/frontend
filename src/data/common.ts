@@ -4,6 +4,7 @@ export interface HacsPageNavigation extends PageNavigation {
   class?: string;
   categories?: string[];
   dialog?: string;
+  integration?: string;
   repository?: Repository;
 }
 export interface Route {
