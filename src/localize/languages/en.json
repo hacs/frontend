@@ -263,7 +263,7 @@
     "messages": {
       "startup": {
         "title": "HACS is starting up",
-        "content": "HACS is starting up, during this time some information might be missing or incorrect"
+        "content": "HACS is starting up, during this time some information might be missing or incorrect. The first start up after installing will take over 1 hour due to GitHub rate limits. Please be patient."
       },
       "has_pending_tasks": {
         "title": "Background tasks pending",
