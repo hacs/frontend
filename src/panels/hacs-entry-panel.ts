@@ -139,7 +139,7 @@ export class HacsEntryPanel extends LitElement {
           <hacs-section-navigation .pages=${this.hacs.sections}></hacs-section-navigation>
 
           <ha-card>
-            ${!isComponentLoaded(this.hass, "hassio")
+            ${isComponentLoaded(this.hass, "hassio")
               ? html` <hacs-link parent url="/hassio">
                   <paper-icon-item @click=${this._openAboutDialog}>
                     <ha-svg-icon .path=${mdiHomeAssistant} slot="item-icon"></ha-svg-icon>
