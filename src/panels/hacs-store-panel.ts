@@ -33,15 +33,18 @@ export class HacsStorePanel extends LitElement {
   @property() public section!: string;
 
   private _repositoriesInActiveSection = memoizeOne(
-    (repositories: Repository[], sections: any, section: string) => {
+    (repositories: Repository[], section: string) => {
       const installedRepositories: Repository[] = repositories?.filter(
         (repo) =>
-          sections.find((panel) => panel.id === section).categories?.includes(repo.category) &&
-          repo.installed
+          this.hacs.sections
+            ?.find((panel) => panel.id === section)
+            ?.categories?.includes(repo.category) && repo.installed
       );
       const newRepositories: Repository[] = repositories?.filter(
         (repo) =>
-          sections.find((panel) => panel.id === section).categories?.includes(repo.category) &&
+          this.hacs.sections
+            ?.find((panel) => panel.id === section)
+            ?.categories?.includes(repo.category) &&
           repo.new &&
           !repo.installed
       );
@@ -52,7 +55,6 @@ export class HacsStorePanel extends LitElement {
   private get allRepositories(): Repository[] {
     const [installedRepositories, newRepositories] = this._repositoriesInActiveSection(
       this.repositories,
-      this.sections,
       this.section
     );
 
@@ -81,11 +83,7 @@ export class HacsStorePanel extends LitElement {
   }
 
   protected render(): TemplateResult {
-    const newRepositories = this._repositoriesInActiveSection(
-      this.repositories,
-      this.sections,
-      this.section
-    )[1];
+    const newRepositories = this._repositoriesInActiveSection(this.repositories, this.section)[1];
 
     if (!this.filters[this.section] && this.hacs.configuration.categories) {
       const categories = activePanel(this.route)?.categories;
@@ -106,7 +104,7 @@ export class HacsStorePanel extends LitElement {
       .hass=${this.hass}
       .narrow=${this.narrow}
       .route=${this.route}
-      .tabs=${this.sections}
+      .tabs=${this.hacs.sections}
       hasFab
     >
       <hacs-tabbed-menu

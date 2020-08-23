@@ -9,7 +9,7 @@ import { HacsDialogBase } from "./hacs-dialog-base";
 import { Repository } from "../../data/common";
 import { mdiGithub } from "@mdi/js";
 import { localize } from "../../localize/localize";
-import { sectionsEnabled, activePanel } from "../../panels/hacs-sections";
+import { activePanel } from "../../panels/hacs-sections";
 import { filterRepositoriesByInput } from "../../tools/filter-repositories-by-input";
 import { searchStyles, scrollBarStyle } from "../../styles/element-styles";
 import "../hacs-chip";
@@ -47,8 +47,8 @@ export class HacsAddRepositoryDialog extends HacsDialogBase {
     repositories?.filter(
       (repo) =>
         !repo.installed &&
-        sectionsEnabled(this.hacs.configuration)
-          .find((section) => section.id === this.section)
+        this.hacs.sections
+          ?.find((section) => section.id === this.section)
           .categories?.includes(repo.category) &&
         !repo.installed &&
         categories?.includes(repo.category)

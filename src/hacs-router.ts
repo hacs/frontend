@@ -91,8 +91,6 @@ class HacsRouter extends HassRouterPage {
     el.removed = this.removed;
     el.repositories = this.repositories;
     el.status = this.status;
-
-    el.sections = sectionsEnabled(this.configuration);
     el.section = section;
   }
 }
