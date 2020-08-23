@@ -15,8 +15,9 @@ export class HacsLink extends LitElement {
   @property({ type: Boolean }) public newtab: boolean = false;
   @property({ type: Boolean }) public parent: boolean = false;
   @property() private url!: string;
+  @property() private title?: string;
   protected render(): TemplateResult | void {
-    return html`<div @tap=${this._open} class="link"><slot></slot></div>`;
+    return html`<slot title=${this.title || this.url} @tap=${this._open}></slot>`;
   }
 
   private _open(): void {
@@ -45,7 +46,7 @@ export class HacsLink extends LitElement {
 
   static get styles(): CSSResult {
     return css`
-      .link {
+      slot {
         cursor: pointer;
         color: var(--hcv-text-color-link);
         text-decoration: var(--hcv-text-decoration-link);
