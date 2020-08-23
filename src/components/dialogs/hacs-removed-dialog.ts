@@ -65,7 +65,11 @@ export class HacsRemovedDialog extends HacsDialogBase {
 
   private async _uninstallRepository(): Promise<void> {
     this._updating = true;
-    if (this.repository.category === "plugin" && this.hacs.status.lovelace_mode !== "yaml") {
+    if (
+      this.repository.category === "plugin" &&
+      this.hacs.status &&
+      this.hacs.status.lovelace_mode !== "yaml"
+    ) {
       const resources = await fetchResources(this.hass);
       resources
         .filter((resource) => resource.url === this._lovelaceUrl())
