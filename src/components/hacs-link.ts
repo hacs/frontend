@@ -13,6 +13,7 @@ import { navigate } from "../../homeassistant-frontend/src/common/navigate";
 @customElement("hacs-link")
 export class HacsLink extends LitElement {
   @property({ type: Boolean }) public newtab: boolean = false;
+  @property({ type: Boolean }) public parent: boolean = false;
   @property() private url!: string;
   protected render(): TemplateResult | void {
     return html`<div @tap=${this._open} class="link"><slot></slot></div>`;
@@ -33,6 +34,10 @@ export class HacsLink extends LitElement {
 
     if (!external && !this.newtab) {
       target = "_top";
+    }
+
+    if (!external && !this.parent) {
+      target = "_parent";
     }
 
     window.open(this.url, target, features);

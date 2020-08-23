@@ -12,7 +12,7 @@ import {
   TemplateResult,
   property,
 } from "lit-element";
-import { mdiAlertCircle } from "@mdi/js";
+import { mdiAlertCircle, mdiHomeAssistant, mdiOpenInNew } from "@mdi/js";
 
 import { haStyle } from "../../homeassistant-frontend/src/resources/styles";
 import { HomeAssistant, Route } from "../../homeassistant-frontend/src/types";
@@ -37,6 +37,7 @@ import { localize } from "../localize/localize";
 import { Hacs } from "../data/hacs";
 
 import "../components/hacs-section-navigation";
+import { isComponentLoaded } from "../../homeassistant-frontend/src/common/config/is_component_loaded";
 
 @customElement("hacs-entry-panel")
 export class HacsEntryPanel extends LitElement {
@@ -136,6 +137,24 @@ export class HacsEntryPanel extends LitElement {
               </ha-card>`
             : ""}
           <hacs-section-navigation .pages=${this.hacs.sections}></hacs-section-navigation>
+
+          <ha-card>
+            ${!isComponentLoaded(this.hass, "hassio")
+              ? html` <hacs-link parent url="/hassio">
+                  <paper-icon-item @click=${this._openAboutDialog}>
+                    <ha-svg-icon .path=${mdiHomeAssistant} slot="item-icon"></ha-svg-icon>
+                    <paper-item-body two-line>
+                      ${localize(`sections.addon.title`)}
+                      <div secondary>
+                        ${localize(`sections.addon.description`)}
+                      </div>
+                    </paper-item-body>
+                    <ha-svg-icon right .path=${mdiOpenInNew}></ha-svg-icon>
+                  </paper-icon-item>
+                </hacs-link>`
+              : ""}
+          </ha-card>
+
           <ha-card>
             <paper-icon-item @click=${this._openAboutDialog}>
               <ha-svg-icon .path=${mdiAlertCircle} slot="item-icon"></ha-svg-icon>
