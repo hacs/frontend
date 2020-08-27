@@ -231,7 +231,7 @@
     "installed_version": "Installed version",
     "available_version": "Available version",
     "changelog": "Changelog",
-    "releasenotes": "Releasenotes for {release}"
+    "releasenotes": "Release notes for {release}"
   },
   "repository_card": {
     "pending_update": "Pending update",
