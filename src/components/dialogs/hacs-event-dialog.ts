@@ -1,14 +1,14 @@
-import { customElement, html, TemplateResult, property } from "lit-element";
-
+import { customElement, html, property, TemplateResult } from "lit-element";
+import "./hacs-about-dialog";
+import "./hacs-add-repository-dialog";
+import "./hacs-custom-repositories-dialog";
 import { HacsDialogBase } from "./hacs-dialog-base";
 import "./hacs-generic-dialog";
-import "./hacs-about-dialog";
-import "./hacs-removed-dialog";
-import "./hacs-update-dialog";
-import "./hacs-repository-info-dialog";
-import "./hacs-custom-repositories-dialog";
-import "./hacs-add-repository-dialog";
 import "./hacs-install-dialog";
+import "./hacs-removed-dialog";
+import "./hacs-repository-info-dialog";
+import "./hacs-navigate-dialog";
+import "./hacs-update-dialog";
 
 @customElement("hacs-event-dialog")
 export class HacsEventDialog extends HacsDialogBase {

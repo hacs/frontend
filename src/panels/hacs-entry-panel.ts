@@ -140,8 +140,8 @@ export class HacsEntryPanel extends LitElement {
 
           <ha-card>
             ${isComponentLoaded(this.hass, "hassio")
-              ? html` <hacs-link parent url="/hassio">
-                  <paper-icon-item @click=${this._openAboutDialog}>
+              ? html`
+                  <paper-icon-item @click=${this._openSupervisorDialog}>
                     <ha-svg-icon .path=${mdiHomeAssistant} slot="item-icon"></ha-svg-icon>
                     <paper-item-body two-line>
                       ${localize(`sections.addon.title`)}
@@ -151,7 +151,7 @@ export class HacsEntryPanel extends LitElement {
                     </paper-item-body>
                     <ha-svg-icon right .path=${mdiOpenInNew}></ha-svg-icon>
                   </paper-icon-item>
-                </hacs-link>`
+                `
               : ""}
           </ha-card>
 
@@ -191,6 +191,19 @@ export class HacsEntryPanel extends LitElement {
           type: "about",
           configuration: this.configuration,
           repositories: this.repositories,
+        },
+        bubbles: true,
+        composed: true,
+      })
+    );
+  }
+
+  private async _openSupervisorDialog() {
+    this.dispatchEvent(
+      new CustomEvent("hacs-dialog", {
+        detail: {
+          type: "navigate",
+          path: "/hassio",
         },
         bubbles: true,
         composed: true,

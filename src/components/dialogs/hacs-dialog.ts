@@ -9,6 +9,9 @@ import "../hacs-icon-button";
 @customElement("hacs-dialog")
 export class HacsDialog extends HacsDialogBase {
   @property({ type: Boolean }) public hideActions: boolean = false;
+  @property({ type: Boolean }) public scrimClickAction: boolean = false;
+  @property({ type: Boolean }) public escapeKeyAction: boolean = false;
+  @property({ type: Boolean }) public noClose: boolean = false;
   @property() public title!: string;
 
   protected render(): TemplateResult | void {
@@ -17,9 +20,12 @@ export class HacsDialog extends HacsDialogBase {
     }
 
     return html` <ha-dialog
-      open
+      ?open=${this.active}
+      ?scrimClickAction=${this.scrimClickAction}
+      ?escapeKeyAction=${this.escapeKeyAction}
+      @closed=${this.closeDialog}
       ?hideActions=${this.hideActions}
-      .heading=${createCloseHeading(this.hass, this.title)}
+      .heading=${!this.noClose ? createCloseHeading(this.hass, this.title) : this.title}
     >
       <div class="content" ?narrow=${this.narrow}>
         <slot></slot>
@@ -27,6 +33,16 @@ export class HacsDialog extends HacsDialogBase {
       <slot class="primary" name="primaryaction" slot="primaryAction"></slot>
       <slot class="secondary" name="secondaryaction" slot="secondaryAction"></slot>
     </ha-dialog>`;
+  }
+
+  public closeDialog() {
+    this.active = false;
+    this.dispatchEvent(
+      new CustomEvent("closed", {
+        bubbles: true,
+        composed: true,
+      })
+    );
   }
 
   static get styles() {
