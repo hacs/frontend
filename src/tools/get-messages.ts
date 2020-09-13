@@ -53,10 +53,10 @@ export const getMessages = memoizeOne((hacs: Hacs, repositories: Repository[]) =
     });
   }
 
-  if (hacs.status?.startup) {
+  if (hacs.status?.startup && ["setup", "waiting", "startup"].includes(hacs.status.stage)) {
     messages.push({
-      name: hacs.localize("entry.messages.startup.title"),
-      info: hacs.localize("entry.messages.startup.content"),
+      name: hacs.localize(`entry.messages.${hacs.status.stage}.title`),
+      info: hacs.localize(`entry.messages.${hacs.status.stage}.content`),
       severity: "information",
     });
   }

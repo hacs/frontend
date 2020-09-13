@@ -61,7 +61,9 @@ export const repositoryUninstall = async (hass: HomeAssistant, repository: strin
 };
 
 export const repositoryReleasenotes = async (hass: HomeAssistant, repository: string) => {
-  const response = await hass.connection.sendMessagePromise<{ tag: string; body: string }[]>({
+  const response = await hass.connection.sendMessagePromise<
+    { name: string; body: string; tag: string }[]
+  >({
     type: "hacs/repository",
     action: "release_notes",
     repository: repository,

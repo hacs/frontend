@@ -261,6 +261,14 @@
   },
   "entry": {
     "messages": {
+      "setup": {
+        "title": "HACS is setting up",
+        "content": "HACS is setting up, during this time some information might be missing or incorrect"
+      },
+      "waiting": {
+        "title": "HACS is waiting",
+        "content": "HACS is waiting for Home Assistant to finish startup before starting startup tasks"
+      },
       "startup": {
         "title": "HACS is starting up",
         "content": "HACS is starting up, during this time some information might be missing or incorrect"

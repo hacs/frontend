@@ -107,7 +107,7 @@ export class HacsEntryPanel extends LitElement {
                   .hass=${this.hass}
                   .header=${localize("entry.information")}
                   .pages=${this.hacs.messages}
-                  noNext
+                  no-next
                 ></hacs-section-navigation>
               `
             : ""}

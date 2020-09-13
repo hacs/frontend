@@ -37,6 +37,7 @@ export interface Status {
   background_task: boolean;
   disabled: boolean;
   lovelace_mode: "storage" | "yaml" | "auto-gen";
+  stage?: "startup" | "waiting" | "running" | "setup";
   reloading_data: boolean;
   startup: boolean;
   manage_mode: boolean;

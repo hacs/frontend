@@ -9,12 +9,12 @@ import {
   property,
   TemplateResult,
 } from "lit-element";
-import "./hacs-link";
 import "../../homeassistant-frontend/src/components/ha-card";
 import "../../homeassistant-frontend/src/components/ha-icon-next";
 import "../../homeassistant-frontend/src/components/ha-svg-icon";
-import { HacsPageNavigation } from "../data/common";
 import { HomeAssistant } from "../../homeassistant-frontend/src/types";
+import { HacsPageNavigation } from "../data/common";
+import "./hacs-link";
 
 @customElement("hacs-section-navigation")
 class HacsSectionNavigation extends LitElement {

@@ -1,23 +1,24 @@
 import {
-  CSSResult,
-  LitElement,
-  customElement,
-  TemplateResult,
-  html,
   css,
+  CSSResult,
+  customElement,
+  html,
+  internalProperty,
+  LitElement,
   property,
+  TemplateResult,
 } from "lit-element";
-
 import { navigate } from "../../homeassistant-frontend/src/common/navigate";
 
 @customElement("hacs-link")
 export class HacsLink extends LitElement {
   @property({ type: Boolean }) public newtab: boolean = false;
   @property({ type: Boolean }) public parent: boolean = false;
-  @property() private url!: string;
-  @property() private title?: string;
+  @property() public title: string;
+  @internalProperty() private url!: string;
+
   protected render(): TemplateResult | void {
-    return html`<slot title=${this.title || this.url} @tap=${this._open}></slot>`;
+    return html`<span title=${this.title || this.url} @tap=${this._open}><slot></slot></span>`;
   }
 
   private _open(): void {
@@ -46,7 +47,7 @@ export class HacsLink extends LitElement {
 
   static get styles(): CSSResult {
     return css`
-      slot {
+      span {
         cursor: pointer;
         color: var(--hcv-text-color-link);
         text-decoration: var(--hcv-text-decoration-link);

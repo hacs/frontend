@@ -1,31 +1,29 @@
-import { css, CSSResultArray, customElement, html, TemplateResult, property } from "lit-element";
-import memoizeOne from "memoize-one";
 import "@polymer/paper-dropdown-menu/paper-dropdown-menu";
 import "@polymer/paper-listbox/paper-listbox";
+import { css, CSSResultArray, customElement, html, property, TemplateResult } from "lit-element";
 import { classMap } from "lit-html/directives/class-map";
-import { scrollBarStyle } from "../../styles/element-styles";
+import memoizeOne from "memoize-one";
+import "../../../homeassistant-frontend/src/components/ha-circular-progress";
+import { Repository } from "../../data/common";
 import {
   repositoryInstall,
   repositoryInstallVersion,
   repositoryReleasenotes,
 } from "../../data/websocket";
-import { updateLovelaceResources } from "../../tools/update-lovelace-resources";
-import { HacsDialogBase } from "./hacs-dialog-base";
-import { Repository } from "../../data/common";
 import { localize } from "../../localize/localize";
+import { scrollBarStyle } from "../../styles/element-styles";
 import { markdown } from "../../tools/markdown/markdown";
-
-import "../../../homeassistant-frontend/src/components/ha-circular-progress";
-
-import "./hacs-dialog";
+import { updateLovelaceResources } from "../../tools/update-lovelace-resources";
 import "../hacs-link";
+import "./hacs-dialog";
+import { HacsDialogBase } from "./hacs-dialog-base";
 
 @customElement("hacs-update-dialog")
 export class HacsUpdateDialog extends HacsDialogBase {
   @property() public repository?: string;
   @property() private _updating: boolean = false;
   @property() private _error?: any;
-  @property() private _releaseNotes: { tag: string; body: string }[] = [];
+  @property() private _releaseNotes: { name: string; body: string; tag: string }[] = [];
 
   private _getRepository = memoizeOne((repositories: Repository[], repository: string) =>
     repositories?.find((repo) => repo.id === repository)
@@ -64,12 +62,7 @@ export class HacsUpdateDialog extends HacsDialogBase {
           ${this._releaseNotes.length > 0
             ? this._releaseNotes.map(
                 (release) => html`<details>
-                  <summary
-                    >${localize("dialog_update.releasenotes").replace(
-                      "{release}",
-                      release.tag
-                    )}</summary
-                  >
+                  <summary>${release.name}</summary>
                   ${markdown.html(release.body)}
                 </details>`
               )

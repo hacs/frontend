@@ -64,6 +64,10 @@ class HacsFrontend extends HacsElement {
       "hacs/status"
     );
     this.hass.connection.subscribeEvents(
+      async () => await this._updateProperties("status"),
+      "hacs/stage"
+    );
+    this.hass.connection.subscribeEvents(
       async () => await this._updateProperties("repositories"),
       "hacs/repository"
     );
