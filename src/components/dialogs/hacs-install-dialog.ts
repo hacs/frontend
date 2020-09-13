@@ -205,21 +205,31 @@ export class HacsInstallDialog extends HacsDialogBase {
       await updateLovelaceResources(this.hass, this._repository);
     }
     this._installing = false;
-    if (this._repository.category === "plugin") {
-      //window.location.reload(true);
-    }
+
     this.dispatchEvent(
       new Event("hacs-secondary-dialog-closed", {
         bubbles: true,
         composed: true,
       })
     );
+
     this.dispatchEvent(
       new Event("hacs-dialog-closed", {
         bubbles: true,
         composed: true,
       })
     );
+    if (this._repository.category === "plugin" && this.hacs.status.lovelace_mode === "storage") {
+      this.dispatchEvent(
+        new CustomEvent("hacs-dialog", {
+          detail: {
+            type: "reload",
+          },
+          bubbles: true,
+          composed: true,
+        })
+      );
+    }
   }
 
   static get styles(): CSSResultArray {

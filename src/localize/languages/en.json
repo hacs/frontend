@@ -1,14 +1,12 @@
 {
   "common": {
-    "add": "add",
     "about": "About",
+    "add": "add",
     "appdaemon_apps": "AppDaemon Apps",
-    "appdaemon": "AppDaemon",
     "appdaemon_plural": "AppDaemon Apps",
-    "netdaemon_apps": "NetDaemon Apps",
-    "netdaemon": "NetDaemon",
-    "netdaemon_plural": "NetDaemon Apps",
+    "appdaemon": "AppDaemon",
     "background_task": "Background task running, this page will reload when it's done.",
+    "cancel": "Cancel",
     "check_log_file": "Check your log file for more details.",
     "continue": "Continue",
     "disabled": "Disabled",
@@ -18,27 +16,31 @@
     "ignore": "Ignore",
     "install": "Install",
     "installed": "installed",
-    "integration": "Integration",
     "integration_plural": "Integrations",
+    "integration": "Integration",
     "integrations": "Integrations",
-    "manage": "manage",
-    "plugin": "Lovelace",
-    "plugin_plural": "Lovelace elements",
-    "plugins": "Lovelace elements",
-    "lovelace": "Lovelace",
     "lovelace_element": "Lovelace element",
     "lovelace_elements": "Lovelace elements",
-    "python_script": "Python Script",
+    "lovelace": "Lovelace",
+    "manage": "manage",
+    "netdaemon_apps": "NetDaemon Apps",
+    "netdaemon_plural": "NetDaemon Apps",
+    "netdaemon": "NetDaemon",
+    "plugin_plural": "Lovelace elements",
+    "plugin": "Lovelace",
+    "plugins": "Lovelace elements",
     "python_script_plural": "Python Scripts",
+    "python_script": "Python Script",
     "python_scripts": "Python Scripts",
-    "repository": "Repository",
+    "reload": "Reload",
     "repositories": "Repositories",
+    "repository": "Repository",
     "settings": "settings",
-    "theme": "Theme",
     "theme_plural": "Themes",
+    "theme": "Theme",
     "themes": "Themes",
-    "update": "Update",
     "uninstall": "Uninstall",
+    "update": "Update",
     "version": "Version"
   },
   "confirm": {
@@ -258,6 +260,12 @@
     "open_issue": "Open issue",
     "dismiss": "Dismiss all new repositories",
     "documentation": "Documentation"
+  },
+  "dialog": {
+    "reload": {
+      "description": "You need to clear your browser cache when changing Lovelace resources.",
+      "confirm": "Do you want to do that now?"
+    }
   },
   "entry": {
     "messages": {

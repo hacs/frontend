@@ -108,13 +108,23 @@ export class HacsUpdateDialog extends HacsDialogBase {
       await repositoryInstall(this.hass, repository.id);
     }
     if (repository.category === "plugin") {
-      if (this.status.lovelace_mode === "storage") {
+      if (this.hacs.status.lovelace_mode === "storage") {
         await updateLovelaceResources(this.hass, repository);
       }
-      window.location.reload(true);
     }
     this._updating = false;
     this.dispatchEvent(new Event("hacs-dialog-closed", { bubbles: true, composed: true }));
+    if (repository.category === "plugin" && this.hacs.status.lovelace_mode === "storage") {
+      this.dispatchEvent(
+        new CustomEvent("hacs-dialog", {
+          detail: {
+            type: "reload",
+          },
+          bubbles: true,
+          composed: true,
+        })
+      );
+    }
   }
 
   private _getChanglogURL(): string {

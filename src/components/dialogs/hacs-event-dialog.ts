@@ -5,9 +5,10 @@ import "./hacs-custom-repositories-dialog";
 import { HacsDialogBase } from "./hacs-dialog-base";
 import "./hacs-generic-dialog";
 import "./hacs-install-dialog";
+import "./hacs-navigate-dialog";
+import "./hacs-reload-dialog";
 import "./hacs-removed-dialog";
 import "./hacs-repository-info-dialog";
-import "./hacs-navigate-dialog";
 import "./hacs-update-dialog";
 
 @customElement("hacs-event-dialog")

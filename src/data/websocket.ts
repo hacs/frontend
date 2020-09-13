@@ -53,7 +53,7 @@ export const repositoryInstall = async (hass: HomeAssistant, repository: string)
 };
 
 export const repositoryUninstall = async (hass: HomeAssistant, repository: string) => {
-  await hass.connection.sendMessagePromise<void>({
+  return await hass.connection.sendMessagePromise<void>({
     type: "hacs/repository",
     action: "uninstall",
     repository: repository,
