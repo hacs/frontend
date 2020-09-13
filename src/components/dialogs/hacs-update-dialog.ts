@@ -114,7 +114,7 @@ export class HacsUpdateDialog extends HacsDialogBase {
     }
     this._updating = false;
     this.dispatchEvent(new Event("hacs-dialog-closed", { bubbles: true, composed: true }));
-    if (repository.category === "plugin" && this.hacs.status.lovelace_mode === "storage") {
+    if (repository.category === "plugin") {
       this.dispatchEvent(
         new CustomEvent("hacs-dialog", {
           detail: {
