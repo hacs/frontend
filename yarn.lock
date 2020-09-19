@@ -5405,7 +5405,7 @@ lit-element@^2.4.0:
   dependencies:
     lit-html "^1.1.1"
 
-lit-html@^1.1.1, lit-html@^1.1.2, lit-html@^1.2.1:
+lit-html@=1.2.1, lit-html@^1.1.1, lit-html@^1.1.2:
   version "1.2.1"
   resolved "https://registry.yarnpkg.com/lit-html/-/lit-html-1.2.1.tgz#1fb933dc1e2ddc095f60b8086277d4fcd9d62cc8"
   integrity sha512-GSJHHXMGLZDzTRq59IUfL9FCdAlGfqNp/dEa7k7aBaaWD+JKaCjsAk9KYm2V12ItonVaYx2dprN66Zdm1AuBTQ==
