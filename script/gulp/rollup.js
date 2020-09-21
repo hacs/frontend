@@ -83,6 +83,7 @@ gulp.task("rollup-develop", () => {
     input: inputconfig.input,
     plugins: inputconfig.plugins,
     output: outputconfig,
+    preserveEntrySignatures: "strict",
     watch: {
       include: ["./src/**"],
       chokidar: {
@@ -117,6 +118,7 @@ gulp.task("rollup-develop", () => {
 gulp.task("rollup-build", async function (task) {
   inputconfig.plugins = BuildPlugins;
   const bundle = await rollup.rollup(inputconfig);
+  bundle.preserveEntrySignatures = "strict";
   await bundle.write(outputconfig);
   task();
 });
