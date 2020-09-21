@@ -7,12 +7,7 @@ require("./translations");
 
 gulp.task("cleanup", (task) => {
   del.sync(["./homeassistant-frontend/build/**", "./homeassistant-frontend/build"]);
-  del.sync([
-    "./hacs_frontend/main.js",
-    "./hacs_frontend/main.js.gz",
-    "./hacs_frontend/debug.js",
-    "./hacs_frontend/debug.js.gz",
-  ]);
+  del.sync(["./hacs_frontend/*-*.js", "./hacs_frontend/*-*.js.gz", "./hacs_frontend/main.js"]);
   task();
 });
 

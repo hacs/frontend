@@ -61,8 +61,8 @@ const inputconfig = {
   plugins: DevelopPlugins,
 };
 const outputconfig = {
-  file: "./hacs_frontend/main.js",
-  format: "iife",
+  dir: "./hacs_frontend/",
+  format: "es",
   intro: "const __DEMO__ = false;",
 };
 
@@ -85,6 +85,9 @@ gulp.task("rollup-develop", () => {
     output: outputconfig,
     watch: {
       include: ["./src/**"],
+      chokidar: {
+        usePolling: true,
+      },
     },
   });
 
