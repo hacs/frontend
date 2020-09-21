@@ -3,7 +3,9 @@ package-lock.json
 build
 src/localize/generated.ts
 !script/build
-hacs_frontend/
-!hacs_frontend/*.py
+hacs_frontend/*.js
+hacs_frontend/*.js.gz
 !hacs_frontend/entrypoint.js
+!hacs_frontend/*.py
+
 yarn-error.log
