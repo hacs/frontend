@@ -1,5 +1,5 @@
 import memoizeOne from "memoize-one";
-import { mdiPuzzle, mdiPalette, mdiRobot, mdiHomeAssistant } from "@mdi/js";
+import { mdiPuzzle, mdiPalette, mdiRobot } from "@mdi/js";
 
 import { Route } from "../../homeassistant-frontend/src/types";
 

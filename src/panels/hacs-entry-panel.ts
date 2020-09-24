@@ -1,3 +1,4 @@
+import { mdiAlertCircle, mdiHomeAssistant, mdiOpenInNew } from "@mdi/js";
 import "@polymer/app-layout/app-header-layout/app-header-layout";
 import "@polymer/app-layout/app-header/app-header";
 import "@polymer/app-layout/app-toolbar/app-toolbar";
@@ -9,35 +10,30 @@ import {
   customElement,
   html,
   LitElement,
-  TemplateResult,
   property,
+  TemplateResult,
 } from "lit-element";
-import { mdiAlertCircle, mdiHomeAssistant, mdiOpenInNew } from "@mdi/js";
-
+import { isComponentLoaded } from "../../homeassistant-frontend/src/common/config/is_component_loaded";
+import "../../homeassistant-frontend/src/components/ha-card";
+import "../../homeassistant-frontend/src/components/ha-menu-button";
+import "../../homeassistant-frontend/src/components/ha-svg-icon";
+import "../../homeassistant-frontend/src/panels/config/ha-config-section";
 import { haStyle } from "../../homeassistant-frontend/src/resources/styles";
 import { HomeAssistant, Route } from "../../homeassistant-frontend/src/types";
-
-import "../../homeassistant-frontend/src/components/ha-card";
-import "../../homeassistant-frontend/src/components/ha-svg-icon";
-import "../../homeassistant-frontend/src/components/ha-menu-button";
-import "../../homeassistant-frontend/src/panels/config/ha-config-section";
-
+import "../components/hacs-section-navigation";
 import {
-  Status,
-  Message,
-  Repository,
-  LovelaceResource,
   Configuration,
-  sortRepositoriesByName,
+  LovelaceResource,
+  Message,
   RemovedRepository,
+  Repository,
+  sortRepositoriesByName,
+  Status,
 } from "../data/common";
+import { Hacs } from "../data/hacs";
+import { localize } from "../localize/localize";
 import { HacsStyles } from "../styles/hacs-common-style";
 import { getMessages } from "../tools/get-messages";
-import { localize } from "../localize/localize";
-import { Hacs } from "../data/hacs";
-
-import "../components/hacs-section-navigation";
-import { isComponentLoaded } from "../../homeassistant-frontend/src/common/config/is_component_loaded";
 
 @customElement("hacs-entry-panel")
 export class HacsEntryPanel extends LitElement {
@@ -91,9 +87,7 @@ export class HacsEntryPanel extends LitElement {
           </app-toolbar>
         </app-header>
         <ha-config-section .narrow=${this.narrow} .isWide=${this.isWide}>
-          <div slot="header">
-            ${this.narrow ? "HACS" : "Home Assistant Community Store"}
-          </div>
+          <div slot="header">${this.narrow ? "HACS" : "Home Assistant Community Store"}</div>
 
           <div slot="introduction">
             ${this.isWide || (this.hacs.updates.length === 0 && this.hacs.messages?.length === 0)
@@ -145,9 +139,7 @@ export class HacsEntryPanel extends LitElement {
                     <ha-svg-icon .path=${mdiHomeAssistant} slot="item-icon"></ha-svg-icon>
                     <paper-item-body two-line>
                       ${localize(`sections.addon.title`)}
-                      <div secondary>
-                        ${localize(`sections.addon.description`)}
-                      </div>
+                      <div secondary>${localize(`sections.addon.description`)}</div>
                     </paper-item-body>
                     <ha-svg-icon right .path=${mdiOpenInNew}></ha-svg-icon>
                   </paper-icon-item>
@@ -160,9 +152,7 @@ export class HacsEntryPanel extends LitElement {
               <ha-svg-icon .path=${mdiAlertCircle} slot="item-icon"></ha-svg-icon>
               <paper-item-body two-line>
                 ${localize(`sections.about.title`)}
-                <div secondary>
-                  ${localize(`sections.about.description`)}
-                </div>
+                <div secondary>${localize(`sections.about.description`)}</div>
               </paper-item-body>
             </paper-icon-item>
           </ha-card>

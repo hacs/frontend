@@ -1,24 +1,19 @@
 import { customElement, property } from "lit-element";
+import { listenMediaQuery } from "../homeassistant-frontend/src/common/dom/media_query";
 import {
   HassRouterPage,
   RouterOptions,
 } from "../homeassistant-frontend/src/layouts/hass-router-page";
 import { HomeAssistant, Route } from "../homeassistant-frontend/src/types";
-import { listenMediaQuery } from "../homeassistant-frontend/src/common/dom/media_query";
-
 import {
   Configuration,
   Critical,
   LovelaceResource,
-  Repository,
   RemovedRepository,
+  Repository,
   Status,
 } from "./data/common";
-import { sectionsEnabled } from "./panels/hacs-sections";
 import { Hacs } from "./data/hacs";
-
-import "./panels/hacs-entry-panel";
-import "./panels/hacs-store-panel";
 
 @customElement("hacs-router")
 class HacsRouter extends HassRouterPage {
@@ -64,15 +59,19 @@ class HacsRouter extends HassRouterPage {
     routes: {
       entry: {
         tag: "hacs-entry-panel",
+        load: () => import("./panels/hacs-entry-panel"),
       },
       integrations: {
         tag: "hacs-store-panel",
+        load: () => import("./panels/hacs-store-panel"),
       },
       frontend: {
         tag: "hacs-store-panel",
+        load: () => import("./panels/hacs-store-panel"),
       },
       automation: {
         tag: "hacs-store-panel",
+        load: () => import("./panels/hacs-store-panel"),
       },
     },
   };

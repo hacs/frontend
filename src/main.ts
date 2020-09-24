@@ -1,19 +1,21 @@
-import { customElement, html, property, PropertyValues, query, TemplateResult } from "lit-element";
-
-import { HomeAssistant, Route } from "../homeassistant-frontend/src/types";
-import { navigate } from "../homeassistant-frontend/src/common/navigate";
-import { applyThemesOnElement } from "../homeassistant-frontend/src/common/dom/apply_themes_on_element";
-import "../homeassistant-frontend/src/resources/ha-style";
+import { customElement, html, property, query, TemplateResult } from "lit-element";
 import { atLeastVersion } from "../homeassistant-frontend/src/common/config/version";
+import { applyThemesOnElement } from "../homeassistant-frontend/src/common/dom/apply_themes_on_element";
+import { navigate } from "../homeassistant-frontend/src/common/navigate";
+import { makeDialogManager } from "../homeassistant-frontend/src/dialogs/make-dialog-manager";
+import { ProvideHassLitMixin } from "../homeassistant-frontend/src/mixins/provide-hass-lit-mixin";
+import "../homeassistant-frontend/src/resources/ha-style";
+import { HomeAssistant, Route } from "../homeassistant-frontend/src/types";
+import "./components/dialogs/hacs-event-dialog";
 import {
   Configuration,
   Critical,
+  HacsDialogEvent,
   LocationChangedEvent,
   LovelaceResource,
   RemovedRepository,
   Repository,
   Status,
-  HacsDialogEvent,
 } from "./data/common";
 import {
   getConfiguration,
@@ -23,17 +25,16 @@ import {
   getRepositories,
   getStatus,
 } from "./data/websocket";
-import { hacsStyleVariables } from "./styles/variables";
-import { HacsStyles } from "./styles/hacs-common-style";
 import { HacsElement } from "./hacs";
 import "./hacs-router";
-import "./components/dialogs/hacs-event-dialog";
+import { HacsStyles } from "./styles/hacs-common-style";
+import { hacsStyleVariables } from "./styles/variables";
 
 @customElement("hacs-frontend")
-class HacsFrontend extends HacsElement {
+class HacsFrontend extends ProvideHassLitMixin(HacsElement) {
+  @property({ attribute: false }) public hass!: HomeAssistant;
   @property({ attribute: false }) public configuration: Configuration;
   @property({ attribute: false }) public critical!: Critical[];
-  @property({ attribute: false }) public hass!: HomeAssistant;
   @property({ attribute: false }) public lovelace: LovelaceResource[];
   @property({ attribute: false }) public narrow!: boolean;
   @property({ attribute: false }) public removed: RemovedRepository[];
@@ -44,8 +45,8 @@ class HacsFrontend extends HacsElement {
   @query("#hacs-dialog") private _hacsDialog?: any;
   @query("#hacs-dialog-secondary") private _hacsDialogSecondary?: any;
 
-  public async connectedCallback() {
-    super.connectedCallback();
+  protected firstUpdated(changedProps) {
+    super.firstUpdated(changedProps);
     this.addEventListener("hacs-location-changed", (e) =>
       this._setRoute(e as LocationChangedEvent)
     );
@@ -76,7 +77,13 @@ class HacsFrontend extends HacsElement {
       "lovelace_updated"
     );
 
-    await this._updateProperties();
+    makeDialogManager(this, this.shadowRoot!);
+    this._updateProperties();
+    if (this.route.path === "") {
+      navigate(this, "/hacs/entry", true);
+    }
+
+    this._applyTheme();
   }
 
   private async _updateProperties(prop: string = "all") {
@@ -123,16 +130,6 @@ class HacsFrontend extends HacsElement {
     if (_updates) {
       this._updateHacs(_updates);
     }
-  }
-
-  protected firstUpdated(changedProps: PropertyValues) {
-    super.firstUpdated(changedProps);
-
-    if (this.route.path === "") {
-      navigate(this, "/hacs/entry", true);
-    }
-
-    this._applyTheme();
   }
 
   protected render(): TemplateResult | void {

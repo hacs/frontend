@@ -1,6 +1,8 @@
 const gulp = require("gulp");
 const rollup = require("rollup");
 const http = require("http");
+const path = require("path");
+const fs = require("fs-extra");
 const log = require("fancy-log");
 const { string } = require("rollup-plugin-string");
 const handler = require("serve-handler");
@@ -10,6 +12,7 @@ const babel = require("rollup-plugin-babel");
 const babelTypescript = require("@babel/preset-typescript");
 const babelDecorators = require("@babel/plugin-proposal-decorators");
 const babelClassProperties = require("@babel/plugin-proposal-class-properties");
+const entrypointHashmanifest = require("rollup-plugin-entrypoint-hashmanifest");
 
 const { nodeResolve } = require("@rollup/plugin-node-resolve");
 const gzipPlugin = require("rollup-plugin-gzip");
@@ -45,6 +48,7 @@ const DevelopPlugins = [
     extensions,
     exclude: [require.resolve("@mdi/js/mdi.js")],
   }),
+  entrypointHashmanifest({ manifestName: "./hacs_frontend/manifest.json" }),
 ];
 
 const BuildPlugins = DevelopPlugins.concat([
@@ -54,16 +58,19 @@ const BuildPlugins = DevelopPlugins.concat([
   gzipPlugin.default(),
 ]);
 
-const DebugPlugins = DevelopPlugins.concat([gzipPlugin.default()]);
-
 const inputconfig = {
   input: "./src/main.ts",
   plugins: DevelopPlugins,
 };
-const outputconfig = {
-  file: "./hacs_frontend/main.js",
-  format: "iife",
-  intro: "const __DEMO__ = false;",
+const outputconfig = (isDev) => {
+  return {
+    dir: "./hacs_frontend/",
+    chunkFileNames: !isDev ? "c.[hash].js" : "[name]-dev.js",
+    assetFileNames: !isDev ? "a.[hash].js" : "[name]-dev.js",
+    entryFileNames: "e.[hash].js",
+    format: "es",
+    intro: "const __DEMO__ = false;",
+  };
 };
 
 function createServer() {
@@ -74,17 +81,21 @@ function createServer() {
   });
 
   server.listen(5000, true, () => {
-    log.info("File will be served to http://127.0.0.1:5000/main.js");
+    log.info("File will be served to http://127.0.0.1:5000/entrypoint.js");
   });
 }
 
 gulp.task("rollup-develop", () => {
+  isDev = true;
   const watcher = rollup.watch({
     input: inputconfig.input,
     plugins: inputconfig.plugins,
-    output: outputconfig,
+    output: outputconfig(true),
     watch: {
       include: ["./src/**"],
+      chokidar: {
+        usePolling: true,
+      },
     },
   });
 
@@ -104,6 +115,7 @@ gulp.task("rollup-develop", () => {
         log("You can now use the generated file");
         log("A new file will be generated if you change something");
         first = false;
+        writeEntrypoint();
       }
     } else if (event.code === "ERROR") {
       log.error(event.error);
@@ -114,14 +126,24 @@ gulp.task("rollup-develop", () => {
 gulp.task("rollup-build", async function (task) {
   inputconfig.plugins = BuildPlugins;
   const bundle = await rollup.rollup(inputconfig);
-  await bundle.write(outputconfig);
+  await bundle.write(outputconfig(false));
+  writeEntrypoint();
   task();
 });
 
-gulp.task("rollup-build-debug", async function (task) {
-  inputconfig.plugins = DebugPlugins;
-  outputconfig.file = "./hacs_frontend/debug.js";
-  const bundle = await rollup.rollup(inputconfig);
-  await bundle.write(outputconfig);
-  task();
-});
+function writeEntrypoint() {
+  const entrypointManifest = require(path.resolve("./hacs_frontend/manifest.json"));
+  fs.writeFileSync(
+    path.resolve("./hacs_frontend/entrypoint.js"),
+    `
+try {
+  new Function("import('/hacsfiles/frontend/${entrypointManifest["./src/main.ts"]}')")();
+} catch (err) {
+  var el = document.createElement('script');
+  el.src = '/hacsfiles/frontend/${entrypointManifest["./src/main.ts"]}';
+  document.body.appendChild(el);
+}
+  `,
+    { encoding: "utf-8" }
+  );
+}

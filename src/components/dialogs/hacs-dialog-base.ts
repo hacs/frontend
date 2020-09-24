@@ -1,15 +1,14 @@
 import { LitElement, property, PropertyValues } from "lit-element";
 import { HomeAssistant, Route } from "../../../homeassistant-frontend/src/types";
-import { Hacs } from "../../data/hacs";
-
 import {
+  Configuration,
   Critical,
   LovelaceResource,
-  Status,
-  Configuration,
-  Repository,
   RemovedRepository,
+  Repository,
+  Status,
 } from "../../data/common";
+import { Hacs } from "../../data/hacs";
 
 export class HacsDialogBase extends LitElement {
   @property({ attribute: false }) public configuration: Configuration;

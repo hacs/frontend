@@ -1,22 +1,23 @@
+import { mdiGithub } from "@mdi/js";
+import "@polymer/paper-dropdown-menu/paper-dropdown-menu";
 import "@polymer/paper-item/paper-icon-item";
 import "@polymer/paper-item/paper-item-body";
-import "@polymer/paper-dropdown-menu/paper-dropdown-menu";
 import "@polymer/paper-listbox/paper-listbox";
-import memoizeOne from "memoize-one";
-import { customElement, html, TemplateResult, css, property, PropertyValues } from "lit-element";
+import { css, customElement, html, property, PropertyValues, TemplateResult } from "lit-element";
 import { classMap } from "lit-html/directives/class-map";
-import { HacsDialogBase } from "./hacs-dialog-base";
+import memoizeOne from "memoize-one";
+import "../../../homeassistant-frontend/src/common/search/search-input";
+import "../../../homeassistant-frontend/src/components/ha-svg-icon";
 import { Repository } from "../../data/common";
-import { mdiGithub } from "@mdi/js";
 import { localize } from "../../localize/localize";
 import { activePanel } from "../../panels/hacs-sections";
+import { scrollBarStyle, searchStyles } from "../../styles/element-styles";
 import { filterRepositoriesByInput } from "../../tools/filter-repositories-by-input";
-import { searchStyles, scrollBarStyle } from "../../styles/element-styles";
 import "../hacs-chip";
 import "../hacs-filter";
 import { hacsIcon } from "../hacs-icon";
-import "../../../homeassistant-frontend/src/common/search/search-input";
-import "../../../homeassistant-frontend/src/components/ha-svg-icon";
+import "./hacs-dialog";
+import { HacsDialogBase } from "./hacs-dialog-base";
 
 @customElement("hacs-add-repository-dialog")
 export class HacsAddRepositoryDialog extends HacsDialogBase {

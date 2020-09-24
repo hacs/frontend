@@ -1,23 +1,22 @@
-import { LitElement, customElement, property, html, css, TemplateResult } from "lit-element";
-import memoizeOne from "memoize-one";
 import "@material/mwc-fab";
 import { mdiPlus } from "@mdi/js";
-import { HomeAssistant, Route } from "../../homeassistant-frontend/src/types";
-import "../../homeassistant-frontend/src/layouts/hass-tabs-subpage";
+import { css, customElement, html, LitElement, property, TemplateResult } from "lit-element";
+import memoizeOne from "memoize-one";
 import "../../homeassistant-frontend/src/common/search/search-input";
-import { Repository } from "../data/common";
-
-import "../components/hacs-repository-card";
-import "../components/hacs-filter";
+import "../../homeassistant-frontend/src/components/ha-card";
+import "../../homeassistant-frontend/src/layouts/hass-tabs-subpage";
+import { HomeAssistant, Route } from "../../homeassistant-frontend/src/types";
 import "../components/hacs-fab";
+import "../components/hacs-filter";
+import "../components/hacs-repository-card";
 import "../components/hacs-tabbed-menu";
-
-import { localize } from "../localize/localize";
-import { HacsStyles } from "../styles/hacs-common-style";
-import { hassTabsSubpage, fabStyles, searchStyles, scrollBarStyle } from "../styles/element-styles";
-import { activePanel } from "./hacs-sections";
-import { filterRepositoriesByInput } from "../tools/filter-repositories-by-input";
+import { Repository } from "../data/common";
 import { Hacs } from "../data/hacs";
+import { localize } from "../localize/localize";
+import { fabStyles, hassTabsSubpage, scrollBarStyle, searchStyles } from "../styles/element-styles";
+import { HacsStyles } from "../styles/hacs-common-style";
+import { filterRepositoriesByInput } from "../tools/filter-repositories-by-input";
+import { activePanel } from "./hacs-sections";
 
 @customElement("hacs-store-panel")
 export class HacsStorePanel extends LitElement {
@@ -149,9 +148,7 @@ export class HacsStorePanel extends LitElement {
             </div>`
           : ""}
         ${newRepositories?.length > 10
-          ? html`<div class="new-repositories">
-              ${localize("store.new_repositories_note")}
-            </div>`
+          ? html`<div class="new-repositories">${localize("store.new_repositories_note")}</div>`
           : ""}
         <div class="container ${this.narrow ? "narrow" : ""}">
           ${this.repositories === undefined

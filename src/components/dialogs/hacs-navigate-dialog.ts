@@ -1,9 +1,8 @@
-import { customElement, html, TemplateResult, internalProperty, css, property } from "lit-element";
-
-import { HacsDialogBase } from "./hacs-dialog-base";
-import "./hacs-dialog";
-import "../../../homeassistant-frontend/src/components/ha-bar";
+import { css, customElement, html, internalProperty, property, TemplateResult } from "lit-element";
 import { navigate } from "../../../homeassistant-frontend/src/common/navigate";
+import "../../../homeassistant-frontend/src/components/ha-bar";
+import "./hacs-dialog";
+import { HacsDialogBase } from "./hacs-dialog-base";
 
 @customElement("hacs-navigate-dialog")
 export class HacsNavigateDialog extends HacsDialogBase {

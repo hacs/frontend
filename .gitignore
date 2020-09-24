@@ -4,5 +4,8 @@ build
 src/localize/generated.ts
 !script/build
 hacs_frontend/*.js
-hacs_frontend/*.gz
+hacs_frontend/*.json
+hacs_frontend/*.js.gz
+!hacs_frontend/*.py
+
 yarn-error.log
