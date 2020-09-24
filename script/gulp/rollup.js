@@ -124,7 +124,6 @@ gulp.task("rollup-develop", () => {
 });
 
 gulp.task("rollup-build", async function (task) {
-  const random = "sda43987";
   inputconfig.plugins = BuildPlugins;
   const bundle = await rollup.rollup(inputconfig);
   await bundle.write(outputconfig(false));
