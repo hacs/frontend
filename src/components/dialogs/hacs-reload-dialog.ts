@@ -1,8 +1,7 @@
 import { customElement, html, TemplateResult } from "lit-element";
-
-import { HacsDialogBase } from "./hacs-dialog-base";
-import "./hacs-dialog";
 import { localize } from "../../localize/localize";
+import "./hacs-dialog";
+import { HacsDialogBase } from "./hacs-dialog-base";
 
 @customElement("hacs-reload-dialog")
 export class HacsReloadDialog extends HacsDialogBase {

@@ -1,34 +1,32 @@
 import "@polymer/paper-item/paper-icon-item";
 import "@polymer/paper-item/paper-item-body";
-import memoizeOne from "memoize-one";
-
 import {
   css,
   CSSResultArray,
   customElement,
   html,
-  TemplateResult,
   property,
   PropertyValues,
   query,
+  TemplateResult,
 } from "lit-element";
-
-import {
-  repositoryToggleBeta,
-  repositoryInstall,
-  getRepositories,
-  repositoryInstallVersion,
-} from "../../data/websocket";
-import { updateLovelaceResources } from "../../tools/update-lovelace-resources";
-import { localize } from "../../localize/localize";
-import { HacsDialogBase } from "./hacs-dialog-base";
-import { Repository } from "../../data/common";
-import { repositoryUpdate } from "../../data/websocket";
-import "../../../homeassistant-frontend/src/components/ha-switch";
-import "../../../homeassistant-frontend/src/components/ha-formfield";
+import memoizeOne from "memoize-one";
 import "../../../homeassistant-frontend/src/components/ha-circular-progress";
-import "./hacs-dialog";
+import "../../../homeassistant-frontend/src/components/ha-formfield";
+import "../../../homeassistant-frontend/src/components/ha-switch";
+import { Repository } from "../../data/common";
+import {
+  getRepositories,
+  repositoryInstall,
+  repositoryInstallVersion,
+  repositoryToggleBeta,
+  repositoryUpdate,
+} from "../../data/websocket";
+import { localize } from "../../localize/localize";
+import { updateLovelaceResources } from "../../tools/update-lovelace-resources";
 import "../hacs-link";
+import "./hacs-dialog";
+import { HacsDialogBase } from "./hacs-dialog-base";
 
 @customElement("hacs-install-dialog")
 export class HacsInstallDialog extends HacsDialogBase {

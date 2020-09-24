@@ -8,7 +8,6 @@ gulp.task(
       process.env.NODE_ENV = "production";
     },
     "common",
-    "rollup-build",
-    "rollup-build-debug"
+    "rollup-build"
   )
 );

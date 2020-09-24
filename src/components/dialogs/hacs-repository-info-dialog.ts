@@ -1,16 +1,16 @@
-import { customElement, html, TemplateResult, property, PropertyValues, css } from "lit-element";
-import memoizeOne from "memoize-one";
-import { mdiCube, mdiAccount, mdiStar, mdiExclamationThick, mdiArrowDownBold } from "@mdi/js";
-import { HacsDialogBase } from "./hacs-dialog-base";
-import { Repository } from "../../data/common";
-import { markdown } from "../../tools/markdown/markdown";
+import { mdiAccount, mdiArrowDownBold, mdiCube, mdiExclamationThick, mdiStar } from "@mdi/js";
+import { css, customElement, html, property, PropertyValues, TemplateResult } from "lit-element";
 import { classMap } from "lit-html/directives/class-map";
+import memoizeOne from "memoize-one";
+import { Repository } from "../../data/common";
+import { getRepositories, repositoryUpdate } from "../../data/websocket";
 import { localize } from "../../localize/localize";
 import { scrollBarStyle } from "../../styles/element-styles";
+import { markdown } from "../../tools/markdown/markdown";
 import "../hacs-chip";
 import "../hacs-link";
-
-import { repositoryUpdate, getRepositories } from "../../data/websocket";
+import "./hacs-dialog";
+import { HacsDialogBase } from "./hacs-dialog-base";
 
 @customElement("hacs-repository-info-dialog")
 export class HacsRepositoryDialog extends HacsDialogBase {

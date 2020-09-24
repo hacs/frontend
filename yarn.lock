@@ -6816,6 +6816,11 @@ rollup-plugin-babel@^4.4.0:
     "@babel/helper-module-imports" "^7.0.0"
     rollup-pluginutils "^2.8.1"
 
+rollup-plugin-entrypoint-hashmanifest@^0.1.2:
+  version "0.1.2"
+  resolved "https://registry.yarnpkg.com/rollup-plugin-entrypoint-hashmanifest/-/rollup-plugin-entrypoint-hashmanifest-0.1.2.tgz#e6f0e0598ab49ec4ff866dbca2321301601832ed"
+  integrity sha512-TCGWj/PghD+EW7I60RwOzakcKWGQM9n7bN5Y4eyR8URsBYOgMtfe1kYQ+7+lfi389cFQHwV9kuYjAJexFbu+XA==
+
 rollup-plugin-gzip@^2.5.0:
   version "2.5.0"
   resolved "https://registry.yarnpkg.com/rollup-plugin-gzip/-/rollup-plugin-gzip-2.5.0.tgz#786650e7bddf86d7f723c205c3e3018ea727388c"

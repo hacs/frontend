@@ -1,24 +1,22 @@
+import { mdiDelete, mdiGithub } from "@mdi/js";
 import "@polymer/paper-item/paper-icon-item";
 import "@polymer/paper-item/paper-item-body";
 import {
+  css,
   customElement,
   html,
-  TemplateResult,
-  css,
   property,
-  query,
   PropertyValues,
+  query,
+  TemplateResult,
 } from "lit-element";
-import { HacsDialogBase } from "./hacs-dialog-base";
-import { scrollBarStyle } from "../../styles/element-styles";
 import "../../../homeassistant-frontend/src/components/ha-svg-icon";
-import { mdiGithub, mdiDelete } from "@mdi/js";
-
-import { repositoryDelete, getRepositories, repositoryAdd } from "../../data/websocket";
-
+import { getRepositories, repositoryAdd, repositoryDelete } from "../../data/websocket";
 import { localize } from "../../localize/localize";
-
+import { scrollBarStyle } from "../../styles/element-styles";
 import "../hacs-icon-button";
+import "./hacs-dialog";
+import { HacsDialogBase } from "./hacs-dialog-base";
 
 @customElement("hacs-custom-repositories-dialog")
 export class HacsCustomRepositoriesDialog extends HacsDialogBase {
@@ -65,9 +63,7 @@ export class HacsCustomRepositoriesDialog extends HacsDialogBase {
                   three-line
                   >${repo.name}
                   <div secondary>${repo.description}</div>
-                  <div secondary>
-                    Category: ${repo.category}
-                  </div></paper-item-body
+                  <div secondary>Category: ${repo.category}</div></paper-item-body
                 ><hacs-icon-button
                   class="delete"
                   .icon=${mdiDelete}

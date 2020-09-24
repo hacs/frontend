@@ -1,9 +1,8 @@
-import { customElement, html, TemplateResult, property, css } from "lit-element";
-
+import { css, customElement, html, property, TemplateResult } from "lit-element";
 import { Repository } from "../../data/common";
-import { HacsDialogBase } from "./hacs-dialog-base";
-import { repositoryUninstall, deleteResource, fetchResources } from "../../data/websocket";
+import { deleteResource, fetchResources, repositoryUninstall } from "../../data/websocket";
 import "./hacs-dialog";
+import { HacsDialogBase } from "./hacs-dialog-base";
 
 @customElement("hacs-removed-dialog")
 export class HacsRemovedDialog extends HacsDialogBase {
