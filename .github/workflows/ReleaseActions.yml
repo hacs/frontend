@@ -38,7 +38,7 @@ jobs:
         run: |
           rm -R /home/runner/work/frontend/frontend/src/localize/languages/
           mkdir -p /home/runner/work/frontend/frontend/src/localize/languages/
-          cp /tmp/lokalise/locale/* /home/runner/work/frontend/frontend/src/localize/languages/
+          cp /tmp/lokalise/* /home/runner/work/frontend/frontend/src/localize/languages/
 
       - name: "Set version number"
         run: |
