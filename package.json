@@ -42,7 +42,7 @@
     "eslint": "^7.9.0",
     "eslint-config-airbnb-base": "^14.0.0",
     "eslint-config-airbnb-typescript": "^9.0.0",
-    "eslint-config-prettier": "^6.10.1",
+    "eslint-config-prettier": "^6.12.0",
     "eslint-import-resolver-webpack": "^0.12.1",
     "eslint-plugin-disable": "^2.0.1",
     "eslint-plugin-import": "^2.21.2",
