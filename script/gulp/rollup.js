@@ -61,6 +61,7 @@ const BuildPlugins = DevelopPlugins.concat([
 const inputconfig = {
   input: "./src/main.ts",
   plugins: DevelopPlugins,
+  preserveEntrySignatures: false,
 };
 const outputconfig = (isDev) => {
   return {
@@ -91,6 +92,7 @@ gulp.task("rollup-develop", () => {
     input: inputconfig.input,
     plugins: inputconfig.plugins,
     output: outputconfig(true),
+    preserveEntrySignatures: false,
     watch: {
       include: ["./src/**"],
       chokidar: {

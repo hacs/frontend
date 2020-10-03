@@ -1,6 +1,8 @@
 import { mdiDelete, mdiGithub } from "@mdi/js";
+import "@polymer/paper-dropdown-menu/paper-dropdown-menu";
 import "@polymer/paper-item/paper-icon-item";
 import "@polymer/paper-item/paper-item-body";
+import "@polymer/paper-listbox/paper-listbox";
 import {
   css,
   customElement,

@@ -1,5 +1,3 @@
-import "@polymer/paper-dropdown-menu/paper-dropdown-menu";
-import "@polymer/paper-listbox/paper-listbox";
 import { css, CSSResultArray, customElement, html, property, TemplateResult } from "lit-element";
 import { classMap } from "lit-html/directives/class-map";
 import memoizeOne from "memoize-one";
