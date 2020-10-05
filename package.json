@@ -39,7 +39,7 @@
     "babel-loader": "^8.1.0",
     "del": "^5.1.0",
     "dompurify": "^2.1.1",
-    "eslint": "^7.9.0",
+    "eslint": "^7.10.0",
     "eslint-config-airbnb-base": "^14.0.0",
     "eslint-config-airbnb-typescript": "^9.0.0",
     "eslint-config-prettier": "^6.12.0",
