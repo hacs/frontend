@@ -37,7 +37,7 @@
     "@typescript-eslint/eslint-plugin": "^3.10.1",
     "@typescript-eslint/parser": "^3.10.1",
     "babel-loader": "^8.1.0",
-    "del": "^5.1.0",
+    "del": "^6.0.0",
     "dompurify": "^2.1.1",
     "eslint": "^7.9.0",
     "eslint-config-airbnb-base": "^14.0.0",
