@@ -361,7 +361,7 @@ export class HacsRepositoryCard extends LitElement {
 
         .status-border {
           border-style: solid;
-          border-width: var(--ha-card-border-width, 1px);
+          border-width: min(var(--ha-card-border-width, 1px), 10px);
         }
 
         .status-header {
