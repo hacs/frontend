@@ -277,6 +277,9 @@ export class HacsRepositoryCard extends LitElement {
           flex-direction: column;
           height: 100%;
           width: 480px;
+          border-style: solid;
+          border-width: min(var(--ha-card-border-width, 1px), 10px);
+          border-color: transparent;
         }
 
         hacs-chip {
@@ -361,7 +364,7 @@ export class HacsRepositoryCard extends LitElement {
 
         .status-border {
           border-style: solid;
-          border-width: 1px;
+          border-width: min(var(--ha-card-border-width, 1px), 10px);
         }
 
         .status-header {
