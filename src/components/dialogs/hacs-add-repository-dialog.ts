@@ -223,7 +223,7 @@ export class HacsAddRepositoryDialog extends HacsDialogBase {
         .content {
           width: 100%;
           overflow: auto;
-          max-height: 870px;
+          max-height: 70vh;
         }
 
         .filter {
