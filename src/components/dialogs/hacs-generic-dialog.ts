@@ -3,6 +3,7 @@ import memoizeOne from "memoize-one";
 import { Repository } from "../../data/common";
 import { markdown } from "../../tools/markdown/markdown";
 import "./hacs-dialog";
+import "../hacs-link"
 import { HacsDialogBase } from "./hacs-dialog-base";
 
 @customElement("hacs-generic-dialog")
