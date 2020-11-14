@@ -15,7 +15,7 @@ export class HacsLink extends LitElement {
   @property({ type: Boolean }) public newtab: boolean = false;
   @property({ type: Boolean }) public parent: boolean = false;
   @property() public title: string;
-  @internalProperty() private url!: string;
+  @property() private url!: string;
 
   protected render(): TemplateResult | void {
     return html`<span title=${this.title || this.url} @tap=${this._open}><slot></slot></span>`;

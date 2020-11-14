@@ -5,6 +5,7 @@ import { localize } from "../../localize/localize";
 import { version } from "../../version";
 import { HacsDialogBase } from "./hacs-dialog-base";
 import "./hacs-dialog";
+import "../hacs-link"
 
 @customElement("hacs-about-dialog")
 export class HacsAboutDialog extends HacsDialogBase {
