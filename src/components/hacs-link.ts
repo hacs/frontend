@@ -17,7 +17,7 @@ export class HacsLink extends LitElement {
   @property() private url!: string;
 
   protected render(): TemplateResult | void {
-    return html`<span title=${this.title || this.url} @tap=${this._open}><slot></slot></span>`;
+    return html`<span title=${this.title || this.url} @click=${this._open}><slot></slot></span>`;
   }
 
   private _open(): void {
