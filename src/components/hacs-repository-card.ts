@@ -276,7 +276,6 @@ export class HacsRepositoryCard extends LitElement {
           display: flex;
           flex-direction: column;
           height: 100%;
-          width: 480px;
           border-style: solid;
           border-width: min(var(--ha-card-border-width, 1px), 10px);
           border-color: transparent;

@@ -233,7 +233,7 @@ export class HacsStorePanel extends LitElement {
           border-bottom: 1px solid var(--divider-color);
         }
         .content {
-          height: calc(100vh - 128px);
+          height: calc(100vh - 115px);
           overflow: auto;
         }
         .narrow-content {
@@ -241,11 +241,9 @@ export class HacsStorePanel extends LitElement {
         }
         .container {
           display: grid;
-          grid-template-columns: repeat(auto-fit, minmax(480px, 1fr));
-          justify-items: center;
+          grid-template-columns: repeat(auto-fit, minmax(300px, 0.25fr));
           grid-gap: 8px 8px;
-          padding: 8px 16px 16px;
-          margin-bottom: 64px;
+          margin: 8px;
         }
         .no-repositories {
           width: 100%;
@@ -261,6 +259,7 @@ export class HacsStorePanel extends LitElement {
           display: flex;
           flex-direction: column;
           justify-content: space-between;
+          width: 100%;
         }
         hacs-repository-card[narrow] {
           width: 100%;
