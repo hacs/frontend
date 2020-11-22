@@ -225,5 +225,6 @@ class HacsFrontend extends ProvideHassLitMixin(HacsElement) {
     }
 
     applyThemesOnElement(this.parentElement, this.hass.themes, themeName, options);
+    this.parentElement.style.backgroundColor = "var(--primary-background-color)";
   }
 }
