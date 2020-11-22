@@ -1,9 +1,8 @@
 name: "Release actions"
 
 on:
-  push:
-    tags:
-      - "*"
+  release:
+    types: ["published"]
 
 jobs:
   deploy:
