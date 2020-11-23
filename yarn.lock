@@ -5765,10 +5765,10 @@ map-visit@^1.0.0:
   dependencies:
     object-visit "^1.0.0"
 
-marked@^1.2.3:
-  version "1.2.3"
-  resolved "https://registry.yarnpkg.com/marked/-/marked-1.2.3.tgz#58817ba348a7c9398cb94d40d12e0d08df83af57"
-  integrity sha512-RQuL2i6I6Gn+9n81IDNGbL0VHnta4a+8ZhqvryXEniTb/hQNtf3i26hi1XWUhzb9BgVyWHKR3UO8MaHtKoYibw==
+marked@^1.2.5:
+  version "1.2.5"
+  resolved "https://registry.yarnpkg.com/marked/-/marked-1.2.5.tgz#a44b31f2a0b8b5bfd610f00d55d1952d1ac1dfdb"
+  integrity sha512-2AlqgYnVPOc9WDyWu7S5DJaEZsfk6dNh/neatQ3IHUW4QLutM/VPSH9lG7bif+XjFWc9K9XR3QvR+fXuECmfdA==
 
 matchdep@^2.0.0:
   version "2.0.0"
