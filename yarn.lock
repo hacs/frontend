@@ -275,13 +275,6 @@
   dependencies:
     "@babel/types" "^7.12.1"
 
-"@babel/helper-skip-transparent-expression-wrappers@^7.11.0":
-  version "7.11.0"
-  resolved "https://registry.yarnpkg.com/@babel/helper-skip-transparent-expression-wrappers/-/helper-skip-transparent-expression-wrappers-7.11.0.tgz#eec162f112c2f58d3af0af125e3bb57665146729"
-  integrity sha512-0XIdiQln4Elglgjbwo9wuJpL/K7AGCY26kmEt0+pRP0TAj4jjyNq1MjoRvikrTVqKcx4Gysxt4cXvVFXP/JO2Q==
-  dependencies:
-    "@babel/types" "^7.11.0"
-
 "@babel/helper-skip-transparent-expression-wrappers@^7.12.1":
   version "7.12.1"
   resolved "https://registry.yarnpkg.com/@babel/helper-skip-transparent-expression-wrappers/-/helper-skip-transparent-expression-wrappers-7.12.1.tgz#462dc63a7e435ade8468385c63d2b84cce4b3cbf"
@@ -462,15 +455,6 @@
   dependencies:
     "@babel/helper-plugin-utils" "^7.10.4"
     "@babel/plugin-syntax-optional-catch-binding" "^7.8.0"
-
-"@babel/plugin-proposal-optional-chaining@^7.11.0":
-  version "7.11.0"
-  resolved "https://registry.yarnpkg.com/@babel/plugin-proposal-optional-chaining/-/plugin-proposal-optional-chaining-7.11.0.tgz#de5866d0646f6afdaab8a566382fe3a221755076"
-  integrity sha512-v9fZIu3Y8562RRwhm1BbMRxtqZNFmFA2EG+pT2diuU8PT3H6T/KXoZ54KgYisfOFZHV6PfvAiBIZ9Rcz+/JCxA==
-  dependencies:
-    "@babel/helper-plugin-utils" "^7.10.4"
-    "@babel/helper-skip-transparent-expression-wrappers" "^7.11.0"
-    "@babel/plugin-syntax-optional-chaining" "^7.8.0"
 
 "@babel/plugin-proposal-optional-chaining@^7.12.7":
   version "7.12.7"
