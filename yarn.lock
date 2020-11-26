@@ -7602,10 +7602,10 @@ sver-compat@^1.5.0:
     es6-iterator "^2.0.1"
     es6-symbol "^3.1.1"
 
-systemjs@^6.6.1:
-  version "6.6.1"
-  resolved "https://registry.yarnpkg.com/systemjs/-/systemjs-6.6.1.tgz#4bc6f5a9f6d3cfa85449c6fe10940b73bc39188b"
-  integrity sha512-Niw/DZwTPmdLGC0CCe+n/MdRu927XyN/jzxKZyU6tUfeNqGQlxO5oVXuVMsJHxPO2cnXyHh0/zIGdXaocOMLVQ==
+systemjs@^6.8.0:
+  version "6.8.0"
+  resolved "https://registry.yarnpkg.com/systemjs/-/systemjs-6.8.0.tgz#0c522ee38ecbe6d3fbe50591d7576f2cd265314a"
+  integrity sha512-qX17+SWVfKN6cKf+74D44Mo8ywxYmnNmBOVWSq05lyAl/6rSYoAdpQWWpPt04/+n9gxSRMLhxBGtqXsf2XIh+Q==
 
 table@^5.2.3:
   version "5.4.6"
