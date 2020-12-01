@@ -2150,10 +2150,10 @@
     "@rollup/pluginutils" "^3.0.8"
     magic-string "^0.25.5"
 
-"@rollup/plugin-typescript@^6.0.0":
-  version "6.0.0"
-  resolved "https://registry.yarnpkg.com/@rollup/plugin-typescript/-/plugin-typescript-6.0.0.tgz#08635d9d04dc3a099ef0150c289ba5735200bc63"
-  integrity sha512-Y5U2L4eaF3wUSgCZRMdvNmuzWkKMyN3OwvhAdbzAi5sUqedaBk/XbzO4T7RlViDJ78MOPhwAIv2FtId/jhMtbg==
+"@rollup/plugin-typescript@^8.0.0":
+  version "8.0.0"
+  resolved "https://registry.yarnpkg.com/@rollup/plugin-typescript/-/plugin-typescript-8.0.0.tgz#d621d9e268ef591c9e439650f550c5ffc53545c1"
+  integrity sha512-2L/kKvM5U4VOm+yVMvPIBF3yMZtQUyopf4YIT+KQbqZBZ8Fsdm7X6yeezy92PMyvvHQG1Pa322MVwxPojQvukA==
   dependencies:
     "@rollup/pluginutils" "^3.1.0"
     resolve "^1.17.0"
