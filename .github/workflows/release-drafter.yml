@@ -14,7 +14,8 @@ jobs:
           echo "::set-output name=version::$version"
 
       - uses: release-drafter/release-drafter@v5
-        tag: ${{ steps.version.outputs.version }}
-        name: ${{ steps.version.outputs.version }}
+        with:
+          tag: ${{ steps.version.outputs.version }}
+          name: ${{ steps.version.outputs.version }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
