@@ -1,9 +1,9 @@
-import "@material/mwc-fab";
 import { mdiPlus } from "@mdi/js";
 import { css, customElement, html, LitElement, property, TemplateResult } from "lit-element";
 import memoizeOne from "memoize-one";
 import "../../homeassistant-frontend/src/common/search/search-input";
 import "../../homeassistant-frontend/src/components/ha-card";
+import "../../homeassistant-frontend/src/components/ha-fab";
 import "../../homeassistant-frontend/src/layouts/hass-tabs-subpage";
 import { HomeAssistant, Route } from "../../homeassistant-frontend/src/types";
 import "../components/hacs-fab";
@@ -160,9 +160,14 @@ export class HacsStorePanel extends LitElement {
             : this._renderRepositories()}
         </div>
       </div>
-      <mwc-fab ?is-wide=${this.isWide} ?narrow=${this.narrow} @click=${this._addRepository}>
-        <ha-svg-icon slot="icon" path=${mdiPlus}></ha-svg-icon>
-      </mwc-fab>
+      <ha-fab
+        slot="fab"
+        .label=${this.hacs.localize("store.add")}
+        extended
+        @click=${this._addRepository}
+      >
+        <ha-svg-icon slot="icon" .path=${mdiPlus}></ha-svg-icon>
+      </ha-fab>
     </hass-tabs-subpage>`;
   }
 
