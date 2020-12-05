@@ -154,6 +154,7 @@
     "upgrade_all": "Upgrade all"
   },
   "store": {
+    "add": "Explore & add repositories",
     "ascending": "ascending",
     "clear_new": "Clear all new repositories",
     "descending": "descending",
