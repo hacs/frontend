@@ -60,7 +60,7 @@
     "lit-element": "^2.4.0",
     "lit-html": "=1.2.1",
     "magic-string": "^0.25.7",
-    "marked": "^1.2.3",
+    "marked": "^1.2.7",
     "memoize-one": "^5.1.1",
     "node-emoji": "^1.10.0",
     "patch-package": "^6.2.0",
