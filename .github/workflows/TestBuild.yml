@@ -35,9 +35,9 @@ jobs:
       - name: "Set version number"
         id: info
         run: |
-          version=${{ github.ref }}
+          version="20201223162633"
           raw=$(\
-              curl -sSL -f "https://github.com/hacs/frontend/releases/tag/${version##*/}" \
+              curl -sSL -f "https://github.com/hacs/frontend/releases/tag/${version}" \
               | grep "<li>" \
               | grep "</a></li>" \
               | grep "user" \
@@ -45,7 +45,7 @@ jobs:
 
           user=$(echo "$raw" | cut -d">" -f 5 | cut -d"<" -f 1)
           change=$(echo "$raw" | cut -d">" -f 2 | cut -d"(" -f 1)
-          echo "::set-output name=version::${version##*/}"
+          echo "::set-output name=version::${version}"
           echo "::set-output name=title::$change $user"
 
       - name: Create PR
