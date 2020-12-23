@@ -56,7 +56,7 @@ jobs:
             github.request('POST /repos/{owner}/{repo}/pulls', {
               owner: "hacs",
               repo: "integration",
-              title: ${{ steps.info.outputs.title }},
+              title: "${{ steps.info.outputs.title }}",
               head: 'frontend/${{ steps.info.outputs.version }}',
               base: 'origin/main'
             })
