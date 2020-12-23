@@ -53,7 +53,7 @@ jobs:
         with:
           github-token: ${{secrets.GIT_TOKEN}}
           script: |
-            await github.request('POST /repos/{owner}/{repo}/pulls', {
+            github.request('POST /repos/{owner}/{repo}/pulls', {
               owner: "hacs",
               repo: "integration",
               title: ${{ steps.info.outputs.title }},
