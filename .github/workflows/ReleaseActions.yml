@@ -73,3 +73,40 @@ jobs:
         uses: Ilshidur/action-discord@0.0.2
         with:
           args: "New version of HACS frontend are now pushed to [PyPi](https://pypi.org/project/hacs-frontend)."
+  bump:
+    runs-on: ubuntu-latest
+    needs: deploy
+    name: Bump hacs/integration
+    steps:
+      - name: Initialize git
+        uses: home-assistant/actions/helpers/git-init@master
+        with:
+          name: ${{ secrets.GIT_NAME }}
+          email: ${{ secrets.GIT_EMAIL }}
+          token: ${{ secrets.GIT_TOKEN }}
+
+      - name: Clone hacs/integration
+        run: git clone --depth 1 https://github.com/hacs/integration.git /tmp/integration
+
+      - name: Bump version
+        run: |
+          cd /tmp/integration
+          make bump-frontend
+
+      - name: "Set version number"
+        id: version
+        run: |
+          version=${{ github.ref }}
+          echo "::set-output name=version::${version##*/}"
+
+      - name: Create PR
+        uses: actions/github-script@v3
+        with:
+          github-token: ${{secrets.GIT_TOKEN}}
+          script: |
+            github.issues.createComment({
+              owner: "hacs",
+              repo: "integration",
+              head: 'frontend/${{ steps.version.outputs.version }}',
+              base: 'main'
+            })
