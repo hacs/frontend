@@ -32,14 +32,6 @@ jobs:
           email: ${{ secrets.GIT_EMAIL }}
           token: ${{ secrets.GIT_TOKEN }}
 
-      - name: Clone hacs/integration
-        run: git clone --depth 1 https://github.com/hacs/integration.git /tmp/integration
-
-      - name: Bump version
-        run: |
-          cd /tmp/integration
-          make bump-frontend
-
       - name: "Set version number"
         id: info
         run: |
