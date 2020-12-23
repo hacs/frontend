@@ -93,7 +93,13 @@ export const getMessages = memoizeOne((hacs: Hacs, repositories: Repository[]) =
       name: hacs.localize("entry.messages.restart.title"),
       info: hacs
         .localize("entry.messages.restart.content")
-        .replace("{number}", String(repositoriesRestartPending.length)),
+        .replace("{number}", String(repositoriesRestartPending.length))
+        .replace(
+          "{pluralWording}",
+          repositoriesRestartPending.length == 1
+            ? hacs.localize("common.integration")
+            : hacs.localize("common.integration_plural")
+        ),
       severity: "error",
       path: "/config/server_control",
     });
