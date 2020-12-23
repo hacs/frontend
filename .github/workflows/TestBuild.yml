@@ -58,5 +58,5 @@ jobs:
               repo: "integration",
               title: "${{ steps.info.outputs.title }}",
               head: 'frontend/${{ steps.info.outputs.version }}',
-              base: 'origin/main'
+              base: 'main'
             })
