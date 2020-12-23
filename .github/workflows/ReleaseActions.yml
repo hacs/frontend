@@ -94,10 +94,20 @@ jobs:
           make bump-frontend
 
       - name: "Set version number"
-        id: version
+        id: info
         run: |
           version=${{ github.ref }}
+          raw=$(\
+              curl -sSL -f "https://github.com/hacs/frontend/releases/tag/${version##*/}" \
+              | grep "<li>" \
+              | grep "</a></li>" \
+              | grep "user" \
+              )
+
+          user=$(echo "$raw" | cut -d">" -f 5 | cut -d"<" -f 1)
+          change=$(echo "$raw" | cut -d">" -f 2 | cut -d"(" -f 1)
           echo "::set-output name=version::${version##*/}"
+          echo "::set-output name=title::$change $user"
 
       - name: Create PR
         uses: actions/github-script@v3
@@ -107,6 +117,7 @@ jobs:
             await github.request('POST /repos/{owner}/{repo}/pulls', {
               owner: "hacs",
               repo: "integration",
-              head: 'frontend/${{ steps.version.outputs.version }}',
+              title: ${{ steps.info.outputs.title }},
+              head: 'frontend/${{ steps.info.outputs.version }}',
               base: 'main'
             })
