@@ -1,14 +1,11 @@
-// See https://aka.ms/vscode-remote/devcontainer.json for format details.
 {
   "name": "HACS Frontend",
-  "image": "ludeeus/container:frontend",
+  "image": "ghcr.io/ludeeus/devcontainer/frontend:stable",
   "context": "..",
   "appPort": ["5000:5000"],
-  "postCreateCommand": "apk add make && make init",
-  "runArgs": ["-v", "${env:HOME}${env:USERPROFILE}/.ssh:/tmp/.ssh"],
+  "postCreateCommand": "make init",
   "extensions": [
     "github.vscode-pull-request-github",
-    "tabnine.tabnine-vscode",
     "dbaeumer.vscode-eslint",
     "ms-vscode.vscode-typescript-tslint-plugin",
     "esbenp.prettier-vscode",
