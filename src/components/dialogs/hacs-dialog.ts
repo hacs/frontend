@@ -55,7 +55,7 @@ export class HacsDialog extends HacsDialogBase {
         }
         ha-dialog {
           --mdc-dialog-max-width: var(--hacs-dialog-max-width, 990px);
-          --mdc-dialog-min-width: var(--hacs-dialog-max-width, 280px);
+          --mdc-dialog-min-width: var(--hacs-dialog-min-width, 280px);
         }
         .primary {
           margin-left: 52px;
