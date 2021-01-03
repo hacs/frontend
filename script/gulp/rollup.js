@@ -112,13 +112,8 @@ gulp.task("rollup-develop", () => {
     if (event.code === "BUNDLE_START") {
       log(`Build started @ ${new Date().toLocaleTimeString()}`);
     } else if (event.code === "BUNDLE_END") {
+      writeEntrypoint();
       log(`Build done @ ${new Date().toLocaleTimeString()}`);
-      if (first) {
-        log("You can now use the generated file");
-        log("A new file will be generated if you change something");
-        first = false;
-        writeEntrypoint();
-      }
     } else if (event.code === "ERROR") {
       log.error(event.error);
     }
