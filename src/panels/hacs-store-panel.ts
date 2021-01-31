@@ -12,7 +12,6 @@ import "../components/hacs-repository-card";
 import "../components/hacs-tabbed-menu";
 import { Repository } from "../data/common";
 import { Hacs } from "../data/hacs";
-import { localize } from "../localize/localize";
 import { fabStyles, hassTabsSubpage, scrollBarStyle, searchStyles } from "../styles/element-styles";
 import { HacsStyles } from "../styles/hacs-common-style";
 import { filterRepositoriesByInput } from "../tools/filter-repositories-by-input";
@@ -82,10 +81,15 @@ export class HacsStorePanel extends LitElement {
   }
 
   protected render(): TemplateResult {
+    if (!this.hacs) {
+      return html``;
+    }
+
+    console.log(this.hacs.localize("search.installed"));
     const newRepositories = this._repositoriesInActiveSection(this.repositories, this.section)[1];
 
     if (!this.filters[this.section] && this.hacs.configuration.categories) {
-      const categories = activePanel(this.route)?.categories;
+      const categories = activePanel(this.hacs.language, this.route)?.categories;
       this.filters[this.section] = [];
       categories
         ?.filter((c) => this.hacs.configuration?.categories.includes(c))
@@ -109,6 +113,7 @@ export class HacsStorePanel extends LitElement {
       <hacs-tabbed-menu
         slot="toolbar-icon"
         .hass=${this.hass}
+        .hacs=${this.hacs}
         .route=${this.route}
         .narrow=${this.narrow}
         .configuration=${this.hacs.configuration}
@@ -144,11 +149,16 @@ export class HacsStorePanel extends LitElement {
       <div class="content ${this.narrow ? "narrow-content" : ""}">
         ${this.filters[this.section]?.length > 1
           ? html`<div class="filters">
-              <hacs-filter .filters="${this.filters[this.section]}"></hacs-filter>
+              <hacs-filter
+                .hacs=${this.hacs}
+                .filters="${this.filters[this.section]}"
+              ></hacs-filter>
             </div>`
           : ""}
         ${newRepositories?.length > 10
-          ? html`<div class="new-repositories">${localize("store.new_repositories_note")}</div>`
+          ? html`<div class="new-repositories">
+              ${this.hacs.localize("store.new_repositories_note")}
+            </div>`
           : ""}
         <div class="container ${this.narrow ? "narrow" : ""}">
           ${this.repositories === undefined
@@ -189,20 +199,24 @@ export class HacsStorePanel extends LitElement {
 
   private _renderNoResultsFound(): TemplateResult {
     return html`<ha-card class="no-repositories">
-      <div class="header">${localize("store.no_repositories")} 😕</div>
+      <div class="header">${this.hacs.localize("store.no_repositories")} 😕</div>
       <p>
-        ${localize("store.no_repositories_found_desc1").replace("{searchInput}", this._searchInput)}
+        ${this.hacs
+          .localize("store.no_repositories_found_desc1")
+          .replace("{searchInput}", this._searchInput)}
         <br />
-        ${localize("store.no_repositories_found_desc2")}
+        ${this.hacs.localize("store.no_repositories_found_desc2")}
       </p>
     </ha-card>`;
   }
 
   private _renderEmpty(): TemplateResult {
     return html`<ha-card class="no-repositories">
-      <div class="header">${localize("store.no_repositories")} 😕</div>
+      <div class="header">${this.hacs.localize("store.no_repositories")} 😕</div>
       <p>
-        ${localize("store.no_repositories_desc1")}<br />${localize("store.no_repositories_desc2")}
+        ${this.hacs.localize("store.no_repositories_desc1")}<br />${this.hacs.localize(
+          "store.no_repositories_desc2"
+        )}
       </p>
     </ha-card>`;
   }

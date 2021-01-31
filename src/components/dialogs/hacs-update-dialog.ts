@@ -8,7 +8,6 @@ import {
   repositoryInstallVersion,
   repositoryReleasenotes,
 } from "../../data/websocket";
-import { localize } from "../../localize/localize";
 import { scrollBarStyle } from "../../styles/element-styles";
 import { markdown } from "../../tools/markdown/markdown";
 import { updateLovelaceResources } from "../../tools/update-lovelace-resources";
@@ -44,17 +43,17 @@ export class HacsUpdateDialog extends HacsDialogBase {
     return html`
       <hacs-dialog
         .active=${this.active}
-        .title=${localize("dialog_update.title")}
+        .title=${this.hacs.localize("dialog_update.title")}
         .hass=${this.hass}
       >
         <div class=${classMap({ content: true, narrow: this.narrow })}>
           ${repository.name}
           <p>
-            <b>${localize("dialog_update.installed_version")}:</b>
+            <b>${this.hacs.localize("dialog_update.installed_version")}:</b>
             ${repository.installed_version}
           </p>
           <p>
-            <b>${localize("dialog_update.available_version")}:</b>
+            <b>${this.hacs.localize("dialog_update.available_version")}:</b>
             ${repository.available_version}
           </p>
           ${this._releaseNotes.length > 0
@@ -67,13 +66,14 @@ export class HacsUpdateDialog extends HacsDialogBase {
             : ""}
           ${!repository.can_install
             ? html`<p class="error">
-                ${localize("confirm.home_assistant_version_not_correct")
+                ${this.hacs
+                  .localize("confirm.home_assistant_version_not_correct")
                   .replace("{haversion}", this.hass.config.version)
                   .replace("{minversion}", repository.homeassistant)}
               </p>`
             : ""}
           ${repository.category === "integration"
-            ? html`<p>${localize("dialog_install.restart")}</p>`
+            ? html`<p>${this.hacs.localize("dialog_install.restart")}</p>`
             : ""}
           ${this._error ? html`<div class="error">${this._error.message}</div>` : ""}
         </div>
@@ -83,14 +83,14 @@ export class HacsUpdateDialog extends HacsDialogBase {
           @click=${this._updateRepository}
           >${this._updating
             ? html`<ha-circular-progress active></ha-circular-progress>`
-            : localize("common.update")}</mwc-button
+            : this.hacs.localize("common.update")}</mwc-button
         >
         <div class="secondary" slot="secondaryaction">
           <hacs-link .url=${this._getChanglogURL()}
-            ><mwc-button>${localize("dialog_update.changelog")}</mwc-button></hacs-link
+            ><mwc-button>${this.hacs.localize("dialog_update.changelog")}</mwc-button></hacs-link
           >
           <hacs-link .url="https://github.com/${repository.full_name}"
-            ><mwc-button>${localize("common.repository")}</mwc-button></hacs-link
+            ><mwc-button>${this.hacs.localize("common.repository")}</mwc-button></hacs-link
           >
         </div>
       </hacs-dialog>

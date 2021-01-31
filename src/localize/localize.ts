@@ -1,11 +1,16 @@
 import { languages } from "./generated";
 
-export function localize(string: string, search: string = undefined, replace: string = undefined) {
+export function localize(
+  language: string,
+  string: string,
+  search: string = undefined,
+  replace: string = undefined
+) {
   let translated: any;
 
   const split = string.split(".");
 
-  const lang = (localStorage.getItem("selectedLanguage") || "en")
+  const lang = (language || localStorage.getItem("selectedLanguage") || "en")
     .replace(/['"]+/g, "")
     .replace("-", "_");
 

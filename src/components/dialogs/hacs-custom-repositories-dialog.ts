@@ -14,7 +14,6 @@ import {
 } from "lit-element";
 import "../../../homeassistant-frontend/src/components/ha-svg-icon";
 import { getRepositories, repositoryAdd, repositoryDelete } from "../../data/websocket";
-import { localize } from "../../localize/localize";
 import { scrollBarStyle } from "../../styles/element-styles";
 import "../hacs-icon-button";
 import "./hacs-dialog";
@@ -43,7 +42,7 @@ export class HacsCustomRepositoriesDialog extends HacsDialogBase {
       <hacs-dialog
         .active=${this.active}
         .hass=${this.hass}
-        .title=${localize("dialog_custom_repositories.title")}
+        .title=${this.hacs.localize("dialog_custom_repositories.title")}
       >
         <div class="content">
           <div class="list">
@@ -81,7 +80,7 @@ export class HacsCustomRepositoriesDialog extends HacsDialogBase {
           id="add-input"
           class="add-input"
           slot="secondaryaction"
-          placeholder="${localize("dialog_custom_repositories.url_placeholder")}"
+          placeholder="${this.hacs.localize("dialog_custom_repositories.url_placeholder")}"
           .value=${this._inputRepository || ""}
           @input=${this._inputValueChanged}
           ?narrow=${this.narrow}
@@ -91,13 +90,13 @@ export class HacsCustomRepositoriesDialog extends HacsDialogBase {
           <paper-dropdown-menu
             ?narrow=${this.narrow}
             class="category"
-            label="${localize("dialog_custom_repositories.category")}"
+            label="${this.hacs.localize("dialog_custom_repositories.category")}"
           >
             <paper-listbox id="category" slot="dropdown-content" selected="-1">
               ${this.hacs.configuration.categories.map(
                 (category) => html`
                   <paper-item class="categoryitem" .category=${category}>
-                    ${localize(`common.${category}`)}
+                    ${this.hacs.localize(`common.${category}`)}
                   </paper-item>
                 `
               )}
@@ -108,7 +107,7 @@ export class HacsCustomRepositoriesDialog extends HacsDialogBase {
             slot="primaryaction"
             raised
             @click=${this._addRepository}
-            >${localize("common.add")}</mwc-button
+            >${this.hacs.localize("common.add")}</mwc-button
           >
         </div>
       </hacs-dialog>
@@ -129,13 +128,13 @@ export class HacsCustomRepositoriesDialog extends HacsDialogBase {
     const category = this._addCategory?.selectedItem?.category;
     if (!category) {
       this._error = {
-        message: localize("dialog_custom_repositories.no_category"),
+        message: this.hacs.localize("dialog_custom_repositories.no_category"),
       };
       return;
     }
     if (!repository) {
       this._error = {
-        message: localize("dialog_custom_repositories.no_repository"),
+        message: this.hacs.localize("dialog_custom_repositories.no_repository"),
       };
       return;
     }

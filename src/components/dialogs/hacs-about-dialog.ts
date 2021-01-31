@@ -1,11 +1,10 @@
 import { customElement, html, TemplateResult } from "lit-element";
 
 import { markdown } from "../../tools/markdown/markdown";
-import { localize } from "../../localize/localize";
 import { version } from "../../version";
 import { HacsDialogBase } from "./hacs-dialog-base";
 import "./hacs-dialog";
-import "../hacs-link"
+import "../hacs-link";
 
 @customElement("hacs-about-dialog")
 export class HacsAboutDialog extends HacsDialogBase {
@@ -20,15 +19,15 @@ export class HacsAboutDialog extends HacsDialogBase {
       >
         <div class="content">
           ${markdown.html(`
-**${localize("dialog_about.integration_version")}:** | ${this.hacs.configuration.version}
+**${this.hacs.localize("dialog_about.integration_version")}:** | ${this.hacs.configuration.version}
 --|--
-**${localize("dialog_about.frontend_version")}:** | ${version}
-**${localize("common.repositories")}:** | ${this.repositories.length}
-**${localize("dialog_about.installed_repositories")}:** | ${
-            this.repositories.filter((repo) => repo.installed).length
-          }
+**${this.hacs.localize("dialog_about.frontend_version")}:** | ${version}
+**${this.hacs.localize("common.repositories")}:** | ${this.repositories.length}
+**${this.hacs.localize(
+            "dialog_about.installed_repositories"
+          )}:** | ${this.repositories.filter((repo) => repo.installed).length}
 
-**${localize("dialog_about.useful_links")}:**
+**${this.hacs.localize("dialog_about.useful_links")}:**
 
 - [General documentation](https://hacs.xyz/)
 - [Configuration](https://hacs.xyz/docs/configuration/start)
