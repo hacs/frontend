@@ -254,6 +254,7 @@ export class HacsAddRepositoryDialog extends HacsDialogBase {
         search-input {
           float: left;
           width: 60%;
+          border-bottom: 1px var(--mdc-theme-primary) solid;
         }
         search-input[narrow],
         div.filter[narrow],
