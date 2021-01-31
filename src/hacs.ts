@@ -18,6 +18,7 @@ export class HacsElement extends LitElement {
     if (this.hacs === undefined) {
       const log = new HacsLogger();
       this.hacs = {
+        language: "en",
         messages: [],
         updates: [],
         resources: [],
@@ -25,8 +26,9 @@ export class HacsElement extends LitElement {
         sections: [],
         configuration: {} as any,
         status: {} as any,
-        localize,
         addedToLovelace,
+        localize: (string, search, replace) =>
+          localize(this.hacs.language, string, search, replace),
         log,
       };
     }
@@ -47,6 +49,6 @@ export class HacsElement extends LitElement {
   }
 
   protected updated() {
-    this.hacs.sections = sectionsEnabled(this.hacs.configuration);
+    this.hacs.sections = sectionsEnabled(this.hacs.language, this.hacs.configuration);
   }
 }

@@ -24,7 +24,6 @@ import {
   repositoryToggleBeta,
   repositoryUpdate,
 } from "../../data/websocket";
-import { localize } from "../../localize/localize";
 import { updateLovelaceResources } from "../../tools/update-lovelace-resources";
 import "../hacs-link";
 import "./hacs-dialog";
@@ -97,7 +96,7 @@ export class HacsInstallDialog extends HacsDialogBase {
         <div class="content">
           ${this._repository.version_or_commit === "version"
             ? html`<div class="beta-container">
-                  <ha-formfield .label=${localize("dialog_install.show_beta")}>
+                  <ha-formfield .label=${this.hacs.localize("dialog_install.show_beta")}>
                     <ha-switch
                       ?disabled=${this._toggle}
                       .checked=${this._repository.beta}
@@ -109,7 +108,7 @@ export class HacsInstallDialog extends HacsDialogBase {
                   <paper-dropdown-menu
                     ?disabled=${this._toggle}
                     class="version-select-dropdown"
-                    label="${localize("dialog_install.select_version")}"
+                    label="${this.hacs.localize("dialog_install.select_version")}"
                   >
                     <paper-listbox
                       id="version"
@@ -138,17 +137,18 @@ export class HacsInstallDialog extends HacsDialogBase {
             : ""}
           ${!this._repository.can_install
             ? html`<p class="error">
-                ${localize("confirm.home_assistant_version_not_correct")
+                ${this.hacs
+                  .localize("confirm.home_assistant_version_not_correct")
                   .replace("{haversion}", this.hass.config.version)
                   .replace("{minversion}", this._repository.homeassistant)}
               </p>`
             : ""}
           <div class="note">
-            ${localize(`repository.note_installed`)}
+            ${this.hacs.localize(`repository.note_installed`)}
             <code>'${installPath}'</code>
             ${this._repository.category === "plugin" && this.hacs.status.lovelace_mode !== "storage"
               ? html`
-                  <p>${localize(`repository.lovelace_instruction`)}</p>
+                  <p>${this.hacs.localize(`repository.lovelace_instruction`)}</p>
                   <pre>
                 url: ${this._lovelaceUrl()}
                 type: module
@@ -157,7 +157,7 @@ export class HacsInstallDialog extends HacsDialogBase {
                 `
               : ""}
             ${this._repository.category === "integration"
-              ? html`<p>${localize("dialog_install.restart")}</p>`
+              ? html`<p>${this.hacs.localize("dialog_install.restart")}</p>`
               : ""}
           </div>
           ${this._error ? html`<div class="error">${this._error.message}</div>` : ""}
@@ -168,10 +168,10 @@ export class HacsInstallDialog extends HacsDialogBase {
           @click=${this._installRepository}
           >${this._installing
             ? html`<ha-circular-progress active></ha-circular-progress>`
-            : localize("common.install")}</mwc-button
+            : this.hacs.localize("common.install")}</mwc-button
         >
         <hacs-link slot="secondaryaction" .url="https://github.com/${this._repository.full_name}"
-          ><mwc-button>${localize("common.repository")}</mwc-button></hacs-link
+          ><mwc-button>${this.hacs.localize("common.repository")}</mwc-button></hacs-link
         >
       </hacs-dialog>
     `;

@@ -31,7 +31,6 @@ import {
   Status,
 } from "../data/common";
 import { Hacs } from "../data/hacs";
-import { localize } from "../localize/localize";
 import { HacsStyles } from "../styles/hacs-common-style";
 import { getMessages } from "../tools/get-messages";
 
@@ -91,7 +90,7 @@ export class HacsEntryPanel extends LitElement {
 
           <div slot="introduction">
             ${this.isWide || (this.hacs.updates.length === 0 && this.hacs.messages?.length === 0)
-              ? localize("entry.intro")
+              ? this.hacs.localize("entry.intro")
               : ""}
           </div>
 
@@ -99,7 +98,7 @@ export class HacsEntryPanel extends LitElement {
             ? html`
                 <hacs-section-navigation
                   .hass=${this.hass}
-                  .header=${localize("entry.information")}
+                  .header=${this.hacs.localize("entry.information")}
                   .pages=${this.hacs.messages}
                   no-next
                 ></hacs-section-navigation>
@@ -107,7 +106,7 @@ export class HacsEntryPanel extends LitElement {
             : ""}
           ${this.hacs.updates?.length !== 0
             ? html` <ha-card>
-                <div class="header">${localize("entry.pending_updates")}</div>
+                <div class="header">${this.hacs.localize("entry.pending_updates")}</div>
                 ${sortRepositoriesByName(this.hacs.updates).map(
                   (repository) =>
                     html`
@@ -120,7 +119,8 @@ export class HacsEntryPanel extends LitElement {
                         <paper-item-body two-line>
                           ${repository.name}
                           <div secondary>
-                            ${localize("sections.pending_repository_upgrade")
+                            ${this.hacs
+                              .localize("sections.pending_repository_upgrade")
                               .replace("{installed}", repository.installed_version)
                               .replace("{available}", repository.available_version)}
                           </div>
@@ -138,8 +138,8 @@ export class HacsEntryPanel extends LitElement {
                   <paper-icon-item @click=${this._openSupervisorDialog}>
                     <ha-svg-icon .path=${mdiHomeAssistant} slot="item-icon"></ha-svg-icon>
                     <paper-item-body two-line>
-                      ${localize(`sections.addon.title`)}
-                      <div secondary>${localize(`sections.addon.description`)}</div>
+                      ${this.hacs.localize(`sections.addon.title`)}
+                      <div secondary>${this.hacs.localize(`sections.addon.description`)}</div>
                     </paper-item-body>
                     <ha-svg-icon right .path=${mdiOpenInNew}></ha-svg-icon>
                   </paper-icon-item>
@@ -151,8 +151,8 @@ export class HacsEntryPanel extends LitElement {
             <paper-icon-item @click=${this._openAboutDialog}>
               <ha-svg-icon .path=${mdiAlertCircle} slot="item-icon"></ha-svg-icon>
               <paper-item-body two-line>
-                ${localize(`sections.about.title`)}
-                <div secondary>${localize(`sections.about.description`)}</div>
+                ${this.hacs.localize(`sections.about.title`)}
+                <div secondary>${this.hacs.localize(`sections.about.description`)}</div>
               </paper-item-body>
             </paper-icon-item>
           </ha-card>

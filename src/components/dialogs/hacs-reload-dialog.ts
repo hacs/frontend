@@ -1,5 +1,4 @@
 import { customElement, html, TemplateResult } from "lit-element";
-import { localize } from "../../localize/localize";
 import "./hacs-dialog";
 import { HacsDialogBase } from "./hacs-dialog-base";
 
@@ -10,15 +9,15 @@ export class HacsReloadDialog extends HacsDialogBase {
     return html`
       <hacs-dialog .active=${this.active} .hass=${this.hass} title="Reload">
         <div class="content">
-          ${localize("dialog.reload.description")}
+          ${this.hacs.localize("dialog.reload.description")}
           </br>
-          ${localize("dialog.reload.confirm")}
+          ${this.hacs.localize("dialog.reload.confirm")}
         </div>
         <mwc-button slot="secondaryaction" @click=${this._close}>
-          ${localize("common.cancel")}
+          ${this.hacs.localize("common.cancel")}
         </mwc-button>
         <mwc-button slot="primaryaction" @click=${this._reload}>
-          ${localize("common.reload")}
+          ${this.hacs.localize("common.reload")}
         </mwc-button>
       </hacs-dialog>
     `;

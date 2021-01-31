@@ -9,7 +9,6 @@ import memoizeOne from "memoize-one";
 import "../../../homeassistant-frontend/src/common/search/search-input";
 import "../../../homeassistant-frontend/src/components/ha-svg-icon";
 import { Repository } from "../../data/common";
-import { localize } from "../../localize/localize";
 import { activePanel } from "../../panels/hacs-sections";
 import { scrollBarStyle, searchStyles } from "../../styles/element-styles";
 import { filterRepositoriesByInput } from "../../tools/filter-repositories-by-input";
@@ -58,7 +57,7 @@ export class HacsAddRepositoryDialog extends HacsDialogBase {
   protected async firstUpdated() {
     this.addEventListener("filter-change", (e) => this._updateFilters(e));
     if (this.filters?.length === 0) {
-      const categories = activePanel(this.route)?.categories;
+      const categories = activePanel(this.hacs.language, this.route)?.categories;
       categories
         ?.filter((c) => this.hacs.configuration?.categories.includes(c))
         .forEach((category) => {
@@ -99,31 +98,31 @@ export class HacsAddRepositoryDialog extends HacsDialogBase {
       <hacs-dialog
         .active=${this.active}
         .hass=${this.hass}
-        .title=${localize("dialog_add_repo.title")}
+        .title=${this.hacs.localize("dialog_add_repo.title")}
         hideActions
       >
         <div class="searchandfilter">
           <search-input
             no-label-float
-            .label=${localize("search.placeholder")}
+            .label=${this.hacs.localize("search.placeholder")}
             .filter=${this._searchInput || ""}
             @value-changed=${this._inputValueChanged}
             ?narrow=${this.narrow}
           ></search-input>
           <div class="filter" ?narrow=${this.narrow}>
             <paper-dropdown-menu
-              label="${localize("dialog_add_repo.sort_by")}"
+              label="${this.hacs.localize("dialog_add_repo.sort_by")}"
               ?narrow=${this.narrow}
             >
               <paper-listbox slot="dropdown-content" selected="0">
                 <paper-item @tap=${() => (this._sortBy = "stars")}
-                  >${localize("store.stars")}</paper-item
+                  >${this.hacs.localize("store.stars")}</paper-item
                 >
                 <paper-item @tap=${() => (this._sortBy = "name")}
-                  >${localize("store.name")}</paper-item
+                  >${this.hacs.localize("store.name")}</paper-item
                 >
                 <paper-item @tap=${() => (this._sortBy = "last_updated")}
-                  >${localize("store.last_updated")}</paper-item
+                  >${this.hacs.localize("store.last_updated")}</paper-item
                 >
               </paper-listbox>
             </paper-dropdown-menu>
@@ -131,7 +130,7 @@ export class HacsAddRepositoryDialog extends HacsDialogBase {
         </div>
         ${this.filters.length > 1
           ? html`<div class="filters">
-              <hacs-filter .filters="${this.filters}"></hacs-filter>
+              <hacs-filter .hacs=${this.hacs} .filters="${this.filters}"></hacs-filter>
             </div>`
           : ""}
         <div class=${classMap({ content: true, narrow: this.narrow })} @scroll=${this._loadMore}>
@@ -164,14 +163,16 @@ export class HacsAddRepositoryDialog extends HacsDialogBase {
                     <div class="category-chip">
                       <hacs-chip
                         .icon=${hacsIcon}
-                        .value=${localize(`common.${repo.category}`)}
+                        .value=${this.hacs.localize(`common.${repo.category}`)}
                       ></hacs-chip>
                     </div>
                     <div secondary>${repo.description}</div>
                   </paper-item-body>
                 </paper-icon-item>`
               )}
-            ${repositories.length === 0 ? html`<p>${localize("dialog_add_repo.no_match")}</p>` : ""}
+            ${repositories.length === 0
+              ? html`<p>${this.hacs.localize("dialog_add_repo.no_match")}</p>`
+              : ""}
           </div>
         </div>
       </hacs-dialog>

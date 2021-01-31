@@ -4,18 +4,18 @@ import {
   customElement,
   html,
   LitElement,
-  TemplateResult,
   property,
+  TemplateResult,
 } from "lit-element";
-
-import { HacsStyles } from "../styles/hacs-common-style";
 import { Filter } from "../data/common";
-import { localize } from "../localize/localize";
+import { Hacs } from "../data/hacs";
+import { HacsStyles } from "../styles/hacs-common-style";
 import "./hacs-checkbox";
 
 @customElement("hacs-filter")
 export class HacsFilter extends LitElement {
   @property({ attribute: false }) public filters: Filter[];
+  @property({ attribute: false }) public hacs: Hacs;
 
   protected async firstUpdated() {
     this.addEventListener("checkbox-change", (e) => this._filterClick(e));
@@ -28,7 +28,7 @@ export class HacsFilter extends LitElement {
           (filter) => html`
             <hacs-checkbox
               class="checkbox"
-              .label=${localize(`common.${filter.id}`) || filter.value}
+              .label=${this.hacs.localize(`common.${filter.id}`) || filter.value}
               .id=${filter.id}
               .checked=${filter.checked || false}
             />
