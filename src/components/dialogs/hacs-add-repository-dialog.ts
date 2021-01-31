@@ -109,7 +109,7 @@ export class HacsAddRepositoryDialog extends HacsDialogBase {
             @value-changed=${this._inputValueChanged}
             ?narrow=${this.narrow}
           ></search-input>
-          <div class="filter" ?narrow=${this.narrow}>
+          <div class="filter">
             <paper-dropdown-menu
               label="${this.hacs.localize("dialog_add_repo.sort_by")}"
               ?narrow=${this.narrow}
@@ -234,11 +234,6 @@ export class HacsAddRepositoryDialog extends HacsDialogBase {
           float: right;
         }
 
-        .narrow {
-          max-height: 480px;
-          min-width: unset !important;
-          width: 100% !important;
-        }
         .list {
           margin-top: 16px;
           width: 1024px;

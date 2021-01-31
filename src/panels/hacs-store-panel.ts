@@ -85,7 +85,6 @@ export class HacsStorePanel extends LitElement {
       return html``;
     }
 
-    console.log(this.hacs.localize("search.installed"));
     const newRepositories = this._repositoriesInActiveSection(this.repositories, this.section)[1];
 
     if (!this.filters[this.section] && this.hacs.configuration.categories) {
