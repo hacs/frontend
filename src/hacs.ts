@@ -27,7 +27,7 @@ export class HacsElement extends LitElement {
         configuration: {} as any,
         status: {} as any,
         addedToLovelace,
-        localize: (string, search, replace) =>
+        localize: (string: string, search: string = undefined, replace: string = undefined) =>
           localize(this.hacs.language, string, search, replace),
         log,
       };
