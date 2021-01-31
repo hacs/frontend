@@ -92,7 +92,7 @@ gulp.task("rollup-develop", () => {
     input: inputconfig.input,
     plugins: inputconfig.plugins,
     output: outputconfig(true),
-    preserveEntrySignatures: false,
+    preserveEntrySignatures: "strict",
     watch: {
       include: ["./src/**"],
       chokidar: {
@@ -112,7 +112,11 @@ gulp.task("rollup-develop", () => {
     if (event.code === "BUNDLE_START") {
       log(`Build started @ ${new Date().toLocaleTimeString()}`);
     } else if (event.code === "BUNDLE_END") {
-      writeEntrypoint();
+      if (first) {
+        writeEntrypoint();
+        first = false;
+      }
+
       log(`Build done @ ${new Date().toLocaleTimeString()}`);
     } else if (event.code === "ERROR") {
       log.error(event.error);
