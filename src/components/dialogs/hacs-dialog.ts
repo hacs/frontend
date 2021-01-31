@@ -54,11 +54,17 @@ export class HacsDialog extends HacsDialogBase {
           overflow: auto;
         }
         ha-dialog {
-          --mdc-dialog-max-width: var(--hacs-dialog-max-width, 990px);
+          --mdc-dialog-max-width: var(--hacs-dialog-max-width, calc(100vw - 16px));
           --mdc-dialog-min-width: var(--hacs-dialog-min-width, 280px);
         }
         .primary {
           margin-left: 52px;
+        }
+
+        @media only screen and (min-width: 1280px) {
+          ha-dialog {
+            --mdc-dialog-max-width: var(--hacs-dialog-max-width, 990px);
+          }
         }
       `,
     ];
