@@ -63,6 +63,7 @@ export class HacsEntryPanel extends LitElement {
         iconPath: mdiAlertCircle,
         name: message.name,
         info: message.info,
+        secondary: message.secondary,
         path: message.path || "",
         class: message.severity,
         dialog: message.dialog,
