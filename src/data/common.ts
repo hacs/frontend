@@ -3,6 +3,7 @@ import { PageNavigation } from "../../homeassistant-frontend/src/layouts/hass-ta
 export interface HacsPageNavigation extends PageNavigation {
   class?: string;
   categories?: string[];
+  secondary?: string;
   dialog?: string;
   integration?: string;
   repository?: Repository;
@@ -36,6 +37,7 @@ export interface Configuration {
 export interface Status {
   background_task: boolean;
   disabled: boolean;
+  disabled_reason?: string;
   lovelace_mode: "storage" | "yaml" | "auto-gen";
   stage?: "startup" | "waiting" | "running" | "setup";
   reloading_data: boolean;
@@ -60,6 +62,7 @@ export interface LovelaceResourcesMutableParams {
 export interface Message {
   name: string;
   info: string;
+  secondary?: string;
   severity: "information" | "warning" | "error" | "critical";
   path?: string;
   dialog?: string;

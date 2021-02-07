@@ -288,7 +288,30 @@
       },
       "disabled": {
         "title": "HACS is disabled",
-        "content": "Check your log file for more details"
+        "rate_limit": {
+          "title": "Ratelimited",
+          "description": "GitHub API calls are ratelimited, this will clear in less than 1 hour."
+        },
+        "removed": {
+          "title": "Removed",
+          "description": "HACS is removed, restart Home Assistant."
+        },
+        "invalid_token": {
+          "title": "Invalid token",
+          "description": "Reconfigure HACS and restart Home Assistant."
+        },
+        "constrains": {
+          "title": "Constraints",
+          "description": "Your environment is not compatible to run HACS, check your logfile for more details."
+        },
+        "load_hacs": {
+          "title": "HACS could not load",
+          "description": "Check your log file for more details"
+        },
+        "restore": {
+          "title": "Restore of HACS failed",
+          "description": "Check your log file for more details"
+        }
       },
       "wrong_frontend_loaded": {
         "title": "Unexpected frontend version",

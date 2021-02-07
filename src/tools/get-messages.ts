@@ -72,7 +72,8 @@ export const getMessages = memoizeOne((hacs: Hacs, repositories: Repository[]) =
   if (hacs.status?.disabled) {
     messages.push({
       name: hacs.localize("entry.messages.disabled.title"),
-      info: hacs.localize("entry.messages.disabled.content"),
+      secondary: hacs.localize(`entry.messages.disabled.${hacs.status?.disabled_reason}.title`),
+      info: hacs.localize(`entry.messages.disabled.${hacs.status?.disabled_reason}.description`),
       severity: "error",
     });
   }

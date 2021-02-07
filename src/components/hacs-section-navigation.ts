@@ -42,10 +42,8 @@ class HacsSectionNavigation extends LitElement {
                     class="${page.class || ""}"
                   ></ha-svg-icon>
                   <paper-item-body two-line>
-                    ${page.name}
-                    <div secondary>
-                      ${page.info ? page.info : ""}
-                    </div>
+                    ${page.name} ${page.secondary ? ` (${page.secondary})` : ""}
+                    <div secondary>${page.info ? page.info : ""}</div>
                   </paper-item-body>
                   ${!this.noNext ? html`<ha-icon-next></ha-icon-next>` : ""}
                 </paper-icon-item>
