@@ -47,6 +47,7 @@ class HacsFrontend extends ProvideHassLitMixin(HacsElement) {
 
   protected firstUpdated(changedProps) {
     super.firstUpdated(changedProps);
+    this.hacs.language = this.hass.language;
     this.addEventListener("hacs-location-changed", (e) =>
       this._setRoute(e as LocationChangedEvent)
     );
