@@ -39,8 +39,8 @@ export class HacsAboutDialog extends HacsDialogBase {
 
 ***
 
-_Everything you find in HACS is **not** tested by Home Assistant, that includes HACS itself._
-_The HACS and Home Assistant teams do not support **anything** you find here._
+_Everything you find in HACS is **not** tested by Home Assistant, that includes HACS itself.
+The HACS and Home Assistant teams do not support **anything** you find here._
         `)}
         </div>
       </hacs-dialog>
