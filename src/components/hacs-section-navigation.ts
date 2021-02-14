@@ -24,6 +24,7 @@ class HacsSectionNavigation extends LitElement {
   @property({ type: Boolean, attribute: "no-next" }) public noNext: boolean = false;
 
   protected render(): TemplateResult {
+    console.log(this.pages);
     return html`
       <ha-card>
         ${this.header ? html`<div class="card-header">${this.header}</div>` : ""}
@@ -33,7 +34,9 @@ class HacsSectionNavigation extends LitElement {
               <hacs-link .url=${page.path}>
                 <paper-icon-item
                   @tap=${() => {
-                    this._openDialog(page);
+                    page.name === "Unexpected frontend version"
+                      ? this._clearCache()
+                      : this._openDialog(page);
                   }}
                 >
                   <ha-svg-icon
@@ -68,6 +71,10 @@ class HacsSectionNavigation extends LitElement {
         composed: true,
       })
     );
+  }
+
+  private _clearCache() {
+    window.parent.location.href = window.location.href;
   }
 
   static get styles(): CSSResult {
