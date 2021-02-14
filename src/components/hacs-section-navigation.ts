@@ -24,7 +24,6 @@ class HacsSectionNavigation extends LitElement {
   @property({ type: Boolean, attribute: "no-next" }) public noNext: boolean = false;
 
   protected render(): TemplateResult {
-    console.log(this.pages);
     return html`
       <ha-card>
         ${this.header ? html`<div class="card-header">${this.header}</div>` : ""}
