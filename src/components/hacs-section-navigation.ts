@@ -118,6 +118,12 @@ class HacsSectionNavigation extends LitElement {
       ha-svg-icon.error {
         color: var(--hcv-color-error);
       }
+      ha-svg-icon.new-icon {
+        color: var(--hcv-color-new);
+      }
+      ha-svg-icon.installed-icon {
+        color: var(--hcv-color-green);
+      }
 
       .card-header {
         color: var(--ha-card-header-color, --primary-text-color);

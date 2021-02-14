@@ -1,4 +1,4 @@
-import { mdiAlertCircle, mdiHomeAssistant, mdiOpenInNew } from "@mdi/js";
+import { mdiAlertCircle, mdiHomeAssistant, mdiOpenInNew, mdiPlusBox } from "@mdi/js";
 import "@polymer/app-layout/app-header-layout/app-header-layout";
 import "@polymer/app-layout/app-header/app-header";
 import "@polymer/app-layout/app-toolbar/app-toolbar";
@@ -131,9 +131,26 @@ export class HacsEntryPanel extends LitElement {
                 )}
               </ha-card>`
             : ""}
-          <hacs-section-navigation .pages=${this.hacs.sections}></hacs-section-navigation>
+
+          <hacs-section-navigation .pages=${this.hacs.sections.dynamic}></hacs-section-navigation>
+          <hacs-section-navigation .pages=${this.hacs.sections.core}></hacs-section-navigation>
+          <hacs-section-navigation .pages=${this.hacs.sections.frontend}></hacs-section-navigation>
+          <hacs-section-navigation
+            .pages=${this.hacs.sections.automation}
+          ></hacs-section-navigation>
 
           <ha-card>
+            ${!this.status?.disabled && !this.status?.background_task
+              ? html` <paper-icon-item @click=${this._openCustomRepositoriesDialog}>
+                  <ha-svg-icon .path=${mdiPlusBox} slot="item-icon"></ha-svg-icon>
+                  <paper-item-body two-line>
+                    ${this.hacs.localize(`sections.custom_repositories.title`)}
+                    <div secondary>
+                      ${this.hacs.localize(`sections.custom_repositories.description`)}
+                    </div>
+                  </paper-item-body>
+                </paper-icon-item>`
+              : ""}
             ${isComponentLoaded(this.hass, "hassio")
               ? html`
                   <paper-icon-item @click=${this._openSupervisorDialog}>
@@ -146,9 +163,7 @@ export class HacsEntryPanel extends LitElement {
                   </paper-icon-item>
                 `
               : ""}
-          </ha-card>
 
-          <ha-card>
             <paper-icon-item @click=${this._openAboutDialog}>
               <ha-svg-icon .path=${mdiAlertCircle} slot="item-icon"></ha-svg-icon>
               <paper-item-body two-line>
@@ -181,6 +196,19 @@ export class HacsEntryPanel extends LitElement {
         detail: {
           type: "about",
           configuration: this.configuration,
+          repositories: this.repositories,
+        },
+        bubbles: true,
+        composed: true,
+      })
+    );
+  }
+
+  private _openCustomRepositoriesDialog() {
+    this.dispatchEvent(
+      new CustomEvent("hacs-dialog", {
+        detail: {
+          type: "custom-repositories",
           repositories: this.repositories,
         },
         bubbles: true,
@@ -251,6 +279,15 @@ export class HacsEntryPanel extends LitElement {
         }
         div[secondary] {
           white-space: normal;
+        }
+        ha-icon-next {
+          color: var(--secondary-text-color);
+        }
+        .installed-repositories {
+          color: green;
+        }
+        .new-repositories {
+          color: lightblue;
         }
       `,
     ];

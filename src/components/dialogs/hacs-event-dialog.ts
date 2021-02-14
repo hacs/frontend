@@ -3,7 +3,6 @@ import { HacsDialogBase } from "./hacs-dialog-base";
 
 const DIALOG = {
   about: () => import("./hacs-about-dialog"),
-  "add-repository": () => import("./hacs-add-repository-dialog"),
   "custom-repositories": () => import("./hacs-custom-repositories-dialog"),
   generic: () => import("./hacs-generic-dialog"),
   install: () => import("./hacs-install-dialog"),

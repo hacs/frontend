@@ -21,7 +21,7 @@ export interface Critical {
 }
 
 export interface Configuration {
-  categories: [string];
+  categories: string[];
   country: string;
   debug: boolean;
   dev: string;
@@ -93,7 +93,7 @@ export interface Repository {
   can_install: boolean;
   category: string;
   config_flow: boolean;
-  country: string;
+  country: string[];
   custom: boolean;
   default_branch: string;
   description: string;

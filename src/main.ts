@@ -1,4 +1,5 @@
 import { customElement, html, property, query, TemplateResult } from "lit-element";
+import memoizeOne from "memoize-one";
 import { atLeastVersion } from "../homeassistant-frontend/src/common/config/version";
 import { applyThemesOnElement } from "../homeassistant-frontend/src/common/dom/apply_themes_on_element";
 import { navigate } from "../homeassistant-frontend/src/common/navigate";
@@ -38,7 +39,6 @@ class HacsFrontend extends ProvideHassLitMixin(HacsElement) {
   @property({ attribute: false }) public lovelace: LovelaceResource[];
   @property({ attribute: false }) public narrow!: boolean;
   @property({ attribute: false }) public removed: RemovedRepository[];
-  @property({ attribute: false }) public repositories: Repository[];
   @property({ attribute: false }) public route!: Route;
   @property({ attribute: false }) public status: Status;
 
@@ -94,7 +94,7 @@ class HacsFrontend extends ProvideHassLitMixin(HacsElement) {
 
     if (prop === "all") {
       [
-        repositories,
+        _fetch.repositories,
         _fetch.configuration,
         _fetch.status,
         _fetch.critical,
@@ -112,13 +112,12 @@ class HacsFrontend extends ProvideHassLitMixin(HacsElement) {
       //this.removed = removed;
       //this.critical = critical;
       this.lovelace = _fetch.resources;
-      this.repositories = repositories;
     } else if (prop === "configuration") {
       _fetch.configuration = await getConfiguration(this.hass);
     } else if (prop === "status") {
       _fetch.status = await getStatus(this.hass);
     } else if (prop === "repositories") {
-      this.repositories = await getRepositories(this.hass);
+      _fetch.repositories = await getRepositories(this.hass);
     } else if (prop === "lovelace") {
       _fetch.resources = await getLovelaceConfiguration(this.hass);
     }
@@ -146,7 +145,7 @@ class HacsFrontend extends ProvideHassLitMixin(HacsElement) {
         .status=${this.status}
         .critical=${this.critical}
         .removed=${this.removed}
-        .repositories=${this.repositories}
+        .repositories=${this.hacs.repositories}
       ></hacs-router>
       <hacs-event-dialog
         .hass=${this.hass}
@@ -157,7 +156,7 @@ class HacsFrontend extends ProvideHassLitMixin(HacsElement) {
         .lovelace=${this.lovelace}
         .status=${this.status}
         .removed=${this.removed}
-        .repositories=${this.repositories}
+        .repositories=${this.hacs.repositories}
         id="hacs-dialog"
       ></hacs-event-dialog>
       <hacs-event-dialog
@@ -169,7 +168,7 @@ class HacsFrontend extends ProvideHassLitMixin(HacsElement) {
         .lovelace=${this.lovelace}
         .status=${this.status}
         .removed=${this.removed}
-        .repositories=${this.repositories}
+        .repositories=${this.hacs.repositories}
         id="hacs-dialog-secondary"
       ></hacs-event-dialog>
     `;

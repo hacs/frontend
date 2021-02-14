@@ -6,9 +6,8 @@ import { mdiDotsVertical } from "@mdi/js";
 
 import { LitElement, customElement, property, html, css, TemplateResult } from "lit-element";
 import { HomeAssistant, Route } from "../../homeassistant-frontend/src/types";
-import { Status, Configuration, Repository, LovelaceResource } from "../data/common";
+import { Status, LovelaceResource } from "../data/common";
 import { settingsClearAllNewRepositories } from "../data/websocket";
-import { activePanel } from "../panels/hacs-sections";
 import "../../homeassistant-frontend/src/components/ha-icon-button";
 
 import "../components/hacs-link";
@@ -17,12 +16,10 @@ import { Hacs } from "../data/hacs";
 
 @customElement("hacs-tabbed-menu")
 export class HacsTabbedMenu extends LitElement {
-  @property({ attribute: false }) public configuration: Configuration;
   @property({ attribute: false }) public hass!: HomeAssistant;
   @property({ attribute: false }) public hacs!: Hacs;
   @property({ attribute: false }) public narrow!: boolean;
   @property({ attribute: false }) public route!: Route;
-  @property({ attribute: false }) public repositories!: Repository[];
   @property({ attribute: false }) public lovelace: LovelaceResource[];
   @property({ attribute: false }) public status: Status;
 
@@ -39,21 +36,16 @@ export class HacsTabbedMenu extends LitElement {
         <hacs-link url="https://hacs.xyz/"
           ><paper-item>${this.hacs.localize("menu.documentation")}</paper-item></hacs-link
         >
-        ${this.repositories?.filter((repo) => repo.new).length !== 0
+        ${this.route.path.split("/")[2] === "new"
           ? html` <paper-item @tap=${this._clearAllNewRepositories}
               >${this.hacs.localize("menu.dismiss")}</paper-item
             >`
           : ""}
 
         <hacs-link url="https://github.com/hacs"><paper-item>GitHub</paper-item></hacs-link>
-        <hacs-link url="https://hacs.xyz/docs/issues"
-          ><paper-item>${this.hacs.localize("menu.open_issue")}</paper-item></hacs-link
-        >
-        ${!this.status?.disabled && !this.status?.background_task
-          ? html`<paper-item @tap=${this._showCustomRepositoriesDialog}
-              >${this.hacs.localize("menu.custom_repositories")}</paper-item
-            >`
-          : ""}
+        <hacs-link url="https://hacs.xyz/docs/issues">
+          <paper-item> ${this.hacs.localize("menu.open_issue")} </paper-item>
+        </hacs-link>
 
         <paper-item @tap=${this._showAboutDialog}>${this.hacs.localize("menu.about")}</paper-item>
       </paper-listbox>
@@ -61,10 +53,7 @@ export class HacsTabbedMenu extends LitElement {
   }
 
   private async _clearAllNewRepositories() {
-    await settingsClearAllNewRepositories(
-      this.hass,
-      activePanel(this.hacs.language, this.route).categories
-    );
+    await settingsClearAllNewRepositories(this.hass, [""]);
   }
 
   private _showAboutDialog() {
@@ -72,21 +61,8 @@ export class HacsTabbedMenu extends LitElement {
       new CustomEvent("hacs-dialog", {
         detail: {
           type: "about",
-          configuration: this.configuration,
-          repositories: this.repositories,
-        },
-        bubbles: true,
-        composed: true,
-      })
-    );
-  }
-
-  private _showCustomRepositoriesDialog() {
-    this.dispatchEvent(
-      new CustomEvent("hacs-dialog", {
-        detail: {
-          type: "custom-repositories",
-          repositories: this.repositories,
+          configuration: this.hacs.configuration,
+          repositories: this.hacs.repositories,
         },
         bubbles: true,
         composed: true,

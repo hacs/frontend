@@ -23,6 +23,7 @@ import { mdiDotsVertical } from "@mdi/js";
 import { hacsIcon } from "./hacs-icon";
 import "../components/hacs-icon-button";
 import "../components/hacs-link";
+import "../components/hacs-chip";
 
 @customElement("hacs-repository-card")
 export class HacsRepositoryCard extends LitElement {
@@ -33,6 +34,7 @@ export class HacsRepositoryCard extends LitElement {
   @property({ attribute: false }) public removed: RemovedRepository[];
   @property({ type: Boolean }) public narrow!: boolean;
   @property({ type: Boolean }) public addedToLovelace!: boolean;
+  @property() public section!: string;
 
   private get _borderClass(): ClassInfo {
     const classes = {};
@@ -90,7 +92,7 @@ export class HacsRepositoryCard extends LitElement {
             <div class="status-header ${classMap(this._headerClass)}">${this._headerTitle}</div>
             <div class="title">
               <h1 class="pointer" @click=${this._showReopsitoryInfo}>${this.repository.name}</h1>
-              ${this.repository.category !== "integration"
+              ${["new", "installed"].includes(this.section.split("/")[1])
                 ? html` <hacs-chip
                     .icon=${hacsIcon}
                     .value=${this.hacs.localize(`common.${this.repository.category}`)}
@@ -99,11 +101,11 @@ export class HacsRepositoryCard extends LitElement {
             </div>
           </div>
           <paper-item>
-            <paper-item-body>${this.repository.description}</paper-item-body></paper-item
-          >
+            <paper-item-body> ${this.repository.description}</paper-item-body>
+          </paper-item>
         </div>
         <div class="card-actions">
-          ${this.repository.new && !this.repository.installed
+          ${!this.repository.installed
             ? html`<div>
                   <mwc-button @click=${this._installRepository}
                     >${this.hacs.localize("common.install")}</mwc-button
@@ -115,31 +117,38 @@ export class HacsRepositoryCard extends LitElement {
                   >
                 </div>
                 <div>
-                  <hacs-link .url="https://github.com/${this.repository.full_name}"
-                    ><mwc-button>${this.hacs.localize("common.repository")}</mwc-button></hacs-link
-                  >
+                  <hacs-link .url="https://github.com/${this.repository.full_name}">
+                    <mwc-button>${this.hacs.localize("common.repository")}</mwc-button>
+                  </hacs-link>
                 </div>
-                <div>
-                  <mwc-button @click=${this._setNotNew}
-                    >${this.hacs.localize("repository_card.dismiss")}</mwc-button
-                  >
-                </div>`
+                ${this.repository.new
+                  ? html`<div>
+                      <mwc-button @click=${this._setNotNew}
+                        >${this.hacs.localize("repository_card.dismiss")}</mwc-button
+                      >
+                    </div>`
+                  : ""} `
             : this.repository.pending_upgrade && this.addedToLovelace
             ? html`<div>
-                  <mwc-button class="update-header" @click=${this._updateRepository} raised
-                    >${this.hacs.localize("common.update")}</mwc-button
-                  >
+                  <mwc-button class="update-header" @click=${this._updateRepository} raised>
+                    ${this.hacs.localize("common.update")}
+                  </mwc-button>
                 </div>
                 <div>
-                  <hacs-link .url="https://github.com/${this.repository.full_name}"
-                    ><mwc-button>${this.hacs.localize("common.repository")}</mwc-button></hacs-link
-                  >
+                  <hacs-link .url="https://github.com/${this.repository.full_name}">
+                    <mwc-button> ${this.hacs.localize("common.repository")}</mwc-button>
+                  </hacs-link>
                 </div>`
             : html`<div>
-                <hacs-link .url="https://github.com/${this.repository.full_name}"
-                  ><mwc-button>${this.hacs.localize("common.repository")}</mwc-button></hacs-link
-                >
-              </div>`}
+                  <hacs-link .url="https://github.com/${this.repository.full_name}">
+                    <mwc-button> ${this.hacs.localize("common.repository")}</mwc-button>
+                  </hacs-link>
+                </div>
+                <div>
+                  <mwc-button @click=${this._showReopsitoryInfo}>
+                    ${this.hacs.localize("repository_card.information")}
+                  </mwc-button>
+                </div>`}
           ${this.repository.installed
             ? html` <paper-menu-button
                 horizontal-align="right"
@@ -275,6 +284,7 @@ export class HacsRepositoryCard extends LitElement {
           border-style: solid;
           border-width: min(var(--ha-card-border-width, 1px), 10px);
           border-color: transparent;
+          border-radius: var(--ha-card-border-radius, 4px);
         }
 
         hacs-chip {
@@ -335,7 +345,6 @@ export class HacsRepositoryCard extends LitElement {
         .new-header {
           background-color: var(--hcv-color-new);
           color: var(--hcv-text-color-on-background);
-          border-radius: var(--ha-card-border-radius, 4px);
         }
 
         .issue-header {
@@ -370,8 +379,8 @@ export class HacsRepositoryCard extends LitElement {
           font-weight: 300;
           text-align: center;
           left: 0;
-          border-top-left-radius: var(--ha-card-border-radius);
-          border-top-right-radius: var(--ha-card-border-radius);
+          border-top-left-radius: var(--ha-card-border-radius, 4px);
+          border-top-right-radius: var(--ha-card-border-radius, 4px);
         }
 
         ha-card[narrow] {

@@ -108,17 +108,45 @@
     "restart": "You need to restart Home Assistant."
   },
   "sections": {
-    "integrations": {
-      "title": "Integrations",
-      "description": "This is where you find custom integrations (custom_components)"
+    "dynamic": {
+      "installed": {
+        "title": "Installed repositories",
+        "description": "Manage your installed repositories"
+      },
+      "new": {
+        "title": "New repositories ({number})",
+        "description": "Browse newly added repositories"
+      }
+    },
+    "core": {
+      "integration": {
+        "title": "Integrations",
+        "description": "This is where you find custom integrations (custom_components)"
+      }
     },
     "frontend": {
-      "title": "Frontend",
-      "description": "This is where you find themes, custom cards and other elements for lovelace"
+      "plugin": {
+        "title": "Lovelace plugins",
+        "description": "This is where you find custom cards, and other lovelace elements"
+      },
+      "theme": {
+        "title": "Themes",
+        "description": "This is where you find themes"
+      }
     },
     "automation": {
-      "title": "Automation",
-      "description": "This is where you find python_scripts, AppDaemon apps and NetDaemon apps"
+      "appdaemon": {
+        "title": "AppDaemon",
+        "description": "This is where you find AppDaemon apps"
+      },
+      "netdaemon": {
+        "title": "NetDaemon",
+        "description": "This is where you find NetDaemon apps"
+      },
+      "python_script": {
+        "title": "Python script",
+        "description": "This is where you find scripts for the python_script integration"
+      }
     },
     "addon": {
       "title": "Add-ons",
@@ -127,6 +155,10 @@
     "about": {
       "title": "About",
       "description": "Show information about HACS"
+    },
+    "custom_repositories": {
+      "title": "Custom repositories",
+      "description": "Manage custom repositories"
     },
     "pending_repository_upgrade": "You are running version {installed}, version {available} is available"
   },

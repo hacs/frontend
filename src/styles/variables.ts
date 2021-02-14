@@ -6,6 +6,7 @@ export const hacsStyleVariables = css`
     --hcv-color-warning: var(--hacs-warning-color, #ff8c00);
     --hcv-color-update: var(--hacs-update-color, #f4b400);
     --hcv-color-new: var(--hacs-new-color, var(--google-blue-500, #2196f3));
+    --hcv-color-green: var(--hacs-green-color, var(--google-green-500, #0f9d58));
     --hcv-color-icon: var(--hacs--default-icon-color, var(--sidebar-icon-color));
     --hcv-color-markdown-background: var(--markdown-code-background-color, #f6f8fa);
 

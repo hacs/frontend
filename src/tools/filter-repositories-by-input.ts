@@ -6,13 +6,14 @@ export function filterRepositoriesByInput(
 ): Repository[] {
   const _lowcaseFilter = stringify(filter);
   return repositories.filter(
-    (_repo) =>
-      stringify(_repo.name)?.includes(_lowcaseFilter) ||
-      stringify(_repo.description)?.includes(_lowcaseFilter) ||
-      stringify(_repo.category)?.includes(_lowcaseFilter) ||
-      stringify(_repo.full_name)?.includes(_lowcaseFilter) ||
-      stringify(_repo.authors)?.includes(_lowcaseFilter) ||
-      stringify(_repo.domain)?.includes(_lowcaseFilter)
+    (repo) =>
+      stringify(repo.name)?.includes(_lowcaseFilter) ||
+      stringify(repo.description)?.includes(_lowcaseFilter) ||
+      stringify(repo.category)?.includes(_lowcaseFilter) ||
+      stringify(repo.full_name)?.includes(_lowcaseFilter) ||
+      stringify(repo.authors)?.includes(_lowcaseFilter) ||
+      stringify(repo.domain)?.includes(_lowcaseFilter) ||
+      stringify(repo.country)?.includes(_lowcaseFilter)
   );
 }
 

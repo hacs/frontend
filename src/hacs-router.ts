@@ -61,7 +61,7 @@ class HacsRouter extends HassRouterPage {
         tag: "hacs-entry-panel",
         load: () => import("./panels/hacs-entry-panel"),
       },
-      integrations: {
+      core: {
         tag: "hacs-store-panel",
         load: () => import("./panels/hacs-store-panel"),
       },
@@ -70,6 +70,10 @@ class HacsRouter extends HassRouterPage {
         load: () => import("./panels/hacs-store-panel"),
       },
       automation: {
+        tag: "hacs-store-panel",
+        load: () => import("./panels/hacs-store-panel"),
+      },
+      dynamic: {
         tag: "hacs-store-panel",
         load: () => import("./panels/hacs-store-panel"),
       },
@@ -88,7 +92,7 @@ class HacsRouter extends HassRouterPage {
     el.critical = this.critical;
     el.lovelace = this.lovelace;
     el.removed = this.removed;
-    el.repositories = this.repositories;
+    el.repositories = this.hacs.repositories;
     el.status = this.status;
     el.section = section;
   }

@@ -5,6 +5,7 @@ export interface Hacs {
   messages?: { class: string; iconPath: string; info: string; name: string; path: string }[];
   updates?: any[];
   resources?: any[];
+  repositories?: Repository[];
   removed?: any[];
   configuration?: Configuration;
   sections?: any;
