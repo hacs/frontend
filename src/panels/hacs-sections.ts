@@ -55,6 +55,14 @@ export const sections = (language: string, repositories: Repository[]) => {
           path: "/hacs/core/integration",
           core: true,
         },
+        {
+          iconPath: mdiRobot,
+          id: "python_script",
+          info: localize(language, "sections.core.python_script.description"),
+          name: localize(language, "sections.core.python_script.title"),
+          path: "/hacs/core/python_script",
+          core: true,
+        },
       ],
       frontend: [
         {
@@ -89,14 +97,6 @@ export const sections = (language: string, repositories: Repository[]) => {
           info: localize(language, "sections.automation.netdaemon.description"),
           name: localize(language, "sections.automation.netdaemon.title"),
           path: "/hacs/automation/netdaemon",
-          core: true,
-        },
-        {
-          iconPath: mdiRobot,
-          id: "python_script",
-          info: localize(language, "sections.automation.python_script.description"),
-          name: localize(language, "sections.automation.python_script.title"),
-          path: "/hacs/automation/python_script",
           core: true,
         },
       ],

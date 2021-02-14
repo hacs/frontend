@@ -122,6 +122,10 @@
       "integration": {
         "title": "Integrations",
         "description": "This is where you find custom integrations (custom_components)"
+      },
+      "python_script": {
+        "title": "Python script",
+        "description": "This is where you find scripts for the python_script integration"
       }
     },
     "frontend": {
@@ -142,10 +146,6 @@
       "netdaemon": {
         "title": "NetDaemon",
         "description": "This is where you find NetDaemon apps"
-      },
-      "python_script": {
-        "title": "Python script",
-        "description": "This is where you find scripts for the python_script integration"
       }
     },
     "addon": {
