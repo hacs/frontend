@@ -275,6 +275,7 @@ export class HacsRepositoryCard extends LitElement {
           border-style: solid;
           border-width: min(var(--ha-card-border-width, 1px), 10px);
           border-color: transparent;
+          border-radius: var(--ha-card-border-radius, 4px);
         }
 
         hacs-chip {
@@ -335,7 +336,6 @@ export class HacsRepositoryCard extends LitElement {
         .new-header {
           background-color: var(--hcv-color-new);
           color: var(--hcv-text-color-on-background);
-          border-radius: var(--ha-card-border-radius, 4px);
         }
 
         .issue-header {
@@ -370,8 +370,8 @@ export class HacsRepositoryCard extends LitElement {
           font-weight: 300;
           text-align: center;
           left: 0;
-          border-top-left-radius: var(--ha-card-border-radius);
-          border-top-right-radius: var(--ha-card-border-radius);
+          border-top-left-radius: var(--ha-card-border-radius, 4px);
+          border-top-right-radius: var(--ha-card-border-radius, 4px);
         }
 
         ha-card[narrow] {
