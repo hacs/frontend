@@ -3,7 +3,7 @@ const fs = require("fs-extra");
 const del = require("del");
 const log = require("fancy-log")
 
-const changeLang = {"et_EE": "et"}
+const changeLang = {"et_EE": "et", "zh-Hans": "zh_Hans", "pt-BR": "pt_BR"}
 
 gulp.task("generate-translations", async function (task) {
   del.sync("./src/localize/generated.ts");
