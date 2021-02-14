@@ -43,6 +43,7 @@ export class HacsCustomRepositoriesDialog extends HacsDialogBase {
         .active=${this.active}
         .hass=${this.hass}
         .title=${this.hacs.localize("dialog_custom_repositories.title")}
+        hideActions
       >
         <div class="content">
           <div class="list">
@@ -76,17 +77,17 @@ export class HacsCustomRepositoriesDialog extends HacsDialogBase {
               )}
           </div>
         </div>
-        <input
-          id="add-input"
-          class="add-input"
-          slot="secondaryaction"
-          placeholder="${this.hacs.localize("dialog_custom_repositories.url_placeholder")}"
-          .value=${this._inputRepository || ""}
-          @input=${this._inputValueChanged}
-          ?narrow=${this.narrow}
-        />
+        <div class="add-repository" ?narrow=${this.narrow}>
+          <input
+            id="add-input"
+            class="add-input"
+            slot="secondaryaction"
+            placeholder="${this.hacs.localize("dialog_custom_repositories.url_placeholder")}"
+            .value=${this._inputRepository || ""}
+            @input=${this._inputValueChanged}
+            ?narrow=${this.narrow}
+          />
 
-        <div class="add" slot="primaryaction" ?narrow=${this.narrow}>
           <paper-dropdown-menu
             ?narrow=${this.narrow}
             class="category"
@@ -107,8 +108,9 @@ export class HacsCustomRepositoriesDialog extends HacsDialogBase {
             slot="primaryaction"
             raised
             @click=${this._addRepository}
-            >${this.hacs.localize("common.add")}</mwc-button
           >
+            ${this.hacs.localize("common.add")}
+          </mwc-button>
         </div>
       </hacs-dialog>
     `;
@@ -222,20 +224,20 @@ export class HacsCustomRepositoriesDialog extends HacsDialogBase {
           font-size: 14px;
           color: var(--secondary-text-color);
         }
-        .add {
-          display: flex;
+        .add-repository {
+          display: grid;
           width: 100%;
-          align-items: center;
+          justify-items: right;
         }
 
         .add-input {
           width: 100%;
           height: 40px;
+          margin-top: 32px;
           border: 0;
           border-bottom: 1px var(--mdc-theme-primary) solid;
-          padding: 0;
           text-align: left;
-          padding-right: 71px;
+          padding: 0px;
           font-size: initial;
           color: var(--sidebar-text-color);
           font-family: var(--paper-font-body1_-_font-family);
@@ -249,15 +251,14 @@ export class HacsCustomRepositoriesDialog extends HacsDialogBase {
         }
         paper-dropdown-menu {
           width: 100%;
-          left: -50px;
-          top: -8px;
         }
         mwc-button {
-          margin-right: 10px;
+          width: fit-content;
+          margin-top: 16px;
         }
 
         input[narrow],
-        .add[narrow],
+        .add-repository[narrow],
         paper-dropdown-menu[narrow],
         mwc-button[narrow] {
           margin: 0;
@@ -267,7 +268,7 @@ export class HacsCustomRepositoriesDialog extends HacsDialogBase {
           width: 100%;
           max-width: 100%;
         }
-        .add[narrow] {
+        .add-repository[narrow] {
           display: contents;
         }
       `,
