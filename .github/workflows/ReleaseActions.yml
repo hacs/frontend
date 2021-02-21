@@ -88,6 +88,12 @@ jobs:
       - name: Clone hacs/integration
         run: git clone --depth 1 https://github.com/hacs/integration.git /tmp/integration
 
+      - name: Get old version
+        id: old
+        run: |
+          version=$(cat /tmp/integration/requirements.txt | grep hacs_frontend | cut -d "=" -f 3)
+          echo "::set-output name=version::$version"
+
       - name: Bump version
         run: |
           cd /tmp/integration
@@ -119,5 +125,6 @@ jobs:
               repo: "integration",
               title: "${{ steps.info.outputs.title }}",
               head: 'frontend/${{ steps.info.outputs.version }}',
-              base: 'main'
+              base: 'main',
+              body: "https://github.com/hacs/frontend/compare/${{ steps.old.outputs.version }}...${{ steps.info.outputs.version }}"
             })
