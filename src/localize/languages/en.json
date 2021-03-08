@@ -327,7 +327,7 @@
       },
       "restart": {
         "title": "Pending restart",
-        "content": "You have {number} {pluralWording} that requires a restart of Home Assistant, you can do that from the 'Server Controls' section under the configuration part of Home Assistant UI."
+        "content": "You have {number} {pluralWording} for which a restart of Home Assistant is required. You can do that from the 'Server Controls' section under the configuration part of Home Assistant UI."
       },
       "removed": "Removed repository '{repository}'"
     },
