@@ -182,8 +182,9 @@ export class HacsRepositoryCard extends LitElement {
 
                   ${String(this.repository.id) !== "172733314"
                     ? html`<hacs-link
-                          .url="https://github.com/hacs/integration/issues/new?assignees=ludeeus&labels=flag&template=flag.md&title=${this
-                            .repository.full_name}"
+                          .url="https://github.com/hacs/integration/issues/new?assignees=ludeeus&labels=flag&template=removal.yml&repo=${this
+                            .repository.full_name}&title=Request for removal of ${this.repository
+                            .full_name}"
                           ><paper-item class="pointer uninstall"
                             >${this.hacs.localize("repository_card.report")}</paper-item
                           ></hacs-link
