@@ -30,29 +30,6 @@ export const getMessages = memoizeOne((hacs: Hacs, repositories: Repository[]) =
     }
   });
 
-  if (hacs.configuration.frontend_expected !== hacs.configuration.frontend_running) {
-    messages.push({
-      name: hacs.localize("entry.messages.wrong_frontend_installed.title"),
-      info: hacs
-        .localize("entry.messages.wrong_frontend_installed.content")
-        .replace("{running}", hacs.configuration.frontend_running)
-        .replace("{expected}", hacs.configuration.frontend_expected),
-      severity: "error",
-    });
-  } else if (
-    hacs.configuration.frontend_expected !== version &&
-    hacs.configuration.frontend_expected !== undefined
-  ) {
-    messages.push({
-      name: hacs.localize("entry.messages.wrong_frontend_loaded.title"),
-      info: hacs
-        .localize("entry.messages.wrong_frontend_loaded.content")
-        .replace("{running}", version)
-        .replace("{expected}", hacs.configuration.frontend_expected),
-      severity: "error",
-    });
-  }
-
   if (hacs.status?.startup && ["setup", "waiting", "startup"].includes(hacs.status.stage)) {
     messages.push({
       name: hacs.localize(`entry.messages.${hacs.status.stage}.title`),
