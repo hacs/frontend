@@ -58,6 +58,13 @@ export class markdown {
         .replace("/blob/", "/");
       return url;
     });
+
+    // Shorten commits links
+    input = input.replace(/(https:\/\/github\.com\/\S*\/commit\/[0-9a-f]{40})/g, function (x) {
+      let hash = x.substr(x.length - 40, 7);
+      return `[\`${hash}\`](${x})`;
+    });
+
     const content = document.createElement("div");
     content.className = "markdown-body";
     content.innerHTML = DOMPurify.sanitize(marked(input), {
