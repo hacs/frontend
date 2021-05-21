@@ -50,14 +50,14 @@ export class HacsUpdateDialog extends HacsDialogBase {
       >
         <div class=${classMap({ content: true, narrow: this.narrow })}>
           <p class="message">
-            ${this.hacs
-              .localize("dialog_update.message")
-              .replace("{name}", repository.name)}
+            ${this.hacs.localize("dialog_update.message").replace("{name}", repository.name)}
           </p>
           <div class="version-container">
             <div class="version-element">
               <span class="version-number">${repository.installed_version}</span>
-              <small class="version-text">${this.hacs.localize("dialog_update.installed_version")}</small>
+              <small class="version-text">${this.hacs.localize(
+                "dialog_update.installed_version"
+              )}</small>
             </div>
 
             <span class="version-separator">
@@ -68,39 +68,49 @@ export class HacsUpdateDialog extends HacsDialogBase {
 
             <div class="version-element">
                 <span class="version-number">${repository.available_version}</span>
-                <small class="version-text">${this.hacs.localize("dialog_update.available_version")}</small>
+                <small class="version-text">${this.hacs.localize(
+                  "dialog_update.available_version"
+                )}</small>
               </div>
             </div>
           </div>
 
-          ${this._releaseNotes.length > 0
-            ? this._releaseNotes.map(
-                (release) => html`<details>
-                  <summary>${release.name || release.tag}</summary>
-                  ${markdown.html(release.body)}
-                </details>`
-              )
-            : ""}
-          ${!repository.can_install
-            ? html`<p class="error">
-                ${this.hacs
-                  .localize("confirm.home_assistant_version_not_correct")
-                  .replace("{haversion}", this.hass.config.version)
-                  .replace("{minversion}", repository.homeassistant)}
-              </p>`
-            : ""}
-          ${repository.category === "integration"
-            ? html`<p>${this.hacs.localize("dialog_install.restart")}</p>`
-            : ""}
+          ${
+            this._releaseNotes.length > 0
+              ? this._releaseNotes.map(
+                  (release) => html`<details>
+                    <summary>${release.name || release.tag}</summary>
+                    ${markdown.html(release.body)}
+                  </details>`
+                )
+              : ""
+          }
+          ${
+            !repository.can_install
+              ? html`<p class="error">
+                  ${this.hacs
+                    .localize("confirm.home_assistant_version_not_correct")
+                    .replace("{haversion}", this.hass.config.version)
+                    .replace("{minversion}", repository.homeassistant)}
+                </p>`
+              : ""
+          }
+          ${
+            repository.category === "integration"
+              ? html`<p>${this.hacs.localize("dialog_install.restart")}</p>`
+              : ""
+          }
           ${this._error ? html`<div class="error">${this._error.message}</div>` : ""}
         </div>
         <mwc-button
           slot="primaryaction"
           ?disabled=${!repository.can_install}
           @click=${this._updateRepository}
-          >${this._updating
-            ? html`<ha-circular-progress active></ha-circular-progress>`
-            : this.hacs.localize("common.update")}</mwc-button
+          >${
+            this._updating
+              ? html`<ha-circular-progress active></ha-circular-progress>`
+              : this.hacs.localize("common.update")
+          }</mwc-button
         >
         <div class="secondary" slot="secondaryaction">
           <hacs-link .url=${this._getChanglogURL()}
