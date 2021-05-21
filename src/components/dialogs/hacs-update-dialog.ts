@@ -1,7 +1,9 @@
+import { mdiArrowRight } from "@mdi/js";
 import { css, CSSResultArray, customElement, html, property, TemplateResult } from "lit-element";
 import { classMap } from "lit-html/directives/class-map";
 import memoizeOne from "memoize-one";
 import "../../../homeassistant-frontend/src/components/ha-circular-progress";
+import "../../../homeassistant-frontend/src/components/ha-svg-icon";
 import { Repository } from "../../data/common";
 import {
   repositoryInstall,
@@ -47,19 +49,34 @@ export class HacsUpdateDialog extends HacsDialogBase {
         .hass=${this.hass}
       >
         <div class=${classMap({ content: true, narrow: this.narrow })}>
-          ${repository.name}
-          <p>
-            <b>${this.hacs.localize("dialog_update.installed_version")}:</b>
-            ${repository.installed_version}
+          <p class="message">
+            ${this.hacs
+              .localize("dialog_update.message")
+              .replace("{name}", repository.name)}
           </p>
-          <p>
-            <b>${this.hacs.localize("dialog_update.available_version")}:</b>
-            ${repository.available_version}
-          </p>
+          <div class="version-container">
+            <div class="version-element">
+              <span class="version-number">${repository.installed_version}</span>
+              <small class="version-text">${this.hacs.localize("dialog_update.installed_version")}</small>
+            </div>
+
+            <span class="version-separator">
+              <ha-svg-icon
+                .path=${mdiArrowRight}
+              ></ha-svg-icon>
+            </span>
+
+            <div class="version-element">
+                <span class="version-number">${repository.available_version}</span>
+                <small class="version-text">${this.hacs.localize("dialog_update.available_version")}</small>
+              </div>
+            </div>
+          </div>
+
           ${this._releaseNotes.length > 0
             ? this._releaseNotes.map(
                 (release) => html`<details>
-                  <summary>${release.name}</summary>
+                  <summary>${release.name || release.tag}</summary>
                   ${markdown.html(release.body)}
                 </details>`
               )
@@ -137,9 +154,6 @@ export class HacsUpdateDialog extends HacsDialogBase {
     return [
       scrollBarStyle,
       css`
-        .content {
-          padding: 32px 8px;
-        }
         .error {
           color: var(--hacs-error-color, var(--google-red-500));
         }
@@ -152,6 +166,30 @@ export class HacsUpdateDialog extends HacsDialogBase {
         }
         .secondary {
           display: flex;
+        }
+        .message {
+          text-align: center;
+          margin: 0;
+        }
+        .version-container {
+          margin: 24px 0 12px 0;
+          display: flex;
+          flex-direction: row;
+        }
+        .version-element {
+          display: flex;
+          flex-direction: column;
+          min-width: 150px;
+          flex: 1;
+          padding: 0 12px;
+          text-align: center;
+        }
+        .version-text {
+          color: var(--secondary-text-color);
+        }
+        .version-number {
+          font-size: 1.5rem;
+          margin-bottom: 4px;
         }
       `,
     ];

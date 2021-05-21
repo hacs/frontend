@@ -234,7 +234,8 @@
     "installed_version": "Installed version",
     "available_version": "Available version",
     "changelog": "Changelog",
-    "releasenotes": "Release notes for {release}"
+    "releasenotes": "Release notes for {release}",
+    "message": "A new version of the {name} is available"
   },
   "repository_card": {
     "pending_update": "Pending update",
