@@ -188,6 +188,7 @@ export class HacsUpdateDialog extends HacsDialogBase {
         .version-container {
           margin: 24px 0 12px 0;
           width: 360px;
+          min-width: 100%;
           max-width: 100%;
           display: flex;
           flex-direction: row;
