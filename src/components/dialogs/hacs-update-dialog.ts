@@ -164,6 +164,10 @@ export class HacsUpdateDialog extends HacsDialogBase {
     return [
       scrollBarStyle,
       css`
+        .content {
+          width: 360px;
+          display: contents;
+        }
         .error {
           color: var(--hacs-error-color, var(--google-red-500));
         }
@@ -183,13 +187,14 @@ export class HacsUpdateDialog extends HacsDialogBase {
         }
         .version-container {
           margin: 24px 0 12px 0;
+          width: 360px;
+          max-width: 100%;
           display: flex;
           flex-direction: row;
         }
         .version-element {
           display: flex;
           flex-direction: column;
-          min-width: 150px;
           flex: 1;
           padding: 0 12px;
           text-align: center;
