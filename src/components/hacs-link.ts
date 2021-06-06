@@ -7,18 +7,18 @@ export class HacsLink extends LitElement {
   @property({ type: Boolean }) public newtab: boolean = false;
   @property({ type: Boolean }) public parent: boolean = false;
   @property() public title: string;
-  @property() private url!: string;
+  @property() public url!: string;
 
   protected render(): TemplateResult | void {
     return html`<span title=${this.title || this.url} @click=${this._open}><slot></slot></span>`;
   }
 
   private _open(): void {
-    if (this.url.startsWith("/")) {
+    if (this.url.startsWith("/") && !this.newtab) {
       navigate(this.url, { replace: true });
       return;
     }
-    const external = this.url?.includes("http");
+    const external = this.url?.startsWith("http");
     let features = "";
     let target = "_blank";
 
@@ -27,14 +27,14 @@ export class HacsLink extends LitElement {
     }
 
     if (!external && !this.newtab) {
-      target = "_top";
+      target = "_blank";
     }
 
     if (!external && !this.parent) {
       target = "_parent";
     }
 
-    window.open(this.url, target, features);
+    top.open(this.url, target, features);
   }
 
   static get styles(): CSSResultGroup {
