@@ -1,13 +1,6 @@
-import {
-  css,
-  CSSResultArray,
-  customElement,
-  html,
-  LitElement,
-  TemplateResult,
-  property,
-} from "lit-element";
-import { ClassInfo, classMap } from "lit-html/directives/class-map";
+import { css, CSSResultGroup, html, LitElement, TemplateResult } from "lit";
+import { customElement, property } from "lit/decorators";
+import { classMap, ClassInfo } from "lit/directives/class-map";
 import { HacsStyles } from "../styles/hacs-common-style";
 
 @customElement("hacs-checkbox")
@@ -18,8 +11,8 @@ export class HacsCheckbox extends LitElement {
 
   private get _checkboxClass(): ClassInfo {
     return {
-      'checkbox': true,
-      'checked': this.checked,
+      checkbox: true,
+      checked: this.checked,
     };
   }
 
@@ -29,9 +22,7 @@ export class HacsCheckbox extends LitElement {
         <div class=${classMap(this._checkboxClass)} @click=${this._checkboxClicked}>
           <div class="value">${this.checked ? "✔" : ""}</div>
         </div>
-        <div class="label" @click=${this._checkboxClicked}>
-          ${this.label}
-        </div>
+        <div class="label" @click=${this._checkboxClicked}>${this.label}</div>
       </div>
     `;
   }
@@ -49,7 +40,7 @@ export class HacsCheckbox extends LitElement {
     );
   }
 
-  static get styles(): CSSResultArray {
+  static get styles(): CSSResultGroup {
     return [
       HacsStyles,
       css`

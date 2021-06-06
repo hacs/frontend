@@ -1,6 +1,6 @@
 import { mdiAccount, mdiArrowDownBold, mdiCube, mdiExclamationThick, mdiStar } from "@mdi/js";
-import { css, customElement, html, property, PropertyValues, TemplateResult } from "lit-element";
-import { classMap } from "lit-html/directives/class-map";
+import { css, html, PropertyValues, TemplateResult } from "lit";
+import { customElement, property } from "lit/decorators";
 import memoizeOne from "memoize-one";
 import { Repository } from "../../data/common";
 import { getRepositories, repositoryUpdate } from "../../data/websocket";

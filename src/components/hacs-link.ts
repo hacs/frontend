@@ -1,12 +1,5 @@
-import {
-  css,
-  CSSResult,
-  customElement,
-  html,
-  LitElement,
-  property,
-  TemplateResult,
-} from "lit-element";
+import { css, CSSResultGroup, html, LitElement, TemplateResult } from "lit";
+import { customElement, property } from "lit/decorators";
 import { navigate } from "../../homeassistant-frontend/src/common/navigate";
 
 @customElement("hacs-link")
@@ -22,7 +15,7 @@ export class HacsLink extends LitElement {
 
   private _open(): void {
     if (this.url.startsWith("/")) {
-      navigate(this, this.url, true);
+      navigate(this.url, { replace: true });
       return;
     }
     const external = this.url?.includes("http");
@@ -44,7 +37,7 @@ export class HacsLink extends LitElement {
     window.open(this.url, target, features);
   }
 
-  static get styles(): CSSResult {
+  static get styles(): CSSResultGroup {
     return css`
       span {
         cursor: pointer;

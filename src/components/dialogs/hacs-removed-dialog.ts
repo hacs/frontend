@@ -1,4 +1,5 @@
-import { css, customElement, html, property, TemplateResult } from "lit-element";
+import { css, html, TemplateResult } from "lit";
+import { customElement, property } from "lit/decorators";
 import { Repository } from "../../data/common";
 import { deleteResource, fetchResources, repositoryUninstall } from "../../data/websocket";
 import "./hacs-dialog";

@@ -1,10 +1,9 @@
-import { LitElement, TemplateResult, html, customElement, query, property } from "lit-element";
+import { LitElement, TemplateResult, html } from "lit";
+import { customElement, property, query } from "lit/decorators";
 import memoizeOne from "memoize-one";
 
 import { HomeAssistant } from "../homeassistant-frontend/src/types";
 import { HacsLogger } from "./components/HacsLogger";
-
-import { navigate } from "./tools/navigate";
 
 import {
   Route,
@@ -31,6 +30,7 @@ import "./panels/hacs-entry-panel";
 import "./panels/hacs-store-panel";
 
 import "./components/dialogs/hacs-event-dialog";
+import { navigate } from "../homeassistant-frontend/src/common/navigate";
 
 @customElement("hacs-resolver")
 export class HacsResolver extends LitElement {
@@ -179,7 +179,7 @@ export class HacsResolver extends LitElement {
 
   private _setRoute(ev: LocationChangedEvent): void {
     this.route = ev.detail.route;
-    navigate(this, this.route.prefix + this.route.path);
+    navigate(this.route.prefix + this.route.path);
     this.requestUpdate();
   }
 }

@@ -1,9 +1,10 @@
-import { customElement, html, property, TemplateResult } from "lit-element";
+import { html, TemplateResult } from "lit";
+import { customElement, property } from "lit/decorators";
 import memoizeOne from "memoize-one";
 import { Repository } from "../../data/common";
 import { markdown } from "../../tools/markdown/markdown";
 import "./hacs-dialog";
-import "../hacs-link"
+import "../hacs-link";
 import { HacsDialogBase } from "./hacs-dialog-base";
 
 @customElement("hacs-generic-dialog")

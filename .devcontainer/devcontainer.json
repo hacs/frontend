@@ -10,18 +10,20 @@
     "ms-vscode.vscode-typescript-tslint-plugin",
     "esbenp.prettier-vscode",
     "bierner.lit-html",
-    "runem.lit-plugin"
-  ],
+    "runem.lit-plugin"  ],
   "settings": {
+    "terminal.integrated.shell.linux": "/bin/bash",
     "files.eol": "\n",
     "editor.tabSize": 2,
-    "terminal.integrated.shell.linux": "/bin/bash",
     "editor.formatOnPaste": false,
     "editor.formatOnSave": true,
     "editor.formatOnType": true,
-    "files.trimTrailingWhitespace": true,
     "[typescript]": {
       "editor.defaultFormatter": "esbenp.prettier-vscode"
     },
+    "[javascript]": {
+      "editor.defaultFormatter": "esbenp.prettier-vscode"
+    },
+    "files.trimTrailingWhitespace": true
   }
 }

@@ -1,4 +1,5 @@
-import { css, customElement, html, internalProperty, property, TemplateResult } from "lit-element";
+import { css, html, TemplateResult } from "lit";
+import { customElement, property, state } from "lit/decorators";
 import { navigate } from "../../../homeassistant-frontend/src/common/navigate";
 import "../../../homeassistant-frontend/src/components/ha-bar";
 import "./hacs-dialog";
@@ -7,7 +8,7 @@ import { HacsDialogBase } from "./hacs-dialog-base";
 @customElement("hacs-navigate-dialog")
 export class HacsNavigateDialog extends HacsDialogBase {
   @property() public path!: string;
-  @internalProperty() private _progress: number = 0;
+  @state() private _progress: number = 0;
   protected async firstUpdated() {
     this._updateProgress();
   }
@@ -55,7 +56,7 @@ export class HacsNavigateDialog extends HacsDialogBase {
 
   private _navigate() {
     if (this.active) {
-      navigate(this, this.path);
+      navigate(this.path);
     }
   }
 

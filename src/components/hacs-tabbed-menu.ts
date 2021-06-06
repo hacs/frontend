@@ -1,23 +1,18 @@
-import "@polymer/paper-menu-button/paper-menu-button";
-import "@polymer/paper-listbox/paper-listbox";
-import "@polymer/paper-item/paper-item";
-
+import "@material/mwc-list/mwc-list-item";
 import { mdiDotsVertical } from "@mdi/js";
-
-import { LitElement, customElement, property, html, css, TemplateResult } from "lit-element";
+import { css, html, LitElement, TemplateResult } from "lit";
+import { customElement, property } from "lit/decorators";
+import "../../homeassistant-frontend/src/components/ha-button-menu";
 import { HomeAssistant, Route } from "../../homeassistant-frontend/src/types";
-import { Status, Configuration, Repository, LovelaceResource } from "../data/common";
+import { Configuration, LovelaceResource, Repository, Status } from "../data/common";
+import { Hacs } from "../data/hacs";
 import { settingsClearAllNewRepositories } from "../data/websocket";
 import { activePanel } from "../panels/hacs-sections";
-import "../../homeassistant-frontend/src/components/ha-icon-button";
-
-import "../components/hacs-link";
-import "../components/hacs-icon-button";
-import { Hacs } from "../data/hacs";
+import "./hacs-link";
 
 @customElement("hacs-tabbed-menu")
 export class HacsTabbedMenu extends LitElement {
-  @property({ attribute: false }) public configuration: Configuration;
+  @property({ attribute: false }) public configuration!: Configuration;
   @property({ attribute: false }) public hass!: HomeAssistant;
   @property({ attribute: false }) public hacs!: Hacs;
   @property({ attribute: false }) public narrow!: boolean;
@@ -27,37 +22,42 @@ export class HacsTabbedMenu extends LitElement {
   @property({ attribute: false }) public status: Status;
 
   protected render(): TemplateResult | void {
-    return html`<paper-menu-button
-      slot="toolbar-icon"
-      horizontal-align="right"
-      vertical-align="top"
-      vertical-offset="40"
-      close-on-activate
-    >
-      <hacs-icon-button .icon=${mdiDotsVertical} slot="dropdown-trigger"></hacs-icon-button>
-      <paper-listbox slot="dropdown-content">
-        <hacs-link url="https://hacs.xyz/"
-          ><paper-item>${this.hacs.localize("menu.documentation")}</paper-item></hacs-link
-        >
+    return html`
+      <ha-button-menu corner="BOTTOM_START" slot="toolbar-icon">
+        <mwc-icon-button slot="trigger" alt="menu">
+          <ha-svg-icon .path=${mdiDotsVertical}></ha-svg-icon>
+        </mwc-icon-button>
+
+        <mwc-list-item action="documentation">
+          <hacs-link url="https://hacs.xyz/">
+            ${this.hacs.localize("menu.documentation")}
+          </hacs-link>
+        </mwc-list-item>
+
         ${this.repositories?.filter((repo) => repo.new).length !== 0
-          ? html` <paper-item @tap=${this._clearAllNewRepositories}
-              >${this.hacs.localize("menu.dismiss")}</paper-item
-            >`
+          ? html`<mwc-list-item @click=${this._clearAllNewRepositories}>
+              ${this.hacs.localize("menu.dismiss")}
+            </mwc-list-item>`
           : ""}
 
-        <hacs-link url="https://github.com/hacs"><paper-item>GitHub</paper-item></hacs-link>
-        <hacs-link url="https://hacs.xyz/docs/issues"
-          ><paper-item>${this.hacs.localize("menu.open_issue")}</paper-item></hacs-link
-        >
+        <mwc-list-item><hacs-link url="https://github.com/hacs">GitHub</hacs-link></mwc-list-item>
+        <mwc-list-item>
+          <hacs-link url="https://hacs.xyz/docs/issues"
+            >${this.hacs.localize("menu.open_issue")}</hacs-link
+          >
+        </mwc-list-item>
+
         ${!this.status?.disabled && !this.status?.background_task
-          ? html`<paper-item @tap=${this._showCustomRepositoriesDialog}
-              >${this.hacs.localize("menu.custom_repositories")}</paper-item
-            >`
+          ? html`<mwc-list-item @click=${this._showCustomRepositoriesDialog}>
+              ${this.hacs.localize("menu.custom_repositories")}
+            </mwc-list-item>`
           : ""}
 
-        <paper-item @tap=${this._showAboutDialog}>${this.hacs.localize("menu.about")}</paper-item>
-      </paper-listbox>
-    </paper-menu-button>`;
+        <mwc-list-item @click=${this._showAboutDialog}>
+          ${this.hacs.localize("menu.about")}
+        </mwc-list-item>
+      </ha-button-menu>
+    `;
   }
 
   private async _clearAllNewRepositories() {
@@ -95,20 +95,6 @@ export class HacsTabbedMenu extends LitElement {
   }
 
   static get styles() {
-    return css`
-      paper-menu-button {
-        color: var(--hcv-text-color-secondary);
-        padding: 0;
-      }
-      hacs-icon-button {
-        color: var(--sidebar-icon-color);
-      }
-      paper-item {
-        cursor: pointer;
-      }
-      paper-item-body {
-        opacity: var(--dark-primary-opacity);
-      }
-    `;
+    return css``;
   }
 }

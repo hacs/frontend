@@ -1,21 +1,13 @@
-import "@polymer/paper-dropdown-menu/paper-dropdown-menu";
 import "@polymer/paper-item/paper-icon-item";
 import "@polymer/paper-item/paper-item-body";
 import "@polymer/paper-listbox/paper-listbox";
-import {
-  css,
-  CSSResultArray,
-  customElement,
-  html,
-  property,
-  PropertyValues,
-  query,
-  TemplateResult,
-} from "lit-element";
+import { css, CSSResultGroup, html, PropertyValues, TemplateResult } from "lit";
+import { customElement, property, query } from "lit/decorators";
 import memoizeOne from "memoize-one";
 import "../../../homeassistant-frontend/src/components/ha-circular-progress";
 import "../../../homeassistant-frontend/src/components/ha-formfield";
 import "../../../homeassistant-frontend/src/components/ha-switch";
+import "../../../homeassistant-frontend/src/components/ha-paper-dropdown-menu";
 import { Repository } from "../../data/common";
 import {
   getRepositories,
@@ -105,7 +97,7 @@ export class HacsInstallDialog extends HacsDialogBase {
                   </ha-formfield>
                 </div>
                 <div class="version-select-container">
-                  <paper-dropdown-menu
+                  <ha-paper-dropdown-menu
                     ?disabled=${this._toggle}
                     class="version-select-dropdown"
                     label="${this.hacs.localize("dialog_install.select_version")}"
@@ -132,7 +124,7 @@ export class HacsInstallDialog extends HacsDialogBase {
                             >
                           `}
                     </paper-listbox>
-                  </paper-dropdown-menu>
+                  </ha-paper-dropdown-menu>
                 </div>`
             : ""}
           ${!this._repository.can_install
@@ -232,7 +224,7 @@ export class HacsInstallDialog extends HacsDialogBase {
     }
   }
 
-  static get styles(): CSSResultArray {
+  static get styles(): CSSResultGroup {
     return [
       css`
         .version-select-dropdown {

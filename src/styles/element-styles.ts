@@ -1,4 +1,4 @@
-import { css } from "lit-element";
+import { css } from "lit";
 import { haStyleDialog } from "../../homeassistant-frontend/src/resources/styles";
 
 export const hacsLinkStyle = css`
@@ -16,7 +16,6 @@ export const hacsButtonStyle = css`
 
 export const hacsIconStyle = css`
   paper-menu-button,
-  ha-icon-button,
   ha-icon {
     color: var(--hcv-color-icon);
   }

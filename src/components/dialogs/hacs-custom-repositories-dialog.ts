@@ -1,21 +1,13 @@
 import { mdiDelete, mdiGithub } from "@mdi/js";
-import "@polymer/paper-dropdown-menu/paper-dropdown-menu";
 import "@polymer/paper-item/paper-icon-item";
 import "@polymer/paper-item/paper-item-body";
 import "@polymer/paper-listbox/paper-listbox";
-import {
-  css,
-  customElement,
-  html,
-  property,
-  PropertyValues,
-  query,
-  TemplateResult,
-} from "lit-element";
+import { css, html, PropertyValues, TemplateResult } from "lit";
+import { customElement, property, query } from "lit/decorators";
 import "../../../homeassistant-frontend/src/components/ha-svg-icon";
+import "../../../homeassistant-frontend/src/components/ha-paper-dropdown-menu";
 import { getRepositories, repositoryAdd, repositoryDelete } from "../../data/websocket";
 import { scrollBarStyle } from "../../styles/element-styles";
-import "../hacs-icon-button";
 import "./hacs-dialog";
 import { HacsDialogBase } from "./hacs-dialog-base";
 
@@ -68,11 +60,10 @@ export class HacsCustomRepositoriesDialog extends HacsDialogBase {
                     >${repo.name}
                     <div secondary>${repo.description}</div>
                     <div secondary>Category: ${repo.category}</div></paper-item-body
-                  ><hacs-icon-button
-                    class="delete"
-                    .icon=${mdiDelete}
-                    @click=${() => this._removeRepository(repo.id)}
-                  ></hacs-icon-button>
+                  >
+                  <mwc-icon-button @click=${() => this._removeRepository(repo.id)}>
+                    <ha-svg-icon class="delete" .path=${mdiDelete}></ha-svg-icon>
+                  </mwc-icon-button>
                 </paper-icon-item>`
               )}
           </div>
@@ -88,7 +79,7 @@ export class HacsCustomRepositoriesDialog extends HacsDialogBase {
             ?narrow=${this.narrow}
           />
 
-          <paper-dropdown-menu
+          <ha-paper-dropdown-menu
             ?narrow=${this.narrow}
             class="category"
             label="${this.hacs.localize("dialog_custom_repositories.category")}"
@@ -102,7 +93,7 @@ export class HacsCustomRepositoriesDialog extends HacsDialogBase {
                 `
               )}
             </paper-listbox>
-          </paper-dropdown-menu>
+          </ha-paper-dropdown-menu>
           <mwc-button
             ?narrow=${this.narrow}
             slot="primaryaction"
@@ -173,6 +164,7 @@ export class HacsCustomRepositoriesDialog extends HacsDialogBase {
       })
     );
   }
+
   static get styles() {
     return [
       scrollBarStyle,
@@ -187,7 +179,6 @@ export class HacsCustomRepositoriesDialog extends HacsDialogBase {
           max-height: 870px;
           overflow: auto;
         }
-        ha-icon-button,
         ha-icon {
           color: var(--secondary-text-color);
         }
@@ -203,14 +194,16 @@ export class HacsCustomRepositoriesDialog extends HacsDialogBase {
           max-width: 36px;
           position: absolute;
         }
-        .delete,
+        .delete {
+          color: var(--hacs-error-color, var(--google-red-500));
+        }
         paper-item-body {
           cursor: pointer;
         }
         .error {
           line-height: 0px;
           margin: 12px;
-          color: var(--hacs-error-color, var(--google-red-500));
+          color: var(--hacs-error-color, var(--google-red-500, red));
         }
 
         paper-item-body {
@@ -249,7 +242,7 @@ export class HacsCustomRepositoriesDialog extends HacsDialogBase {
         input {
           background-color: var(--sidebar-background-color);
         }
-        paper-dropdown-menu {
+        ha-paper-dropdown-menu {
           width: 100%;
         }
         mwc-button {
@@ -259,7 +252,7 @@ export class HacsCustomRepositoriesDialog extends HacsDialogBase {
 
         input[narrow],
         .add-repository[narrow],
-        paper-dropdown-menu[narrow],
+        ha-paper-dropdown-menu[narrow],
         mwc-button[narrow] {
           margin: 0;
           padding: 0;

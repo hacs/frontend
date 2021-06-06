@@ -1,14 +1,8 @@
-import {
-  CSSResultArray,
-  LitElement,
-  customElement,
-  TemplateResult,
-  html,
-  css,
-  property,
-} from "lit-element";
+import { CSSResultGroup, LitElement, TemplateResult, html, css } from "lit";
 
-import { classMap } from "lit-html/directives/class-map";
+import { customElement, property } from "lit/decorators";
+
+import { classMap } from "lit/directives/class-map";
 
 import "../../homeassistant-frontend/src/components/ha-svg-icon";
 
@@ -40,7 +34,7 @@ export class HacsChip extends LitElement {
     window.open(this.url, "_blank", "rel=noreferer");
   }
 
-  static get styles(): CSSResultArray {
+  static get styles(): CSSResultGroup {
     return [
       css`
         .chip {

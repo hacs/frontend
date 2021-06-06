@@ -1,4 +1,5 @@
-import { customElement, html, property, query, TemplateResult } from "lit-element";
+import { html, TemplateResult } from "lit";
+import { customElement, property, query } from "lit/decorators";
 import { atLeastVersion } from "../homeassistant-frontend/src/common/config/version";
 import { applyThemesOnElement } from "../homeassistant-frontend/src/common/dom/apply_themes_on_element";
 import { navigate } from "../homeassistant-frontend/src/common/navigate";
@@ -81,7 +82,7 @@ class HacsFrontend extends ProvideHassLitMixin(HacsElement) {
     makeDialogManager(this, this.shadowRoot!);
     this._updateProperties();
     if (this.route.path === "") {
-      navigate(this, "/hacs/entry", true);
+      navigate("/hacs/entry", { replace: true });
     }
 
     this._applyTheme();
@@ -134,7 +135,10 @@ class HacsFrontend extends ProvideHassLitMixin(HacsElement) {
   }
 
   protected render(): TemplateResult | void {
-    if (!this.hass || !this.hacs) return html``;
+    if (!this.hass || !this.hacs) {
+      return html``;
+    }
+
     return html`
       <hacs-router
         .hass=${this.hass}
@@ -198,7 +202,7 @@ class HacsFrontend extends ProvideHassLitMixin(HacsElement) {
 
   private _setRoute(ev: LocationChangedEvent): void {
     this.route = ev.detail.route;
-    navigate(this, this.route.path, true);
+    navigate(this.route.path, { replace: true });
     this.requestUpdate();
   }
 
@@ -221,8 +225,7 @@ class HacsFrontend extends ProvideHassLitMixin(HacsElement) {
         };
       }
     } else {
-      themeName =
-        ((this.hass.selectedTheme as unknown) as string) || this.hass.themes.default_theme;
+      themeName = (this.hass.selectedTheme as unknown as string) || this.hass.themes.default_theme;
     }
 
     applyThemesOnElement(this.parentElement, this.hass.themes, themeName, options);

@@ -1,12 +1,12 @@
 import { mdiPlus } from "@mdi/js";
-import { css, customElement, html, LitElement, property, TemplateResult } from "lit-element";
+import { css, html, LitElement, TemplateResult } from "lit";
+import { customElement, property } from "lit/decorators";
 import memoizeOne from "memoize-one";
 import "../../homeassistant-frontend/src/common/search/search-input";
 import "../../homeassistant-frontend/src/components/ha-card";
 import "../../homeassistant-frontend/src/components/ha-fab";
 import "../../homeassistant-frontend/src/layouts/hass-tabs-subpage";
 import { HomeAssistant, Route } from "../../homeassistant-frontend/src/types";
-import "../components/hacs-fab";
 import "../components/hacs-filter";
 import "../components/hacs-repository-card";
 import "../components/hacs-tabbed-menu";

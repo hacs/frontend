@@ -1,13 +1,13 @@
-import {
-  css,
-  CSSResultArray,
-  customElement,
-  html,
-  LitElement,
-  TemplateResult,
-  property,
-} from "lit-element";
-import { classMap, ClassInfo } from "lit-html/directives/class-map";
+import "@polymer/paper-listbox/paper-listbox";
+import "@polymer/paper-menu-button/paper-menu-button";
+import "@material/mwc-button/mwc-button";
+import "@polymer/paper-item/paper-item-body";
+import "@polymer/paper-item/paper-item";
+import "./hacs-chip";
+import "../../homeassistant-frontend/src/components/ha-card";
+import { css, CSSResultGroup, html, LitElement, TemplateResult } from "lit";
+import { customElement, property } from "lit/decorators";
+import { classMap, ClassInfo } from "lit/directives/class-map";
 import { HacsStyles } from "../styles/hacs-common-style";
 import { Repository, Status, RemovedRepository } from "../data/common";
 import { Hacs } from "../data/hacs";
@@ -21,8 +21,7 @@ import {
 import { HomeAssistant } from "../../homeassistant-frontend/src/types";
 import { mdiDotsVertical } from "@mdi/js";
 import { hacsIcon } from "./hacs-icon";
-import "../components/hacs-icon-button";
-import "../components/hacs-link";
+import "./hacs-link";
 
 @customElement("hacs-repository-card")
 export class HacsRepositoryCard extends LitElement {
@@ -147,10 +146,9 @@ export class HacsRepositoryCard extends LitElement {
                 vertical-offset="40"
                 close-on-activate
               >
-                <hacs-icon-button
-                  .icon=${mdiDotsVertical}
-                  slot="dropdown-trigger"
-                ></hacs-icon-button>
+                <mwc-icon-button slot="dropdown-trigger" alt="menu">
+                  <ha-svg-icon .path=${mdiDotsVertical}></ha-svg-icon>
+                </mwc-icon-button>
                 <paper-listbox slot="dropdown-content">
                   <paper-item class="pointer" @tap=${this._showReopsitoryInfo}
                     >${this.hacs.localize("repository_card.information")}</paper-item
@@ -264,7 +262,7 @@ export class HacsRepositoryCard extends LitElement {
     await repositoryUninstall(this.hass, this.repository.id);
   }
 
-  static get styles(): CSSResultArray {
+  static get styles(): CSSResultGroup {
     return [
       HacsStyles,
       css`
@@ -378,9 +376,6 @@ export class HacsRepositoryCard extends LitElement {
         ha-card[narrow] {
           width: calc(100% - 24px);
           margin: 11px;
-        }
-        hacs-icon-button {
-          color: var(--accent-color);
         }
       `,
     ];

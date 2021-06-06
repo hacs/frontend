@@ -1,4 +1,5 @@
-import { LitElement, property } from "lit-element";
+import { LitElement } from "lit";
+import { property } from "lit/decorators";
 import { Hacs } from "./data/hacs";
 import { sectionsEnabled } from "./panels/hacs-sections";
 import { addedToLovelace } from "./tools/added-to-lovelace";
@@ -6,7 +7,7 @@ import { HacsLogger } from "./tools/hacs-logger";
 import { localize } from "./localize/localize";
 
 export class HacsElement extends LitElement {
-  @property({ type: Object }) public hacs?: Hacs;
+  @property({ attribute: false }) public hacs?: Hacs;
 
   public async connectedCallback() {
     super.connectedCallback();

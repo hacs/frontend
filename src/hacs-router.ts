@@ -1,4 +1,4 @@
-import { customElement, property } from "lit-element";
+import { customElement, property, state } from "lit/decorators";
 import { listenMediaQuery } from "../homeassistant-frontend/src/common/dom/media_query";
 import {
   HassRouterPage,
@@ -28,8 +28,8 @@ class HacsRouter extends HassRouterPage {
   @property({ attribute: false }) public status: Status;
   @property({ type: Boolean }) public narrow!: boolean;
 
-  @property() private _wideSidebar = false;
-  @property() private _wide = false;
+  @state() private _wideSidebar = false;
+  @state() private _wide = false;
 
   private _listeners: Array<() => void> = [];
 

@@ -1,8 +1,8 @@
-import { css, customElement, html, property, TemplateResult } from "lit-element";
+import { css, html, TemplateResult } from "lit";
+import { customElement, property } from "lit/decorators";
 import { createCloseHeading } from "../../../homeassistant-frontend/src/components/ha-dialog";
-import { HacsStyles } from "../../styles//hacs-common-style";
+import { HacsStyles } from "../../styles/hacs-common-style";
 import { hacsStyleDialog, scrollBarStyle } from "../../styles/element-styles";
-import "../hacs-icon-button";
 import { HacsDialogBase } from "./hacs-dialog-base";
 
 @customElement("hacs-dialog")

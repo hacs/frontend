@@ -1,13 +1,14 @@
 import { mdiGithub } from "@mdi/js";
-import "@polymer/paper-dropdown-menu/paper-dropdown-menu";
 import "@polymer/paper-item/paper-icon-item";
 import "@polymer/paper-item/paper-item-body";
 import "@polymer/paper-listbox/paper-listbox";
-import { css, customElement, html, property, PropertyValues, TemplateResult } from "lit-element";
-import { classMap } from "lit-html/directives/class-map";
+import { css, html, PropertyValues, TemplateResult } from "lit";
+import { customElement, property } from "lit/decorators";
+import { classMap } from "lit/directives/class-map";
 import memoizeOne from "memoize-one";
 import "../../../homeassistant-frontend/src/common/search/search-input";
 import "../../../homeassistant-frontend/src/components/ha-svg-icon";
+import "../../../homeassistant-frontend/src/components/ha-paper-dropdown-menu";
 import { Repository } from "../../data/common";
 import { activePanel } from "../../panels/hacs-sections";
 import { scrollBarStyle, searchStyles } from "../../styles/element-styles";
@@ -110,7 +111,7 @@ export class HacsAddRepositoryDialog extends HacsDialogBase {
             ?narrow=${this.narrow}
           ></search-input>
           <div class="filter">
-            <paper-dropdown-menu
+            <ha-paper-dropdown-menu
               label="${this.hacs.localize("dialog_add_repo.sort_by")}"
               ?narrow=${this.narrow}
             >
@@ -125,7 +126,7 @@ export class HacsAddRepositoryDialog extends HacsDialogBase {
                   >${this.hacs.localize("store.last_updated")}</paper-item
                 >
               </paper-listbox>
-            </paper-dropdown-menu>
+            </ha-paper-dropdown-menu>
           </div>
         </div>
         ${this.filters.length > 1
@@ -254,7 +255,7 @@ export class HacsAddRepositoryDialog extends HacsDialogBase {
         }
         search-input[narrow],
         div.filter[narrow],
-        paper-dropdown-menu[narrow] {
+        ha-paper-dropdown-menu[narrow] {
           width: 100%;
         }
         img {
@@ -276,7 +277,7 @@ export class HacsAddRepositoryDialog extends HacsDialogBase {
           padding: 2px 0;
         }
 
-        paper-dropdown-menu {
+        ha-paper-dropdown-menu {
           margin: 0 12px 4px 0;
         }
 

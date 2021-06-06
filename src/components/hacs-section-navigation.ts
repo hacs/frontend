@@ -1,14 +1,7 @@
 import "@polymer/paper-item/paper-icon-item";
 import "@polymer/paper-item/paper-item-body";
-import {
-  css,
-  CSSResult,
-  customElement,
-  html,
-  LitElement,
-  property,
-  TemplateResult,
-} from "lit-element";
+import { css, CSSResultGroup, html, LitElement, TemplateResult } from "lit";
+import { customElement, property } from "lit/decorators";
 import "../../homeassistant-frontend/src/components/ha-card";
 import "../../homeassistant-frontend/src/components/ha-icon-next";
 import "../../homeassistant-frontend/src/components/ha-svg-icon";
@@ -76,7 +69,7 @@ class HacsSectionNavigation extends LitElement {
     window.parent.location.href = window.location.href;
   }
 
-  static get styles(): CSSResult {
+  static get styles(): CSSResultGroup {
     return css`
       hacs-link {
         text-decoration: none;

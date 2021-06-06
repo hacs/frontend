@@ -1,6 +1,7 @@
 import { mdiArrowRight } from "@mdi/js";
-import { css, CSSResultArray, customElement, html, property, TemplateResult } from "lit-element";
-import { classMap } from "lit-html/directives/class-map";
+import { css, CSSResultGroup, html, TemplateResult } from "lit";
+import { customElement, property } from "lit/decorators";
+import { classMap } from "lit/directives/class-map";
 import memoizeOne from "memoize-one";
 import "../../../homeassistant-frontend/src/components/ha-circular-progress";
 import "../../../homeassistant-frontend/src/components/ha-svg-icon";
@@ -160,7 +161,7 @@ export class HacsUpdateDialog extends HacsDialogBase {
     return `https://github.com/${repository.full_name}/releases`;
   }
 
-  static get styles(): CSSResultArray {
+  static get styles(): CSSResultGroup {
     return [
       scrollBarStyle,
       css`

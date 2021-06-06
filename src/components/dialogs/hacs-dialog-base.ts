@@ -1,4 +1,5 @@
-import { LitElement, property, PropertyValues } from "lit-element";
+import { LitElement, PropertyValues } from "lit";
+import { property } from "lit/decorators";
 import { HomeAssistant, Route } from "../../../homeassistant-frontend/src/types";
 import {
   Configuration,

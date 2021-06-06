@@ -1,4 +1,4 @@
-import { html, TemplateResult } from "lit-element";
+import { html, TemplateResult } from "lit";
 import marked_ from "marked";
 import DOMPurify from "dompurify";
 import emoji from "node-emoji";
