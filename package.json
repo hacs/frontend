@@ -105,7 +105,7 @@
     "@polymer/paper-input": "^3.0.1",
     "@polymer/paper-item": "^3.0.1",
     "@polymer/paper-listbox": "^3.0.1",
-    "@polymer/paper-menu-button": "^3.0.1",
+    "@polymer/paper-menu-button": "^3.1.0",
     "@polymer/paper-progress": "^3.0.1",
     "@polymer/paper-ripple": "^3.0.1",
     "@polymer/paper-spinner": "^3.0.1",
