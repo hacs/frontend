@@ -61,7 +61,7 @@ export class markdown {
 
     // Shorten commits links
     input = input.replace(/(https:\/\/github\.com\/\S*\/commit\/[0-9a-f]{40})/g, function (x) {
-      let hash = x.substr(x.length - 40, 7);
+      const hash = x.substr(x.length - 40, 7);
       return `[\`${hash}\`](${x})`;
     });
 
