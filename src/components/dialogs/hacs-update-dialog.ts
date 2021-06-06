@@ -1,3 +1,5 @@
+import "@material/mwc-button/mwc-button";
+import "../../../homeassistant-frontend/src/components/ha-expansion-panel";
 import { mdiArrowRight } from "@mdi/js";
 import { css, CSSResultGroup, html, TemplateResult } from "lit";
 import { customElement, property } from "lit/decorators";
@@ -17,6 +19,7 @@ import { updateLovelaceResources } from "../../tools/update-lovelace-resources";
 import "../hacs-link";
 import "./hacs-dialog";
 import { HacsDialogBase } from "./hacs-dialog-base";
+import { compare } from "../../../homeassistant-frontend/src/common/string/compare";
 
 @customElement("hacs-update-dialog")
 export class HacsUpdateDialog extends HacsDialogBase {
@@ -29,12 +32,13 @@ export class HacsUpdateDialog extends HacsDialogBase {
     repositories?.find((repo) => repo.id === repository)
   );
 
-  protected async firstUpdated() {
+  protected async firstUpdated(changedProps) {
+    super.firstUpdated(changedProps);
     const repository = this._getRepository(this.repositories, this.repository);
     if (repository.version_or_commit !== "commit") {
       this._releaseNotes = await repositoryReleasenotes(this.hass, repository.id);
-      this._releaseNotes = this._releaseNotes.filter(
-        (release) => release.tag > repository.installed_version
+      this._releaseNotes = this._releaseNotes.filter((release) =>
+        compare(release.tag, repository.installed_version)
       );
     }
     this.hass.connection.subscribeEvents((msg) => (this._error = (msg as any).data), "hacs/error");
@@ -79,10 +83,11 @@ export class HacsUpdateDialog extends HacsDialogBase {
           ${
             this._releaseNotes.length > 0
               ? this._releaseNotes.map(
-                  (release) => html`<details>
-                    <summary>${release.name || release.tag}</summary>
-                    ${markdown.html(release.body)}
-                  </details>`
+                  (release) => html`
+                    <ha-expansion-panel .header=${release.name || release.tag} outlined>
+                      ${markdown.html(release.body)}
+                    </ha-expansion-panel>
+                  `
                 )
               : ""
           }
@@ -172,13 +177,13 @@ export class HacsUpdateDialog extends HacsDialogBase {
         .error {
           color: var(--hacs-error-color, var(--google-red-500));
         }
-        details {
-          padding: 12px 0;
+        ha-expansion-panel {
+          margin: 8px 0;
         }
-        summary {
-          padding: 4px;
-          cursor: pointer;
+        ha-expansion-panel[expanded] {
+          padding-bottom: 16px;
         }
+
         .secondary {
           display: flex;
         }
