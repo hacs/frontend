@@ -63,7 +63,7 @@
     "marked": "^2.0.0",
     "memoize-one": "^5.1.1",
     "node-emoji": "^1.10.0",
-    "patch-package": "^6.2.0",
+    "patch-package": "^6.4.7",
     "prettier": "^2.2.1",
     "require-dir": "^1.2.0",
     "rollup": "^2.39.0",
