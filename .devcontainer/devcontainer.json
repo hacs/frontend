@@ -1,29 +1,30 @@
 {
-  "name": "HACS Frontend",
-  "image": "ghcr.io/ludeeus/devcontainer/frontend:stable",
-  "context": "..",
-  "appPort": ["5000:5000"],
-  "postCreateCommand": "make init",
-  "extensions": [
-    "github.vscode-pull-request-github",
-    "dbaeumer.vscode-eslint",
-    "ms-vscode.vscode-typescript-tslint-plugin",
-    "esbenp.prettier-vscode",
-    "bierner.lit-html",
-    "runem.lit-plugin"  ],
-  "settings": {
-    "terminal.integrated.shell.linux": "/bin/bash",
-    "files.eol": "\n",
-    "editor.tabSize": 2,
-    "editor.formatOnPaste": false,
-    "editor.formatOnSave": true,
-    "editor.formatOnType": true,
-    "[typescript]": {
-      "editor.defaultFormatter": "esbenp.prettier-vscode"
-    },
-    "[javascript]": {
-      "editor.defaultFormatter": "esbenp.prettier-vscode"
-    },
-    "files.trimTrailingWhitespace": true
-  }
+	"name": "HACS Frontend",
+	"image": "ghcr.io/ludeeus/devcontainer/frontend:stable",
+	"context": "..",
+	"appPort": ["5000:5000"],
+	"postCreateCommand": "make init",
+	"extensions": [
+		"github.vscode-pull-request-github",
+		"dbaeumer.vscode-eslint",
+		"ms-vscode.vscode-typescript-tslint-plugin",
+		"esbenp.prettier-vscode",
+		"bierner.lit-html",
+		"runem.lit-plugin"
+	],
+	"settings": {
+		"terminal.integrated.shell.linux": "/bin/bash",
+		"files.eol": "\n",
+		"editor.tabSize": 2,
+		"editor.formatOnPaste": false,
+		"editor.formatOnSave": true,
+		"editor.formatOnType": true,
+		"[typescript]": {
+			"editor.defaultFormatter": "esbenp.prettier-vscode"
+		},
+		"[javascript]": {
+			"editor.defaultFormatter": "esbenp.prettier-vscode"
+		},
+		"files.trimTrailingWhitespace": true
+	}
 }
