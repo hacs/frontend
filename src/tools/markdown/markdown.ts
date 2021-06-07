@@ -60,9 +60,9 @@ export class markdown {
     });
 
     // Shorten commits links
-    input = input.replace(/(https:\/\/github\.com\/\S*\/commit\/[0-9a-f]{40})/g, function (x) {
-      const hash = x.substr(x.length - 40, 7);
-      return `[\`${hash}\`](${x})`;
+    input = input.replace(/https:\/\/github\.com\/\S*\/commit\/([0-9a-f]{40})/g, (url, commit) => {
+      const hash = commit.substr(0, 7);
+      return `[\`${hash}\`](${url})`;
     });
 
     const content = document.createElement("div");
