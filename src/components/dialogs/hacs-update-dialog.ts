@@ -85,7 +85,7 @@ export class HacsUpdateDialog extends HacsDialogBase {
               ? this._releaseNotes.map(
                   (release) => html`
                     <ha-expansion-panel .header=${release.name || release.tag} outlined>
-                      ${markdown.html(release.body)}
+                      ${markdown.html(release.body, repository)}
                     </ha-expansion-panel>
                   `
                 )

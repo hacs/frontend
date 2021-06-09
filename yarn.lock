@@ -4970,6 +4970,16 @@ cpx@^1.5.0:
     shell-quote "^1.6.1"
     subarg "^1.0.0"
 
+create-html-element@^2.1.0:
+  version "2.1.0"
+  resolved "https://registry.yarnpkg.com/create-html-element/-/create-html-element-2.1.0.tgz#916b28a1f0bf716adfdee74abed05e7b66714bea"
+  integrity sha512-ofbOpJh3GSDsyINuqppupKRUcQHnXSyvwvk0F5DlEtwKwb+thdFoJAtYczy7bIZWdsQjZfADUc38pF4gVd0o+Q==
+  dependencies:
+    escape-goat "^1.3.0"
+    html-tags "^2.0.0"
+    stringify-attributes "^1.0.0"
+    type-fest "^0.3.0"
+
 crelt@^1.0.5:
   version "1.0.5"
   resolved "https://registry.yarnpkg.com/crelt/-/crelt-1.0.5.tgz#57c0d52af8c859e354bace1883eb2e1eb182bb94"
@@ -5519,6 +5529,11 @@ escalade@^3.1.1:
   version "3.1.1"
   resolved "https://registry.yarnpkg.com/escalade/-/escalade-3.1.1.tgz#d8cfdc7000965c5a0174b4a82eaa5c0552742e40"
   integrity sha512-k0er2gUkLf8O0zKJiAhmkTnJlTvINGv7ygDNPbeIsX/TJjGJZHuh9B2UxbsaEkmlEo9MfhrSzmhIlhRlI2GXnw==
+
+escape-goat@^1.1.0, escape-goat@^1.3.0:
+  version "1.3.0"
+  resolved "https://registry.yarnpkg.com/escape-goat/-/escape-goat-1.3.0.tgz#bf3ee8ad1e488fbba404b084b2e4a55e09231c64"
+  integrity sha512-E2nU1Y39N5UgfLU8qwMlK0vZrZprIwWLeVmDYN8wd/e37hMtGzu2w1DBiREts0XHfgyZEQlj/hYr0H0izF0HDQ==
 
 escape-html@^1.0.3, escape-html@~1.0.3:
   version "1.0.3"
@@ -6911,6 +6926,11 @@ html-minifier@^4.0.0:
     relateurl "^0.2.7"
     uglify-js "^3.5.1"
 
+html-tags@^2.0.0:
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/html-tags/-/html-tags-2.0.0.tgz#10b30a386085f43cede353cc8fa7cb0deeea668b"
+  integrity sha1-ELMKOGCF9Dzt41PMj6fLDe7qZos=
+
 http-assert@^1.3.0:
   version "1.4.1"
   resolved "https://registry.yarnpkg.com/http-assert/-/http-assert-1.4.1.tgz#c5f725d677aa7e873ef736199b89686cceb37878"
@@ -7624,6 +7644,11 @@ isobject@^3.0.0, isobject@^3.0.1:
   resolved "https://registry.yarnpkg.com/isobject/-/isobject-3.0.1.tgz#4e431e92b11a9731636aa1f9c8d1ccbcfdab78df"
   integrity sha1-TkMekrEalzFjaqH5yNHMvP2reN8=
 
+issue-regex@^3.0.0:
+  version "3.1.0"
+  resolved "https://registry.yarnpkg.com/issue-regex/-/issue-regex-3.1.0.tgz#0671f094d6449c5b712fac3c9562aecb727d709e"
+  integrity sha512-0RHjbtw9QXeSYnIEY5Yrp2QZrdtz21xBDV9C/GIlY2POmgoS6a7qjkYS5siRKXScnuAj5/SPv1C3YForNCHTJA==
+
 jest-worker@^24.9.0:
   version "24.9.0"
   resolved "https://registry.yarnpkg.com/jest-worker/-/jest-worker-24.9.0.tgz#5dbfdb5b2d322e98567898238a9697bcce67b3e5"
@@ -7965,6 +7990,14 @@ lines-and-columns@^1.1.6:
   version "1.1.6"
   resolved "https://registry.yarnpkg.com/lines-and-columns/-/lines-and-columns-1.1.6.tgz#1c00c743b433cd0a4e80758f7b64a57440d9ff00"
   integrity sha1-HADHQ7QzzQpOgHWPe2SldEDZ/wA=
+
+linkify-issues@^2.0.0:
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/linkify-issues/-/linkify-issues-2.0.0.tgz#037705e420b286980eca5b957b557983b076e36a"
+  integrity sha512-97aJjKWddAZYcmFYoU69rpOk8s0Z45Sy46wNKq6GkHDV7ppxdjXmeM3NAngNYhq9oCbjm34OR7Ep+FDuQxcMIA==
+  dependencies:
+    create-html-element "^2.1.0"
+    issue-regex "^3.0.0"
 
 lint-staged@^10.5.4:
   version "10.5.4"
@@ -10829,6 +10862,13 @@ string_decoder@~1.1.1:
   dependencies:
     safe-buffer "~5.1.0"
 
+stringify-attributes@^1.0.0:
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/stringify-attributes/-/stringify-attributes-1.0.0.tgz#9e8b2f9a9467e7b48093cb2124ebc1c17e6382c5"
+  integrity sha1-nosvmpRn57SAk8shJOvBwX5jgsU=
+  dependencies:
+    escape-goat "^1.1.0"
+
 stringify-object@^3.3.0:
   version "3.3.0"
   resolved "https://registry.yarnpkg.com/stringify-object/-/stringify-object-3.3.0.tgz#703065aefca19300d3ce88af4f5b3956d7556629"
@@ -11327,6 +11367,11 @@ type-fest@^0.21.3:
   version "0.21.3"
   resolved "https://registry.yarnpkg.com/type-fest/-/type-fest-0.21.3.tgz#d260a24b0198436e133fa26a524a6d65fa3b2e37"
   integrity sha512-t0rzBq87m3fVcduHDUFhKmyyX+9eo6WQjZvf51Ea/M0Q7+T374Jp1aUiyUl0GKxp8M/OETVHSDvmkyPgvX+X2w==
+
+type-fest@^0.3.0:
+  version "0.3.1"
+  resolved "https://registry.yarnpkg.com/type-fest/-/type-fest-0.3.1.tgz#63d00d204e059474fe5e1b7c011112bbd1dc29e1"
+  integrity sha512-cUGJnCdr4STbePCgqNFbpVNCepa+kAVohJs1sLhxzdH+gnEoOd8VhbYa7pD3zZYGiURWM2xzEII3fQcRizDkYQ==
 
 type-is@^1.6.16, type-is@~1.6.17, type-is@~1.6.18:
   version "1.6.18"

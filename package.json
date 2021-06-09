@@ -231,7 +231,8 @@
     "workbox-routing": "^6.1.5",
     "workbox-strategies": "^6.1.5",
     "xss": "^1.0.9",
-    "node-emoji": "^1.10.0"
+    "node-emoji": "^1.10.0",
+    "linkify-issues": "^2.0.0"
   },
   "resolutions": {
     "@webcomponents/webcomponentsjs": "^2.2.10",

@@ -3,6 +3,7 @@ import marked_ from "marked";
 import DOMPurify from "dompurify";
 import emoji from "node-emoji";
 import hljs from "highlight.js/lib/core";
+import linkifyIssues from "linkify-issues"
 import yaml from "highlight.js/lib/languages/yaml";
 import javascript from "highlight.js/lib/languages/javascript";
 import json from "highlight.js/lib/languages/json";
@@ -64,6 +65,14 @@ export class markdown {
       const hash = commit.substr(0, 7);
       return `[\`${hash}\`](${url})`;
     });
+
+    // Add references to issues and PRs
+    if (repo != undefined) {
+      input = linkifyIssues(input, {
+        user: repo.full_name.split("/")[0],
+        repository: repo.full_name.split("/")[1]
+      })
+    }
 
     const content = document.createElement("div");
     content.className = "markdown-body";
