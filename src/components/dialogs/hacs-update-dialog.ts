@@ -19,7 +19,6 @@ import { updateLovelaceResources } from "../../tools/update-lovelace-resources";
 import "../hacs-link";
 import "./hacs-dialog";
 import { HacsDialogBase } from "./hacs-dialog-base";
-import { compare } from "../../../homeassistant-frontend/src/common/string/compare";
 
 @customElement("hacs-update-dialog")
 export class HacsUpdateDialog extends HacsDialogBase {
@@ -37,8 +36,8 @@ export class HacsUpdateDialog extends HacsDialogBase {
     const repository = this._getRepository(this.repositories, this.repository);
     if (repository.version_or_commit !== "commit") {
       this._releaseNotes = await repositoryReleasenotes(this.hass, repository.id);
-      this._releaseNotes = this._releaseNotes.filter((release) =>
-        compare(release.tag, repository.installed_version)
+      this._releaseNotes = this._releaseNotes.filter(
+        (release) => release.tag > repository.installed_version
       );
     }
     this.hass.connection.subscribeEvents((msg) => (this._error = (msg as any).data), "hacs/error");
