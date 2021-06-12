@@ -13,6 +13,7 @@ const DIALOG = {
   removed: () => import("./hacs-removed-dialog"),
   update: () => import("./hacs-update-dialog"),
   "repository-info": () => import("./hacs-repository-info-dialog"),
+  progress: () => import("./hacs-progress-dialog")
 };
 
 @customElement("hacs-event-dialog")
