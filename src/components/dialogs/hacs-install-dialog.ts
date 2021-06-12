@@ -4,10 +4,12 @@ import "@polymer/paper-listbox/paper-listbox";
 import { css, CSSResultGroup, html, PropertyValues, TemplateResult } from "lit";
 import { customElement, property, state } from "lit/decorators";
 import memoizeOne from "memoize-one";
+import { mainWindow } from "../../../homeassistant-frontend/src/common/dom/get_main_window";
 import "../../../homeassistant-frontend/src/components/ha-circular-progress";
 import "../../../homeassistant-frontend/src/components/ha-formfield";
 import "../../../homeassistant-frontend/src/components/ha-paper-dropdown-menu";
 import "../../../homeassistant-frontend/src/components/ha-switch";
+import { showConfirmationDialog } from "../../../homeassistant-frontend/src/dialogs/generic/show-dialog-box";
 import { Repository } from "../../data/common";
 import {
   getRepositories,
@@ -25,9 +27,13 @@ import { HacsDialogBase } from "./hacs-dialog-base";
 @customElement("hacs-install-dialog")
 export class HacsInstallDialog extends HacsDialogBase {
   @property() public repository?: string;
+
   @property() public _repository?: Repository;
-  @property() private _toggle: boolean = true;
-  @property() private _installing: boolean = false;
+
+  @property() private _toggle = true;
+
+  @property() private _installing = false;
+
   @property() private _error?: any;
 
   @state() private _version?: any;
@@ -220,15 +226,18 @@ export class HacsInstallDialog extends HacsDialogBase {
       })
     );
     if (this._repository.category === "plugin" && this.hacs.status.lovelace_mode === "storage") {
-      this.dispatchEvent(
-        new CustomEvent("hacs-dialog", {
-          detail: {
-            type: "reload",
-          },
-          bubbles: true,
-          composed: true,
-        })
-      );
+      showConfirmationDialog(this, {
+        title: this.hacs.localize!("common.reload"),
+        text: html`${this.hacs.localize!("dialog.reload.description")}</br>${this.hacs.localize!(
+          "dialog.reload.confirm"
+        )}`,
+        dismissText: this.hacs.localize!("common.cancel"),
+        confirmText: this.hacs.localize!("common.reload"),
+        confirm: () => {
+          // eslint-disable-next-line
+          mainWindow.location.href = mainWindow.location.href;
+        },
+      });
     }
   }
 
