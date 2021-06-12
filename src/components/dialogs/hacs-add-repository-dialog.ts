@@ -152,6 +152,7 @@ export class HacsAddRepositoryDialog extends HacsDialogBase {
                   ${repo.category === "integration"
                     ? html`
                         <img
+                          loading="lazy"
                           src="https://brands.home-assistant.io/_/${repo.domain}/icon.png"
                           referrerpolicy="no-referrer"
                           @error=${this._onImageError}
