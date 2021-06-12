@@ -251,11 +251,11 @@ export class HacsRepositoryCard extends LitElement {
     if (this.repository.category === "plugin" && this.hacs.status?.lovelace_mode !== "yaml") {
       const resources = await fetchResources(this.hass);
       const expectedURL = generateLovelaceURL(this.repository);
-      resources
-        .filter((resource) => expectedURL.includes(resource.url))
-        .forEach((resource) => {
-          deleteResource(this.hass, String(resource.id));
-        });
+      await Promise.all(
+        resources
+          .filter((resource) => expectedURL.includes(resource.url))
+          .map((resource) => deleteResource(this.hass, String(resource.id)))
+      );
     }
     await repositoryUninstall(this.hass, this.repository.id);
   }
