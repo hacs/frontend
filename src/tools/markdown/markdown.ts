@@ -65,6 +65,16 @@ export class markdown {
       return `[\`${hash}\`](${url})`;
     });
 
+    // Add references to issues and PRs
+    if (repo != undefined) {
+      input = input.replace(/(?:(?<![/\w-.])\w[\w-.]+\/\w[\w-.]+|\B)#[1-9]\d*\b/g, (reference) => {
+        const fullReference = reference.replace(/^#/, `${repo.full_name}#`);
+        const [fullName, issue] = fullReference.split('#');
+        const url = `https://github.com/${fullName}/issues/${issue}`;
+        return `[${reference}](${url})`;
+      })
+    }
+
     const content = document.createElement("div");
     content.className = "markdown-body";
     content.innerHTML = DOMPurify.sanitize(marked(input), {
