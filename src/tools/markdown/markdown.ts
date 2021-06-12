@@ -69,7 +69,7 @@ export class markdown {
     if (repo != undefined) {
       input = input.replace(/(?:(?<![/\w-.])\w[\w-.]+\/\w[\w-.]+|\B)#[1-9]\d*\b/g, (reference) => {
         const fullReference = reference.replace(/^#/, `${repo.full_name}#`);
-	      const [fullName, issue] = fullReference.split('#');
+        const [fullName, issue] = fullReference.split('#');
         const url = `https://github.com/${fullName}/issues/${issue}`;
         return `[${reference}](${url})`;
       })
