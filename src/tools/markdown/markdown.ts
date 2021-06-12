@@ -68,9 +68,11 @@ export class markdown {
 
     // Add references to issues and PRs
     if (repo != undefined) {
-      input = linkifyIssues(input, {
-        user: repo.full_name.split("/")[0],
-        repository: repo.full_name.split("/")[1]
+      input = input.replace(/(?:(?<![/\w-.])\w[\w-.]+\/\w[\w-.]+|\B)#[1-9]\d*\b/g, (reference) => {
+        const fullReference = reference.replace(/^#/, `${repo.full_name}#`);
+	      const [fullName, issue] = fullReference.split('#');
+        const url = `https://github.com/${fullName}/issues/${issue}`;
+        return `[${reference}](${url})`;
       })
     }
 
