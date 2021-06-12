@@ -26,7 +26,7 @@ export class HacsDialog extends HacsDialogBase {
       ?hideActions=${this.hideActions}
       .heading=${!this.noClose ? createCloseHeading(this.hass, this.title) : this.title}
     >
-      <div class="content" ?narrow=${this.narrow}>
+      <div class="content scroll" ?narrow=${this.narrow}>
         <slot></slot>
       </div>
       <slot class="primary" name="primaryaction" slot="primaryAction"></slot>

@@ -70,7 +70,7 @@ export class HacsRepositoryDialog extends HacsDialogBase {
         .active=${this.active}
         .title=${this._repository.name || ""}
         .hass=${this.hass}
-        ><div class="content">
+        ><div class="content scroll">
           <div class="chips">
             ${this._repository.installed
               ? html`<hacs-chip
@@ -136,7 +136,6 @@ export class HacsRepositoryDialog extends HacsDialogBase {
         .content {
           width: 100%;
           overflow: auto;
-          max-height: 870px;
         }
         img {
           max-width: 100%;

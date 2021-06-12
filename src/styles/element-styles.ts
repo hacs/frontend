@@ -90,18 +90,24 @@ export const searchStyles = css`
 
 export const scrollBarStyle = css`
   *::-webkit-scrollbar {
-    width: 0.6em;
+    width: 0.4rem;
+    height: 0.4rem;
   }
 
   *::-webkit-scrollbar-track {
-    color: rgba(0, 0, 0, 0.3);
-    border-radius: 0.3em;
+    -webkit-border-radius: 4px;
+    border-radius: 4px;
+    background: var(--scrollbar-thumb-color);
   }
 
   *::-webkit-scrollbar-thumb {
     background-color: var(--accent-color);
     border-radius: 0.3em;
   }
+  .scroll {
+    overflow-y: auto;
+    scrollbar-color: var(--scrollbar-thumb-color) transparent;
+    scrollbar-width: thin;
+  }
 `;
-
 export const hacsStyleDialog = [haStyleDialog, css``];
