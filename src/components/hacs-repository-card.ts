@@ -11,6 +11,7 @@ import { classMap, ClassInfo } from "lit/directives/class-map";
 import { HacsStyles } from "../styles/hacs-common-style";
 import { Repository, Status, RemovedRepository } from "../data/common";
 import { Hacs } from "../data/hacs";
+import { showConfirmationDialog } from "../../homeassistant-frontend/src/dialogs/generic/show-dialog-box"
 import {
   repositorySetNotNew,
   repositoryUninstall,
@@ -187,7 +188,7 @@ export class HacsRepositoryCard extends LitElement {
                             >${this.hacs.localize("repository_card.report")}</paper-item
                           ></hacs-link
                         >
-                        <paper-item class="pointer uninstall" @tap=${this._uninstallRepository}
+                        <paper-item class="pointer uninstall" @tap=${this._uninstallRepositoryDialog}
                           >${this.hacs.localize("common.uninstall")}</paper-item
                         >`
                     : ""}
@@ -250,6 +251,14 @@ export class HacsRepositoryCard extends LitElement {
     );
   }
 
+  private async _uninstallRepositoryDialog() {
+    await showConfirmationDialog(this, {
+      title: this.hacs.localize("dialog.uninstall.title"),
+      text: this.hacs.localize("dialog.uninstall.message").replace("{name}", this.repository.name),
+      confirmText: this.hacs.localize("dialog.uninstall.title"),
+      confirm: () => this._uninstallRepository(),
+    })
+  }
   private async _uninstallRepository() {
     if (this.repository.category === "plugin" && this.hacs.status.lovelace_mode !== "yaml") {
       const resources = await fetchResources(this.hass);
