@@ -1,25 +1,26 @@
+import "@material/mwc-button/mwc-button";
+import { mdiDotsVertical } from "@mdi/js";
+import "@polymer/paper-item/paper-item";
+import "@polymer/paper-item/paper-item-body";
 import "@polymer/paper-listbox/paper-listbox";
 import "@polymer/paper-menu-button/paper-menu-button";
-import "@material/mwc-button/mwc-button";
-import "@polymer/paper-item/paper-item-body";
-import "@polymer/paper-item/paper-item";
-import "./hacs-chip";
-import "../../homeassistant-frontend/src/components/ha-card";
 import { css, CSSResultGroup, html, LitElement, TemplateResult } from "lit";
 import { customElement, property } from "lit/decorators";
-import { classMap, ClassInfo } from "lit/directives/class-map";
-import { HacsStyles } from "../styles/hacs-common-style";
-import { Repository, Status, RemovedRepository } from "../data/common";
+import { ClassInfo, classMap } from "lit/directives/class-map";
+import "../../homeassistant-frontend/src/components/ha-card";
+import { HomeAssistant } from "../../homeassistant-frontend/src/types";
+import { RemovedRepository, Repository, Status } from "../data/common";
 import { Hacs } from "../data/hacs";
 import {
+  deleteResource,
+  fetchResources,
   repositorySetNotNew,
   repositoryUninstall,
   repositoryUpdate,
-  deleteResource,
-  fetchResources,
 } from "../data/websocket";
-import { HomeAssistant } from "../../homeassistant-frontend/src/types";
-import { mdiDotsVertical } from "@mdi/js";
+import { HacsStyles } from "../styles/hacs-common-style";
+import { generateLovelaceURL } from "../tools/added-to-lovelace";
+import "./hacs-chip";
 import { hacsIcon } from "./hacs-icon";
 import "./hacs-link";
 
@@ -216,10 +217,6 @@ export class HacsRepositoryCard extends LitElement {
     );
   }
 
-  private _lovelaceUrl(): string {
-    return `/hacsfiles/${this.repository?.full_name.split("/")[1]}/${this.repository?.file_name}`;
-  }
-
   private async _updateRepository() {
     this.dispatchEvent(
       new CustomEvent("hacs-dialog", {
@@ -251,10 +248,11 @@ export class HacsRepositoryCard extends LitElement {
   }
 
   private async _uninstallRepository() {
-    if (this.repository.category === "plugin" && this.hacs.status.lovelace_mode !== "yaml") {
+    if (this.repository.category === "plugin" && this.hacs.status?.lovelace_mode !== "yaml") {
       const resources = await fetchResources(this.hass);
+      const expectedURL = generateLovelaceURL(this.repository);
       resources
-        .filter((resource) => resource.url === this._lovelaceUrl())
+        .filter((resource) => expectedURL.includes(resource.url))
         .forEach((resource) => {
           deleteResource(this.hass, String(resource.id));
         });

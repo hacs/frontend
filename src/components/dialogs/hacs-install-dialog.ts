@@ -2,12 +2,12 @@ import "@polymer/paper-item/paper-icon-item";
 import "@polymer/paper-item/paper-item-body";
 import "@polymer/paper-listbox/paper-listbox";
 import { css, CSSResultGroup, html, PropertyValues, TemplateResult } from "lit";
-import { customElement, property, query } from "lit/decorators";
+import { customElement, property, state } from "lit/decorators";
 import memoizeOne from "memoize-one";
 import "../../../homeassistant-frontend/src/components/ha-circular-progress";
 import "../../../homeassistant-frontend/src/components/ha-formfield";
-import "../../../homeassistant-frontend/src/components/ha-switch";
 import "../../../homeassistant-frontend/src/components/ha-paper-dropdown-menu";
+import "../../../homeassistant-frontend/src/components/ha-switch";
 import { Repository } from "../../data/common";
 import {
   getRepositories,
@@ -16,6 +16,7 @@ import {
   repositoryToggleBeta,
   repositoryUpdate,
 } from "../../data/websocket";
+import { generateLovelaceURL } from "../../tools/added-to-lovelace";
 import { updateLovelaceResources } from "../../tools/update-lovelace-resources";
 import "../hacs-link";
 import "./hacs-dialog";
@@ -29,7 +30,7 @@ export class HacsInstallDialog extends HacsDialogBase {
   @property() private _installing: boolean = false;
   @property() private _error?: any;
 
-  @query("#version") private _version?: any;
+  @state() private _version?: any;
 
   shouldUpdate(changedProperties: PropertyValues) {
     changedProperties.forEach((_oldValue, propName) => {
@@ -46,6 +47,7 @@ export class HacsInstallDialog extends HacsDialogBase {
       changedProperties.has("active") ||
       changedProperties.has("_toggle") ||
       changedProperties.has("_error") ||
+      changedProperties.has("_version") ||
       changedProperties.has("_repository") ||
       changedProperties.has("_installing")
     );
@@ -74,7 +76,7 @@ export class HacsInstallDialog extends HacsDialogBase {
   }
 
   protected render(): TemplateResult | void {
-    if (!this.active) return html``;
+    if (!this.active || !this._repository) return html``;
     const installPath = this._getInstallPath(this._repository);
     return html`
       <hacs-dialog
@@ -107,12 +109,14 @@ export class HacsInstallDialog extends HacsDialogBase {
                       class="version-select-list"
                       slot="dropdown-content"
                       selected="0"
+                      @iron-select=${this._versionSelectChanged}
                     >
-                      ${this._repository.releases.map((release) => {
-                        return html`<paper-item .version=${release} class="version-select-item"
-                          >${release}</paper-item
-                        >`;
-                      })}
+                      ${this._repository.releases.map(
+                        (release) =>
+                          html`<paper-item .version=${release} class="version-select-item"
+                            >${release}</paper-item
+                          >`
+                      )}
                       ${this._repository.full_name === "hacs/integration" ||
                       this._repository.hide_default_branch
                         ? ""
@@ -142,7 +146,7 @@ export class HacsInstallDialog extends HacsDialogBase {
               ? html`
                   <p>${this.hacs.localize(`repository.lovelace_instruction`)}</p>
                   <pre>
-                url: ${this._lovelaceUrl()}
+                url: ${generateLovelaceURL(this._repository, this._version)}
                 type: module
                 </pre
                   >
@@ -169,8 +173,11 @@ export class HacsInstallDialog extends HacsDialogBase {
     `;
   }
 
-  private _lovelaceUrl(): string {
-    return `/hacsfiles/${this._repository?.full_name.split("/")[1]}/${this._repository?.file_name}`;
+  private _versionSelectChanged(ev: CustomEvent): void {
+    const version = (ev.currentTarget as any).selectedItem.version;
+    if (version !== this._version) {
+      this._version = (ev.currentTarget as any).selectedItem.version;
+    }
   }
 
   private async _toggleBeta(): Promise<void> {
@@ -182,11 +189,12 @@ export class HacsInstallDialog extends HacsDialogBase {
 
   private async _installRepository(): Promise<void> {
     this._installing = true;
-    if (this._repository.version_or_commit !== "commit") {
+    if (!this._repository) {
+      return;
+    }
+    if (this._repository?.version_or_commit !== "commit") {
       const selectedVersion =
-        this._version?.selectedItem?.version ||
-        this._repository.available_version ||
-        this._repository.default_branch;
+        this._version || this._repository.available_version || this._repository.default_branch;
       await repositoryInstallVersion(this.hass, this._repository.id, selectedVersion);
     } else {
       await repositoryInstall(this.hass, this._repository.id);
@@ -194,7 +202,7 @@ export class HacsInstallDialog extends HacsDialogBase {
     this.hacs.log.debug(this._repository.category, "_installRepository");
     this.hacs.log.debug(this.hacs.status.lovelace_mode, "_installRepository");
     if (this._repository.category === "plugin" && this.hacs.status.lovelace_mode === "storage") {
-      await updateLovelaceResources(this.hass, this._repository);
+      await updateLovelaceResources(this.hass, this._repository, this._version);
     }
     this._installing = false;
 

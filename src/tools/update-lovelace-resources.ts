@@ -1,17 +1,19 @@
 import { HomeAssistant } from "../../homeassistant-frontend/src/types";
 import { Repository } from "../data/common";
 import { createResource, fetchResources, updateResource } from "../data/websocket";
+import { generateLovelaceURL } from "./added-to-lovelace";
 
 import { HacsLogger } from "./hacs-logger";
 
 export async function updateLovelaceResources(
   hass: HomeAssistant,
-  repository: Repository
+  repository: Repository,
+  version?: string
 ): Promise<void> {
   const logger = new HacsLogger();
   const resources = await fetchResources(hass);
   const namespace = `/hacsfiles/${repository.full_name.split("/")[1]}`;
-  const url = `${namespace}/${repository.file_name}`;
+  const url = generateLovelaceURL(repository, version);
   const exsisting = resources.find((resource) => resource.url.includes(namespace));
 
   logger.debug({ namespace, url, exsisting }, "updateLovelaceResources");
