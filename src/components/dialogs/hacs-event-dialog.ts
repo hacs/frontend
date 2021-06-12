@@ -9,7 +9,6 @@ const DIALOG = {
   generic: () => import("./hacs-generic-dialog"),
   install: () => import("./hacs-install-dialog"),
   navigate: () => import("./hacs-navigate-dialog"),
-  reload: () => import("./hacs-reload-dialog"),
   removed: () => import("./hacs-removed-dialog"),
   update: () => import("./hacs-update-dialog"),
   "repository-info": () => import("./hacs-repository-info-dialog"),
