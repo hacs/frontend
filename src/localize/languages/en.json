@@ -267,10 +267,6 @@
     "reload": {
       "description": "You need to clear your browser cache when changing Lovelace resources.",
       "confirm": "Do you want to do that now?"
-    },
-    "uninstall": {
-      "title": "Uninstall",
-      "message": "Do you really want to uninstall {name}?"
     }
   },
   "entry": {

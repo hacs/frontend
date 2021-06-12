@@ -13,7 +13,10 @@ import { Repository, Status, RemovedRepository } from "../data/common";
 import { Hacs } from "../data/hacs";
 import {
   repositorySetNotNew,
+  repositoryUninstall,
   repositoryUpdate,
+  deleteResource,
+  fetchResources,
 } from "../data/websocket";
 import { HomeAssistant } from "../../homeassistant-frontend/src/types";
 import { mdiDotsVertical } from "@mdi/js";
@@ -213,6 +216,10 @@ export class HacsRepositoryCard extends LitElement {
     );
   }
 
+  private _lovelaceUrl(): string {
+    return `/hacsfiles/${this.repository?.full_name.split("/")[1]}/${this.repository?.file_name}`;
+  }
+
   private async _updateRepository() {
     this.dispatchEvent(
       new CustomEvent("hacs-dialog", {
@@ -244,16 +251,15 @@ export class HacsRepositoryCard extends LitElement {
   }
 
   private async _uninstallRepository() {
-    this.dispatchEvent(
-      new CustomEvent("hacs-dialog", {
-        detail: {
-          type: "uninstall",
-          repository: this.repository
-        },
-        bubbles: true,
-        composed: true,
-      })
-    );
+    if (this.repository.category === "plugin" && this.hacs.status.lovelace_mode !== "yaml") {
+      const resources = await fetchResources(this.hass);
+      resources
+        .filter((resource) => resource.url === this._lovelaceUrl())
+        .forEach((resource) => {
+          deleteResource(this.hass, String(resource.id));
+        });
+    }
+    await repositoryUninstall(this.hass, this.repository.id);
   }
 
   static get styles(): CSSResultGroup {
