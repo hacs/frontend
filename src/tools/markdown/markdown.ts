@@ -3,7 +3,6 @@ import marked_ from "marked";
 import DOMPurify from "dompurify";
 import emoji from "node-emoji";
 import hljs from "highlight.js/lib/core";
-import linkifyIssues from "linkify-issues"
 import yaml from "highlight.js/lib/languages/yaml";
 import javascript from "highlight.js/lib/languages/javascript";
 import json from "highlight.js/lib/languages/json";
