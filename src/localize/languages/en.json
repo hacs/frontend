@@ -225,7 +225,6 @@
     "downloads": "Downloads",
     "author": "Author",
     "no_info": "The developer has not provided any more information for this repository",
-    "loading": "Loading information...",
     "open_repo": "Open repository",
     "install": "Install this repository in HACS"
   },
