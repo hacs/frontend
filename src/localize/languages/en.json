@@ -266,6 +266,10 @@
     "reload": {
       "description": "You need to reload your browser for the updated resources to be used.",
       "confirm": "Do you want to do that now?"
+    },
+    "uninstall": {
+      "title": "Uninstall",
+      "message": "Do you really want to uninstall {name}?"
     }
   },
   "entry": {

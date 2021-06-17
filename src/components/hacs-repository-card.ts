@@ -188,7 +188,7 @@ export class HacsRepositoryCard extends LitElement {
                             >${this.hacs.localize("repository_card.report")}</paper-item
                           ></hacs-link
                         >
-                        <paper-item class="pointer uninstall" @tap=${this._uninstallRepository}
+                        <paper-item class="pointer uninstall" @tap=${this._uninstallRepositoryDialog}
                           >${this.hacs.localize("common.uninstall")}</paper-item
                         >`
                     : ""}
@@ -247,6 +247,21 @@ export class HacsRepositoryCard extends LitElement {
     );
   }
 
+  private async _uninstallRepositoryDialog() {
+    this.dispatchEvent(
+      new CustomEvent("hacs-dialog", {
+        detail: {
+          type: "progress",
+          title: this.hacs.localize("dialog.uninstall.title"),
+          confirmText: this.hacs.localize("dialog.uninstall.title"),
+          content: this.hacs.localize("dialog.uninstall.message").replace("{name}", this.repository.name),
+          confirm: async () => { await this._uninstallRepository() }
+        },
+        bubbles: true,
+        composed: true,
+      })
+    );
+  }
   private async _uninstallRepository() {
     if (this.repository.category === "plugin" && this.hacs.status?.lovelace_mode !== "yaml") {
       const resources = await fetchResources(this.hass);
