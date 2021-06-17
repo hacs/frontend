@@ -6,5 +6,7 @@ set -e
 
 cd "$(dirname "$0")/.."
 
+rm -rf node_modules
+rm -f yarn.lock
 node ./script/merge_requirements.js
 yarn install
