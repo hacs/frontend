@@ -152,7 +152,7 @@ export class HacsInstallDialog extends HacsDialogBase {
               ? html`
                   <p>${this.hacs.localize(`repository.lovelace_instruction`)}</p>
                   <pre>
-                url: ${generateLovelaceURL(this._repository, this._version)}
+                url: ${generateLovelaceURL({ repository: this._repository, skipTag: true })}
                 type: module
                 </pre
                   >

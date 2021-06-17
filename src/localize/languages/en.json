@@ -264,7 +264,7 @@
   },
   "dialog": {
     "reload": {
-      "description": "You need to clear your browser cache when changing Lovelace resources.",
+      "description": "You need to reload your browser for the updated resources to be used.",
       "confirm": "Do you want to do that now?"
     }
   },

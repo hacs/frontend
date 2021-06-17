@@ -13,7 +13,7 @@ export async function updateLovelaceResources(
   const logger = new HacsLogger();
   const resources = await fetchResources(hass);
   const namespace = `/hacsfiles/${repository.full_name.split("/")[1]}`;
-  const url = generateLovelaceURL(repository, version);
+  const url = generateLovelaceURL({ repository, version });
   const exsisting = resources.find((resource) => resource.url.includes(namespace));
 
   logger.debug({ namespace, url, exsisting }, "updateLovelaceResources");
