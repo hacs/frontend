@@ -1,17 +1,21 @@
+import "@material/mwc-button/mwc-button";
+import "@material/mwc-linear-progress";
 import { css, html, TemplateResult } from "lit";
 import { customElement, property, state } from "lit/decorators";
 import { navigate } from "../../../homeassistant-frontend/src/common/navigate";
-import "../../../homeassistant-frontend/src/components/ha-bar";
 import "./hacs-dialog";
 import { HacsDialogBase } from "./hacs-dialog-base";
 
 @customElement("hacs-navigate-dialog")
 export class HacsNavigateDialog extends HacsDialogBase {
   @property() public path!: string;
-  @state() private _progress: number = 0;
+
+  @state() private _progress = 0;
+
   protected async firstUpdated() {
     this._updateProgress();
   }
+
   protected render(): TemplateResult | void {
     if (!this.active) return html``;
     return html`
@@ -28,7 +32,7 @@ export class HacsNavigateDialog extends HacsDialogBase {
           Redirect will happen automatically in 10 seconds, if you do not want to wait
           click the "GO NOW" button.
         </div>
-        <ha-bar .value=${this._progress}></ha-bar>
+        <mwc-linear-progress .progress=${this._progress}></mwc-linear-progress>
         <mwc-button slot="primaryaction" @click=${this._navigate}>
           Go now
         </mwc-button>
@@ -45,8 +49,8 @@ export class HacsNavigateDialog extends HacsDialogBase {
       if (!this.active) {
         return;
       }
-      this._progress += 10;
-      if (this._progress === 100) {
+      this._progress += 0.1;
+      if (this._progress === 1) {
         this._navigate();
       } else {
         this._updateProgress();
@@ -65,6 +69,9 @@ export class HacsNavigateDialog extends HacsDialogBase {
       css`
         hacs-dialog {
           --hacs-dialog-max-width: 460px;
+        }
+        mwc-linear-progress {
+          --mdc-theme-primary: var(--primary-color);
         }
       `,
     ];
