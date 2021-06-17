@@ -71,49 +71,54 @@ export class HacsRepositoryDialog extends HacsDialogBase {
         .title=${this._repository.name || ""}
         .hass=${this.hass}
         ><div class="content scroll">
-          <div class="chips">
-            ${this._repository.installed
-              ? html`<hacs-chip
-                  title="${this.hacs.localize("dialog_info.version_installed")}"
-                  .icon=${mdiCube}
-                  .value=${this._repository.installed_version}
-                ></hacs-chip>`
-              : ""}
-            ${authors
-              ? authors.map(
-                  (author) => html`<hacs-chip
-                    title="${this.hacs.localize("dialog_info.author")}"
-                    .url="https://github.com/${author}"
-                    .icon=${mdiAccount}
-                    .value="@${author}"
-                  ></hacs-chip>`
-                )
-              : ""}
-            ${this._repository.downloads
-              ? html` <hacs-chip
-                  title="${this.hacs.localize("dialog_info.downloads")}"
-                  .icon=${mdiArrowDownBold}
-                  .value=${this._repository.downloads}
-                ></hacs-chip>`
-              : ""}
-            <hacs-chip
-              title="${this.hacs.localize("dialog_info.stars")}"
-              .icon=${mdiStar}
-              .value=${this._repository.stars}
-            ></hacs-chip>
-            <hacs-chip
-              title="${this.hacs.localize("dialog_info.open_issues")}"
-              .icon=${mdiExclamationThick}
-              .value=${this._repository.issues}
-              .url="https://github.com/${this._repository.full_name}/issues"
-            ></hacs-chip>
-          </div>
           ${this._repository.updated_info
-            ? markdown.html(
-                this._repository.additional_info || this.hacs.localize("dialog_info.no_info"),
-                this._repository
-              )
-            : this.hacs.localize("dialog_info.loading")}
+          ? html`
+            <div class="chips">
+              ${this._repository.installed
+                ? html`<hacs-chip
+                    title="${this.hacs.localize("dialog_info.version_installed")}"
+                    .icon=${mdiCube}
+                    .value=${this._repository.installed_version}
+                  ></hacs-chip>`
+                : ""}
+              ${authors
+                ? authors.map(
+                    (author) => html`<hacs-chip
+                      title="${this.hacs.localize("dialog_info.author")}"
+                      .url="https://github.com/${author}"
+                      .icon=${mdiAccount}
+                      .value="@${author}"
+                    ></hacs-chip>`
+                  )
+                : ""}
+              ${this._repository.downloads
+                ? html` <hacs-chip
+                    title="${this.hacs.localize("dialog_info.downloads")}"
+                    .icon=${mdiArrowDownBold}
+                    .value=${this._repository.downloads}
+                  ></hacs-chip>`
+                : ""}
+              <hacs-chip
+                title="${this.hacs.localize("dialog_info.stars")}"
+                .icon=${mdiStar}
+                .value=${this._repository.stars}
+              ></hacs-chip>
+              <hacs-chip
+                title="${this.hacs.localize("dialog_info.open_issues")}"
+                .icon=${mdiExclamationThick}
+                .value=${this._repository.issues}
+                .url="https://github.com/${this._repository.full_name}/issues"
+              ></hacs-chip>
+            </div>
+            ${markdown.html(
+              this._repository.additional_info || this.hacs.localize("dialog_info.no_info"),
+              this._repository
+            )}`
+          : html`
+            <div class="loading">
+              <ha-circular-progress active size="large"></ha-circular-progress>
+            </div>
+          `}
         </div>
         ${!this._repository.installed && this._repository.updated_info
           ? html`
@@ -139,6 +144,12 @@ export class HacsRepositoryDialog extends HacsDialogBase {
         }
         img {
           max-width: 100%;
+        }
+        .loading {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          padding: 4rem 8rem;
         }
         .chips {
           display: flex;
