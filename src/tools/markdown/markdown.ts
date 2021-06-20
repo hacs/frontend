@@ -58,10 +58,13 @@ export class markdown {
     }
 
     // Shorten commits links
-    input = input.replace(/https:\/\/github\.com\/\S*\/commit\/([0-9a-f]{40})/g, (url, commit) => {
-      const hash = commit.substr(0, 7);
-      return `[\`${hash}\`](${url})`;
-    });
+    input = input.replace(
+      /[^(]https:\/\/github\.com\/\S*\/commit\/([0-9a-f]{40})/g,
+      (url, commit) => {
+        const hash = commit.substr(0, 7);
+        return `[\`${hash}\`](${url})`;
+      }
+    );
 
     // Add references to issues and PRs
     if (repo) {
