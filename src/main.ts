@@ -1,6 +1,5 @@
 import { html, TemplateResult } from "lit";
 import { customElement, property, query } from "lit/decorators";
-import { atLeastVersion } from "../homeassistant-frontend/src/common/config/version";
 import { applyThemesOnElement } from "../homeassistant-frontend/src/common/dom/apply_themes_on_element";
 import { navigate } from "../homeassistant-frontend/src/common/navigate";
 import { makeDialogManager } from "../homeassistant-frontend/src/dialogs/make-dialog-manager";
