@@ -39,7 +39,7 @@ export interface Status {
   disabled: boolean;
   disabled_reason?: string;
   lovelace_mode: "storage" | "yaml" | "auto-gen";
-  stage?: "startup" | "waiting" | "running" | "setup";
+  stage: "startup" | "waiting" | "running" | "setup";
   reloading_data: boolean;
   startup: boolean;
   manage_mode: boolean;
@@ -62,9 +62,11 @@ export interface LovelaceResourcesMutableParams {
 export interface Message {
   name: string;
   info: string;
+  class?: string;
   secondary?: string;
-  severity: "information" | "warning" | "error" | "critical";
+  severity?: "information" | "warning" | "error" | "critical";
   path?: string;
+  iconPath?: string;
   dialog?: string;
   repository?: Repository;
 }
@@ -141,8 +143,7 @@ export interface Filter {
   checked?: boolean;
 }
 
-export const sortRepositoriesByName = (repositories: Repository[]): Repository[] => {
-  return repositories?.sort((a: Repository, b: Repository) =>
+export const sortRepositoriesByName = (repositories: Repository[]): Repository[] =>
+  repositories?.sort((a: Repository, b: Repository) =>
     a.name.toLowerCase() > b.name.toLowerCase() ? 1 : -1
   );
-};

@@ -70,7 +70,7 @@ const outputconfig = (isDev) => {
     dir: "./hacs_frontend/",
     chunkFileNames: !isDev ? "c.[hash].js" : "[name]-dev.js",
     assetFileNames: !isDev ? "a.[hash].js" : "[name]-dev.js",
-    entryFileNames: "e.[hash].js",
+    entryFileNames: !isDev ? "[name]-[hash].js" : "[name]-dev.js",
     format: "es",
     intro: "const __DEMO__ = false;",
   };
@@ -89,12 +89,11 @@ function createServer() {
 }
 
 gulp.task("rollup-develop", () => {
-  isDev = true;
   const watcher = rollup.watch({
     input: inputconfig.input,
     plugins: inputconfig.plugins,
     output: outputconfig(true),
-    preserveEntrySignatures: "strict",
+    preserveEntrySignatures: false,
     watch: {
       include: ["./src/**"],
       chokidar: {

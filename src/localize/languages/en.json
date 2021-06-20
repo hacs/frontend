@@ -234,7 +234,8 @@
     "available_version": "Available version",
     "changelog": "Changelog",
     "releasenotes": "Release notes for {release}",
-    "message": "A new version of the {name} is available"
+    "message": "A new version of the {name} is available",
+    "no_info": "The author has not provided any information for this release"
   },
   "repository_card": {
     "pending_update": "Pending update",

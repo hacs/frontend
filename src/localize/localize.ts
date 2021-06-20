@@ -1,14 +1,15 @@
+import { HacsLogger } from "../tools/hacs-logger";
 import { languages } from "./generated";
 
-const warnings = { language: [], sting: {} };
+const warnings: { language: string[]; sting: Record<string, Array<string>> } = {
+  language: [],
+  sting: {},
+};
 
-export function localize(
-  language: string,
-  string: string,
-  search: string = undefined,
-  replace: string = undefined
-) {
+export function localize(language: string, string: string, replace?: Record<string, any>) {
   let translated: any;
+
+  const logger = new HacsLogger("localize");
 
   const split = string.split(".");
 
@@ -18,7 +19,7 @@ export function localize(
 
   if (!languages[lang] && !warnings.language.includes(lang)) {
     warnings.language.push(lang);
-    console.warn(
+    logger.warn(
       `Language '${lang.replace(
         "_",
         "-"
@@ -37,7 +38,7 @@ export function localize(
     }
     if (languages[lang] && !warnings.sting[lang].includes(string)) {
       warnings.sting[lang].push(string);
-      console.warn(
+      logger.warn(
         `Translation string '${string}' for '${lang.replace(
           "_",
           "-"
@@ -45,21 +46,28 @@ export function localize(
       );
     }
 
-    translated = languages["en"];
-    split.forEach((section) => {
-      translated = translated[section];
-    });
+    translated = undefined;
   }
 
   if (translated === undefined) {
-    translated = languages["en"];
+    translated = languages.en;
     split.forEach((section) => {
       translated = translated[section];
     });
   }
 
-  if (search !== undefined && replace !== undefined) {
-    translated = translated.replace(search, replace);
+  if (replace) {
+    const keys = Object.keys(replace);
+    for (const key of keys) {
+      if (!translated.includes(key)) {
+        logger.error(`Variable '${key}' does not exist in '${string}' with '${lang}'`);
+        continue;
+      }
+      translated = translated.replace(`{${key}}`, replace[key]);
+    }
+    if (translated.includes("{") || translated.includes("}")) {
+      logger.error(`Translation for '${string}' with '${lang}' is missing variables`);
+    }
   }
   return translated;
 }

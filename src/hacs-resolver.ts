@@ -3,7 +3,6 @@ import { customElement, property, query } from "lit/decorators";
 import memoizeOne from "memoize-one";
 
 import { HomeAssistant } from "../homeassistant-frontend/src/types";
-import { HacsLogger } from "./components/HacsLogger";
 
 import {
   Route,
@@ -35,19 +34,26 @@ import { navigate } from "../homeassistant-frontend/src/common/navigate";
 @customElement("hacs-resolver")
 export class HacsResolver extends LitElement {
   @property({ attribute: false }) public configuration: Configuration;
+
   @property({ attribute: false }) public critical!: Critical[];
+
   @property({ attribute: false }) public hass!: HomeAssistant;
+
   @property({ attribute: false }) public lovelace: LovelaceResource[];
+
   @property({ type: Boolean }) public narrow!: boolean;
+
   @property({ attribute: false }) public repositories: Repository[];
+
   @property({ attribute: false }) public route!: Route;
+
   @property({ attribute: false }) public status: Status;
+
   @property({ attribute: false }) public removed: RemovedRepository[];
 
   @query("#hacs-dialog") private _hacsDialog?: any;
-  @query("#hacs-dialog-secondary") private _hacsDialogSecondary?: any;
 
-  public logger = new HacsLogger();
+  @query("#hacs-dialog-secondary") private _hacsDialogSecondary?: any;
 
   private _sortRepositoriesByName = memoizeOne((repositories: Repository[]) =>
     repositories.sort((a: Repository, b: Repository) =>

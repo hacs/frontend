@@ -1,16 +1,14 @@
-import { html, TemplateResult } from "lit";
-import marked_ from "marked";
 import DOMPurify from "dompurify";
-import emoji from "node-emoji";
 import hljs from "highlight.js/lib/core";
-import yaml from "highlight.js/lib/languages/yaml";
 import javascript from "highlight.js/lib/languages/javascript";
 import json from "highlight.js/lib/languages/json";
-
+import yaml from "highlight.js/lib/languages/yaml";
+import { html, TemplateResult } from "lit";
+import marked_ from "marked";
+import emoji from "node-emoji";
+import "../../components/hacs-link";
 import { Repository } from "../../data/common";
 import { GFM, HLJS } from "./styles";
-
-import "../../components/hacs-link";
 
 hljs.registerLanguage("yaml", yaml);
 hljs.registerLanguage("javascript", javascript);
@@ -22,9 +20,8 @@ marked.setOptions({
   highlight: function (code, lang) {
     if (lang && hljs.getLanguage(lang)) {
       return hljs.highlight(lang, code, true).value;
-    } else {
-      return hljs.highlightAuto(code).value;
     }
+    return hljs.highlightAuto(code).value;
   },
   breaks: true,
   gfm: true,
@@ -36,7 +33,8 @@ export class markdown {
   static convert(input: string): string {
     return marked(input);
   }
-  static html(input: string, repo?: Repository): TemplateResult | void {
+
+  static html(input: string, repo?: Repository): TemplateResult {
     // Convert emoji short codes to real emojis
     input = emoji.emojify(input);
 
@@ -45,19 +43,19 @@ export class markdown {
       if (x.includes(".md")) {
         return x;
       }
-      let url = x
+      return x
         .replace("https://github.com/", "https://raw.githubusercontent.com/")
         .replace("/blob/", "/");
-      return url;
     });
 
     // Handle relative links
-    input = input.replace(/\!\[*.*\]\(\w*\.\w*\)/g, function (x) {
-      let url = x
-        .replace("(", `(https://raw.githubusercontent.com/${repo?.full_name}/master/`)
-        .replace("/blob/", "/");
-      return url;
-    });
+    if (repo) {
+      input = input.replace(/!\[*.*\]\(\w*\.\w*\)/g, function (x) {
+        return x
+          .replace("(", `(https://raw.githubusercontent.com/${repo?.full_name}/master/`)
+          .replace("/blob/", "/");
+      });
+    }
 
     // Shorten commits links
     input = input.replace(/https:\/\/github\.com\/\S*\/commit\/([0-9a-f]{40})/g, (url, commit) => {
@@ -66,13 +64,13 @@ export class markdown {
     });
 
     // Add references to issues and PRs
-    if (repo != undefined) {
+    if (repo) {
       input = input.replace(/(?:(?<![/\w-.])\w[\w-.]+\/\w[\w-.]+|\B)#[1-9]\d*\b/g, (reference) => {
         const fullReference = reference.replace(/^#/, `${repo.full_name}#`);
-        const [fullName, issue] = fullReference.split('#');
+        const [fullName, issue] = fullReference.split("#");
         const url = `https://github.com/${fullName}/issues/${issue}`;
         return `[${reference}](${url})`;
-      })
+      });
     }
 
     const content = document.createElement("div");

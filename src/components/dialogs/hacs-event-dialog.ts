@@ -3,7 +3,6 @@ import { customElement, property } from "lit/decorators";
 import { HacsDialogBase } from "./hacs-dialog-base";
 
 const DIALOG = {
-  about: () => import("./hacs-about-dialog"),
   "add-repository": () => import("./hacs-add-repository-dialog"),
   "custom-repositories": () => import("./hacs-custom-repositories-dialog"),
   generic: () => import("./hacs-generic-dialog"),
@@ -12,7 +11,7 @@ const DIALOG = {
   removed: () => import("./hacs-removed-dialog"),
   update: () => import("./hacs-update-dialog"),
   "repository-info": () => import("./hacs-repository-info-dialog"),
-  progress: () => import("./hacs-progress-dialog")
+  progress: () => import("./hacs-progress-dialog"),
 };
 
 @customElement("hacs-event-dialog")
@@ -37,7 +36,7 @@ export class HacsEventDialog extends HacsDialogBase {
     el.status = this.status;
 
     if (this.params) {
-      for (let [key, value] of Object.entries(this.params)) {
+      for (const [key, value] of Object.entries(this.params)) {
         el[key] = value;
       }
     }

@@ -153,9 +153,7 @@
     "@polymer/iron-autogrow-textarea": "^3.0.1",
     "@polymer/iron-flex-layout": "^3.0.1",
     "@polymer/iron-icon": "^3.0.1",
-    "@polymer/iron-image": "^3.0.1",
     "@polymer/iron-input": "^3.0.1",
-    "@polymer/iron-label": "^3.0.1",
     "@polymer/iron-overlay-behavior": "^3.0.2",
     "@polymer/iron-resizable-behavior": "^3.0.1",
     "@polymer/paper-checkbox": "^3.1.0",
@@ -185,11 +183,11 @@
     "@vibrant/quantizer-mmcq": "^3.2.1-alpha.1",
     "@vue/web-component-wrapper": "^1.2.0",
     "@webcomponents/webcomponentsjs": "^2.2.7",
-    "chart.js": "^2.9.4",
-    "chartjs-chart-timeline": "^0.4.0",
+    "chart.js": "^3.3.2",
     "comlink": "^4.3.1",
     "core-js": "^3.6.5",
     "cropperjs": "^1.5.11",
+    "date-fns": "^2.22.1",
     "deep-clone-simple": "^1.1.1",
     "deep-freeze": "^0.0.1",
     "fecha": "^4.2.0",
@@ -242,7 +240,6 @@
   },
   "dependenciesOverride": {
     "node-emoji": "^1.10.0",
-    "@polymer/paper-dropdown-menu": "3.0.1",
     "@material/mwc-linear-progress": "canary"
   },
   "devDependenciesOverride": {

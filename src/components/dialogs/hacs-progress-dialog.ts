@@ -1,3 +1,4 @@
+import "../../../homeassistant-frontend/src/components/ha-circular-progress";
 import { html, TemplateResult, PropertyValues } from "lit";
 import { customElement, property } from "lit/decorators";
 import "./hacs-dialog";
@@ -6,9 +7,13 @@ import { HacsDialogBase } from "./hacs-dialog-base";
 @customElement("hacs-progress-dialog")
 export class HacsProgressDialog extends HacsDialogBase {
   @property() public title?: string;
+
   @property() public content?: string;
+
   @property() public confirmText?: string;
+
   @property() public confirm: () => Promise<void>;
+
   @property({ type: Boolean }) private _inProgress: boolean = false;
 
   shouldUpdate(changedProperties: PropertyValues) {
@@ -33,9 +38,11 @@ export class HacsProgressDialog extends HacsDialogBase {
           ${this.hacs.localize("common.cancel")}
         </mwc-button>
         <mwc-button slot="primaryaction" @click=${this._confirmed}>
-          ${this._inProgress
+          ${
+            this._inProgress
               ? html`<ha-circular-progress active size="small"></ha-circular-progress>`
-              : this.confirmText || this.hacs.localize("confirm.yes")}</mwc-button
+              : this.confirmText || this.hacs.localize("confirm.yes")
+          }</mwc-button
           >
         </mwc-button>
       </hacs-dialog>
@@ -44,9 +51,9 @@ export class HacsProgressDialog extends HacsDialogBase {
 
   private async _confirmed() {
     this._inProgress = true;
-    await this.confirm()
+    await this.confirm();
     this._inProgress = false;
-    this._close()
+    this._close();
   }
 
   private _close() {

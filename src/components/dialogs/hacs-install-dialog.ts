@@ -169,7 +169,7 @@ export class HacsInstallDialog extends HacsDialogBase {
           ?disabled=${!this._repository.can_install || this._toggle}
           @click=${this._installRepository}
           >${this._installing
-            ? html`<ha-circular-progress active></ha-circular-progress>`
+            ? html`<ha-circular-progress active size="small"></ha-circular-progress>`
             : this.hacs.localize("common.install")}</mwc-button
         >
         <hacs-link slot="secondaryaction" .url="https://github.com/${this._repository.full_name}"

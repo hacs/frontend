@@ -1,15 +1,14 @@
 import memoizeOne from "memoize-one";
 import { Message, Repository } from "../data/common";
-import { version } from "../version";
 import { Hacs } from "../data/hacs";
-import { addedToLovelace } from "../tools/added-to-lovelace";
+import { addedToLovelace } from "./added-to-lovelace";
 
-export const getMessages = memoizeOne((hacs: Hacs, repositories: Repository[]) => {
+export const getMessages = memoizeOne((hacs: Hacs) => {
   const messages: Message[] = [];
   const repositoriesNotAddedToLovelace: Repository[] = [];
   const repositoriesRestartPending: Repository[] = [];
 
-  repositories?.forEach((repo) => {
+  hacs.repositories.forEach((repo) => {
     if (repo.status === "pending-restart") {
       repositoriesRestartPending.push(repo);
     }
@@ -74,7 +73,7 @@ export const getMessages = memoizeOne((hacs: Hacs, repositories: Repository[]) =
         .replace("{number}", String(repositoriesRestartPending.length))
         .replace(
           "{pluralWording}",
-          repositoriesRestartPending.length == 1
+          repositoriesRestartPending.length === 1
             ? hacs.localize("common.integration")
             : hacs.localize("common.integration_plural")
         ),

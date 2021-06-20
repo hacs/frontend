@@ -188,7 +188,9 @@ export class HacsRepositoryCard extends LitElement {
                             >${this.hacs.localize("repository_card.report")}</paper-item
                           ></hacs-link
                         >
-                        <paper-item class="pointer uninstall" @tap=${this._uninstallRepositoryDialog}
+                        <paper-item
+                          class="pointer uninstall"
+                          @tap=${this._uninstallRepositoryDialog}
                           >${this.hacs.localize("common.uninstall")}</paper-item
                         >`
                     : ""}
@@ -254,8 +256,10 @@ export class HacsRepositoryCard extends LitElement {
           type: "progress",
           title: this.hacs.localize("dialog.uninstall.title"),
           confirmText: this.hacs.localize("dialog.uninstall.title"),
-          content: this.hacs.localize("dialog.uninstall.message").replace("{name}", this.repository.name),
-          confirm: async () => { await this._uninstallRepository() }
+          content: this.hacs.localize("dialog.uninstall.message", { name: this.repository.name }),
+          confirm: async () => {
+            await this._uninstallRepository();
+          },
         },
         bubbles: true,
         composed: true,

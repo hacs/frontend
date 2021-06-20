@@ -18,17 +18,27 @@ import { Hacs } from "./data/hacs";
 @customElement("hacs-router")
 class HacsRouter extends HassRouterPage {
   @property({ attribute: false }) public hacs?: Hacs;
-  @property({ attribute: false }) public configuration: Configuration;
+
+  @property({ attribute: false }) public configuration!: Configuration;
+
   @property({ attribute: false }) public critical!: Critical[];
+
   @property({ attribute: false }) public hass!: HomeAssistant;
-  @property({ attribute: false }) public lovelace: LovelaceResource[];
-  @property({ attribute: false }) public removed: RemovedRepository[];
-  @property({ attribute: false }) public repositories: Repository[];
+
+  @property({ attribute: false }) public lovelace!: LovelaceResource[];
+
+  @property({ attribute: false }) public removed!: RemovedRepository[];
+
+  @property({ attribute: false }) public repositories!: Repository[];
+
   @property({ attribute: false }) public route!: Route;
-  @property({ attribute: false }) public status: Status;
+
+  @property({ attribute: false }) public status!: Status;
+
   @property({ type: Boolean }) public narrow!: boolean;
 
   @state() private _wideSidebar = false;
+
   @state() private _wide = false;
 
   private _listeners: Array<() => void> = [];

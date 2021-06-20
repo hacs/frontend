@@ -17,7 +17,7 @@ export class HacsRemovedDialog extends HacsDialogBase {
       <hacs-dialog
         .active=${this.active}
         .hass=${this.hass}
-        .title=${this.hacs.localize("entry.messages.removed").replace("'{repository}'", "")}
+        .title=${this.hacs.localize("entry.messages.removed", { repository: "" })}
       >
         <div class="content">
           <div><b>${this.hacs.localize("dialog_removed.name")}:</b> ${this.repository.name}</div>
@@ -41,7 +41,7 @@ export class HacsRemovedDialog extends HacsDialogBase {
         </div>
         <mwc-button class="uninstall" slot="primaryaction" @click=${this._uninstallRepository}
           >${this._updating
-            ? html`<ha-circular-progress active></ha-circular-progress>`
+            ? html`<ha-circular-progress active size="small"></ha-circular-progress>`
             : this.hacs.localize("common.uninstall")}</mwc-button
         >
         <!--<mwc-button slot="secondaryaction" @click=${this._ignoreMessage}

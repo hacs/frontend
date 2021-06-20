@@ -1,20 +1,35 @@
-import { Configuration } from "../data/common";
-
 export class HacsLogger {
-  configuration: Configuration;
-  prefix: string = "HACS";
+  prefix: string;
 
-  public info(log: any, prefix: string = "") {
-    this.log(log, prefix);
+  constructor(name?: string) {
+    if (name) {
+      this.prefix = `[HACS.${name}]`;
+    } else {
+      this.prefix = `[HACS]`;
+    }
   }
 
-  public log(log: any, prefix: string = "") {
-    const _prefix = prefix ? `[${this.prefix}:${prefix}]` : `[${this.prefix}]`;
-    console.log(_prefix, log);
+  public info(content: string | unknown) {
+    this.log(content);
   }
 
-  public debug(log: any, prefix: string = "") {
-    const _prefix = prefix ? `[${this.prefix}:${prefix}]` : `[${this.prefix}]`;
-    console.debug(_prefix, log);
+  public log(content: string | unknown) {
+    // eslint-disable-next-line no-console
+    console.log(this.prefix, content);
+  }
+
+  public debug(content: string | unknown) {
+    // eslint-disable-next-line no-console
+    console.debug(this.prefix, content);
+  }
+
+  public warn(content: string | unknown) {
+    // eslint-disable-next-line no-console
+    console.warn(this.prefix, content);
+  }
+
+  public error(content: string | unknown) {
+    // eslint-disable-next-line no-console
+    console.error(this.prefix, content);
   }
 }

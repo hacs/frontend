@@ -10,24 +10,24 @@ export async function updateLovelaceResources(
   repository: Repository,
   version?: string
 ): Promise<void> {
-  const logger = new HacsLogger();
+  const logger = new HacsLogger("updateLovelaceResources");
   const resources = await fetchResources(hass);
   const namespace = `/hacsfiles/${repository.full_name.split("/")[1]}`;
   const url = generateLovelaceURL({ repository, version });
   const exsisting = resources.find((resource) => resource.url.includes(namespace));
 
-  logger.debug({ namespace, url, exsisting }, "updateLovelaceResources");
+  logger.debug({ namespace, url, exsisting });
 
   if (exsisting && exsisting.url !== url) {
     logger.debug(`Updating exsusting resource for ${namespace}`);
-    updateResource(hass, {
+    await updateResource(hass, {
       url,
       resource_id: exsisting.id,
       res_type: exsisting.type,
     });
   } else if (!resources.map((resource) => resource.url).includes(url)) {
     logger.debug(`Adding ${url} to Lovelace resources`);
-    createResource(hass, {
+    await createResource(hass, {
       url,
       res_type: "module",
     });

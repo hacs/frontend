@@ -13,6 +13,7 @@ import "../../homeassistant-frontend/src/components/ha-svg-icon";
 import "../../homeassistant-frontend/src/panels/config/ha-config-section";
 import { haStyle } from "../../homeassistant-frontend/src/resources/styles";
 import { HomeAssistant, Route } from "../../homeassistant-frontend/src/types";
+import { showDialogAbout } from "../components/dialogs/hacs-about-dialog";
 import "../components/hacs-section-navigation";
 import {
   Configuration,
@@ -29,29 +30,38 @@ import { getMessages } from "../tools/get-messages";
 
 @customElement("hacs-entry-panel")
 export class HacsEntryPanel extends LitElement {
-  @property({ attribute: false }) public hacs?: Hacs;
+  @property({ attribute: false }) public hacs!: Hacs;
+
   @property({ attribute: false }) public configuration: Configuration;
+
   @property({ attribute: false }) public repositories: Repository[];
+
   @property({ attribute: false }) public hass!: HomeAssistant;
+
   @property({ attribute: false }) public lovelace: LovelaceResource[];
+
   @property({ attribute: false }) public route!: Route;
+
   @property({ attribute: false }) public status: Status;
+
   @property({ attribute: false }) public removed: RemovedRepository[];
+
   @property({ type: Boolean }) public isWide!: boolean;
+
   @property({ type: Boolean }) public narrow!: boolean;
 
   protected render(): TemplateResult | void {
-    const updates = [];
-    const messages = [];
-    const allMessages: Message[] = getMessages(this.hacs, this.repositories);
+    const updates: Repository[] = [];
+    const messages: Message[] = [];
+    const allMessages: Message[] = getMessages(this.hacs);
 
-    this.repositories?.forEach((repo) => {
+    this.hacs.repositories.forEach((repo) => {
       if (repo.pending_upgrade) {
         updates.push(repo);
       }
     });
 
-    allMessages?.forEach((message) => {
+    allMessages.forEach((message) => {
       messages.push({
         iconPath: mdiAlertCircle,
         name: message.name,
@@ -169,17 +179,7 @@ export class HacsEntryPanel extends LitElement {
   }
 
   private async _openAboutDialog() {
-    this.dispatchEvent(
-      new CustomEvent("hacs-dialog", {
-        detail: {
-          type: "about",
-          configuration: this.configuration,
-          repositories: this.repositories,
-        },
-        bubbles: true,
-        composed: true,
-      })
-    );
+    showDialogAbout(this, this.hacs);
   }
 
   private async _openSupervisorDialog() {

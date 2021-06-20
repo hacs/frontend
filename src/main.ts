@@ -4,7 +4,6 @@ import { atLeastVersion } from "../homeassistant-frontend/src/common/config/vers
 import { applyThemesOnElement } from "../homeassistant-frontend/src/common/dom/apply_themes_on_element";
 import { navigate } from "../homeassistant-frontend/src/common/navigate";
 import { makeDialogManager } from "../homeassistant-frontend/src/dialogs/make-dialog-manager";
-import { ProvideHassLitMixin } from "../homeassistant-frontend/src/mixins/provide-hass-lit-mixin";
 import "../homeassistant-frontend/src/resources/ha-style";
 import { HomeAssistant, Route } from "../homeassistant-frontend/src/types";
 import "./components/dialogs/hacs-event-dialog";
@@ -32,18 +31,27 @@ import { HacsStyles } from "./styles/hacs-common-style";
 import { hacsStyleVariables } from "./styles/variables";
 
 @customElement("hacs-frontend")
-class HacsFrontend extends ProvideHassLitMixin(HacsElement) {
+class HacsFrontend extends HacsElement {
   @property({ attribute: false }) public hass!: HomeAssistant;
+
   @property({ attribute: false }) public configuration: Configuration;
+
   @property({ attribute: false }) public critical!: Critical[];
+
   @property({ attribute: false }) public lovelace: LovelaceResource[];
+
   @property({ attribute: false }) public narrow!: boolean;
+
   @property({ attribute: false }) public removed: RemovedRepository[];
+
   @property({ attribute: false }) public repositories: Repository[];
+
   @property({ attribute: false }) public route!: Route;
+
   @property({ attribute: false }) public status: Status;
 
   @query("#hacs-dialog") private _hacsDialog?: any;
+
   @query("#hacs-dialog-secondary") private _hacsDialogSecondary?: any;
 
   protected firstUpdated(changedProps) {
@@ -88,14 +96,13 @@ class HacsFrontend extends ProvideHassLitMixin(HacsElement) {
     this._applyTheme();
   }
 
-  private async _updateProperties(prop: string = "all") {
-    let repositories: Repository[];
+  private async _updateProperties(prop = "all") {
     const _updates: any = {};
     const _fetch: any = {};
 
     if (prop === "all") {
       [
-        repositories,
+        _fetch.repositories,
         _fetch.configuration,
         _fetch.status,
         _fetch.critical,
@@ -110,16 +117,15 @@ class HacsFrontend extends ProvideHassLitMixin(HacsElement) {
         getRemovedRepositories(this.hass),
       ]);
 
-      //this.removed = removed;
-      //this.critical = critical;
       this.lovelace = _fetch.resources;
-      this.repositories = repositories;
+      this.repositories = _fetch.repositories;
     } else if (prop === "configuration") {
       _fetch.configuration = await getConfiguration(this.hass);
     } else if (prop === "status") {
       _fetch.status = await getStatus(this.hass);
     } else if (prop === "repositories") {
-      this.repositories = await getRepositories(this.hass);
+      _fetch.repositories = await getRepositories(this.hass);
+      this.repositories = _fetch.repositories;
     } else if (prop === "lovelace") {
       _fetch.resources = await getLovelaceConfiguration(this.hass);
     }
@@ -178,6 +184,7 @@ class HacsFrontend extends ProvideHassLitMixin(HacsElement) {
       ></hacs-event-dialog>
     `;
   }
+
   static get styles() {
     return [HacsStyles, hacsStyleVariables];
   }

@@ -19,21 +19,34 @@ import { updateLovelaceResources } from "../../tools/update-lovelace-resources";
 import "../hacs-link";
 import "./hacs-dialog";
 import { HacsDialogBase } from "./hacs-dialog-base";
+import { showConfirmationDialog } from "../../../homeassistant-frontend/src/dialogs/generic/show-dialog-box";
+import { mainWindow } from "../../../homeassistant-frontend/src/common/dom/get_main_window";
 
 @customElement("hacs-update-dialog")
 export class HacsUpdateDialog extends HacsDialogBase {
-  @property() public repository?: string;
-  @property() private _updating: boolean = false;
+  @property() public repository!: string;
+
+  @property({ type: Boolean }) private _updating = false;
+
   @property() private _error?: any;
-  @property() private _releaseNotes: { name: string; body: string; tag: string }[] = [];
+
+  @property({ attribute: false }) private _releaseNotes: {
+    name: string;
+    body: string;
+    tag: string;
+  }[] = [];
 
   private _getRepository = memoizeOne((repositories: Repository[], repository: string) =>
-    repositories?.find((repo) => repo.id === repository)
+    repositories.find((repo) => repo.id === repository)
   );
 
   protected async firstUpdated(changedProps) {
     super.firstUpdated(changedProps);
     const repository = this._getRepository(this.repositories, this.repository);
+    if (!repository) {
+      return;
+    }
+
     if (repository.version_or_commit !== "commit") {
       this._releaseNotes = await repositoryReleasenotes(this.hass, repository.id);
       this._releaseNotes = this._releaseNotes.filter(
@@ -43,9 +56,13 @@ export class HacsUpdateDialog extends HacsDialogBase {
     this.hass.connection.subscribeEvents((msg) => (this._error = (msg as any).data), "hacs/error");
   }
 
-  protected render(): TemplateResult | void {
+  protected render(): TemplateResult {
     if (!this.active) return html``;
     const repository = this._getRepository(this.repositories, this.repository);
+    if (!repository) {
+      return html``;
+    }
+
     return html`
       <hacs-dialog
         .active=${this.active}
@@ -54,7 +71,7 @@ export class HacsUpdateDialog extends HacsDialogBase {
       >
         <div class=${classMap({ content: true, narrow: this.narrow })}>
           <p class="message">
-            ${this.hacs.localize("dialog_update.message").replace("{name}", repository.name)}
+            ${this.hacs.localize("dialog_update.message", { name: repository.name })}
           </p>
           <div class="version-container">
             <div class="version-element">
@@ -83,8 +100,14 @@ export class HacsUpdateDialog extends HacsDialogBase {
             this._releaseNotes.length > 0
               ? this._releaseNotes.map(
                   (release) => html`
-                    <ha-expansion-panel .header=${release.name || release.tag} outlined>
-                      ${markdown.html(release.body, repository)}
+                    <ha-expansion-panel
+                      .header=${release.name ? `${release.tag}: ${release.name}` : release.tag}
+                      outlined
+                      ?expanded=${this._releaseNotes.length === 1}
+                    >
+                      ${release.body
+                        ? markdown.html(release.body, repository)
+                        : this.hacs.localize("dialog_update.no_info")}
                     </ha-expansion-panel>
                   `
                 )
@@ -113,7 +136,7 @@ export class HacsUpdateDialog extends HacsDialogBase {
           @click=${this._updateRepository}
           >${
             this._updating
-              ? html`<ha-circular-progress active></ha-circular-progress>`
+              ? html`<ha-circular-progress active size="small"></ha-circular-progress>`
               : this.hacs.localize("common.update")
           }</mwc-button
         >
@@ -132,6 +155,9 @@ export class HacsUpdateDialog extends HacsDialogBase {
   private async _updateRepository(): Promise<void> {
     this._updating = true;
     const repository = this._getRepository(this.repositories, this.repository);
+    if (!repository) {
+      return;
+    }
     if (repository.version_or_commit !== "commit") {
       await repositoryInstallVersion(this.hass, repository.id, repository.available_version);
     } else {
@@ -139,26 +165,33 @@ export class HacsUpdateDialog extends HacsDialogBase {
     }
     if (repository.category === "plugin") {
       if (this.hacs.status.lovelace_mode === "storage") {
-        await updateLovelaceResources(this.hass, repository);
+        await updateLovelaceResources(this.hass, repository, repository.available_version);
       }
     }
     this._updating = false;
     this.dispatchEvent(new Event("hacs-dialog-closed", { bubbles: true, composed: true }));
     if (repository.category === "plugin") {
-      this.dispatchEvent(
-        new CustomEvent("hacs-dialog", {
-          detail: {
-            type: "reload",
-          },
-          bubbles: true,
-          composed: true,
-        })
-      );
+      showConfirmationDialog(this, {
+        title: this.hacs.localize!("common.reload"),
+        text: html`${this.hacs.localize!("dialog.reload.description")}</br>${this.hacs.localize!(
+          "dialog.reload.confirm"
+        )}`,
+        dismissText: this.hacs.localize!("common.cancel"),
+        confirmText: this.hacs.localize!("common.reload"),
+        confirm: () => {
+          // eslint-disable-next-line
+          mainWindow.location.href = mainWindow.location.href;
+        },
+      });
     }
   }
 
-  private _getChanglogURL(): string {
+  private _getChanglogURL(): string | undefined {
     const repository = this._getRepository(this.repositories, this.repository);
+    if (!repository) {
+      return;
+    }
+
     if (repository.version_or_commit === "commit") {
       return `https://github.com/${repository.full_name}/compare/${repository.installed_version}...${repository.available_version}`;
     }

@@ -8,6 +8,7 @@ import { Configuration, LovelaceResource, Repository, Status } from "../data/com
 import { Hacs } from "../data/hacs";
 import { settingsClearAllNewRepositories } from "../data/websocket";
 import { activePanel } from "../panels/hacs-sections";
+import { showDialogAbout } from "./dialogs/hacs-about-dialog";
 import "./hacs-link";
 
 @customElement("hacs-tabbed-menu")
@@ -63,22 +64,12 @@ export class HacsTabbedMenu extends LitElement {
   private async _clearAllNewRepositories() {
     await settingsClearAllNewRepositories(
       this.hass,
-      activePanel(this.hacs.language, this.route).categories
+      activePanel(this.hacs.language, this.route)?.categories || []
     );
   }
 
   private _showAboutDialog() {
-    this.dispatchEvent(
-      new CustomEvent("hacs-dialog", {
-        detail: {
-          type: "about",
-          configuration: this.configuration,
-          repositories: this.repositories,
-        },
-        bubbles: true,
-        composed: true,
-      })
-    );
+    showDialogAbout(this, this.hacs);
   }
 
   private _showCustomRepositoriesDialog() {
