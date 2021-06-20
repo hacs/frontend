@@ -68,11 +68,10 @@ export class markdown {
 
     // Add references to issues and PRs
     if (repo) {
-      input = input.replace(/(?:(?<![/\w-.])\w[\w-.]+\/\w[\w-.]+|\B)#[1-9]\d*\b/g, (reference) => {
+      input = input.replace(/(?:\w[\w-.]+\/\w[\w-.]+|\B)#[1-9]\d*\b/g, (reference) => {
         const fullReference = reference.replace(/^#/, `${repo.full_name}#`);
         const [fullName, issue] = fullReference.split("#");
-        const url = `https://github.com/${fullName}/issues/${issue}`;
-        return `[${reference}](${url})`;
+        return `[${reference}](https://github.com/${fullName}/issues/${issue})`;
       });
     }
 
