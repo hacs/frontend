@@ -1,6 +1,5 @@
 import { html, TemplateResult } from "lit";
 import { customElement, property, query } from "lit/decorators";
-import { atLeastVersion } from "../homeassistant-frontend/src/common/config/version";
 import { applyThemesOnElement } from "../homeassistant-frontend/src/common/dom/apply_themes_on_element";
 import { navigate } from "../homeassistant-frontend/src/common/navigate";
 import { makeDialogManager } from "../homeassistant-frontend/src/dialogs/make-dialog-manager";
@@ -214,28 +213,25 @@ class HacsFrontend extends HacsElement {
   }
 
   private _applyTheme() {
-    let themeName: string;
     let options: Partial<HomeAssistant["selectedTheme"]> | undefined;
 
-    if (atLeastVersion(this.hass.config.version, 0, 114)) {
-      themeName =
-        this.hass.selectedTheme?.theme ||
-        (this.hass.themes.darkMode && this.hass.themes.default_dark_theme
-          ? this.hass.themes.default_dark_theme!
-          : this.hass.themes.default_theme);
+    const themeName =
+      this.hass.selectedTheme?.theme ||
+      (this.hass.themes.darkMode && this.hass.themes.default_dark_theme
+        ? this.hass.themes.default_dark_theme!
+        : this.hass.themes.default_theme);
 
-      options = this.hass.selectedTheme;
-      if (themeName === "default" && options?.dark === undefined) {
-        options = {
-          ...this.hass.selectedTheme,
-          dark: this.hass.themes.darkMode,
-        };
-      }
-    } else {
-      themeName = (this.hass.selectedTheme as unknown as string) || this.hass.themes.default_theme;
+    options = this.hass.selectedTheme;
+    if (themeName === "default" && options?.dark === undefined) {
+      options = {
+        ...this.hass.selectedTheme,
+      };
     }
 
-    applyThemesOnElement(this.parentElement, this.hass.themes, themeName, options);
+    applyThemesOnElement(this.parentElement, this.hass.themes, themeName, {
+      ...options,
+      dark: this.hass.themes.darkMode,
+    });
     this.parentElement.style.backgroundColor = "var(--primary-background-color)";
   }
 }
