@@ -271,6 +271,11 @@
     "uninstall": {
       "title": "Uninstall",
       "message": "Do you really want to uninstall {name}?"
+    },
+    "configured": {
+      "title": "Integration is configured",
+      "message": "The {name} integration is configured, you need to delete the configuration for it before removing it from HACS",
+      "confirm": "Go to integrations"
     }
   },
   "entry": {
