@@ -7,7 +7,10 @@ import "@polymer/paper-menu-button/paper-menu-button";
 import { css, CSSResultGroup, html, LitElement, TemplateResult } from "lit";
 import { customElement, property } from "lit/decorators";
 import { ClassInfo, classMap } from "lit/directives/class-map";
+import { navigate } from "../../homeassistant-frontend/src/common/navigate";
 import "../../homeassistant-frontend/src/components/ha-card";
+import { getConfigEntries } from "../../homeassistant-frontend/src/data/config_entries";
+import { showAlertDialog } from "../../homeassistant-frontend/src/dialogs/generic/show-dialog-box";
 import { HomeAssistant } from "../../homeassistant-frontend/src/types";
 import { RemovedRepository, Repository, Status } from "../data/common";
 import { Hacs } from "../data/hacs";
@@ -27,11 +30,17 @@ import "./hacs-link";
 @customElement("hacs-repository-card")
 export class HacsRepositoryCard extends LitElement {
   @property({ attribute: false }) public hass!: HomeAssistant;
+
   @property({ attribute: false }) public hacs!: Hacs;
+
   @property({ attribute: false }) public repository!: Repository;
+
   @property({ attribute: false }) public status: Status;
+
   @property({ attribute: false }) public removed: RemovedRepository[];
+
   @property({ type: Boolean }) public narrow!: boolean;
+
   @property({ type: Boolean }) public addedToLovelace!: boolean;
 
   private get _borderClass(): ClassInfo {
@@ -250,6 +259,22 @@ export class HacsRepositoryCard extends LitElement {
   }
 
   private async _uninstallRepositoryDialog() {
+    if (this.repository.category === "integration" && this.repository.config_flow) {
+      const configFlows = (await getConfigEntries(this.hass)).some(
+        (entry) => entry.domain === this.repository.domain
+      );
+      if (configFlows) {
+        await showAlertDialog(this, {
+          title: this.hacs.localize("dialog.configured.title"),
+          text: this.hacs.localize("dialog.configured.message", { name: this.repository.name }),
+          confirmText: this.hacs.localize("dialog.configured.confirm"),
+          confirm: () => {
+            navigate("/config/integrations", { replace: true });
+          },
+        });
+        return;
+      }
+    }
     this.dispatchEvent(
       new CustomEvent("hacs-dialog", {
         detail: {
@@ -266,6 +291,7 @@ export class HacsRepositoryCard extends LitElement {
       })
     );
   }
+
   private async _uninstallRepository() {
     if (this.repository.category === "plugin" && this.hacs.status?.lovelace_mode !== "yaml") {
       const resources = await fetchResources(this.hass);
