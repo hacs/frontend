@@ -1,0 +1,347 @@
+{
+  "common": {
+    "about": "אודות",
+    "add": "הוספה",
+    "appdaemon_apps": "יישומי AppDaemon",
+    "appdaemon_plural": "יישומי AppDaemon",
+    "appdaemon": "AppDaemon",
+    "background_task": "משימה פועלת ברקע, דף זה יטען מחדש כאשר היא תסתיים.",
+    "cancel": "ביטול",
+    "check_log_file": "יש לבדוק את יומן השינויים לפרטים נוספים.",
+    "continue": "המשך",
+    "disabled": "מושבת",
+    "documentation": "תיעוד",
+    "element": "רכיב",
+    "hacs_is_disabled": "HACS מושבת",
+    "ignore": "התעלם",
+    "install": "התקן",
+    "installed": "מותקן",
+    "integration_plural": "שילובים",
+    "integration": "שילוב",
+    "integrations": "שילובים",
+    "lovelace_element": "רכיב Lovelace",
+    "lovelace_elements": "רכיבי Lovelace",
+    "lovelace": "Lovelace",
+    "manage": "ניהול",
+    "netdaemon_apps": "יישומי NetDaemon",
+    "netdaemon_plural": "יישומי NetDaemon",
+    "netdaemon": "NetDaemon",
+    "plugin_plural": "רכיבי Lovelace",
+    "plugin": "Lovelace",
+    "plugins": "רכיבי Lovelace",
+    "python_script_plural": "סקריפטי פייתון",
+    "python_script": "פייתון סקריפט",
+    "python_scripts": "סקריפי פייתון",
+    "reload": "טען מחדש",
+    "repositories": "מאגרים",
+    "repository": "מאגר",
+    "settings": "הגדרות",
+    "theme_plural": "ערכות נושא",
+    "theme": "ערכת נושא",
+    "themes": "ערכות נושא",
+    "uninstall": "הסרה",
+    "update": "עדכון",
+    "version": "גירסה"
+  },
+  "confirm": {
+    "add_to_lovelace": "האם בוודאות ברצונך להוסיף זאת למאגרי Lovelace?",
+    "bg_task": "הפעולה מושבתת בזמן שמשימות פועלות ברקע.",
+    "cancel": "ביטול",
+    "continue": "האם בוודאות ברצונך להמשיך?",
+    "delete_installed": "'{item}' מותקן, יש להסיר אותו לפני מחיקתו.",
+    "delete": "האם בוודאות ברצונך למחוק את '{item}'?",
+    "exist": "{item} כבר קיים",
+    "generic": "בלי חרטות?",
+    "home_assistant_is_restarting": "רגע, Home Assistant מאתחל ת'עצמו.",
+    "home_assistant_version_not_correct": "כרגע רצה גרסה '{haversion}' של Home Assistant, אבל מאגר זה דורש שימוש בגרסה '{minversion}' לכל הפחות, בכדי להיות מותקן.",
+    "no_upgrades": "הידד, אין עדכונים ממתינים",
+    "no": "לא",
+    "ok": "אישור",
+    "overwrite": "פעולה זו תדרוס את זה.",
+    "reload_data": "זה יטעו מחדש את כל המאגרים המוכרים על ידי HACS, יקח קצת זמן לסיום.",
+    "restart_home_assistant": "אז לאתחל את Home Assistant?",
+    "uninstall": "בוודאות ברצונך להסיר את '{item}'?",
+    "upgrade_all": "זה ישדרג את כל המאגרים, יש לוודא את קריאת כל הערות השיחרור לפני שממשיכים.",
+    "yes": "כן"
+  },
+  "repository": {
+    "add_to_lovelace": "הוספה אל Lovelace",
+    "authors": "מחברים",
+    "available": "זמין",
+    "back_to": "חזרה אל",
+    "changelog": "יומן שינויים",
+    "downloads": "הורדות",
+    "flag_this": "לסמן את זה",
+    "frontend_version": "גרסת תצוגה",
+    "github_stars": "כוכבי GitHub",
+    "goto_integrations": "מעבר אל שילובים",
+    "hide_beta": "הסתרת בטא",
+    "hide": "הסתרה",
+    "install": "התקנה",
+    "installed": "מותקן",
+    "lovelace_copy_example": "העתקת דוגמא זו ללוח הגזירים",
+    "lovelace_instruction": "בכדי להוסיף זאת לתצורת lovelace יש להשתמש בזה",
+    "lovelace_no_js_type": "לא הצלחנו לקבוע את סוג הרכיב, יש לבדוק את המאגר.",
+    "newest": "החדש ביותר",
+    "note_appdaemon": "עדיין צריך להוסיף את זה לקובץ 'apps.yaml' שלך",
+    "note_installed": "לאחר התקנה, זה יהיה ממוקם ב",
+    "note_integration": "עדיין צריך להוסיף את זה לקובץ 'configuration.yaml' שלך",
+    "note_plugin": "עדיין צריך להוסיף את זה לתצורת lovelace ('ui-lovelace.yaml' או לעורך התצורה הגולמית)",
+    "note_plugin_post_107": "עדיין צריך להוסיף את זה לתצורת lovelace ('configuration.yaml' או לעורך המאגרים '/config/lovelace/resources')",
+    "open_issue": "פתיחת תקלה",
+    "open_plugin": "פתיחת רכיב",
+    "reinstall": "התקנה מחדש",
+    "repository": "מראגר",
+    "restart_home_assistant": "אתחול Home Assistant",
+    "show_beta": "הצגת בטא",
+    "uninstall": "הסרה",
+    "update_information": "עדכון מידע",
+    "upgrade": "עדכון"
+  },
+  "repository_banner": {
+    "config_flow": "שילוב זה תומך ב-config_flow, כלומר כעת ניתן לעבור לקטע השילוב של ממשק המשתמש שלך כדי להגדיר אותו.",
+    "no_restart_required": "אין צורך באיתחול",
+    "not_loaded": "לא נעטו",
+    "plugin_not_loaded": "רכבי זה לא נוסף למשאבי Lovelace שלך.",
+    "restart_pending": "ממתין לאיתחול",
+    "config_flow_title": "תצורת ממשק המשתמש נתמכת",
+    "restart": "יש להפעיל מחדש את Home Assistant."
+  },
+  "sections": {
+    "integrations": {
+      "title": "שילובים",
+      "description": "כאן ניתן למצוא שילובים מותאמים אישית (custom_components)"
+    },
+    "frontend": {
+      "title": "תצוגה",
+      "description": "כאן ניתן למצוא ערכות נושא, כרטיסים מותאמים אישית ורכיבי lovelace אחרים"
+    },
+    "automation": {
+      "title": "אוטומציה",
+      "description": "כאן ניתן למצוא python_scripts, יישומי AppDaemon ויישומי NetDaemon"
+    },
+    "addon": {
+      "title": "הרחבות",
+      "description": "אין הרחבות ב-HACS, אבל היי אפשר ללחוץ כאן כדי להגיע למפקח"
+    },
+    "about": {
+      "title": "אודות",
+      "description": "הצגת מידע אודות HACS"
+    },
+    "pending_repository_upgrade": "הגרסה שרצה היא {installed}, גרסה {available} זמינה"
+  },
+  "settings": {
+    "add_custom_repository": "הוספת מאגר מותאם אישית",
+    "adding_new_repo_category": "עם קטגוריה '{category}'.",
+    "adding_new_repo": "הוספת מאגר חדש '{repo}'",
+    "bg_task_custom": "מאגרים מותאמים אישית מוסתרים בזמן שמשימות פועלות ברקע.",
+    "category": "קטגוריה",
+    "compact_mode": "מצב ממוזער",
+    "custom_repositories": "מאגרים מותאמים אישית",
+    "delete": "מחיקה",
+    "display": "הצגה",
+    "grid": "רשת",
+    "hacs_repo": "מאגר HACS",
+    "hidden_repositories": "מאגרים מוסתרים",
+    "missing_category": "יש לבחור קטגוריה",
+    "open_repository": "פתיחת מאגר",
+    "reload_data": "טעינת נתונים מחדש",
+    "repository_configuration": "תצורת המאגר",
+    "save": "שמירה",
+    "table_view": "תצוגת טבלה",
+    "table": "טבלה",
+    "unhide": "ביטול הסתרה",
+    "upgrade_all": "שדרוג הכל"
+  },
+  "store": {
+    "add": "חקירה והוספת מאגרים",
+    "ascending": "סדר עולה",
+    "clear_new": "ניקוי כל המאגרים החדשים",
+    "descending": "סדר יורד",
+    "last_updated": "עודכן לאחרונה",
+    "name": "שם",
+    "new_repositories_note": "יש לך מעל 10 מאגרים חדשים המופיעים כאן, אם ברצונך לנקות את כולם יש ללחוץ על  שלוש הנקודות בפינה השמאלית העליונה ולסרוק את כולן.",
+    "no_repositories": "אין מאגרים",
+    "no_repositories_desc1": "ראה כי עדיין אין לך מאגרים מותקנים בחלק זה.",
+    "no_repositories_desc2": "יש ללחוץ על + בפינה התחתונה כדי להוסיף את הראשון שלך!",
+    "no_repositories_found_desc1": "לא נמצאו מאגרים התואמים לחיפוש \"{searchInput}\" בחלק זה.",
+    "no_repositories_found_desc2": "נראה לי שנחפש משהו אחר!",
+    "new_repositories": "מאגרים חדשים",
+    "pending_upgrades": "שדרוגים ממתינים",
+    "placeholder_search": "חייבים להזין משהו...",
+    "sort": "מיון",
+    "stars": "כוכבים",
+    "status": "מצב"
+  },
+  "time": {
+    "one_day_ago": "יום אחד",
+    "one_hour_ago": "שעה אחת",
+    "one_minute_ago": "דקה אחת",
+    "one_month_ago": "לפני חודש",
+    "one_second_ago": "לפני שניה",
+    "one_year_ago": "לפני שנה",
+    "x_days_ago": "לפני {x} ימים",
+    "x_hours_ago": "לפני {x} שעות",
+    "x_minutes_ago": "לפני {x} דקות",
+    "x_months_ago": "לפני {x} חודשים",
+    "x_seconds_ago": "לפני {x} שניות",
+    "x_years_ago": "לפני {x} שנים"
+  },
+  "dialog_about": {
+    "integration_version": "גרסת שילוב",
+    "frontend_version": "גרסת תצורה",
+    "installed_repositories": "מאגרים מותקנים",
+    "useful_links": "קישורים שימושיים"
+  },
+  "dialog_add_repo": {
+    "title": "הוספת מאגר",
+    "no_match": "לא נמצאו מאגרים התואמים את המסנן שלך",
+    "sort_by": "מיון לפי"
+  },
+  "dialog_removed": {
+    "name": "שם מאגר",
+    "type": "סוג הסרה",
+    "reason": "סיבת הסרה",
+    "link": "קישור חיצוני למידע נוסף"
+  },
+  "dialog_custom_repositories": {
+    "title": "מאגרים מותאמים אישית",
+    "url_placeholder": "הוספת כתובת אתר למאגר מותאם אישית",
+    "category": "קטגוריה",
+    "no_repository": "מאגר חסר",
+    "no_category": "קטגוריה חסרה"
+  },
+  "dialog_install": {
+    "type": "סוג",
+    "url": "קישור",
+    "select_version": "בחירת גירסה",
+    "show_beta": "הצג גרסאות בטא",
+    "restart": "תזכורת, יש להפעיל מחדש את Home Assistant לפני שמוחלים שינויים בשילובים (רכיבי custom_components)."
+  },
+  "dialog_info": {
+    "version_installed": "גרסה מותקנת",
+    "open_issues": "פתיחת תקלה",
+    "stars": "כוכבים",
+    "downloads": "הורדות",
+    "author": "מחבר",
+    "no_info": "המפתח לא סיפק מידע נוסף למאגר",
+    "open_repo": "פתיחת מאגר",
+    "install": "התקנת מאגר זה ביישום HACS"
+  },
+  "dialog_update": {
+    "title": "עדכון ממתין",
+    "installed_version": "גרסה מותקנת",
+    "available_version": "גרסה זמינה",
+    "changelog": "יומן שינויים",
+    "releasenotes": "הערות שיחרור עבור {release}",
+    "message": "קיימת גרסה חדשה של {name}",
+    "no_info": "המחבר לא סיפק שום מידע על שחרור זה"
+  },
+  "repository_card": {
+    "pending_update": "עדכון ממתין",
+    "pending_restart": "ממתין לאיתחול",
+    "not_loaded": "לא נטען",
+    "new_repository": "מאגר חדש",
+    "hide": "הסתרה",
+    "dismiss": "ביי",
+    "open_source": "פתיחת מקור",
+    "open_issue": "פתיחת תקלה
+    "report": "בקשת הסרה",
+    "information": "מידע",
+    "update_information": "מידע עידכון"
+  },
+  "search": {
+    "placeholder": "חיפוש מאגר",
+    "installed": "חיפוש מאגרים מותקנים",
+    "installed_new": "חיפוש שמאגרים מותקנים או חדשים"
+  },
+  "menu": {
+    "about": "אודות HACS",
+    "custom_repositories": "מאגרים מותאמים אישית",
+    "open_issue": "פתיחת תקלה",
+    "dismiss": "ביי ביי לכל המאגרים החדשים",
+    "documentation": "תיעוד"
+  },
+  "dialog": {
+    "reload": {
+      "description": "יש לטעון מחדש את הדפדפן בכדי להשתמש במשאבים המעודכנים.",
+      "confirm": "אז לעשות את זה עכשיו?"
+    },
+    "uninstall": {
+      "title": "הסרה",
+      "message": "בוודאות להסיר את {name}?"
+    },
+    "configured": {
+      "title": "השילוב מוגדר",
+      "message": "השילוב של {name} מוגדר, יש למחוק את התצורה עבורה לפני שמסירים אותה מ-HACS",
+      "confirm": "מעבר לשילובים"
+    }
+  },
+  "entry": {
+    "messages": {
+      "setup": {
+        "title": "HACS מוגדר",
+        "content": "HACS מוגדר כעת, בנתיים יש מצב שחלק מהמידע יהיה חסר או שגוי"
+      },
+      "waiting": {
+        "title": "HACS ממתין",
+        "content": "HACS ממתין לסיום האיתחול של Home Assistant לפני שהוא מתחיל את משימות ההפעלה"
+      },
+      "startup": {
+        "title": "HACS מאתחל",
+        "content": "HACS מפעיל את עצמו, בינתיים יש מצב שחלק מהמיגע יהיה חסר או שגוי"
+      },
+      "has_pending_tasks": {
+        "title": "משימות ממתינות ברקע",
+        "content": "ייתכן שמאגרים מסוימים לא יופיעו עד שזה יסתיים"
+      },
+      "disabled": {
+        "title": "HACS מושבת",
+        "rate_limit": {
+          "title": "רמה מוגבלת",
+          "description": "API של GitHub הגיע לרמת ההגבלה, זמן הניקוי פחות משעה."
+        },
+        "removed": {
+          "title": "הוסר",
+          "description": "HACS הוסר, יש לאתחל את Home Assistant."
+        },
+        "invalid_token": {
+          "title": "אסימון לא חוקי",
+          "description": "יש להגדיר מחדש את HACS ולאתחל את Home Assistant."
+        },
+        "constrains": {
+          "title": "אילוצים",
+          "description": "הסביבה שלך אינה תואמת להפעלת HACS, יש לבדוק את יומן השינויים לקבלת פרטים נוספים."
+        },
+        "load_hacs": {
+          "title": "לא ניתן לטעון את HACS",
+          "description": "יש לבדוק את קובץ היומן שלך לקבלת פרטים נוספים"
+        },
+        "restore": {
+          "title": "שחזור HACS נכשל",
+          "description": "ש לבדוק את קובץ היומן שלך לקבלת פרטים נוספים"
+        }
+      },
+      "wrong_frontend_loaded": {
+        "title": "גרסת תצוגה לא צפויה",
+        "content": "גרסה {running} של ממשק HACS רצה, אבל ציפינו לגרסה {expected}, יש לנקות את מטמון הדפדפן שלך."
+      },
+      "wrong_frontend_installed": {
+        "title": "גרסת תצוגה לא צפויה",
+        "content": "התקנת גרסה {running} של ממשק HACS, אבל ציפינו לגרסה {expected}, אם זו ההודעה המוצגת לך, Home Assistant לא הצליח להתקין את הגרסה החדשה, יש להפעיל מחדש את Home Assistant."
+      },
+      "resources": {
+        "title": "לא נטען ב-Lovelace",
+        "content": "יש לך {number} רכיבי Lovelace שלא נטענים כראוי."
+      },
+      "restart": {
+        "title": "בהמתנה לאיתחול",
+        "content": "יש לך {number} {pluralWording} שעבורו נדרשת הפעלה מחדש של Home Assistant. ניתן לעשות זאת מהקטע 'בקרת שרת' תחת תצורה של ממשק המשתמש של Home Assistant."
+      },
+      "removed": "מאגר '{repository}' הוסר"
+    },
+    "intro": "עדכונים והודעות חשובות יופיעו כאן אם יש כאלה",
+    "information": "מידע",
+    "pending_updates": "עדכונים ממתינים"
+  }
+}
