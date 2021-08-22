@@ -231,10 +231,13 @@
     "node-emoji": "1.10.0"
   },
   "resolutions": {
-    "@polymer/polymer": "patch:@polymer/polymer@3.4.1#./.yarn/patches/@polymer/polymer/pr-5569.patch",
+    "@polymer/polymer": "3.4.1",
     "@webcomponents/webcomponentsjs": "^2.2.10",
     "lit-html": "2.0.0-rc.3",
     "lit-element": "3.0.0-rc.2"
+  },
+  "resolutionsOverride": {
+    "@polymer/polymer": "3.4.1"
   },
   "dependenciesOverride": {
     "node-emoji": "1.10.0",
