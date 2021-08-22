@@ -11,7 +11,7 @@ fs.writeFileSync(
   JSON.stringify(
     {
       ...hacs,
-      resolutions: { ...core.resolutions },
+      resolutions: { ...core.resolutions, ...hacs.resolutionsOverride },
       dependencies: { ...core.dependencies, ...hacs.dependenciesOverride },
       devDependencies: { ...core.devDependencies, ...hacs.devDependenciesOverride },
     },
