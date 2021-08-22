@@ -1342,7 +1342,7 @@
   dependencies:
     vary "^1.1.2"
 
-"@lit-labs/virtualizer@patch:@lit-labs/virtualizer@0.6.0#./.yarn/patches/@lit-labs/virtualizer/0.7.0.patch":
+"@lit-labs/virtualizer@0.6.0":
   version "0.6.0"
   resolved "https://registry.yarnpkg.com/@lit-labs/virtualizer/-/virtualizer-0.6.0.tgz#7b556652d4484f2f28d1d7d9ce6aa0fa882e73bc"
   integrity sha512-nuwePG9b0TRXmkeL2WQpMxukw9CwlHi33n+s9xW7wfOIl7xcRE6Q+7ygeA/nScFypm1RhumI+SbZVLVTADY2Zg==

@@ -128,7 +128,7 @@
     "@fullcalendar/daygrid": "5.1.0",
     "@fullcalendar/interaction": "5.1.0",
     "@fullcalendar/list": "5.1.0",
-    "@lit-labs/virtualizer": "patch:@lit-labs/virtualizer@0.6.0#./.yarn/patches/@lit-labs/virtualizer/0.7.0.patch",
+    "@lit-labs/virtualizer": "0.6.0",
     "@material/chips": "12.0.0-canary.22d29cbb4.0",
     "@material/data-table": "12.0.0-canary.22d29cbb4.0",
     "@material/mwc-button": "0.22.1",
@@ -241,6 +241,7 @@
   },
   "dependenciesOverride": {
     "node-emoji": "1.10.0",
+    "@lit-labs/virtualizer": "0.6.0",
     "@material/mwc-linear-progress": "canary"
   },
   "devDependenciesOverride": {
