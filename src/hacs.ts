@@ -51,6 +51,8 @@ export class HacsElement extends ProvideHassLitMixin(LitElement) {
   }
 
   protected updated() {
-    this.hacs.sections = sectionsEnabled(this.hacs.language, this.hacs.configuration);
+    if (this.hacs.language && this.hacs.configuration) {
+      this.hacs.sections = sectionsEnabled(this.hacs.language, this.hacs.configuration);
+    }
   }
 }
