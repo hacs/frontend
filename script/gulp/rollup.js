@@ -143,6 +143,7 @@ try {
 } catch (err) {
   var el = document.createElement('script');
   el.src = '/hacsfiles/frontend/${entrypointManifest["./src/main.ts"]}';
+  el.type = 'module';
   document.body.appendChild(el);
 }
   `,
