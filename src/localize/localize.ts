@@ -6,7 +6,7 @@ const warnings: { language: string[]; sting: Record<string, Array<string>> } = {
   sting: {},
 };
 
-export function localize(language: string, string: string, replace?: Record<string, any>) {
+export function localize(language: string, string: string, replace?: Record<string, any>): string {
   let translated: any;
 
   const logger = new HacsLogger("localize");
@@ -63,11 +63,11 @@ export function localize(language: string, string: string, replace?: Record<stri
         logger.error(`Variable '${key}' does not exist in '${string}' with '${lang}'`);
         continue;
       }
-      translated = translated.replace(`{${key}}`, replace[key]);
+      translated = translated.replace(`{${key}}`, String(replace[key]));
     }
     if (translated.includes("{") || translated.includes("}")) {
       logger.error(`Translation for '${string}' with '${lang}' is missing variables`);
     }
   }
-  return translated;
+  return String(translated);
 }

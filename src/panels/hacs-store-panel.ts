@@ -74,9 +74,8 @@ export class HacsStorePanel extends LitElement {
 
   private _updateFilters(e) {
     const current = this.filters[this.section]?.find((filter) => filter.id === e.detail.id);
-    this.filters[this.section].find(
-      (filter) => filter.id === current.id
-    ).checked = !current.checked;
+    this.filters[this.section].find((filter) => filter.id === current.id).checked =
+      !current.checked;
     this.requestUpdate();
   }
 
@@ -198,22 +197,22 @@ export class HacsStorePanel extends LitElement {
 
   private _renderNoResultsFound(): TemplateResult {
     return html`<ha-card class="no-repositories">
-      <div class="header">${this.hacs.localize("store.no_repositories")} 😕</div>
+      <div class="header">${this.hacs!.localize("store.no_repositories")} 😕</div>
       <p>
-        ${this.hacs
-          .localize("store.no_repositories_found_desc1")
-          .replace("{searchInput}", this._searchInput)}
+        ${this.hacs!.localize("store.no_repositories_found_desc1", {
+          searchInput: this._searchInput,
+        })}
         <br />
-        ${this.hacs.localize("store.no_repositories_found_desc2")}
+        ${this.hacs!.localize("store.no_repositories_found_desc2")}
       </p>
     </ha-card>`;
   }
 
   private _renderEmpty(): TemplateResult {
     return html`<ha-card class="no-repositories">
-      <div class="header">${this.hacs.localize("store.no_repositories")} 😕</div>
+      <div class="header">${this.hacs!.localize("store.no_repositories")} 😕</div>
       <p>
-        ${this.hacs.localize("store.no_repositories_desc1")}<br />${this.hacs.localize(
+        ${this.hacs!.localize("store.no_repositories_desc1")}<br />${this.hacs!.localize(
           "store.no_repositories_desc2"
         )}
       </p>
