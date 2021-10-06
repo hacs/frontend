@@ -7,6 +7,8 @@ import "@polymer/paper-item/paper-item-body";
 import { css, CSSResultGroup, html, LitElement, TemplateResult } from "lit";
 import { customElement, property } from "lit/decorators";
 import { isComponentLoaded } from "../../homeassistant-frontend/src/common/config/is_component_loaded";
+import { computeRTL } from "../../homeassistant-frontend/src/common/util/compute_rtl";
+import "../../homeassistant-frontend/src/components/ha-alert";
 import "../../homeassistant-frontend/src/components/ha-card";
 import "../../homeassistant-frontend/src/components/ha-menu-button";
 import "../../homeassistant-frontend/src/components/ha-svg-icon";
@@ -68,7 +70,7 @@ export class HacsEntryPanel extends LitElement {
         info: message.info,
         secondary: message.secondary,
         path: message.path || "",
-        class: message.severity,
+        severity: message.severity,
         dialog: message.dialog,
         repository: message.repository,
       });
@@ -93,21 +95,23 @@ export class HacsEntryPanel extends LitElement {
           <div slot="header">${this.narrow ? "HACS" : "Home Assistant Community Store"}</div>
 
           <div slot="introduction">
-            ${this.isWide || (this.hacs.updates.length === 0 && this.hacs.messages?.length === 0)
-              ? this.hacs.localize("entry.intro")
+            ${this.hacs.messages?.length !== 0
+              ? this.hacs.messages.map(
+                  (message) => html`
+                    <ha-alert
+                      .alertType=${message.severity!}
+                      .title=${message.secondary
+                        ? `${message.name} - ${message.secondary}`
+                        : message.name}
+                      .rtl=${computeRTL(this.hass)}
+                    >
+                      ${message.info}
+                    </ha-alert>
+                  `
+                )
               : ""}
           </div>
 
-          ${this.hacs.messages?.length !== 0
-            ? html`
-                <hacs-section-navigation
-                  .hass=${this.hass}
-                  .header=${this.hacs.localize("entry.information")}
-                  .pages=${this.hacs.messages}
-                  no-next
-                ></hacs-section-navigation>
-              `
-            : ""}
           ${this.hacs.updates?.length !== 0
             ? html` <ha-card>
                 <div class="header">${this.hacs.localize("entry.pending_updates")}</div>
