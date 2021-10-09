@@ -1,9 +1,24 @@
 const gulp = require("gulp");
 const fs = require("fs-extra");
 const del = require("del");
-const log = require("fancy-log")
+const log = require("fancy-log");
 
-const changeLang = {"et_EE": "et", "zh-Hans": "zh_Hans", "pt-BR": "pt_BR"}
+const changeLang = { et_EE: "et", "zh-Hans": "zh_Hans", "pt-BR": "pt_BR" };
+
+function recursiveFlatten(prefix, data) {
+  let output = {};
+  Object.keys(data).forEach((key) => {
+    if (typeof data[key] === "object") {
+      output = {
+        ...output,
+        ...recursiveFlatten(prefix + key + ".", data[key]),
+      };
+    } else {
+      output[prefix + key] = data[key];
+    }
+  });
+  return Object.fromEntries(Object.entries(output).sort());
+}
 
 gulp.task("generate-translations", async function (task) {
   del.sync("./src/localize/generated.ts");
@@ -12,12 +27,16 @@ gulp.task("generate-translations", async function (task) {
   files.forEach((file) => {
     let lang = file.split(".")[0];
     if (changeLang[lang]) {
-      log(`Language code '${lang}' is wrong, using '${changeLang[lang]}'`)
-      lang = changeLang[lang]
+      log(`Language code '${lang}' is wrong, using '${changeLang[lang]}'`);
+      lang = changeLang[lang];
     }
-    languages[lang] = fs.readJSONSync(`./src/localize/languages/${file}`, "utf-8");
-    log(`Generating transtions for '${lang}'`)
+    languages[lang] = recursiveFlatten(
+      "",
+      fs.readJSONSync(`./src/localize/languages/${file}`, "utf-8")
+    );
+    log(`Generating transtions for '${lang}'`);
   });
+
   await fs.writeFile(
     "./src/localize/generated.ts",
     "export const languages = " + JSON.stringify(languages, null, 2),
