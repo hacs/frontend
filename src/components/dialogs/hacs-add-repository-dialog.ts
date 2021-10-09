@@ -1,3 +1,4 @@
+import "@polymer/paper-item/paper-item";
 import { mdiGithub } from "@mdi/js";
 import "@polymer/paper-item/paper-icon-item";
 import "@polymer/paper-item/paper-item-body";
@@ -11,21 +12,27 @@ import "../../../homeassistant-frontend/src/components/ha-svg-icon";
 import "../../../homeassistant-frontend/src/components/ha-paper-dropdown-menu";
 import { Repository } from "../../data/common";
 import { activePanel } from "../../panels/hacs-sections";
-import { scrollBarStyle, searchStyles } from "../../styles/element-styles";
+import { hacsIconStyle, scrollBarStyle, searchStyles } from "../../styles/element-styles";
 import { filterRepositoriesByInput } from "../../tools/filter-repositories-by-input";
 import "../hacs-chip";
 import "../hacs-filter";
 import { hacsIcon } from "../hacs-icon";
 import "./hacs-dialog";
 import { HacsDialogBase } from "./hacs-dialog-base";
+import { brandsUrl } from "../../../homeassistant-frontend/src/util/brands-url";
 
 @customElement("hacs-add-repository-dialog")
 export class HacsAddRepositoryDialog extends HacsDialogBase {
   @property({ attribute: false }) public filters: any = [];
-  @property({ type: Number }) private _load: number = 30;
-  @property({ type: Number }) private _top: number = 0;
-  @property() private _searchInput: string = "";
-  @property() private _sortBy: string = "stars";
+
+  @property({ type: Number }) private _load = 30;
+
+  @property({ type: Number }) private _top = 0;
+
+  @property() private _searchInput = "";
+
+  @property() private _sortBy = "stars";
+
   @property() public section!: string;
 
   shouldUpdate(changedProperties: PropertyValues) {
@@ -116,15 +123,15 @@ export class HacsAddRepositoryDialog extends HacsDialogBase {
               ?narrow=${this.narrow}
             >
               <paper-listbox slot="dropdown-content" selected="0">
-                <paper-item @tap=${() => (this._sortBy = "stars")}
-                  >${this.hacs.localize("store.stars")}</paper-item
-                >
-                <paper-item @tap=${() => (this._sortBy = "name")}
-                  >${this.hacs.localize("store.name")}</paper-item
-                >
-                <paper-item @tap=${() => (this._sortBy = "last_updated")}
-                  >${this.hacs.localize("store.last_updated")}</paper-item
-                >
+                <paper-item @tap=${() => (this._sortBy = "stars")}>
+                  ${this.hacs.localize("store.stars")}
+                </paper-item>
+                <paper-item @tap=${() => (this._sortBy = "name")}>
+                  ${this.hacs.localize("store.name")}
+                </paper-item>
+                <paper-item @tap=${() => (this._sortBy = "last_updated")}>
+                  ${this.hacs.localize("store.last_updated")}
+                </paper-item>
               </paper-listbox>
             </ha-paper-dropdown-menu>
           </div>
@@ -153,7 +160,11 @@ export class HacsAddRepositoryDialog extends HacsDialogBase {
                     ? html`
                         <img
                           loading="lazy"
-                          src="https://brands.home-assistant.io/_/${repo.domain}/icon.png"
+                          .src=${brandsUrl({
+                            domain: repo.domain,
+                            darkOptimized: this.hass.themes.darkMode,
+                            type: "icon",
+                          })}
                           referrerpolicy="no-referrer"
                           @error=${this._onImageError}
                           @load=${this._onImageLoad}
@@ -215,13 +226,15 @@ export class HacsAddRepositoryDialog extends HacsDialogBase {
 
   private _onImageError(ev) {
     if (ev.target) {
-      ev.target.outerHTML = `<ha-svg-icon .path=${mdiGithub} slot="item-icon"></ha-svg-icon>`;
+      ev.target.outerHTML = `<ha-svg-icon path="${mdiGithub}" slot="item-icon"></ha-svg-icon>`;
     }
   }
+
   static get styles() {
     return [
       searchStyles,
       scrollBarStyle,
+      hacsIconStyle,
       css`
         .content {
           width: 100%;
@@ -246,7 +259,7 @@ export class HacsAddRepositoryDialog extends HacsDialogBase {
           top: 8px;
           right: 8px;
         }
-        ha-icon {
+        ha-svg-icon {
           --mdc-icon-size: 36px;
         }
         search-input {

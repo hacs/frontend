@@ -1,7 +1,5 @@
 const gulp = require("gulp");
 const del = require("del");
-const fs = require("fs-extra");
-const makeDir = require("make-dir");
 require("./rollup.js");
 require("./translations");
 
@@ -11,13 +9,4 @@ gulp.task("cleanup", (task) => {
   task();
 });
 
-gulp.task("create-icon-metadata", async function (task) {
-  await makeDir("./homeassistant-frontend/build/mdi");
-  await fs.outputJson("./homeassistant-frontend/build/mdi/iconMetadata.json", {
-    version: "0",
-    parts: [],
-  });
-  task();
-});
-
-gulp.task("common", gulp.series("cleanup", "create-icon-metadata", "generate-translations"));
+gulp.task("common", gulp.series("cleanup", "generate-translations"));

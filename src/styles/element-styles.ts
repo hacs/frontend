@@ -16,7 +16,7 @@ export const hacsButtonStyle = css`
 
 export const hacsIconStyle = css`
   paper-menu-button,
-  ha-icon {
+  ha-svg-icon {
     color: var(--hcv-color-icon);
   }
 `;
