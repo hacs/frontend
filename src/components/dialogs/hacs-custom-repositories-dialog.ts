@@ -1,3 +1,5 @@
+import "@material/mwc-button/mwc-button";
+import "@polymer/paper-item/paper-item";
 import { mdiDelete, mdiGithub } from "@mdi/js";
 import "@polymer/paper-item/paper-icon-item";
 import "@polymer/paper-item/paper-item-body";
@@ -7,15 +9,19 @@ import { customElement, property, query } from "lit/decorators";
 import "../../../homeassistant-frontend/src/components/ha-svg-icon";
 import "../../../homeassistant-frontend/src/components/ha-paper-dropdown-menu";
 import { getRepositories, repositoryAdd, repositoryDelete } from "../../data/websocket";
-import { scrollBarStyle } from "../../styles/element-styles";
+import { hacsIconStyle, scrollBarStyle } from "../../styles/element-styles";
 import "./hacs-dialog";
 import { HacsDialogBase } from "./hacs-dialog-base";
+import { brandsUrl } from "../../../homeassistant-frontend/src/util/brands-url";
 
 @customElement("hacs-custom-repositories-dialog")
 export class HacsCustomRepositoriesDialog extends HacsDialogBase {
-  @property() private _inputRepository: string;
+  @property() private _inputRepository?: string;
+
   @property() private _error: any;
+
   @query("#add-input") private _addInput?: any;
+
   @query("#category") private _addCategory?: any;
 
   shouldUpdate(changedProperties: PropertyValues) {
@@ -48,7 +54,11 @@ export class HacsCustomRepositoriesDialog extends HacsDialogBase {
                     ? html`
                         <img
                           loading="lazy"
-                          src="https://brands.home-assistant.io/_/${repo.domain}/icon.png"
+                          .src=${brandsUrl({
+                            domain: repo.domain,
+                            darkOptimized: this.hass.themes.darkMode,
+                            type: "icon",
+                          })}
                           referrerpolicy="no-referrer"
                           @error=${this._onImageError}
                           @load=${this._onImageLoad}
@@ -147,10 +157,9 @@ export class HacsCustomRepositoriesDialog extends HacsDialogBase {
   }
 
   private _onImageError(ev) {
-    ev.target.outerHTML = `<ha-icon
-      icon="mdi:github-circle"
-      slot="item-icon"
-    ></ha-icon>`;
+    if (ev.target) {
+      ev.target.outerHTML = `<ha-svg-icon path="${mdiGithub}" slot="item-icon"></ha-svg-icon>`;
+    }
   }
 
   private async _showReopsitoryInfo(repository: string) {
@@ -169,6 +178,7 @@ export class HacsCustomRepositoriesDialog extends HacsDialogBase {
   static get styles() {
     return [
       scrollBarStyle,
+      hacsIconStyle,
       css`
         .content {
           width: 1024px;
@@ -180,10 +190,7 @@ export class HacsCustomRepositoriesDialog extends HacsDialogBase {
           max-height: 870px;
           overflow: auto;
         }
-        ha-icon {
-          color: var(--secondary-text-color);
-        }
-        ha-icon {
+        ha-svg-icon {
           --mdc-icon-size: 36px;
         }
         img {
