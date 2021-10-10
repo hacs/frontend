@@ -1,3 +1,4 @@
+import "../../../homeassistant-frontend/src/components/ha-alert";
 import "@polymer/paper-item/paper-icon-item";
 import "@polymer/paper-item/paper-item-body";
 import "@polymer/paper-listbox/paper-listbox";
@@ -23,6 +24,7 @@ import { updateLovelaceResources } from "../../tools/update-lovelace-resources";
 import "../hacs-link";
 import "./hacs-dialog";
 import { HacsDialogBase } from "./hacs-dialog-base";
+import { computeRTL } from "../../../homeassistant-frontend/src/common/util/compute_rtl";
 
 @customElement("hacs-install-dialog")
 export class HacsInstallDialog extends HacsDialogBase {
@@ -138,12 +140,12 @@ export class HacsInstallDialog extends HacsDialogBase {
                 </div>`
             : ""}
           ${!this._repository.can_install
-            ? html`<p class="error">
+            ? html`<ha-alert alert-type="error" .rtl=${computeRTL(this.hass)}>
                 ${this.hacs.localize("confirm.home_assistant_version_not_correct", {
                   haversion: this.hass.config.version,
                   minversion: this._repository.homeassistant,
                 })}
-              </p>`
+              </ha-alert>`
             : ""}
           <div class="note">
             ${this.hacs.localize(`repository.note_installed`)}
@@ -162,7 +164,11 @@ export class HacsInstallDialog extends HacsDialogBase {
               ? html`<p>${this.hacs.localize("dialog_install.restart")}</p>`
               : ""}
           </div>
-          ${this._error ? html`<div class="error">${this._error.message}</div>` : ""}
+          ${this._error?.message
+            ? html`<ha-alert alert-type="error" .rtl=${computeRTL(this.hass)}>
+                ${this._error.message}
+              </ha-alert>`
+            : ""}
         </div>
         <mwc-button
           slot="primaryaction"
@@ -256,9 +262,6 @@ export class HacsInstallDialog extends HacsDialogBase {
         }
         .lovelace {
           margin-top: 8px;
-        }
-        .error {
-          color: var(--hacs-error-color, var(--google-red-500));
         }
         paper-menu-button {
           color: var(--secondary-text-color);

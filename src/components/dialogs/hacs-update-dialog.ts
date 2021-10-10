@@ -1,3 +1,4 @@
+import "../../../homeassistant-frontend/src/components/ha-alert";
 import "@material/mwc-button/mwc-button";
 import "../../../homeassistant-frontend/src/components/ha-expansion-panel";
 import { mdiArrowRight } from "@mdi/js";
@@ -21,6 +22,7 @@ import "./hacs-dialog";
 import { HacsDialogBase } from "./hacs-dialog-base";
 import { showConfirmationDialog } from "../../../homeassistant-frontend/src/dialogs/generic/show-dialog-box";
 import { mainWindow } from "../../../homeassistant-frontend/src/common/dom/get_main_window";
+import { computeRTL } from "../../../homeassistant-frontend/src/common/util/compute_rtl";
 
 @customElement("hacs-update-dialog")
 export class HacsUpdateDialog extends HacsDialogBase {
@@ -117,12 +119,12 @@ export class HacsUpdateDialog extends HacsDialogBase {
           }
           ${
             !repository.can_install
-              ? html`<p class="error">
+              ? html`<ha-alert alert-type="error" .rtl=${computeRTL(this.hass)}>
                   ${this.hacs.localize("confirm.home_assistant_version_not_correct", {
                     haversion: this.hass.config.version,
                     minversion: repository.homeassistant,
                   })}
-                </p>`
+                </ha-alert>`
               : ""
           }
           ${
@@ -130,7 +132,13 @@ export class HacsUpdateDialog extends HacsDialogBase {
               ? html`<p>${this.hacs.localize("dialog_install.restart")}</p>`
               : ""
           }
-          ${this._error ? html`<div class="error">${this._error.message}</div>` : ""}
+          ${
+            this._error?.message
+              ? html`<ha-alert alert-type="error" .rtl=${computeRTL(this.hass)}>
+                  ${this._error.message}
+                </ha-alert>`
+              : ""
+          }
         </div>
         <mwc-button
           slot="primaryaction"
@@ -207,9 +215,6 @@ export class HacsUpdateDialog extends HacsDialogBase {
         .content {
           width: 360px;
           display: contents;
-        }
-        .error {
-          color: var(--hacs-error-color, var(--google-red-500));
         }
         ha-expansion-panel {
           margin: 8px 0;

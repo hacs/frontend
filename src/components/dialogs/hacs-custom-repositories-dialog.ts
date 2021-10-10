@@ -1,3 +1,4 @@
+import "../../../homeassistant-frontend/src/components/ha-alert";
 import "@material/mwc-button/mwc-button";
 import "@polymer/paper-item/paper-item";
 import { mdiDelete, mdiGithub } from "@mdi/js";
@@ -13,6 +14,7 @@ import { hacsIconStyle, scrollBarStyle } from "../../styles/element-styles";
 import "./hacs-dialog";
 import { HacsDialogBase } from "./hacs-dialog-base";
 import { brandsUrl } from "../../../homeassistant-frontend/src/util/brands-url";
+import { computeRTL } from "../../../homeassistant-frontend/src/common/util/compute_rtl";
 
 @customElement("hacs-custom-repositories-dialog")
 export class HacsCustomRepositoriesDialog extends HacsDialogBase {
@@ -45,7 +47,11 @@ export class HacsCustomRepositoriesDialog extends HacsDialogBase {
       >
         <div class="content">
           <div class="list">
-            ${this._error ? html`<div class="error">${this._error.message}</div>` : ""}
+            ${this._error?.message
+              ? html`<ha-alert alert-type="error" .rtl=${computeRTL(this.hass)}>
+                  ${this._error.message}
+                </ha-alert>`
+              : ""}
             ${repositories
               ?.filter((repo) => this.hacs.configuration.categories.includes(repo.category))
               .map(
@@ -207,11 +213,6 @@ export class HacsCustomRepositoriesDialog extends HacsDialogBase {
         }
         paper-item-body {
           cursor: pointer;
-        }
-        .error {
-          line-height: 0px;
-          margin: 12px;
-          color: var(--hacs-error-color, var(--google-red-500, red));
         }
 
         paper-item-body {

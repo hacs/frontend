@@ -114,26 +114,21 @@ export class HacsEntryPanel extends LitElement {
 
           ${this.hacs.updates?.length !== 0
             ? html` <ha-card>
-                <div class="header">${this.hacs.localize("entry.pending_updates")}</div>
                 ${sortRepositoriesByName(this.hacs.updates).map(
                   (repository) =>
                     html`
-                      <paper-icon-item @click="${() => this._openUpdateDialog(repository)}">
-                        <ha-svg-icon
-                          class="pending_update"
-                          .path=${mdiAlertCircle}
-                          slot="item-icon"
-                        ></ha-svg-icon>
-                        <paper-item-body two-line>
-                          ${repository.name}
-                          <div secondary>
-                            ${this.hacs.localize("sections.pending_repository_upgrade", {
-                              installed: repository.installed_version,
-                              available: repository.available_version,
-                            })}
-                          </div>
-                        </paper-item-body>
-                      </paper-icon-item>
+                      <ha-alert
+                        alert-type="warning"
+                        .title=${repository.name}
+                        .rtl=${computeRTL(this.hass)}
+                        .actionText=${this.hacs.localize("common.update")}
+                        @alert-action-clicked=${() => this._openUpdateDialog(repository)}
+                      >
+                        ${this.hacs.localize("sections.pending_repository_upgrade", {
+                          installed: repository.installed_version,
+                          available: repository.available_version,
+                        })}
+                      </ha-alert>
                     `
                 )}
               </ha-card>`
