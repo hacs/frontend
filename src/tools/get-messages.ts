@@ -18,9 +18,7 @@ export const getMessages = memoizeOne((hacs: Hacs): Message[] => {
     if (repo.installed && hacs.removed.map((r) => r.repository)?.includes(repo.full_name)) {
       const removedrepo = hacs.removed.find((r) => r.repository === repo.full_name);
       messages.push({
-        name: hacs
-          .localize("entry.messages.removed")
-          .replace("{repository}", removedrepo.repository),
+        name: hacs.localize("entry.messages.removed", { repository: removedrepo.repository }),
         info: removedrepo.reason,
         severity: "error",
         dialog: "removed",
@@ -59,9 +57,9 @@ export const getMessages = memoizeOne((hacs: Hacs): Message[] => {
   if (repositoriesNotAddedToLovelace.length > 0) {
     messages.push({
       name: hacs.localize("entry.messages.resources.title"),
-      info: hacs
-        .localize("entry.messages.resources.content")
-        .replace("{number}", String(repositoriesNotAddedToLovelace.length)),
+      info: hacs.localize("entry.messages.resources.content", {
+        number: repositoriesNotAddedToLovelace.length,
+      }),
       severity: "error",
       path: "/hacs/frontend",
     });
@@ -70,15 +68,13 @@ export const getMessages = memoizeOne((hacs: Hacs): Message[] => {
   if (repositoriesRestartPending.length > 0) {
     messages.push({
       name: hacs.localize("entry.messages.restart.title"),
-      info: hacs
-        .localize("entry.messages.restart.content")
-        .replace("{number}", String(repositoriesRestartPending.length))
-        .replace(
-          "{pluralWording}",
+      info: hacs.localize("entry.messages.restart.content", {
+        number: repositoriesRestartPending.length,
+        pluralWording:
           repositoriesRestartPending.length === 1
             ? hacs.localize("common.integration")
-            : hacs.localize("common.integration_plural")
-        ),
+            : hacs.localize("common.integration_plural"),
+      }),
       severity: "error",
       path: "/config/server_control",
     });

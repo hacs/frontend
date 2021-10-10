@@ -139,10 +139,10 @@ export class HacsInstallDialog extends HacsDialogBase {
             : ""}
           ${!this._repository.can_install
             ? html`<p class="error">
-                ${this.hacs
-                  .localize("confirm.home_assistant_version_not_correct")
-                  .replace("{haversion}", this.hass.config.version)
-                  .replace("{minversion}", this._repository.homeassistant)}
+                ${this.hacs.localize("confirm.home_assistant_version_not_correct", {
+                  haversion: this.hass.config.version,
+                  minversion: this._repository.homeassistant,
+                })}
               </p>`
             : ""}
           <div class="note">

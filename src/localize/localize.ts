@@ -1,73 +1,60 @@
+import IntlMessageFormat from "intl-messageformat";
 import { HacsLogger } from "../tools/hacs-logger";
 import { languages } from "./generated";
 
+const DEFAULT_LANGUAGE = "en";
+const logger = new HacsLogger("localize");
 const warnings: { language: string[]; sting: Record<string, Array<string>> } = {
   language: [],
   sting: {},
 };
 
-export function localize(language: string, string: string, replace?: Record<string, any>) {
-  let translated: any;
+const _localizationCache = {};
 
-  const logger = new HacsLogger("localize");
-
-  const split = string.split(".");
-
-  const lang = (language || localStorage.getItem("selectedLanguage") || "en")
+export function localize(language: string, string: string, replace?: Record<string, any>): string {
+  let lang = (language || localStorage.getItem("selectedLanguage") || DEFAULT_LANGUAGE)
     .replace(/['"]+/g, "")
     .replace("-", "_");
 
-  if (!languages[lang] && !warnings.language.includes(lang)) {
-    warnings.language.push(lang);
-    logger.warn(
-      `Language '${lang.replace(
-        "_",
-        "-"
-      )}' is not added to HACS. https://hacs.xyz/docs/developer/translation`
-    );
-  }
+  if (!languages[lang]) {
+    lang = DEFAULT_LANGUAGE;
 
-  try {
-    translated = languages[lang];
-    split.forEach((section) => {
-      translated = translated[section];
-    });
-  } catch (e) {
-    if (languages[lang] && !warnings.sting[lang]) {
-      warnings.sting[lang] = [];
-    }
-    if (languages[lang] && !warnings.sting[lang].includes(string)) {
-      warnings.sting[lang].push(string);
+    if (!warnings.language?.includes(lang)) {
+      warnings.language.push(lang);
       logger.warn(
-        `Translation string '${string}' for '${lang.replace(
+        `Language '${lang.replace(
           "_",
           "-"
         )}' is not added to HACS. https://hacs.xyz/docs/developer/translation`
       );
     }
-
-    translated = undefined;
   }
 
-  if (translated === undefined) {
-    translated = languages.en;
-    split.forEach((section) => {
-      translated = translated[section];
-    });
+  const translatedValue = languages[lang]?.[string] || languages[DEFAULT_LANGUAGE][string];
+
+  if (!translatedValue) {
+    logger.error(`Translation problem with '${string}' for '${lang}'`);
+    return string;
   }
 
-  if (replace) {
-    const keys = Object.keys(replace);
-    for (const key of keys) {
-      if (!translated.includes(key)) {
-        logger.error(`Variable '${key}' does not exist in '${string}' with '${lang}'`);
-        continue;
-      }
-      translated = translated.replace(`{${key}}`, replace[key]);
+  const messageKey = string + translatedValue;
+
+  let translatedMessage = _localizationCache[messageKey] as IntlMessageFormat | undefined;
+
+  if (!translatedMessage) {
+    try {
+      translatedMessage = new IntlMessageFormat(translatedValue, language);
+    } catch (err: any) {
+      logger.error(`Translation problem with '${string}' for '${lang}'`);
+      return string;
     }
-    if (translated.includes("{") || translated.includes("}")) {
-      logger.error(`Translation for '${string}' with '${lang}' is missing variables`);
-    }
+    _localizationCache[messageKey] = translatedMessage;
   }
-  return translated;
+
+  try {
+    return translatedMessage.format<string>(replace) as string;
+  } catch (err: any) {
+    logger.error(`Translation problem with '${string}' for '${lang}'`);
+    return string;
+  }
 }

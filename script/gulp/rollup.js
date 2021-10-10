@@ -72,7 +72,8 @@ const outputconfig = (isDev) => {
     assetFileNames: !isDev ? "a.[hash].js" : "[name]-dev.js",
     entryFileNames: !isDev ? "[name]-[hash].js" : "[name]-dev.js",
     format: "es",
-    intro: "const __DEMO__ = false;",
+    intro: `const __DEMO__ = false;
+    const __SUPERVISOR__ = true`,
   };
 };
 

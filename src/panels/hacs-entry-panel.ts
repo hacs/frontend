@@ -127,10 +127,10 @@ export class HacsEntryPanel extends LitElement {
                         <paper-item-body two-line>
                           ${repository.name}
                           <div secondary>
-                            ${this.hacs
-                              .localize("sections.pending_repository_upgrade")
-                              .replace("{installed}", repository.installed_version)
-                              .replace("{available}", repository.available_version)}
+                            ${this.hacs.localize("sections.pending_repository_upgrade", {
+                              installed: repository.installed_version,
+                              available: repository.available_version,
+                            })}
                           </div>
                         </paper-item-body>
                       </paper-icon-item>
