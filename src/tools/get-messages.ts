@@ -18,10 +18,12 @@ export const getMessages = memoizeOne((hacs: Hacs): Message[] => {
     if (repo.installed && hacs.removed.map((r) => r.repository)?.includes(repo.full_name)) {
       const removedrepo = hacs.removed.find((r) => r.repository === repo.full_name);
       messages.push({
-        name: hacs.localize("entry.messages.removed", { repository: removedrepo.repository }),
+        name: hacs.localize("entry.messages.removed_repository", {
+          repository: removedrepo.repository,
+        }),
         info: removedrepo.reason,
         severity: "error",
-        dialog: "removed",
+        dialog: "remove",
         repository: repo,
       });
     }
@@ -61,7 +63,6 @@ export const getMessages = memoizeOne((hacs: Hacs): Message[] => {
         number: repositoriesNotAddedToLovelace.length,
       }),
       severity: "error",
-      path: "/hacs/frontend",
     });
   }
 
@@ -76,7 +77,6 @@ export const getMessages = memoizeOne((hacs: Hacs): Message[] => {
             : hacs.localize("common.integration_plural"),
       }),
       severity: "error",
-      path: "/config/server_control",
     });
   }
 

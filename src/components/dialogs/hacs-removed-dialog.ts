@@ -17,7 +17,9 @@ export class HacsRemovedDialog extends HacsDialogBase {
       <hacs-dialog
         .active=${this.active}
         .hass=${this.hass}
-        .title=${this.hacs.localize("entry.messages.removed", { repository: "" })}
+        .title=${this.hacs.localize("entry.messages.removed_repository", {
+          repository: this.repository.full_name,
+        })}
       >
         <div class="content">
           <div><b>${this.hacs.localize("dialog_removed.name")}:</b> ${this.repository.name}</div>

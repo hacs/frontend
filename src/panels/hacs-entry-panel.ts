@@ -97,17 +97,22 @@ export class HacsEntryPanel extends LitElement {
           <div slot="introduction">
             ${this.hacs.messages?.length !== 0
               ? this.hacs.messages.map(
-                  (message) => html`
-                    <ha-alert
-                      .alertType=${message.severity!}
-                      .title=${message.secondary
-                        ? `${message.name} - ${message.secondary}`
-                        : message.name}
-                      .rtl=${computeRTL(this.hass)}
-                    >
-                      ${message.info}
-                    </ha-alert>
-                  `
+                  (message) =>
+                    html`
+                      <ha-alert
+                        .alertType=${message.severity!}
+                        .title=${message.secondary
+                          ? `${message.name} - ${message.secondary}`
+                          : message.name}
+                        .rtl=${computeRTL(this.hass)}
+                        .actionText=${message.dialog
+                          ? this.hacs.localize(`common.${message.dialog}`)
+                          : ""}
+                        @alert-action-clicked=${() => this._openDialog(message)}
+                      >
+                        ${message.info}
+                      </ha-alert>
+                    `
                 )
               : !this.narrow
               ? this.hacs.localize("entry.intro")
@@ -163,6 +168,25 @@ export class HacsEntryPanel extends LitElement {
         </ha-config-section>
       </app-header-layout>
     `;
+  }
+
+  private _openDialog(message: Message) {
+    if (!message.dialog) {
+      return;
+    }
+    if (message.dialog == "remove") {
+      message.dialog = "removed";
+    }
+    this.dispatchEvent(
+      new CustomEvent("hacs-dialog", {
+        detail: {
+          type: message.dialog,
+          repository: message.repository,
+        },
+        bubbles: true,
+        composed: true,
+      })
+    );
   }
 
   private _openUpdateDialog(repository: Repository) {
