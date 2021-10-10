@@ -118,7 +118,6 @@ export class HacsEntryPanel extends LitElement {
                   (repository) =>
                     html`
                       <ha-alert
-                        alert-type="warning"
                         .title=${repository.name}
                         .rtl=${computeRTL(this.hass)}
                         .actionText=${this.hacs.localize("common.update")}
