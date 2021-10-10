@@ -17,17 +17,16 @@ export function localize(language: string, string: string, replace?: Record<stri
     .replace("-", "_");
 
   if (!languages[lang]) {
-    lang = DEFAULT_LANGUAGE;
-
     if (!warnings.language?.includes(lang)) {
       warnings.language.push(lang);
       logger.warn(
         `Language '${lang.replace(
           "_",
           "-"
-        )}' is not added to HACS. https://hacs.xyz/docs/developer/translation`
+        )}' is not added to HACS, using '${DEFAULT_LANGUAGE}' instead. https://hacs.xyz/docs/developer/translation`
       );
     }
+    lang = DEFAULT_LANGUAGE;
   }
 
   const translatedValue = languages[lang]?.[string] || languages[DEFAULT_LANGUAGE][string];
