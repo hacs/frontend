@@ -14,7 +14,7 @@ function recursiveFlatten(prefix, data) {
         ...recursiveFlatten(prefix + key + ".", data[key]),
       };
     } else {
-      output[prefix + key] = data[key];
+      output[prefix + key] = data[key].replace(/'{/g, "''{").replace(/}'/g, "}''");
     }
   });
   return Object.fromEntries(Object.entries(output).sort());
