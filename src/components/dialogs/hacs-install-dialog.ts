@@ -1,4 +1,3 @@
-import "../../../homeassistant-frontend/src/components/ha-alert";
 import "@polymer/paper-item/paper-icon-item";
 import "@polymer/paper-item/paper-item-body";
 import "@polymer/paper-listbox/paper-listbox";
@@ -6,6 +5,8 @@ import { css, CSSResultGroup, html, PropertyValues, TemplateResult } from "lit";
 import { customElement, property, state } from "lit/decorators";
 import memoizeOne from "memoize-one";
 import { mainWindow } from "../../../homeassistant-frontend/src/common/dom/get_main_window";
+import { computeRTL } from "../../../homeassistant-frontend/src/common/util/compute_rtl";
+import "../../../homeassistant-frontend/src/components/ha-alert";
 import "../../../homeassistant-frontend/src/components/ha-circular-progress";
 import "../../../homeassistant-frontend/src/components/ha-formfield";
 import "../../../homeassistant-frontend/src/components/ha-paper-dropdown-menu";
@@ -24,7 +25,6 @@ import { updateLovelaceResources } from "../../tools/update-lovelace-resources";
 import "../hacs-link";
 import "./hacs-dialog";
 import { HacsDialogBase } from "./hacs-dialog-base";
-import { computeRTL } from "../../../homeassistant-frontend/src/common/util/compute_rtl";
 
 @customElement("hacs-install-dialog")
 export class HacsInstallDialog extends HacsDialogBase {

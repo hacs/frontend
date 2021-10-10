@@ -1,20 +1,20 @@
-import "../../../homeassistant-frontend/src/components/ha-alert";
 import "@material/mwc-button/mwc-button";
-import "@polymer/paper-item/paper-item";
 import { mdiDelete, mdiGithub } from "@mdi/js";
 import "@polymer/paper-item/paper-icon-item";
+import "@polymer/paper-item/paper-item";
 import "@polymer/paper-item/paper-item-body";
 import "@polymer/paper-listbox/paper-listbox";
 import { css, html, PropertyValues, TemplateResult } from "lit";
 import { customElement, property, query } from "lit/decorators";
-import "../../../homeassistant-frontend/src/components/ha-svg-icon";
+import { computeRTL } from "../../../homeassistant-frontend/src/common/util/compute_rtl";
+import "../../../homeassistant-frontend/src/components/ha-alert";
 import "../../../homeassistant-frontend/src/components/ha-paper-dropdown-menu";
+import "../../../homeassistant-frontend/src/components/ha-svg-icon";
+import { brandsUrl } from "../../../homeassistant-frontend/src/util/brands-url";
 import { getRepositories, repositoryAdd, repositoryDelete } from "../../data/websocket";
 import { hacsIconStyle, scrollBarStyle } from "../../styles/element-styles";
 import "./hacs-dialog";
 import { HacsDialogBase } from "./hacs-dialog-base";
-import { brandsUrl } from "../../../homeassistant-frontend/src/util/brands-url";
-import { computeRTL } from "../../../homeassistant-frontend/src/common/util/compute_rtl";
 
 @customElement("hacs-custom-repositories-dialog")
 export class HacsCustomRepositoriesDialog extends HacsDialogBase {

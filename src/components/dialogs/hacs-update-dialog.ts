@@ -1,13 +1,16 @@
-import "../../../homeassistant-frontend/src/components/ha-alert";
 import "@material/mwc-button/mwc-button";
-import "../../../homeassistant-frontend/src/components/ha-expansion-panel";
 import { mdiArrowRight } from "@mdi/js";
 import { css, CSSResultGroup, html, TemplateResult } from "lit";
 import { customElement, property } from "lit/decorators";
 import { classMap } from "lit/directives/class-map";
 import memoizeOne from "memoize-one";
+import { mainWindow } from "../../../homeassistant-frontend/src/common/dom/get_main_window";
+import { computeRTL } from "../../../homeassistant-frontend/src/common/util/compute_rtl";
+import "../../../homeassistant-frontend/src/components/ha-alert";
 import "../../../homeassistant-frontend/src/components/ha-circular-progress";
+import "../../../homeassistant-frontend/src/components/ha-expansion-panel";
 import "../../../homeassistant-frontend/src/components/ha-svg-icon";
+import { showConfirmationDialog } from "../../../homeassistant-frontend/src/dialogs/generic/show-dialog-box";
 import { Repository } from "../../data/common";
 import {
   repositoryInstall,
@@ -20,9 +23,6 @@ import { updateLovelaceResources } from "../../tools/update-lovelace-resources";
 import "../hacs-link";
 import "./hacs-dialog";
 import { HacsDialogBase } from "./hacs-dialog-base";
-import { showConfirmationDialog } from "../../../homeassistant-frontend/src/dialogs/generic/show-dialog-box";
-import { mainWindow } from "../../../homeassistant-frontend/src/common/dom/get_main_window";
-import { computeRTL } from "../../../homeassistant-frontend/src/common/util/compute_rtl";
 
 @customElement("hacs-update-dialog")
 export class HacsUpdateDialog extends HacsDialogBase {
