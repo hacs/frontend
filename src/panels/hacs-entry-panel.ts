@@ -109,6 +109,8 @@ export class HacsEntryPanel extends LitElement {
                     </ha-alert>
                   `
                 )
+              : !this.narrow
+              ? this.hacs.localize("entry.intro")
               : ""}
           </div>
 
