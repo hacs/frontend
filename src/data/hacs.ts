@@ -1,8 +1,8 @@
-import { Repository, Configuration, Status } from "./common";
+import { Repository, Configuration, Status, Message } from "./common";
 
 export interface Hacs {
   language: string;
-  messages: { class: string; iconPath: string; info: string; name: string; path: string }[];
+  messages: Message[];
   updates: any[];
   resources: any[];
   repositories: Repository[];

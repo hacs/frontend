@@ -62,9 +62,8 @@ export interface LovelaceResourcesMutableParams {
 export interface Message {
   name: string;
   info: string;
-  class?: string;
   secondary?: string;
-  severity?: "information" | "warning" | "error" | "critical";
+  severity?: "info" | "warning" | "error" | "success";
   path?: string;
   iconPath?: string;
   dialog?: string;

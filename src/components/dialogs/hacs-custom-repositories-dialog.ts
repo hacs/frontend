@@ -1,18 +1,20 @@
 import "@material/mwc-button/mwc-button";
-import "@polymer/paper-item/paper-item";
 import { mdiDelete, mdiGithub } from "@mdi/js";
 import "@polymer/paper-item/paper-icon-item";
+import "@polymer/paper-item/paper-item";
 import "@polymer/paper-item/paper-item-body";
 import "@polymer/paper-listbox/paper-listbox";
 import { css, html, PropertyValues, TemplateResult } from "lit";
 import { customElement, property, query } from "lit/decorators";
-import "../../../homeassistant-frontend/src/components/ha-svg-icon";
+import { computeRTL } from "../../../homeassistant-frontend/src/common/util/compute_rtl";
+import "../../../homeassistant-frontend/src/components/ha-alert";
 import "../../../homeassistant-frontend/src/components/ha-paper-dropdown-menu";
+import "../../../homeassistant-frontend/src/components/ha-svg-icon";
+import { brandsUrl } from "../../../homeassistant-frontend/src/util/brands-url";
 import { getRepositories, repositoryAdd, repositoryDelete } from "../../data/websocket";
 import { hacsIconStyle, scrollBarStyle } from "../../styles/element-styles";
 import "./hacs-dialog";
 import { HacsDialogBase } from "./hacs-dialog-base";
-import { brandsUrl } from "../../../homeassistant-frontend/src/util/brands-url";
 
 @customElement("hacs-custom-repositories-dialog")
 export class HacsCustomRepositoriesDialog extends HacsDialogBase {
@@ -45,7 +47,11 @@ export class HacsCustomRepositoriesDialog extends HacsDialogBase {
       >
         <div class="content">
           <div class="list">
-            ${this._error ? html`<div class="error">${this._error.message}</div>` : ""}
+            ${this._error?.message
+              ? html`<ha-alert alert-type="error" .rtl=${computeRTL(this.hass)}>
+                  ${this._error.message}
+                </ha-alert>`
+              : ""}
             ${repositories
               ?.filter((repo) => this.hacs.configuration.categories.includes(repo.category))
               .map(
@@ -207,11 +213,6 @@ export class HacsCustomRepositoriesDialog extends HacsDialogBase {
         }
         paper-item-body {
           cursor: pointer;
-        }
-        .error {
-          line-height: 0px;
-          margin: 12px;
-          color: var(--hacs-error-color, var(--google-red-500, red));
         }
 
         paper-item-body {

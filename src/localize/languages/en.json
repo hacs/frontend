@@ -33,6 +33,7 @@
     "python_script": "Python Script",
     "python_scripts": "Python Scripts",
     "reload": "Reload",
+    "remove": "Remove",
     "repositories": "Repositories",
     "repository": "Repository",
     "settings": "settings",
@@ -339,7 +340,7 @@
         "title": "Pending restart",
         "content": "You have {number} {pluralWording} for which a restart of Home Assistant is required. You can do that from the 'Server management' section under the configuration part of Home Assistant UI."
       },
-      "removed": "Removed repository '{repository}'"
+      "removed_repository": "Removed repository ''{repository}''"
     },
     "intro": "Updates and important messages will show here if there are any",
     "information": "Information",

@@ -5,6 +5,8 @@ import { css, CSSResultGroup, html, PropertyValues, TemplateResult } from "lit";
 import { customElement, property, state } from "lit/decorators";
 import memoizeOne from "memoize-one";
 import { mainWindow } from "../../../homeassistant-frontend/src/common/dom/get_main_window";
+import { computeRTL } from "../../../homeassistant-frontend/src/common/util/compute_rtl";
+import "../../../homeassistant-frontend/src/components/ha-alert";
 import "../../../homeassistant-frontend/src/components/ha-circular-progress";
 import "../../../homeassistant-frontend/src/components/ha-formfield";
 import "../../../homeassistant-frontend/src/components/ha-paper-dropdown-menu";
@@ -138,12 +140,12 @@ export class HacsInstallDialog extends HacsDialogBase {
                 </div>`
             : ""}
           ${!this._repository.can_install
-            ? html`<p class="error">
+            ? html`<ha-alert alert-type="error" .rtl=${computeRTL(this.hass)}>
                 ${this.hacs.localize("confirm.home_assistant_version_not_correct", {
                   haversion: this.hass.config.version,
                   minversion: this._repository.homeassistant,
                 })}
-              </p>`
+              </ha-alert>`
             : ""}
           <div class="note">
             ${this.hacs.localize(`repository.note_installed`)}
@@ -162,7 +164,11 @@ export class HacsInstallDialog extends HacsDialogBase {
               ? html`<p>${this.hacs.localize("dialog_install.restart")}</p>`
               : ""}
           </div>
-          ${this._error ? html`<div class="error">${this._error.message}</div>` : ""}
+          ${this._error?.message
+            ? html`<ha-alert alert-type="error" .rtl=${computeRTL(this.hass)}>
+                ${this._error.message}
+              </ha-alert>`
+            : ""}
         </div>
         <mwc-button
           slot="primaryaction"
@@ -256,9 +262,6 @@ export class HacsInstallDialog extends HacsDialogBase {
         }
         .lovelace {
           margin-top: 8px;
-        }
-        .error {
-          color: var(--hacs-error-color, var(--google-red-500));
         }
         paper-menu-button {
           color: var(--secondary-text-color);

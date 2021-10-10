@@ -3,7 +3,7 @@ import { Message, Repository } from "../data/common";
 import { Hacs } from "../data/hacs";
 import { addedToLovelace } from "./added-to-lovelace";
 
-export const getMessages = memoizeOne((hacs: Hacs) => {
+export const getMessages = memoizeOne((hacs: Hacs): Message[] => {
   const messages: Message[] = [];
   const repositoriesNotAddedToLovelace: Repository[] = [];
   const repositoriesRestartPending: Repository[] = [];
@@ -18,10 +18,12 @@ export const getMessages = memoizeOne((hacs: Hacs) => {
     if (repo.installed && hacs.removed.map((r) => r.repository)?.includes(repo.full_name)) {
       const removedrepo = hacs.removed.find((r) => r.repository === repo.full_name);
       messages.push({
-        name: hacs.localize("entry.messages.removed", { repository: removedrepo.repository }),
+        name: hacs.localize("entry.messages.removed_repository", {
+          repository: removedrepo.repository,
+        }),
         info: removedrepo.reason,
         severity: "error",
-        dialog: "removed",
+        dialog: "remove",
         repository: repo,
       });
     }
@@ -31,7 +33,7 @@ export const getMessages = memoizeOne((hacs: Hacs) => {
     messages.push({
       name: hacs.localize(`entry.messages.${hacs.status.stage}.title`),
       info: hacs.localize(`entry.messages.${hacs.status.stage}.content`),
-      severity: "information",
+      severity: "info",
     });
   }
 
@@ -44,12 +46,14 @@ export const getMessages = memoizeOne((hacs: Hacs) => {
   }
 
   if (hacs.status?.disabled) {
-    messages.push({
-      name: hacs.localize("entry.messages.disabled.title"),
-      secondary: hacs.localize(`entry.messages.disabled.${hacs.status?.disabled_reason}.title`),
-      info: hacs.localize(`entry.messages.disabled.${hacs.status?.disabled_reason}.description`),
-      severity: "error",
-    });
+    return [
+      {
+        name: hacs.localize("entry.messages.disabled.title"),
+        secondary: hacs.localize(`entry.messages.disabled.${hacs.status?.disabled_reason}.title`),
+        info: hacs.localize(`entry.messages.disabled.${hacs.status?.disabled_reason}.description`),
+        severity: "error",
+      },
+    ];
   }
 
   if (repositoriesNotAddedToLovelace.length > 0) {
@@ -59,7 +63,6 @@ export const getMessages = memoizeOne((hacs: Hacs) => {
         number: repositoriesNotAddedToLovelace.length,
       }),
       severity: "error",
-      path: "/hacs/frontend",
     });
   }
 
@@ -74,7 +77,6 @@ export const getMessages = memoizeOne((hacs: Hacs) => {
             : hacs.localize("common.integration_plural"),
       }),
       severity: "error",
-      path: "/config/server_control",
     });
   }
 
