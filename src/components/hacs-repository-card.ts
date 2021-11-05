@@ -1,3 +1,4 @@
+import "../../homeassistant-frontend/src/components/ha-chip";
 import "@material/mwc-button/mwc-button";
 import { mdiDotsVertical } from "@mdi/js";
 import "@polymer/paper-item/paper-item";
@@ -23,8 +24,6 @@ import {
 } from "../data/websocket";
 import { HacsStyles } from "../styles/hacs-common-style";
 import { generateLovelaceURL } from "../tools/added-to-lovelace";
-import "./hacs-chip";
-import { hacsIcon } from "./hacs-icon";
 import "./hacs-link";
 
 @customElement("hacs-repository-card")
@@ -100,10 +99,9 @@ export class HacsRepositoryCard extends LitElement {
             <div class="title">
               <h1 class="pointer" @click=${this._showReopsitoryInfo}>${this.repository.name}</h1>
               ${this.repository.category !== "integration"
-                ? html` <hacs-chip
-                    .icon=${hacsIcon}
-                    .value=${this.hacs.localize(`common.${this.repository.category}`)}
-                  ></hacs-chip>`
+                ? html` <ha-chip>
+                    ${this.hacs.localize(`common.${this.repository.category}`)}
+                  </ha-chip>`
                 : ""}
             </div>
           </div>
@@ -320,9 +318,6 @@ export class HacsRepositoryCard extends LitElement {
           border-radius: var(--ha-card-border-radius, 4px);
         }
 
-        hacs-chip {
-          margin: 8px 4px 0 0;
-        }
         .title {
           display: flex;
           justify-content: space-between;

@@ -1,3 +1,4 @@
+import "../../../homeassistant-frontend/src/components/ha-chip";
 import "@polymer/paper-item/paper-item";
 import { mdiGithub } from "@mdi/js";
 import "@polymer/paper-item/paper-icon-item";
@@ -14,9 +15,7 @@ import { Repository } from "../../data/common";
 import { activePanel } from "../../panels/hacs-sections";
 import { hacsIconStyle, scrollBarStyle, searchStyles } from "../../styles/element-styles";
 import { filterRepositoriesByInput } from "../../tools/filter-repositories-by-input";
-import "../hacs-chip";
 import "../hacs-filter";
-import { hacsIcon } from "../hacs-icon";
 import "./hacs-dialog";
 import { HacsDialogBase } from "./hacs-dialog-base";
 import { brandsUrl } from "../../../homeassistant-frontend/src/util/brands-url";
@@ -174,10 +173,7 @@ export class HacsAddRepositoryDialog extends HacsDialogBase {
                   <paper-item-body two-line
                     >${repo.name}
                     <div class="category-chip">
-                      <hacs-chip
-                        .icon=${hacsIcon}
-                        .value=${this.hacs.localize(`common.${repo.category}`)}
-                      ></hacs-chip>
+                      <ha-chip>${this.hacs.localize(`common.${repo.category}`)}</ha-chip>
                     </div>
                     <div secondary>${repo.description}</div>
                   </paper-item-body>

@@ -21,10 +21,6 @@ export const hacsStyleVariables = css`
     --hcv-color-fab: var(--hacs-fab-color, var(--accent-color));
     --hcv-text-color-fab: var(--hacs-fab-text-color, var(--hcv-text-color-on-background));
 
-    /*hacs-chip*/
-    --hcv-color-chip: var(--hacs-chip-color, var(--accent-color));
-    --hcv-text-color-chip: var(--hacs-chip-text-color, var(--hcv-text-color-on-background));
-
     /*hacs-link*/
     --hcv-text-decoration-link: var(--hacs-link-text-decoration, none);
   }
