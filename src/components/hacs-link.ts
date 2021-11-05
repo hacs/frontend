@@ -1,12 +1,16 @@
 import { css, CSSResultGroup, html, LitElement, TemplateResult } from "lit";
 import { customElement, property } from "lit/decorators";
+import { mainWindow } from "../../homeassistant-frontend/src/common/dom/get_main_window";
 import { navigate } from "../../homeassistant-frontend/src/common/navigate";
 
 @customElement("hacs-link")
 export class HacsLink extends LitElement {
-  @property({ type: Boolean }) public newtab: boolean = false;
-  @property({ type: Boolean }) public parent: boolean = false;
-  @property() public title: string;
+  @property({ type: Boolean }) public newtab = false;
+
+  @property({ type: Boolean }) public parent = false;
+
+  @property() public title = "";
+
   @property() public url!: string;
 
   protected render(): TemplateResult | void {
@@ -34,7 +38,7 @@ export class HacsLink extends LitElement {
       target = "_parent";
     }
 
-    top.open(this.url, target, features);
+    mainWindow.open(this.url, target, features);
   }
 
   static get styles(): CSSResultGroup {
