@@ -17,10 +17,6 @@ export const hacsStyleVariables = css`
     --mdc-dialog-heading-ink-color: var(--hcv-text-color-primary);
     --mdc-dialog-content-ink-color: var(--hcv-text-color-primary);
 
-    /*hacs-fab*/
-    --hcv-color-fab: var(--hacs-fab-color, var(--accent-color));
-    --hcv-text-color-fab: var(--hacs-fab-text-color, var(--hcv-text-color-on-background));
-
     /*hacs-link*/
     --hcv-text-decoration-link: var(--hacs-link-text-decoration, none);
   }

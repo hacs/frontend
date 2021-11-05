@@ -273,6 +273,9 @@ export class HacsStorePanel extends LitElement {
           margin: 4px 16px 0 16px;
           color: var(--hcv-text-color-primary);
         }
+        ha-svg-icon {
+          color: var(--hcv-text-color-on-background);
+        }
         hacs-repository-card {
           max-width: 500px;
           display: flex;
