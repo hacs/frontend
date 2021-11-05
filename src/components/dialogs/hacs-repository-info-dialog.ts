@@ -12,7 +12,6 @@ import { markdown } from "../../tools/markdown/markdown";
 import "../hacs-link";
 import "./hacs-dialog";
 import { HacsDialogBase } from "./hacs-dialog-base";
-import { mainWindow } from "../../../homeassistant-frontend/src/common/dom/get_main_window";
 
 @customElement("hacs-repository-info-dialog")
 export class HacsRepositoryDialog extends HacsDialogBase {
