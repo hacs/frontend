@@ -8,12 +8,6 @@ export const hacsLinkStyle = css`
   }
 `;
 
-export const hacsButtonStyle = css`
-  mwc-button[raised] {
-    border-radius: 10px;
-  }
-`;
-
 export const hacsIconStyle = css`
   paper-menu-button,
   ha-svg-icon {
@@ -28,39 +22,6 @@ export const hassTabsSubpage = css`
     font-size: var(--paper-font-body1_-_font-size);
     font-weight: var(--paper-font-body1_-_font-weight);
     line-height: var(--paper-font-body1_-_line-height);
-  }
-`;
-
-export const fabStyles = css`
-  mwc-fab {
-    position: fixed;
-    bottom: 100px;
-    right: 24px;
-    z-index: 1;
-    margin-bottom: -80px;
-    transition: margin-bottom 0.3s;
-  }
-
-  mwc-fab[is-wide] {
-    bottom: 100px;
-    right: 24px;
-  }
-  mwc-fab[narrow] {
-    bottom: 152px;
-  }
-  mwc-fab[dirty] {
-    margin-bottom: 0;
-  }
-
-  mwc-fab.rtl {
-    right: auto;
-    right: 24px;
-  }
-
-  mwc-fab[is-wide].rtl {
-    bottom: 100px;
-    right: auto;
-    left: 24px;
   }
 `;
 
@@ -110,4 +71,12 @@ export const scrollBarStyle = css`
     scrollbar-width: thin;
   }
 `;
-export const hacsStyleDialog = [haStyleDialog, css``];
+
+export const hacsStyleDialog = [
+  haStyleDialog,
+  css`
+    .primary {
+      margin-left: 52px;
+    }
+  `,
+];

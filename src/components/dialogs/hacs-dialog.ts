@@ -22,7 +22,7 @@ export class HacsDialog extends HacsDialogBase {
       return html``;
     }
 
-    return html` <ha-dialog
+    return html`<ha-dialog
       ?open=${this.active}
       ?scrimClickAction=${this.scrimClickAction}
       ?escapeKeyAction=${this.escapeKeyAction}
@@ -49,32 +49,6 @@ export class HacsDialog extends HacsDialogBase {
   }
 
   static get styles() {
-    return [
-      hacsStyleDialog,
-      scrollBarStyle,
-      HacsStyles,
-      css`
-        ha-dialog {
-          --mdc-dialog-max-width: var(--hacs-dialog-max-width, calc(100vw - 16px));
-          --mdc-dialog-min-width: var(--hacs-dialog-min-width, 280px);
-        }
-        .primary {
-          margin-left: 52px;
-        }
-
-        @media only screen and (min-width: 1280px) {
-          ha-dialog {
-            --mdc-dialog-max-width: var(--hacs-dialog-max-width, 990px);
-          }
-        }
-
-        @media only screen and (max-width: 990px) {
-          ha-dialog {
-            --mdc-dialog-max-width: var(--hacs-dialog-max-width, 100vw);
-            --mdc-dialog-min-width: var(--hacs-dialog-min-width, 100vw);
-          }
-        }
-      `,
-    ];
+    return [hacsStyleDialog, scrollBarStyle, HacsStyles];
   }
 }

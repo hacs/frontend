@@ -1,5 +1,5 @@
 import { css, CSSResultGroup } from "lit";
-import { hacsIconStyle, hacsButtonStyle, hacsLinkStyle } from "./element-styles";
+import { hacsIconStyle, hacsLinkStyle } from "./element-styles";
 import { haStyle } from "../../homeassistant-frontend/src/resources/styles";
 
 export const hacsCommonClasses = css`
@@ -25,7 +25,6 @@ export const hacsCommonClasses = css`
 export const HacsStyles: CSSResultGroup = [
   haStyle,
   hacsIconStyle,
-  hacsButtonStyle,
   hacsCommonClasses,
   hacsLinkStyle,
 ];
