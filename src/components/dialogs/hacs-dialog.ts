@@ -70,6 +70,13 @@ export class HacsDialog extends HacsDialogBase {
             --mdc-dialog-max-width: var(--hacs-dialog-max-width, 990px);
           }
         }
+
+        @media only screen and (max-width: 990px) {
+          ha-dialog {
+            --mdc-dialog-max-width: var(--hacs-dialog-max-width, 100vw);
+            --mdc-dialog-min-width: var(--hacs-dialog-min-width, 100vw);
+          }
+        }
       `,
     ];
   }
