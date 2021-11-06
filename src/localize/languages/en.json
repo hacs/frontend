@@ -64,7 +64,7 @@
     "overwrite": "Doing this will overwrite it.",
     "reload_data": "This reloads the data of all repositories HACS knows about, this will take some time to finish.",
     "restart_home_assistant": "Are you sure you want to restart Home Assistant?",
-    "uninstall": "Are you sure you want to uninstall '{item}'?",
+    "uninstall": "Are you sure you want to remove '{item}'?",
     "upgrade_all": "This will upgrade all of these repositories, make sure that you have read the release notes for all of them before proceeding.",
     "yes": "Yes"
   },
@@ -230,7 +230,7 @@
     "author": "Author",
     "no_info": "The developer has not provided any more information for this repository",
     "open_repo": "Open repository",
-    "install": "Install this repository in HACS"
+    "install": "Download this repository with HACS"
   },
   "dialog_update": {
     "title": "Update pending",
