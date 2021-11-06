@@ -1,17 +1,27 @@
-import { mdiPlus } from "@mdi/js";
+import {
+  mdiAlertCircleOutline,
+  mdiBroom,
+  mdiFileDocument,
+  mdiGit,
+  mdiGithub,
+  mdiHelpCircleOutline,
+  mdiPlus,
+} from "@mdi/js";
 import { css, html, LitElement, TemplateResult } from "lit";
 import { customElement, property } from "lit/decorators";
 import memoizeOne from "memoize-one";
 import "../../homeassistant-frontend/src/common/search/search-input";
 import "../../homeassistant-frontend/src/components/ha-card";
 import "../../homeassistant-frontend/src/components/ha-fab";
+import "../../homeassistant-frontend/src/components/ha-icon-overflow-menu";
 import "../../homeassistant-frontend/src/layouts/hass-tabs-subpage";
 import { HomeAssistant, Route } from "../../homeassistant-frontend/src/types";
+import { showDialogAbout } from "../components/dialogs/hacs-about-dialog";
 import "../components/hacs-filter";
 import "../components/hacs-repository-card";
-import "../components/hacs-tabbed-menu";
 import { Repository } from "../data/common";
 import { Hacs } from "../data/hacs";
+import { settingsClearAllNewRepositories } from "../data/websocket";
 import { fabStyles, hassTabsSubpage, scrollBarStyle, searchStyles } from "../styles/element-styles";
 import { HacsStyles } from "../styles/hacs-common-style";
 import { filterRepositoriesByInput } from "../tools/filter-repositories-by-input";
@@ -20,14 +30,23 @@ import { activePanel } from "./hacs-sections";
 @customElement("hacs-store-panel")
 export class HacsStorePanel extends LitElement {
   @property({ attribute: false }) public filters: any = {};
-  @property({ attribute: false }) public hacs?: Hacs;
-  @property() private _searchInput: string = "";
+
+  @property({ attribute: false }) public hacs!: Hacs;
+
+  @property() private _searchInput = "";
+
   @property({ attribute: false }) public hass!: HomeAssistant;
+
   @property({ attribute: false }) public narrow!: boolean;
+
   @property({ attribute: false }) public isWide!: boolean;
+
   @property({ attribute: false }) public repositories!: Repository[];
+
   @property({ attribute: false }) public route!: Route;
+
   @property({ attribute: false }) public sections!: any;
+
   @property() public section!: string;
 
   private _repositoriesInActiveSection = memoizeOne(
@@ -108,18 +127,56 @@ export class HacsStorePanel extends LitElement {
       .tabs=${this.hacs.sections}
       hasFab
     >
-      <hacs-tabbed-menu
+      <ha-icon-overflow-menu
         slot="toolbar-icon"
+        narrow
         .hass=${this.hass}
-        .hacs=${this.hacs}
-        .route=${this.route}
-        .narrow=${this.narrow}
-        .configuration=${this.hacs.configuration}
-        .lovelace=${this.hacs.resources}
-        .status=${this.hacs.status}
-        .repositories=${this.repositories}
-      >
-      </hacs-tabbed-menu>
+        .items=${[
+          {
+            path: mdiFileDocument,
+            label: this.hacs.localize("menu.documentation"),
+            action: () => top?.open("https://hacs.xyz/", "_blank"),
+          },
+          {
+            path: mdiGithub,
+            label: "GitHub",
+            action: () => top?.open("https://github.com/hacs", "_blank"),
+          },
+          {
+            path: mdiHelpCircleOutline,
+            label: this.hacs.localize("menu.open_issue"),
+            action: () => top?.open("https://hacs.xyz/docs/issues", "_blank"),
+          },
+          {
+            path: mdiBroom,
+            label: this.hacs.localize("menu.dismiss"),
+            disabled: this.repositories?.filter((repo) => repo.new).length === 0,
+            action: () => this._clearAllNewRepositories(),
+          },
+          {
+            path: mdiGit,
+            label: this.hacs.localize("menu.custom_repositories"),
+            disabled: this.hacs.status.disabled || this.hacs.status.background_task,
+            action: () =>
+              this.dispatchEvent(
+                new CustomEvent("hacs-dialog", {
+                  detail: {
+                    type: "custom-repositories",
+                    repositories: this.repositories,
+                  },
+                  bubbles: true,
+                  composed: true,
+                })
+              ),
+          },
+
+          {
+            path: mdiAlertCircleOutline,
+            label: this.hacs.localize("menu.about"),
+            action: () => showDialogAbout(this, this.hacs),
+          },
+        ]}
+      ></ha-icon-overflow-menu>
       ${this.narrow
         ? html`
             <div slot="header">
@@ -192,6 +249,13 @@ export class HacsStorePanel extends LitElement {
           .removed=${this.hacs.removed}
           .addedToLovelace=${this.hacs.addedToLovelace(this.hacs, repo)}
         ></hacs-repository-card>`
+    );
+  }
+
+  private async _clearAllNewRepositories() {
+    await settingsClearAllNewRepositories(
+      this.hass,
+      activePanel(this.hacs.language, this.route)?.categories || []
     );
   }
 
