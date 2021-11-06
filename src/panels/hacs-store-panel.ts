@@ -193,7 +193,7 @@ export class HacsStorePanel extends LitElement {
                   .hass=${this.hass}
                   class="header"
                   no-label-float
-                  .label=${this.hacs.localize("search.installed")}
+                  .label=${this.hacs.localize("search.downloaded")}
                   .filter=${this._searchInput || ""}
                   @value-changed=${this._inputValueChanged}
                 ></search-input>
@@ -205,8 +205,8 @@ export class HacsStorePanel extends LitElement {
               .hass=${this.hass}
               no-label-float
               .label=${newRepositories.length === 0
-                ? this.hacs.localize("search.installed")
-                : this.hacs.localize("search.installed_new")}
+                ? this.hacs.localize("search.downloaded")
+                : this.hacs.localize("search.downloaded_new")}
               .filter=${this._searchInput || ""}
               @value-changed=${this._inputValueChanged}
             ></search-input>
