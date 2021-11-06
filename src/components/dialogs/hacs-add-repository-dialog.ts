@@ -1,16 +1,17 @@
-import "../../../homeassistant-frontend/src/components/ha-chip";
-import "@polymer/paper-item/paper-item";
+import "@material/mwc-list/mwc-list-item";
+import "@material/mwc-select/mwc-select";
 import { mdiGithub } from "@mdi/js";
-import "@polymer/paper-item/paper-icon-item";
-import "@polymer/paper-item/paper-item-body";
-import "@polymer/paper-listbox/paper-listbox";
 import { css, html, PropertyValues, TemplateResult } from "lit";
 import { customElement, property } from "lit/decorators";
 import { classMap } from "lit/directives/class-map";
 import memoizeOne from "memoize-one";
+import { stopPropagation } from "../../../homeassistant-frontend/src/common/dom/stop_propagation";
 import "../../../homeassistant-frontend/src/common/search/search-input";
-import "../../../homeassistant-frontend/src/components/ha-svg-icon";
+import "../../../homeassistant-frontend/src/components/ha-chip";
 import "../../../homeassistant-frontend/src/components/ha-paper-dropdown-menu";
+import "../../../homeassistant-frontend/src/components/ha-settings-row";
+import "../../../homeassistant-frontend/src/components/ha-svg-icon";
+import { brandsUrl } from "../../../homeassistant-frontend/src/util/brands-url";
 import { Repository } from "../../data/common";
 import { activePanel } from "../../panels/hacs-sections";
 import { hacsIconStyle, scrollBarStyle, searchStyles } from "../../styles/element-styles";
@@ -18,7 +19,6 @@ import { filterRepositoriesByInput } from "../../tools/filter-repositories-by-in
 import "../hacs-filter";
 import "./hacs-dialog";
 import { HacsDialogBase } from "./hacs-dialog-base";
-import { brandsUrl } from "../../../homeassistant-frontend/src/util/brands-url";
 
 @customElement("hacs-add-repository-dialog")
 export class HacsAddRepositoryDialog extends HacsDialogBase {
@@ -107,8 +107,10 @@ export class HacsAddRepositoryDialog extends HacsDialogBase {
         .hass=${this.hass}
         .title=${this.hacs.localize("dialog_add_repo.title")}
         hideActions
+        scrimClickAction
+        escapeKeyAction
       >
-        <div class="searchandfilter">
+        <div class="searchandfilter" ?narrow=${this.narrow}>
           <search-input
             .hass=${this.hass}
             no-label-float
@@ -117,24 +119,19 @@ export class HacsAddRepositoryDialog extends HacsDialogBase {
             @value-changed=${this._inputValueChanged}
             ?narrow=${this.narrow}
           ></search-input>
-          <div class="filter">
-            <ha-paper-dropdown-menu
-              label="${this.hacs.localize("dialog_add_repo.sort_by")}"
-              ?narrow=${this.narrow}
-            >
-              <paper-listbox slot="dropdown-content" selected="0">
-                <paper-item @tap=${() => (this._sortBy = "stars")}>
-                  ${this.hacs.localize("store.stars")}
-                </paper-item>
-                <paper-item @tap=${() => (this._sortBy = "name")}>
-                  ${this.hacs.localize("store.name")}
-                </paper-item>
-                <paper-item @tap=${() => (this._sortBy = "last_updated")}>
-                  ${this.hacs.localize("store.last_updated")}
-                </paper-item>
-              </paper-listbox>
-            </ha-paper-dropdown-menu>
-          </div>
+          <mwc-select
+            ?narrow=${this.narrow}
+            .label=${this.hacs.localize("dialog_add_repo.sort_by")}
+            .value=${this._sortBy}
+            @selected=${(ev) => (this._sortBy = ev.currentTarget.value)}
+            @closed=${stopPropagation}
+          >
+            <mwc-list-item value="stars"> ${this.hacs.localize("store.stars")} </mwc-list-item>
+            <mwc-list-item value="name"> ${this.hacs.localize("store.name")} </mwc-list-item>
+            <mwc-list-item value="last_updated">
+              ${this.hacs.localize("store.last_updated")}
+            </mwc-list-item>
+          </mwc-select>
         </div>
         ${this.filters.length > 1
           ? html`<div class="filters">
@@ -152,33 +149,34 @@ export class HacsAddRepositoryDialog extends HacsDialogBase {
               })
               .slice(0, this._load)
               .map(
-                (repo) => html`<paper-icon-item
+                (repo) => html` <ha-settings-row
                   class=${classMap({ narrow: this.narrow })}
                   @click=${() => this._openInformation(repo)}
                 >
-                  ${repo.category === "integration"
-                    ? html`
-                        <img
-                          loading="lazy"
-                          .src=${brandsUrl({
-                            domain: repo.domain,
-                            darkOptimized: this.hass.themes.darkMode,
-                            type: "icon",
-                          })}
-                          referrerpolicy="no-referrer"
-                          @error=${this._onImageError}
-                          @load=${this._onImageLoad}
-                        />
-                      `
-                    : html`<ha-svg-icon .path=${mdiGithub} slot="item-icon"></ha-svg-icon>`}
-                  <paper-item-body two-line
-                    >${repo.name}
-                    <div class="category-chip">
-                      <ha-chip>${this.hacs.localize(`common.${repo.category}`)}</ha-chip>
-                    </div>
-                    <div secondary>${repo.description}</div>
-                  </paper-item-body>
-                </paper-icon-item>`
+                  ${!this.narrow
+                    ? repo.category === "integration"
+                      ? html`
+                          <img
+                            slot="prefix"
+                            loading="lazy"
+                            .src=${brandsUrl({
+                              domain: repo.domain,
+                              darkOptimized: this.hass.themes.darkMode,
+                              type: "icon",
+                            })}
+                            referrerpolicy="no-referrer"
+                            @error=${this._onImageError}
+                            @load=${this._onImageLoad}
+                          />
+                        `
+                      : html`<ha-svg-icon .path=${mdiGithub} slot="prefix"></ha-svg-icon>`
+                    : ""}
+                  <span slot="heading"> ${repo.name} </span>
+                  <span slot="description">${repo.description}</span>
+                  ${repo.category !== "integration"
+                    ? html`<ha-chip>${this.hacs.localize(`common.${repo.category}`)}</ha-chip> `
+                    : ""}
+                </ha-settings-row>`
               )}
             ${repositories.length === 0
               ? html`<p>${this.hacs.localize("dialog_add_repo.no_match")}</p>`
@@ -223,7 +221,7 @@ export class HacsAddRepositoryDialog extends HacsDialogBase {
 
   private _onImageError(ev) {
     if (ev.target) {
-      ev.target.outerHTML = `<ha-svg-icon path="${mdiGithub}" slot="item-icon"></ha-svg-icon>`;
+      ev.target.outerHTML = `<ha-svg-icon path="${mdiGithub}" slot="prefix"></ha-svg-icon>`;
     }
   }
 
@@ -251,107 +249,57 @@ export class HacsAddRepositoryDialog extends HacsDialogBase {
           width: 1024px;
           max-width: 100%;
         }
-        .category-chip {
-          position: absolute;
-          top: 8px;
-          right: 8px;
-        }
         ha-svg-icon {
           --mdc-icon-size: 36px;
+          margin-right: 6px;
         }
         search-input {
           float: left;
-          width: 60%;
+          width: 75%;
           border-bottom: 1px var(--mdc-theme-primary) solid;
         }
         search-input[narrow],
-        div.filter[narrow],
+        mwc-select[narrow],
         ha-paper-dropdown-menu[narrow] {
           width: 100%;
+          margin: 4px 0;
         }
         img {
           align-items: center;
           display: block;
           justify-content: center;
+          margin-right: 6px;
           margin-bottom: 16px;
           max-height: 36px;
           max-width: 36px;
-          position: absolute;
-        }
-
-        paper-icon-item:focus {
-          background-color: var(--divider-color);
-        }
-
-        paper-icon-item {
-          cursor: pointer;
-          padding: 2px 0;
         }
 
         ha-paper-dropdown-menu {
-          margin: 0 12px 4px 0;
+          margin: 0 12px -8px 0;
         }
 
-        paper-item-body {
-          width: 100%;
-          min-height: var(--paper-item-body-two-line-min-height, 72px);
-          display: var(--layout-vertical_-_display);
-          flex-direction: var(--layout-vertical_-_flex-direction);
-          justify-content: var(--layout-center-justified_-_justify-content);
-        }
-        paper-icon-item.narrow {
-          border-bottom: 1px solid var(--divider-color);
-          padding: 8px 0;
-        }
-        paper-item-body div {
-          font-size: 14px;
-          color: var(--secondary-text-color);
-        }
-        .add {
-          border-top: 1px solid var(--divider-color);
-          margin-top: 32px;
-        }
         .filters {
           width: 100%;
           display: flex;
-        }
-        .add-actions {
-          justify-content: space-between;
-        }
-        .add,
-        .add-actions {
-          display: flex;
-          align-items: center;
-          font-size: 20px;
-          height: 65px;
-          background-color: var(--sidebar-background-color);
-          border-bottom: 1px solid var(--divider-color);
-          padding: 0 16px;
-          box-sizing: border-box;
-        }
-        .add-input {
-          width: calc(100% - 80px);
-          height: 40px;
-          border: 0;
-          padding: 0 16px;
-          font-size: initial;
-          color: var(--sidebar-text-color);
-          font-family: var(--paper-font-body1_-_font-family);
-        }
-        input:focus {
-          outline-offset: 0;
-          outline: 0;
-        }
-        input {
-          background-color: var(--sidebar-background-color);
         }
 
         hacs-filter {
           width: 100%;
           margin-left: -32px;
         }
-        div[secondary] {
-          width: 88%;
+
+        ha-settings-row {
+          padding: 0px 16px 0 0;
+        }
+
+        .searchandfilter {
+          display: flex;
+          justify-content: space-between;
+          align-items: self-end;
+        }
+
+        .searchandfilter[narrow] {
+          flex-direction: column;
         }
       `,
     ];
