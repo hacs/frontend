@@ -2,11 +2,12 @@ import { css } from "lit";
 
 export const hacsStyleVariables = css`
   :host {
-    --hcv-color-error: var(--hacs-error-color, var(--google-red-500, #f44336));
-    --hcv-color-warning: var(--hacs-warning-color, #ff8c00);
-    --hcv-color-update: var(--hacs-update-color, #f4b400);
-    --hcv-color-new: var(--hacs-new-color, var(--google-blue-500, #2196f3));
+    --hcv-color-error: var(--hacs-error-color, var(--error-color));
+    --hcv-color-warning: var(--hacs-warning-color, var(--warning-color));
+    --hcv-color-update: var(--hacs-update-color, var(--info-color));
+    --hcv-color-new: var(--hacs-new-color, var(--success-color));
     --hcv-color-icon: var(--hacs--default-icon-color, var(--sidebar-icon-color));
+
     --hcv-color-markdown-background: var(--markdown-code-background-color, #f6f8fa);
 
     --hcv-text-color-primary: var(--primary-text-color);
