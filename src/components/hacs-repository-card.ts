@@ -4,7 +4,7 @@ import {
   mdiAlertCircleOutline,
   mdiArrowDownCircle,
   mdiClose,
-  mdiHelpCircleOutline,
+  mdiInformation,
   mdiLanguageJavascript,
   mdiReload,
 } from "@mdi/js";
@@ -161,7 +161,7 @@ export class HacsRepositoryCard extends LitElement {
                 .hass=${this.hass}
                 .items=${[
                   {
-                    path: mdiAlertCircleOutline,
+                    path: mdiInformation,
                     label: this.hacs.localize("repository_card.information"),
                     action: () => this._showReopsitoryInfo(),
                   },
@@ -187,7 +187,7 @@ export class HacsRepositoryCard extends LitElement {
                       ),
                   },
                   {
-                    path: mdiHelpCircleOutline,
+                    path: mdiAlertCircleOutline,
                     label: this.hacs.localize("repository_card.open_issue"),
                     action: () =>
                       top?.open(
