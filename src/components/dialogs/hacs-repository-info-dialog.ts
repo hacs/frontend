@@ -147,8 +147,9 @@ export class HacsRepositoryDialog extends HacsDialogBase {
       scrollBarStyle,
       css`
         .content {
-          width: 100%;
+          width: calc(100% - 12px);
           max-height: 75vh;
+          padding-right: 12px;
         }
         ha-chip {
           --ha-chip-icon-color: var(--hacs-chip-color, var(--primary-color));
