@@ -4,7 +4,7 @@ import {
   mdiFileDocument,
   mdiGit,
   mdiGithub,
-  mdiHelpCircleOutline,
+  mdiInformation,
   mdiPlus,
 } from "@mdi/js";
 import { css, html, LitElement, TemplateResult } from "lit";
@@ -143,7 +143,7 @@ export class HacsStorePanel extends LitElement {
             action: () => top?.open("https://github.com/hacs", "_blank", "noreferrer=true"),
           },
           {
-            path: mdiHelpCircleOutline,
+            path: mdiAlertCircleOutline,
             label: this.hacs.localize("menu.open_issue"),
             action: () => top?.open("https://hacs.xyz/docs/issues", "_blank", "noreferrer=true"),
           },
@@ -178,7 +178,7 @@ export class HacsStorePanel extends LitElement {
           },
 
           {
-            path: mdiAlertCircleOutline,
+            path: mdiInformation,
             label: this.hacs.localize("menu.about"),
             action: () => showDialogAbout(this, this.hacs),
           },

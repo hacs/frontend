@@ -1,4 +1,4 @@
-import { mdiAlertCircle, mdiHomeAssistant, mdiOpenInNew } from "@mdi/js";
+import { mdiAlertCircle, mdiHomeAssistant, mdiInformation, mdiOpenInNew } from "@mdi/js";
 import "@polymer/app-layout/app-header-layout/app-header-layout";
 import "@polymer/app-layout/app-header/app-header";
 import "@polymer/app-layout/app-toolbar/app-toolbar";
@@ -158,7 +158,7 @@ export class HacsEntryPanel extends LitElement {
 
           <ha-card>
             <paper-icon-item @click=${this._openAboutDialog}>
-              <ha-svg-icon .path=${mdiAlertCircle} slot="item-icon"></ha-svg-icon>
+              <ha-svg-icon .path=${mdiInformation} slot="item-icon"></ha-svg-icon>
               <paper-item-body two-line>
                 ${this.hacs.localize(`sections.about.title`)}
                 <div secondary>${this.hacs.localize(`sections.about.description`)}</div>
