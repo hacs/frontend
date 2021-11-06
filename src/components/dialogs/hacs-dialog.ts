@@ -1,4 +1,4 @@
-import { css, html, TemplateResult } from "lit";
+import { html, TemplateResult } from "lit";
 import { customElement, property } from "lit/decorators";
 import { createCloseHeading } from "../../../homeassistant-frontend/src/components/ha-dialog";
 import { HacsStyles } from "../../styles/hacs-common-style";
