@@ -144,19 +144,24 @@ export class HacsUpdateDialog extends HacsDialogBase {
           slot="primaryaction"
           ?disabled=${!repository.can_install}
           @click=${this._updateRepository}
-          >${
+          raised
+          >
+          ${
             this._updating
               ? html`<ha-circular-progress active size="small"></ha-circular-progress>`
               : this.hacs.localize("common.update")
-          }</mwc-button
+          }
+          </mwc-button
         >
         <div class="secondary" slot="secondaryaction">
-          <hacs-link .url=${this._getChanglogURL()}
-            ><mwc-button>${this.hacs.localize("dialog_update.changelog")}</mwc-button></hacs-link
-          >
-          <hacs-link .url="https://github.com/${repository.full_name}"
-            ><mwc-button>${this.hacs.localize("common.repository")}</mwc-button></hacs-link
-          >
+          <hacs-link .url=${this._getChanglogURL()}>
+            <mwc-button>${this.hacs.localize("dialog_update.changelog")}
+          </mwc-button>
+          </hacs-link>
+          <hacs-link .url="https://github.com/${repository.full_name}">
+            <mwc-button>${this.hacs.localize("common.repository")}
+          </mwc-button>
+          </hacs-link>
         </div>
       </hacs-dialog>
     `;
