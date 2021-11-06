@@ -4,9 +4,10 @@ import { version } from "../../version";
 import { Hacs } from "../../data/hacs";
 import { showAlertDialog } from "../../../homeassistant-frontend/src/dialogs/generic/show-dialog-box";
 
-export async function showDialogAbout(element: any, hacs: Hacs) {
-  await showAlertDialog(element, {
+export const showDialogAbout = async (element: any, hacs: Hacs) =>
+  showAlertDialog(element, {
     title: "Home Assistant Community Store",
+    confirmText: hacs.localize("common.close"),
     text: markdown.html(`
   **${hacs.localize("dialog_about.integration_version")}:** | ${hacs.configuration.version}
   --|--
@@ -31,4 +32,3 @@ export async function showDialogAbout(element: any, hacs: Hacs) {
   _Everything you find in HACS is **not** tested by Home Assistant, that includes HACS itself.
   The HACS and Home Assistant teams do not support **anything** you find here._`),
   });
-}
