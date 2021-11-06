@@ -17,6 +17,8 @@
     "ignore": "Ignore",
     "install": "Install",
     "installed": "installed",
+    "download": "Download",
+    "downloaded": "downloaded",
     "integration_plural": "Integrations",
     "integration": "Integration",
     "integrations": "Integrations",
@@ -50,7 +52,7 @@
     "bg_task": "Action is disabled while background tasks is running.",
     "cancel": "Cancel",
     "continue": "Are you sure you want to continue?",
-    "delete_installed": "'{item}' is installed, you need to uninstall it before you can delete it.",
+    "delete_installed": "'{item}' is downloaded, you need to remove it before you can delete it.",
     "delete": "Are you sure you want to delete '{item}'?",
     "exist": "{item} already exists",
     "generic": "Are you sure?",
@@ -86,7 +88,7 @@
     "lovelace_no_js_type": "Could not determine the type of this element, check the repository.",
     "newest": "newest",
     "note_appdaemon": "you still need to add it to your 'apps.yaml' file",
-    "note_installed": "When installed, this will be located in",
+    "note_installed": "When downloaded, this will be located in",
     "note_integration": "you still need to add it to your 'configuration.yaml' file",
     "note_plugin": "you still need to add it to your lovelace configuration ('ui-lovelace.yaml' or the raw UI config editor)",
     "note_plugin_post_107": "you still need to add it to your lovelace configuration ('configuration.yaml' or the resource editor '/config/lovelace/resources')",
@@ -156,7 +158,7 @@
     "upgrade_all": "Upgrade all"
   },
   "store": {
-    "add": "Explore & add repositories",
+    "add": "Explore & download repositories",
     "ascending": "ascending",
     "clear_new": "Clear all new repositories",
     "descending": "descending",
@@ -164,9 +166,9 @@
     "name": "Name",
     "new_repositories_note": "You have over 10 new repositories showing here, if you want to clear them all click the 3 dots in the top right corner and dismiss all of them.",
     "no_repositories": "No repositories",
-    "no_repositories_desc1": "It seems like you don't have any repositories installed in this section yet.",
+    "no_repositories_desc1": "It seems like you don't have any repositories downloaded in this section yet.",
     "no_repositories_desc2": "Click on the + in the bottom corner to add your first!",
-    "no_repositories_found_desc1": "No installed repositories matching \"{searchInput}\" found in this section.",
+    "no_repositories_found_desc1": "No downloaded repositories matching \"{searchInput}\" found in this section.",
     "no_repositories_found_desc2": "Try searching for something else!",
     "new_repositories": "New Repositories",
     "pending_upgrades": "Pending upgrades",
@@ -192,7 +194,7 @@
   "dialog_about": {
     "integration_version": "Integration version",
     "frontend_version": "Frontend version",
-    "installed_repositories": "Installed repositories",
+    "installed_repositories": "Downloaded repositories",
     "useful_links": "Useful links"
   },
   "dialog_add_repo": {
@@ -221,7 +223,7 @@
     "restart": "Remember that you need to restart Home Assistant before changes to integrations (custom_components) are applied."
   },
   "dialog_info": {
-    "version_installed": "Version installed",
+    "version_installed": "Version downloaded",
     "open_issues": "Open issues",
     "stars": "Stars",
     "downloads": "Downloads",
@@ -232,7 +234,7 @@
   },
   "dialog_update": {
     "title": "Update pending",
-    "installed_version": "Installed version",
+    "installed_version": "Downloaded version",
     "available_version": "Available version",
     "changelog": "Changelog",
     "releasenotes": "Release notes for {release}",
@@ -248,15 +250,15 @@
     "dismiss": "dismiss",
     "open_source": "Open source",
     "open_issue": "Open issue",
-    "reinstall": "Reinstall",
+    "redownload": "Redownload",
     "report": "Request for removal",
     "information": "Information",
     "update_information": "Update information"
   },
   "search": {
     "placeholder": "Search for repository",
-    "installed": "Search for installed repositories",
-    "installed_new": "Search for installed or new repositories"
+    "downloaded": "Search for downloaded repositories",
+    "downloaded_new": "Search for downloaded or new repositories"
   },
   "menu": {
     "about": "About HACS",
@@ -270,9 +272,9 @@
       "description": "You need to reload your browser for the updated resources to be used.",
       "confirm": "Do you want to do that now?"
     },
-    "uninstall": {
-      "title": "Uninstall",
-      "message": "Do you really want to uninstall {name}?"
+    "remove": {
+      "title": "Remove",
+      "message": "Do you really want to remove {name}?"
     },
     "configured": {
       "title": "Integration is configured",

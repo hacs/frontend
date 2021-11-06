@@ -44,7 +44,7 @@ export class HacsRemovedDialog extends HacsDialogBase {
         <mwc-button class="uninstall" slot="primaryaction" @click=${this._uninstallRepository}
           >${this._updating
             ? html`<ha-circular-progress active size="small"></ha-circular-progress>`
-            : this.hacs.localize("common.uninstall")}</mwc-button
+            : this.hacs.localize("common.remove")}</mwc-button
         >
         <!--<mwc-button slot="secondaryaction" @click=${this._ignoreMessage}
           >${this.hacs.localize("common.ignore")}</mwc-button

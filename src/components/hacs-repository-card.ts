@@ -172,7 +172,7 @@ export class HacsRepositoryCard extends LitElement {
                   },
                   {
                     path: mdiReload,
-                    label: this.hacs.localize("repository_card.reinstall"),
+                    label: this.hacs.localize("repository_card.redownload"),
                     action: () => this._installRepository(),
                   },
                   {
@@ -210,7 +210,7 @@ export class HacsRepositoryCard extends LitElement {
                   {
                     hideForId: "172733314",
                     path: mdiClose,
-                    label: this.hacs.localize("common.uninstall"),
+                    label: this.hacs.localize("common.remove"),
                     action: () => this._uninstallRepositoryDialog(),
                   },
                 ].filter(
@@ -294,9 +294,9 @@ export class HacsRepositoryCard extends LitElement {
       new CustomEvent("hacs-dialog", {
         detail: {
           type: "progress",
-          title: this.hacs.localize("dialog.uninstall.title"),
-          confirmText: this.hacs.localize("dialog.uninstall.title"),
-          content: this.hacs.localize("dialog.uninstall.message", { name: this.repository.name }),
+          title: this.hacs.localize("dialog.remove.title"),
+          confirmText: this.hacs.localize("dialog.remove.title"),
+          content: this.hacs.localize("dialog.remove.message", { name: this.repository.name }),
           confirm: async () => {
             await this._uninstallRepository();
           },
