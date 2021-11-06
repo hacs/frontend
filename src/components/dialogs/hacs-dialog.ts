@@ -54,9 +54,6 @@ export class HacsDialog extends HacsDialogBase {
       scrollBarStyle,
       HacsStyles,
       css`
-        .content {
-          overflow: auto;
-        }
         ha-dialog {
           --mdc-dialog-max-width: var(--hacs-dialog-max-width, calc(100vw - 16px));
           --mdc-dialog-min-width: var(--hacs-dialog-min-width, 280px);

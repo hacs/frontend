@@ -69,7 +69,7 @@ export class HacsRepositoryDialog extends HacsDialogBase {
     const authors = this._getAuthors(this._repository);
     return html`
       <hacs-dialog
-        .noActions=${this._repository.installed}
+        .hideActions=${this._repository.installed}
         .active=${this.active}
         .title=${this._repository.name || ""}
         .hass=${this.hass}
@@ -148,7 +148,7 @@ export class HacsRepositoryDialog extends HacsDialogBase {
       css`
         .content {
           width: 100%;
-          overflow: auto;
+          max-height: 75vh;
         }
         ha-chip {
           --ha-chip-icon-color: var(--hacs-chip-color, var(--primary-color));
