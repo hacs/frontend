@@ -7,6 +7,7 @@
     "appdaemon": "AppDaemon",
     "background_task": "Background task running, this page will reload when it's done.",
     "cancel": "Cancel",
+    "close": "Close",
     "check_log_file": "Check your log file for more details.",
     "continue": "Continue",
     "disabled": "Disabled",
