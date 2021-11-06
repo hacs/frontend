@@ -150,7 +150,14 @@ export class HacsStorePanel extends LitElement {
           {
             path: mdiBroom,
             label: this.hacs.localize("menu.dismiss"),
-            disabled: this.repositories?.filter((repo) => repo.new).length === 0,
+            disabled:
+              this.repositories?.filter(
+                (repo) =>
+                  repo.new &&
+                  this.hacs.sections
+                    ?.find((panel) => panel.id === this.section)
+                    ?.categories?.includes(repo.category)
+              ).length === 0,
             action: () => this._clearAllNewRepositories(),
           },
           {

@@ -7,10 +7,14 @@ import { HacsDialogBase } from "./hacs-dialog-base";
 
 @customElement("hacs-dialog")
 export class HacsDialog extends HacsDialogBase {
-  @property({ type: Boolean }) public hideActions: boolean = false;
-  @property({ type: Boolean }) public scrimClickAction: boolean = false;
-  @property({ type: Boolean }) public escapeKeyAction: boolean = false;
-  @property({ type: Boolean }) public noClose: boolean = false;
+  @property({ type: Boolean }) public hideActions = false;
+
+  @property({ type: Boolean }) public scrimClickAction = false;
+
+  @property({ type: Boolean }) public escapeKeyAction = false;
+
+  @property({ type: Boolean }) public noClose = false;
+
   @property() public title!: string;
 
   protected render(): TemplateResult | void {
