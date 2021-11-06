@@ -110,6 +110,7 @@ export class HacsAddRepositoryDialog extends HacsDialogBase {
       >
         <div class="searchandfilter">
           <search-input
+            .hass=${this.hass}
             no-label-float
             .label=${this.hacs.localize("search.placeholder")}
             .filter=${this._searchInput || ""}
@@ -347,6 +348,7 @@ export class HacsAddRepositoryDialog extends HacsDialogBase {
 
         hacs-filter {
           width: 100%;
+          margin-left: -32px;
         }
         div[secondary] {
           width: 88%;

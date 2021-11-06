@@ -183,6 +183,7 @@ export class HacsStorePanel extends LitElement {
             <div slot="header">
               <slot name="header">
                 <search-input
+                  .hass=${this.hass}
                   class="header"
                   no-label-float
                   .label=${this.hacs.localize("search.installed")}
@@ -194,6 +195,7 @@ export class HacsStorePanel extends LitElement {
           `
         : html`<div class="search">
             <search-input
+              .hass=${this.hass}
               no-label-float
               .label=${newRepositories.length === 0
                 ? this.hacs.localize("search.installed")

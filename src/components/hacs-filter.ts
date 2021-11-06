@@ -1,38 +1,41 @@
+import "../../homeassistant-frontend/src/components/ha-checkbox";
+import "../../homeassistant-frontend/src/components/ha-formfield";
 import { css, CSSResultGroup, html, LitElement, TemplateResult } from "lit";
 import { customElement, property } from "lit/decorators";
 import { Filter } from "../data/common";
 import { Hacs } from "../data/hacs";
 import { HacsStyles } from "../styles/hacs-common-style";
-import "./hacs-checkbox";
 
 @customElement("hacs-filter")
 export class HacsFilter extends LitElement {
-  @property({ attribute: false }) public filters: Filter[];
-  @property({ attribute: false }) public hacs: Hacs;
+  @property({ attribute: false }) public filters?: Filter[];
 
-  protected async firstUpdated() {
-    this.addEventListener("checkbox-change", (e) => this._filterClick(e));
-  }
+  @property({ attribute: false }) public hacs!: Hacs;
 
   protected render(): TemplateResult | void {
     return html`
       <div class="filter">
         ${this.filters?.map(
           (filter) => html`
-            <hacs-checkbox
+            <ha-formfield
               class="checkbox"
               .label=${this.hacs.localize(`common.${filter.id}`) || filter.value}
-              .id=${filter.id}
-              .checked=${filter.checked || false}
-            />
-            </hacs-checkbox>`
+            >
+              <ha-checkbox
+                .checked=${filter.checked || false}
+                .id=${filter.id}
+                @click=${this._filterClick}
+              >
+              </ha-checkbox>
+            </ha-formfield>
+          `
         )}
       </div>
     `;
   }
 
   private _filterClick(ev): void {
-    const filter = ev.detail;
+    const filter = ev.currentTarget;
     this.dispatchEvent(
       new CustomEvent("filter-change", {
         detail: {
