@@ -135,17 +135,17 @@ export class HacsStorePanel extends LitElement {
           {
             path: mdiFileDocument,
             label: this.hacs.localize("menu.documentation"),
-            action: () => top?.open("https://hacs.xyz/", "_blank"),
+            action: () => top?.open("https://hacs.xyz/", "_blank", "noreferrer=true"),
           },
           {
             path: mdiGithub,
             label: "GitHub",
-            action: () => top?.open("https://github.com/hacs", "_blank"),
+            action: () => top?.open("https://github.com/hacs", "_blank", "noreferrer=true"),
           },
           {
             path: mdiHelpCircleOutline,
             label: this.hacs.localize("menu.open_issue"),
-            action: () => top?.open("https://hacs.xyz/docs/issues", "_blank"),
+            action: () => top?.open("https://hacs.xyz/docs/issues", "_blank", "noreferrer=true"),
           },
           {
             path: mdiBroom,
@@ -176,7 +176,8 @@ export class HacsStorePanel extends LitElement {
             action: () => showDialogAbout(this, this.hacs),
           },
         ]}
-      ></ha-icon-overflow-menu>
+      >
+      </ha-icon-overflow-menu>
       ${this.narrow
         ? html`
             <div slot="header">
@@ -247,7 +248,7 @@ export class HacsStorePanel extends LitElement {
           ?narrow=${this.narrow}
           .status=${this.hacs.status}
           .removed=${this.hacs.removed}
-          .addedToLovelace=${this.hacs.addedToLovelace(this.hacs, repo)}
+          .addedToLovelace=${this.hacs.addedToLovelace!(this.hacs, repo)}
         ></hacs-repository-card>`
     );
   }
@@ -358,7 +359,6 @@ export class HacsStorePanel extends LitElement {
           padding: 0px;
           margin: 0;
         }
-
         .container .narrow {
           margin-bottom: 128px;
         }
