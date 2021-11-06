@@ -75,7 +75,12 @@ export class HacsCustomRepositoriesDialog extends HacsDialogBase {
                   <span slot="heading">${repo.name}</span>
                   <span slot="description">${repo.full_name} (${repo.category})</span>
 
-                  <mwc-icon-button @click=${() => this._removeRepository(repo.id)}>
+                  <mwc-icon-button
+                    @click=${(ev) => {
+                      ev.stopPropagation();
+                      this._removeRepository(repo.id);
+                    }}
+                  >
                     <ha-svg-icon class="delete" .path=${mdiDelete}></ha-svg-icon>
                   </mwc-icon-button>
                 </ha-settings-row>`
@@ -168,7 +173,7 @@ export class HacsCustomRepositoriesDialog extends HacsDialogBase {
         }
         ha-form {
           display: block;
-          padding-bottom: 25px;
+          padding: 25px 0;
         }
         ha-form[narrow] {
           bottom: 0;
