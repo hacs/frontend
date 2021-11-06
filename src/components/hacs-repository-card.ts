@@ -1,15 +1,22 @@
-import "../../homeassistant-frontend/src/components/ha-chip";
 import "@material/mwc-button/mwc-button";
-import { mdiDotsVertical } from "@mdi/js";
+import {
+  mdiAlert,
+  mdiAlertCircleOutline,
+  mdiArrowDownCircle,
+  mdiClose,
+  mdiHelpCircleOutline,
+  mdiLanguageJavascript,
+  mdiReload,
+} from "@mdi/js";
 import "@polymer/paper-item/paper-item";
 import "@polymer/paper-item/paper-item-body";
-import "@polymer/paper-listbox/paper-listbox";
-import "@polymer/paper-menu-button/paper-menu-button";
 import { css, CSSResultGroup, html, LitElement, TemplateResult } from "lit";
 import { customElement, property } from "lit/decorators";
 import { ClassInfo, classMap } from "lit/directives/class-map";
 import { navigate } from "../../homeassistant-frontend/src/common/navigate";
 import "../../homeassistant-frontend/src/components/ha-card";
+import "../../homeassistant-frontend/src/components/ha-chip";
+import "../../homeassistant-frontend/src/components/ha-icon-overflow-menu";
 import { getConfigEntries } from "../../homeassistant-frontend/src/data/config_entries";
 import { showAlertDialog } from "../../homeassistant-frontend/src/dialogs/generic/show-dialog-box";
 import { HomeAssistant } from "../../homeassistant-frontend/src/types";
@@ -148,64 +155,71 @@ export class HacsRepositoryCard extends LitElement {
                 </hacs-link>
               </div>`}
           ${this.repository.installed
-            ? html` <paper-menu-button
-                horizontal-align="right"
-                vertical-align="top"
-                vertical-offset="40"
-                close-on-activate
+            ? html` <ha-icon-overflow-menu
+                slot="toolbar-icon"
+                narrow
+                .hass=${this.hass}
+                .items=${[
+                  {
+                    path: mdiAlertCircleOutline,
+                    label: this.hacs.localize("repository_card.information"),
+                    action: () => this._showReopsitoryInfo(),
+                  },
+                  {
+                    path: mdiArrowDownCircle,
+                    label: this.hacs.localize("repository_card.update_information"),
+                    action: () => this._updateReopsitoryInfo(),
+                  },
+                  {
+                    path: mdiReload,
+                    label: this.hacs.localize("repository_card.reinstall"),
+                    action: () => this._installRepository(),
+                  },
+                  {
+                    category: "plugin",
+                    path: mdiLanguageJavascript,
+                    label: this.hacs.localize("repository_card.open_source"),
+                    action: () =>
+                      top?.open(
+                        `/hacsfiles/${path.pop()}/${this.repository.file_name}`,
+                        "_blank",
+                        "noreferrer=true"
+                      ),
+                  },
+                  {
+                    path: mdiHelpCircleOutline,
+                    label: this.hacs.localize("repository_card.open_issue"),
+                    action: () =>
+                      top?.open(
+                        `https://github.com/${this.repository.full_name}/issues`,
+                        "_blank",
+                        "noreferrer=true"
+                      ),
+                  },
+                  {
+                    hideForId: "172733314",
+                    path: mdiAlert,
+                    label: this.hacs.localize("repository_card.report"),
+                    action: () =>
+                      top?.open(
+                        `https://github.com/hacs/integration/issues/new?assignees=ludeeus&labels=flag&template=removal.yml&repo=${this.repository.full_name}&title=Request for removal of ${this.repository.full_name}`,
+                        "_blank",
+                        "noreferrer=true"
+                      ),
+                  },
+                  {
+                    hideForId: "172733314",
+                    path: mdiClose,
+                    label: this.hacs.localize("common.uninstall"),
+                    action: () => this._uninstallRepositoryDialog(),
+                  },
+                ].filter(
+                  (entry) =>
+                    (!entry.category || this.repository.category === entry.category) &&
+                    (!entry.hideForId || String(this.repository.id) !== entry.hideForId)
+                )}
               >
-                <mwc-icon-button slot="dropdown-trigger" alt="menu">
-                  <ha-svg-icon .path=${mdiDotsVertical}></ha-svg-icon>
-                </mwc-icon-button>
-                <paper-listbox slot="dropdown-content">
-                  <paper-item class="pointer" @tap=${this._showReopsitoryInfo}>
-                    ${this.hacs.localize("repository_card.information")}
-                  </paper-item>
-
-                  <paper-item class="pointer" @tap=${this._updateReopsitoryInfo}>
-                    ${this.hacs.localize("repository_card.update_information")}
-                  </paper-item>
-
-                  <paper-item @tap=${this._installRepository}>
-                    ${this.hacs.localize("repository_card.reinstall")}
-                  </paper-item>
-
-                  ${this.repository.category === "plugin"
-                    ? html`<hacs-link
-                        .url="/hacsfiles/${path.pop()}/${this.repository.file_name}"
-                        newtab
-                      >
-                        <paper-item class="pointer">
-                          ${this.hacs.localize("repository_card.open_source")}
-                        </paper-item>
-                      </hacs-link>`
-                    : ""}
-
-                  <hacs-link .url="https://github.com/${this.repository.full_name}/issues">
-                    <paper-item class="pointer">
-                      ${this.hacs.localize("repository_card.open_issue")}
-                    </paper-item>
-                  </hacs-link>
-
-                  ${String(this.repository.id) !== "172733314"
-                    ? html`<hacs-link
-                          .url="https://github.com/hacs/integration/issues/new?assignees=ludeeus&labels=flag&template=removal.yml&repo=${this
-                            .repository.full_name}&title=Request for removal of ${this.repository
-                            .full_name}"
-                        >
-                          <paper-item class="pointer uninstall">
-                            ${this.hacs.localize("repository_card.report")}
-                          </paper-item>
-                        </hacs-link>
-                        <paper-item
-                          class="pointer uninstall"
-                          @tap=${this._uninstallRepositoryDialog}
-                        >
-                          ${this.hacs.localize("common.uninstall")}
-                        </paper-item>`
-                    : ""}
-                </paper-listbox>
-              </paper-menu-button>`
+              </ha-icon-overflow-menu>`
             : ""}
         </div>
       </ha-card>
@@ -349,10 +363,6 @@ export class HacsRepositoryCard extends LitElement {
           margin-top: 0;
           min-height: 24px;
         }
-        paper-menu-button {
-          padding: 0;
-          float: right;
-        }
 
         .pointer {
           cursor: pointer;
@@ -417,6 +427,10 @@ export class HacsRepositoryCard extends LitElement {
         ha-card[narrow] {
           width: calc(100% - 24px);
           margin: 11px;
+        }
+
+        ha-chip {
+          padding: 4px;
         }
       `,
     ];
