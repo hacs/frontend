@@ -358,6 +358,7 @@ export class HacsRepositoryCard extends LitElement {
         .group-header h1 {
           margin: 0;
           padding: 8px 16px;
+          font-size: 22px;
         }
         h1 {
           margin-top: 0;
@@ -369,6 +370,7 @@ export class HacsRepositoryCard extends LitElement {
         }
         paper-item-body {
           opacity: var(--dark-primary-opacity);
+          font-size: 14px;
         }
 
         .status-new {
@@ -399,7 +401,7 @@ export class HacsRepositoryCard extends LitElement {
         }
 
         .default-header {
-          padding: 10px 0 !important;
+          padding: 2px 0 !important;
         }
 
         mwc-button.update-header {
@@ -431,6 +433,7 @@ export class HacsRepositoryCard extends LitElement {
 
         ha-chip {
           padding: 4px;
+          margin-top: 3px;
         }
       `,
     ];
