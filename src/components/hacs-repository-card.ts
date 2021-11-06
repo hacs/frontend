@@ -34,9 +34,9 @@ export class HacsRepositoryCard extends LitElement {
 
   @property({ attribute: false }) public repository!: Repository;
 
-  @property({ attribute: false }) public status: Status;
+  @property({ attribute: false }) public status!: Status;
 
-  @property({ attribute: false }) public removed: RemovedRepository[];
+  @property({ attribute: false }) public removed!: RemovedRepository[];
 
   @property({ type: Boolean }) public narrow!: boolean;
 
@@ -106,46 +106,46 @@ export class HacsRepositoryCard extends LitElement {
             </div>
           </div>
           <paper-item>
-            <paper-item-body>${this.repository.description}</paper-item-body></paper-item
-          >
+            <paper-item-body> ${this.repository.description} </paper-item-body>
+          </paper-item>
         </div>
         <div class="card-actions">
           ${this.repository.new && !this.repository.installed
             ? html`<div>
-                  <mwc-button @click=${this._installRepository}
-                    >${this.hacs.localize("common.install")}</mwc-button
+                  <mwc-button @click=${this._installRepository}>
+                    ${this.hacs.localize("common.install")}</mwc-button
                   >
                 </div>
                 <div>
-                  <mwc-button @click=${this._showReopsitoryInfo}
-                    >${this.hacs.localize("repository_card.information")}</mwc-button
-                  >
+                  <mwc-button @click=${this._showReopsitoryInfo}>
+                    ${this.hacs.localize("repository_card.information")}
+                  </mwc-button>
                 </div>
                 <div>
-                  <hacs-link .url="https://github.com/${this.repository.full_name}"
-                    ><mwc-button>${this.hacs.localize("common.repository")}</mwc-button></hacs-link
-                  >
+                  <hacs-link .url="https://github.com/${this.repository.full_name}">
+                    <mwc-button>${this.hacs.localize("common.repository")}</mwc-button>
+                  </hacs-link>
                 </div>
                 <div>
-                  <mwc-button @click=${this._setNotNew}
-                    >${this.hacs.localize("repository_card.dismiss")}</mwc-button
-                  >
+                  <mwc-button @click=${this._setNotNew}>
+                    ${this.hacs.localize("repository_card.dismiss")}
+                  </mwc-button>
                 </div>`
             : this.repository.pending_upgrade && this.addedToLovelace
             ? html`<div>
-                  <mwc-button class="update-header" @click=${this._updateRepository} raised
-                    >${this.hacs.localize("common.update")}</mwc-button
-                  >
+                  <mwc-button class="update-header" @click=${this._updateRepository} raised>
+                    ${this.hacs.localize("common.update")}
+                  </mwc-button>
                 </div>
                 <div>
-                  <hacs-link .url="https://github.com/${this.repository.full_name}"
-                    ><mwc-button>${this.hacs.localize("common.repository")}</mwc-button></hacs-link
-                  >
+                  <hacs-link .url="https://github.com/${this.repository.full_name}">
+                    <mwc-button>${this.hacs.localize("common.repository")}</mwc-button>
+                  </hacs-link>
                 </div>`
             : html`<div>
-                <hacs-link .url="https://github.com/${this.repository.full_name}"
-                  ><mwc-button>${this.hacs.localize("common.repository")}</mwc-button></hacs-link
-                >
+                <hacs-link .url="https://github.com/${this.repository.full_name}">
+                  <mwc-button>${this.hacs.localize("common.repository")}</mwc-button>
+                </hacs-link>
               </div>`}
           ${this.repository.installed
             ? html` <paper-menu-button
@@ -158,48 +158,51 @@ export class HacsRepositoryCard extends LitElement {
                   <ha-svg-icon .path=${mdiDotsVertical}></ha-svg-icon>
                 </mwc-icon-button>
                 <paper-listbox slot="dropdown-content">
-                  <paper-item class="pointer" @tap=${this._showReopsitoryInfo}
-                    >${this.hacs.localize("repository_card.information")}</paper-item
-                  >
+                  <paper-item class="pointer" @tap=${this._showReopsitoryInfo}>
+                    ${this.hacs.localize("repository_card.information")}
+                  </paper-item>
 
-                  <paper-item class="pointer" @tap=${this._updateReopsitoryInfo}
-                    >${this.hacs.localize("repository_card.update_information")}</paper-item
-                  >
+                  <paper-item class="pointer" @tap=${this._updateReopsitoryInfo}>
+                    ${this.hacs.localize("repository_card.update_information")}
+                  </paper-item>
 
-                  <paper-item @tap=${this._installRepository}
-                    >${this.hacs.localize("repository_card.reinstall")}</paper-item
-                  >
+                  <paper-item @tap=${this._installRepository}>
+                    ${this.hacs.localize("repository_card.reinstall")}
+                  </paper-item>
 
                   ${this.repository.category === "plugin"
                     ? html`<hacs-link
                         .url="/hacsfiles/${path.pop()}/${this.repository.file_name}"
                         newtab
-                        ><paper-item class="pointer"
-                          >${this.hacs.localize("repository_card.open_source")}</paper-item
-                        ></hacs-link
-                      >`
+                      >
+                        <paper-item class="pointer">
+                          ${this.hacs.localize("repository_card.open_source")}
+                        </paper-item>
+                      </hacs-link>`
                     : ""}
 
-                  <hacs-link .url="https://github.com/${this.repository.full_name}/issues"
-                    ><paper-item class="pointer"
-                      >${this.hacs.localize("repository_card.open_issue")}</paper-item
-                    ></hacs-link
-                  >
+                  <hacs-link .url="https://github.com/${this.repository.full_name}/issues">
+                    <paper-item class="pointer">
+                      ${this.hacs.localize("repository_card.open_issue")}
+                    </paper-item>
+                  </hacs-link>
 
                   ${String(this.repository.id) !== "172733314"
                     ? html`<hacs-link
                           .url="https://github.com/hacs/integration/issues/new?assignees=ludeeus&labels=flag&template=removal.yml&repo=${this
                             .repository.full_name}&title=Request for removal of ${this.repository
                             .full_name}"
-                          ><paper-item class="pointer uninstall"
-                            >${this.hacs.localize("repository_card.report")}</paper-item
-                          ></hacs-link
                         >
+                          <paper-item class="pointer uninstall">
+                            ${this.hacs.localize("repository_card.report")}
+                          </paper-item>
+                        </hacs-link>
                         <paper-item
                           class="pointer uninstall"
                           @tap=${this._uninstallRepositoryDialog}
-                          >${this.hacs.localize("common.uninstall")}</paper-item
-                        >`
+                        >
+                          ${this.hacs.localize("common.uninstall")}
+                        </paper-item>`
                     : ""}
                 </paper-listbox>
               </paper-menu-button>`
