@@ -120,13 +120,8 @@ export class HacsRepositoryCard extends LitElement {
           ${this.repository.new && !this.repository.installed
             ? html`<div>
                   <mwc-button @click=${this._installRepository}>
-                    ${this.hacs.localize("common.install")}</mwc-button
+                    ${this.hacs.localize("common.download")}</mwc-button
                   >
-                </div>
-                <div>
-                  <mwc-button @click=${this._showReopsitoryInfo}>
-                    ${this.hacs.localize("repository_card.information")}
-                  </mwc-button>
                 </div>
                 <div>
                   <hacs-link .url="https://github.com/${this.repository.full_name}">

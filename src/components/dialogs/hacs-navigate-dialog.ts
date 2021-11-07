@@ -3,6 +3,7 @@ import "@material/mwc-linear-progress";
 import { css, html, TemplateResult } from "lit";
 import { customElement, property, state } from "lit/decorators";
 import { navigate } from "../../../homeassistant-frontend/src/common/navigate";
+import { HacsStyles } from "../../styles/hacs-common-style";
 import "./hacs-dialog";
 import { HacsDialogBase } from "./hacs-dialog-base";
 
@@ -66,6 +67,7 @@ export class HacsNavigateDialog extends HacsDialogBase {
 
   static get styles() {
     return [
+      HacsStyles,
       css`
         hacs-dialog {
           --hacs-dialog-max-width: 460px;

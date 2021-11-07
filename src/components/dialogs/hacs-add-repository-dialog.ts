@@ -14,7 +14,8 @@ import "../../../homeassistant-frontend/src/components/ha-svg-icon";
 import { brandsUrl } from "../../../homeassistant-frontend/src/util/brands-url";
 import { Repository } from "../../data/common";
 import { activePanel } from "../../panels/hacs-sections";
-import { hacsIconStyle, scrollBarStyle, searchStyles } from "../../styles/element-styles";
+import { scrollBarStyle, searchStyles } from "../../styles/element-styles";
+import { HacsStyles } from "../../styles/hacs-common-style";
 import { filterRepositoriesByInput } from "../../tools/filter-repositories-by-input";
 import "../hacs-filter";
 import "./hacs-dialog";
@@ -109,6 +110,7 @@ export class HacsAddRepositoryDialog extends HacsDialogBase {
         hideActions
         scrimClickAction
         escapeKeyAction
+        maxWidth
       >
         <div class="searchandfilter" ?narrow=${this.narrow}>
           <search-input
@@ -229,7 +231,7 @@ export class HacsAddRepositoryDialog extends HacsDialogBase {
     return [
       searchStyles,
       scrollBarStyle,
-      hacsIconStyle,
+      HacsStyles,
       css`
         .content {
           width: 100%;

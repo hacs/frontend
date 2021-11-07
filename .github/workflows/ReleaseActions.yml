@@ -14,8 +14,9 @@ jobs:
     name: Deploy to PyPi
     steps:
       - uses: actions/checkout@v2
-      - name: Checkout submodules
-        uses: textbook/git-checkout-submodule-action@master
+        with:
+          submodules: recursive
+
       - name: Set up Python
         uses: actions/setup-python@v2.2.2
         with:

@@ -18,6 +18,7 @@ import {
   repositoryReleasenotes,
 } from "../../data/websocket";
 import { scrollBarStyle } from "../../styles/element-styles";
+import { HacsStyles } from "../../styles/hacs-common-style";
 import { markdown } from "../../tools/markdown/markdown";
 import { updateLovelaceResources } from "../../tools/update-lovelace-resources";
 import "../hacs-link";
@@ -216,6 +217,7 @@ export class HacsUpdateDialog extends HacsDialogBase {
   static get styles(): CSSResultGroup {
     return [
       scrollBarStyle,
+      HacsStyles,
       css`
         .content {
           width: 360px;

@@ -7,11 +7,11 @@ import { customElement, property } from "lit/decorators";
 import memoizeOne from "memoize-one";
 import { Repository } from "../../data/common";
 import { getRepositories, repositoryUpdate } from "../../data/websocket";
-import { scrollBarStyle } from "../../styles/element-styles";
 import { markdown } from "../../tools/markdown/markdown";
 import "../hacs-link";
 import "./hacs-dialog";
 import { HacsDialogBase } from "./hacs-dialog-base";
+import { HacsStyles } from "../../styles/hacs-common-style";
 
 @customElement("hacs-repository-info-dialog")
 export class HacsRepositoryDialog extends HacsDialogBase {
@@ -73,10 +73,12 @@ export class HacsRepositoryDialog extends HacsDialogBase {
         .active=${this.active}
         .title=${this._repository.name || ""}
         .hass=${this.hass}
+        maxWidth
       >
-        <div class="content scroll">
-          ${this._repository.updated_info
-            ? html` <div class="chips">
+        <div class="content">
+          ${!this.narrow
+            ? html`
+                <div class="chips">
                   ${this._repository.installed
                     ? html`
                         <ha-chip
@@ -115,10 +117,13 @@ export class HacsRepositoryDialog extends HacsDialogBase {
                     </ha-chip>
                   </hacs-link>
                 </div>
-                ${markdown.html(
-                  this._repository.additional_info || this.hacs.localize("dialog_info.no_info"),
-                  this._repository
-                )}`
+              `
+            : ""}
+          ${this._repository.updated_info
+            ? markdown.html(
+                this._repository.additional_info || this.hacs.localize("dialog_info.no_info"),
+                this._repository
+              )
             : html`
                 <div class="loading">
                   <ha-circular-progress active size="large"></ha-circular-progress>
@@ -144,13 +149,8 @@ export class HacsRepositoryDialog extends HacsDialogBase {
 
   static get styles() {
     return [
-      scrollBarStyle,
+      HacsStyles,
       css`
-        .content {
-          width: calc(100% - 12px);
-          max-height: 75vh;
-          padding-right: 12px;
-        }
         ha-chip {
           --ha-chip-icon-color: var(--hacs-chip-color, var(--primary-color));
         }

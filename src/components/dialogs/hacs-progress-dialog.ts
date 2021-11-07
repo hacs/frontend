@@ -1,3 +1,4 @@
+import "@material/mwc-button/mwc-button";
 import "../../../homeassistant-frontend/src/components/ha-circular-progress";
 import { html, TemplateResult, PropertyValues } from "lit";
 import { customElement, property } from "lit/decorators";
@@ -14,7 +15,7 @@ export class HacsProgressDialog extends HacsDialogBase {
 
   @property() public confirm: () => Promise<void>;
 
-  @property({ type: Boolean }) private _inProgress: boolean = false;
+  @property({ type: Boolean }) private _inProgress = false;
 
   shouldUpdate(changedProperties: PropertyValues) {
     return (
