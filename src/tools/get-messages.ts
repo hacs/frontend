@@ -33,7 +33,7 @@ export const getMessages = memoizeOne((hacs: Hacs): Message[] => {
     messages.push({
       name: hacs.localize(`entry.messages.${hacs.status.stage}.title`),
       info: hacs.localize(`entry.messages.${hacs.status.stage}.content`),
-      severity: "info",
+      severity: "warning",
     });
   }
 
