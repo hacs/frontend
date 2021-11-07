@@ -1,9 +1,9 @@
-import { html, TemplateResult } from "lit";
+import { css, html, TemplateResult } from "lit";
 import { customElement, property } from "lit/decorators";
 import { createCloseHeading } from "../../../homeassistant-frontend/src/components/ha-dialog";
 import { HacsStyles } from "../../styles/hacs-common-style";
-import { hacsStyleDialog, scrollBarStyle } from "../../styles/element-styles";
 import { HacsDialogBase } from "./hacs-dialog-base";
+import { haStyleDialog } from "../../../homeassistant-frontend/src/resources/styles";
 
 @customElement("hacs-dialog")
 export class HacsDialog extends HacsDialogBase {
@@ -15,6 +15,8 @@ export class HacsDialog extends HacsDialogBase {
 
   @property({ type: Boolean }) public noClose = false;
 
+  @property({ type: Boolean }) public maxWidth = false;
+
   @property() public title!: string;
 
   protected render(): TemplateResult | void {
@@ -23,6 +25,7 @@ export class HacsDialog extends HacsDialogBase {
     }
 
     return html`<ha-dialog
+      ?maxWidth=${this.maxWidth}
       ?open=${this.active}
       ?scrimClickAction=${this.scrimClickAction}
       ?escapeKeyAction=${this.escapeKeyAction}
@@ -30,9 +33,7 @@ export class HacsDialog extends HacsDialogBase {
       ?hideActions=${this.hideActions}
       .heading=${!this.noClose ? createCloseHeading(this.hass, this.title) : this.title}
     >
-      <div class="content scroll" ?narrow=${this.narrow}>
-        <slot></slot>
-      </div>
+      <slot></slot>
       <slot class="primary" name="primaryaction" slot="primaryAction"></slot>
       <slot class="secondary" name="secondaryaction" slot="secondaryAction"></slot>
     </ha-dialog>`;
@@ -49,6 +50,14 @@ export class HacsDialog extends HacsDialogBase {
   }
 
   static get styles() {
-    return [hacsStyleDialog, scrollBarStyle, HacsStyles];
+    return [
+      haStyleDialog,
+      HacsStyles,
+      css`
+        ha-dialog[maxWidth] {
+          --mdc-dialog-max-width: calc(100vw - 32px);
+        }
+      `,
+    ];
   }
 }

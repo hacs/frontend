@@ -2,13 +2,15 @@ import { css, html, TemplateResult } from "lit";
 import { customElement, property } from "lit/decorators";
 import { Repository } from "../../data/common";
 import { deleteResource, fetchResources, repositoryUninstall } from "../../data/websocket";
+import { HacsStyles } from "../../styles/hacs-common-style";
 import "./hacs-dialog";
 import { HacsDialogBase } from "./hacs-dialog-base";
 
 @customElement("hacs-removed-dialog")
 export class HacsRemovedDialog extends HacsDialogBase {
   @property({ attribute: false }) public repository: Repository;
-  @property({ type: Boolean }) private _updating: boolean = false;
+
+  @property({ type: Boolean }) private _updating = false;
 
   protected render(): TemplateResult | void {
     if (!this.active) return html``;
@@ -54,11 +56,14 @@ export class HacsRemovedDialog extends HacsDialogBase {
   }
 
   static get styles() {
-    return css`
-      .uninstall {
-        --mdc-theme-primary: var(--hcv-color-error);
-      }
-    `;
+    return [
+      HacsStyles,
+      css`
+        .uninstall {
+          --mdc-theme-primary: var(--hcv-color-error);
+        }
+      `,
+    ];
   }
 
   private _lovelaceUrl(): string {
@@ -83,6 +88,7 @@ export class HacsRemovedDialog extends HacsDialogBase {
     this._updating = false;
     this.active = false;
   }
+
   private async _ignoreMessage(): Promise<void> {
     this._updating = false;
     this.active = false;

@@ -4,19 +4,22 @@ import { css, html, PropertyValues, TemplateResult } from "lit";
 import { customElement, property, state } from "lit/decorators";
 import { computeRTL } from "../../../homeassistant-frontend/src/common/util/compute_rtl";
 import "../../../homeassistant-frontend/src/components/ha-alert";
+import "../../../homeassistant-frontend/src/components/ha-circular-progress";
 import "../../../homeassistant-frontend/src/components/ha-form/ha-form";
 import type { HaFormSchema } from "../../../homeassistant-frontend/src/components/ha-form/types";
-import "../../../homeassistant-frontend/src/components/ha-paper-dropdown-menu";
 import "../../../homeassistant-frontend/src/components/ha-settings-row";
 import "../../../homeassistant-frontend/src/components/ha-svg-icon";
 import { getRepositories, repositoryAdd, repositoryDelete } from "../../data/websocket";
-import { hacsIconStyle, scrollBarStyle } from "../../styles/element-styles";
+import { scrollBarStyle } from "../../styles/element-styles";
+import { HacsStyles } from "../../styles/hacs-common-style";
 import "./hacs-dialog";
 import { HacsDialogBase } from "./hacs-dialog-base";
 
 @customElement("hacs-custom-repositories-dialog")
 export class HacsCustomRepositoriesDialog extends HacsDialogBase {
   @property() private _error: any;
+
+  @state() private _progress = false;
 
   @state() private _addRepositoryData = { category: undefined, repository: undefined };
 
@@ -26,6 +29,7 @@ export class HacsCustomRepositoriesDialog extends HacsDialogBase {
       changedProperties.has("active") ||
       changedProperties.has("_error") ||
       changedProperties.has("_addRepositoryData") ||
+      changedProperties.has("_progress") ||
       changedProperties.has("repositories")
     );
   }
@@ -105,7 +109,9 @@ export class HacsCustomRepositoriesDialog extends HacsDialogBase {
           this._addRepositoryData.repository === undefined}
           @click=${this._addRepository}
         >
-          ${this.hacs.localize("common.add")}
+          ${this._progress
+            ? html`<ha-circular-progress active size="small"></ha-circular-progress>`
+            : this.hacs.localize("common.add")}
         </mwc-button>
       </hacs-dialog>
     `;
@@ -121,6 +127,7 @@ export class HacsCustomRepositoriesDialog extends HacsDialogBase {
 
   private async _addRepository() {
     this._error = undefined;
+    this._progress = true;
     if (!this._addRepositoryData.category) {
       this._error = {
         message: this.hacs.localize("dialog_custom_repositories.no_category"),
@@ -139,6 +146,7 @@ export class HacsCustomRepositoriesDialog extends HacsDialogBase {
       this._addRepositoryData.category
     );
     this.repositories = await getRepositories(this.hass);
+    this._progress = false;
   }
 
   private async _removeRepository(repository: string) {
@@ -163,11 +171,10 @@ export class HacsCustomRepositoriesDialog extends HacsDialogBase {
   static get styles() {
     return [
       scrollBarStyle,
-      hacsIconStyle,
+      HacsStyles,
       css`
         .list {
           position: relative;
-          margin-top: -16px;
           max-height: 870px;
           overflow: auto;
         }

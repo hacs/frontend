@@ -9,9 +9,12 @@ import { HacsDialogBase } from "./hacs-dialog-base";
 
 @customElement("hacs-generic-dialog")
 export class HacsGenericDialog extends HacsDialogBase {
-  @property({ type: Boolean }) public markdown: boolean = false;
+  @property({ type: Boolean }) public markdown = false;
+
   @property() public repository?: string;
+
   @property() public header?: string;
+
   @property() public content?: string;
 
   private _getRepository = memoizeOne((repositories: Repository[], repository: string) =>
