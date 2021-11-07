@@ -59,9 +59,10 @@ export class HacsCustomRepositoriesDialog extends HacsDialogBase {
         .title=${this.hacs.localize("dialog_custom_repositories.title")}
         scrimClickAction
         escapeKeyAction
+        maxWidth
       >
         <div class="content">
-          <div class="list">
+          <div class="list" ?narrow=${this.narrow}>
             ${this._error?.message
               ? html`<ha-alert alert-type="error" .rtl=${computeRTL(this.hass)}>
                   ${this._error.message}
@@ -175,7 +176,7 @@ export class HacsCustomRepositoriesDialog extends HacsDialogBase {
       css`
         .list {
           position: relative;
-          max-height: 870px;
+          max-height: calc(100vh - 500px);
           overflow: auto;
         }
         ha-form {
@@ -183,6 +184,7 @@ export class HacsCustomRepositoriesDialog extends HacsDialogBase {
           padding: 25px 0;
         }
         ha-form[narrow] {
+          background-color: var(--card-background-color);
           bottom: 0;
           position: absolute;
           width: calc(100% - 48px);
@@ -197,8 +199,17 @@ export class HacsCustomRepositoriesDialog extends HacsDialogBase {
           cursor: pointer;
           padding: 0;
         }
+        .list[narrow] > ha-settings-row:last-of-type {
+          margin-bottom: 162px;
+        }
         .delete {
           color: var(--hcv-color-error);
+        }
+
+        @media all and (max-width: 450px), all and (max-height: 500px) {
+          .list {
+            max-height: calc(100vh - 162px);
+          }
         }
       `,
     ];
