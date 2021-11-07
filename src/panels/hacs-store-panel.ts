@@ -1,6 +1,6 @@
+import "../../homeassistant-frontend/src/components/ha-alert";
 import {
   mdiAlertCircleOutline,
-  mdiBroom,
   mdiFileDocument,
   mdiGit,
   mdiGithub,
@@ -148,19 +148,6 @@ export class HacsStorePanel extends LitElement {
             action: () => top?.open("https://hacs.xyz/docs/issues", "_blank", "noreferrer=true"),
           },
           {
-            path: mdiBroom,
-            label: this.hacs.localize("menu.dismiss"),
-            disabled:
-              this.repositories?.filter(
-                (repo) =>
-                  repo.new &&
-                  this.hacs.sections
-                    ?.find((panel) => panel.id === this.section)
-                    ?.categories?.includes(repo.category)
-              ).length === 0,
-            action: () => this._clearAllNewRepositories(),
-          },
-          {
             path: mdiGit,
             label: this.hacs.localize("menu.custom_repositories"),
             disabled: this.hacs.status.disabled || this.hacs.status.background_task,
@@ -221,9 +208,12 @@ export class HacsStorePanel extends LitElement {
             </div>`
           : ""}
         ${newRepositories?.length > 10
-          ? html`<div class="new-repositories">
+          ? html`<ha-alert
+              @alert-action-clicked=${this._clearAllNewRepositories}
+              .actionText=${this.hacs.localize("menu.dismiss")}
+            >
               ${this.hacs.localize("store.new_repositories_note")}
-            </div>`
+            </ha-alert> `
           : ""}
         <div class="container ${this.narrow ? "narrow" : ""}">
           ${this.repositories === undefined
@@ -238,7 +228,7 @@ export class HacsStorePanel extends LitElement {
       <ha-fab
         slot="fab"
         .label=${this.hacs.localize("store.add")}
-        extended
+        .extended=${!this.narrow}
         @click=${this._addRepository}
       >
         <ha-svg-icon slot="icon" .path=${mdiPlus}></ha-svg-icon>
@@ -270,27 +260,24 @@ export class HacsStorePanel extends LitElement {
   }
 
   private _renderNoResultsFound(): TemplateResult {
-    return html`<ha-card class="no-repositories">
-      <div class="header">${this.hacs!.localize("store.no_repositories")} 😕</div>
-      <p>
-        ${this.hacs!.localize("store.no_repositories_found_desc1", {
-          searchInput: this._searchInput,
-        })}
-        <br />
-        ${this.hacs!.localize("store.no_repositories_found_desc2")}
-      </p>
-    </ha-card>`;
+    return html`<ha-alert
+      alert-type="warning"
+      .title="${this.hacs!.localize("store.no_repositories")} 😕"
+    >
+      ${this.hacs!.localize("store.no_repositories_found_desc1", {
+        searchInput: this._searchInput,
+      })}
+      <br />
+      ${this.hacs!.localize("store.no_repositories_found_desc2")}
+    </ha-alert>`;
   }
 
   private _renderEmpty(): TemplateResult {
-    return html`<ha-card class="no-repositories">
-      <div class="header">${this.hacs!.localize("store.no_repositories")} 😕</div>
-      <p>
-        ${this.hacs!.localize("store.no_repositories_desc1")}<br />${this.hacs!.localize(
-          "store.no_repositories_desc2"
-        )}
-      </p>
-    </ha-card>`;
+    return html`<ha-alert .title="${this.hacs!.localize("store.no_repositories")} 😕">
+      ${this.hacs!.localize("store.no_repositories_desc1")}
+      <br />
+      ${this.hacs!.localize("store.no_repositories_desc2")}
+    </ha-alert>`;
   }
 
   private _inputValueChanged(ev: any) {
@@ -337,15 +324,6 @@ export class HacsStorePanel extends LitElement {
           padding: 8px 16px 16px;
           margin-bottom: 64px;
         }
-        .no-repositories {
-          width: 100%;
-          text-align: center;
-          margin-top: 12px;
-        }
-        .new-repositories {
-          margin: 4px 16px 0 16px;
-          color: var(--hcv-text-color-primary);
-        }
         ha-svg-icon {
           color: var(--hcv-text-color-on-background);
         }
@@ -359,7 +337,12 @@ export class HacsStorePanel extends LitElement {
           width: 100%;
         }
         hacs-repository-card[narrow]:last-of-type {
-          margin-bottom: 248px;
+          margin-bottom: 64px;
+        }
+        ha-alert {
+          color: var(--hcv-text-color-primary);
+          display: block;
+          margin-top: -4px;
         }
         .narrow {
           width: 100%;
