@@ -8,7 +8,6 @@ import memoizeOne from "memoize-one";
 import { stopPropagation } from "../../../homeassistant-frontend/src/common/dom/stop_propagation";
 import "../../../homeassistant-frontend/src/common/search/search-input";
 import "../../../homeassistant-frontend/src/components/ha-chip";
-import "../../../homeassistant-frontend/src/components/ha-paper-dropdown-menu";
 import "../../../homeassistant-frontend/src/components/ha-settings-row";
 import "../../../homeassistant-frontend/src/components/ha-svg-icon";
 import { brandsUrl } from "../../../homeassistant-frontend/src/util/brands-url";
@@ -261,8 +260,7 @@ export class HacsAddRepositoryDialog extends HacsDialogBase {
           border-bottom: 1px var(--mdc-theme-primary) solid;
         }
         search-input[narrow],
-        mwc-select[narrow],
-        ha-paper-dropdown-menu[narrow] {
+        mwc-select[narrow] {
           width: 100%;
           margin: 4px 0;
         }
@@ -274,10 +272,6 @@ export class HacsAddRepositoryDialog extends HacsDialogBase {
           margin-bottom: 16px;
           max-height: 36px;
           max-width: 36px;
-        }
-
-        ha-paper-dropdown-menu {
-          margin: 0 12px -8px 0;
         }
 
         .filters {
@@ -292,6 +286,7 @@ export class HacsAddRepositoryDialog extends HacsDialogBase {
 
         ha-settings-row {
           padding: 0px 16px 0 0;
+          cursor: pointer;
         }
 
         .searchandfilter {

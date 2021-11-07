@@ -359,16 +359,13 @@ export class HacsStorePanel extends LitElement {
           width: 100%;
         }
         hacs-repository-card[narrow]:last-of-type {
-          margin-bottom: 64px;
+          margin-bottom: 248px;
         }
         .narrow {
           width: 100%;
           display: block;
           padding: 0px;
           margin: 0;
-        }
-        .container .narrow {
-          margin-bottom: 128px;
         }
 
         .bottom-bar {
