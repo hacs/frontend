@@ -124,11 +124,6 @@ export class HacsRepositoryCard extends LitElement {
                   >
                 </div>
                 <div>
-                  <mwc-button @click=${this._showReopsitoryInfo}>
-                    ${this.hacs.localize("repository_card.information")}
-                  </mwc-button>
-                </div>
-                <div>
                   <hacs-link .url="https://github.com/${this.repository.full_name}">
                     <mwc-button>${this.hacs.localize("common.repository")}</mwc-button>
                   </hacs-link>
