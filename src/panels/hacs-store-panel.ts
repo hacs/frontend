@@ -207,7 +207,7 @@ export class HacsStorePanel extends LitElement {
               ></hacs-filter>
             </div>`
           : ""}
-        ${newRepositories?.length > 10
+        ${newRepositories?.length
           ? html`<ha-alert
               @alert-action-clicked=${this._clearAllNewRepositories}
               .actionText=${this.hacs.localize("menu.dismiss")}
