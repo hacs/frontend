@@ -9,6 +9,7 @@ import "../../../homeassistant-frontend/src/components/ha-form/ha-form";
 import type { HaFormSchema } from "../../../homeassistant-frontend/src/components/ha-form/types";
 import "../../../homeassistant-frontend/src/components/ha-settings-row";
 import "../../../homeassistant-frontend/src/components/ha-svg-icon";
+import { Repository } from "../../data/common";
 import { getRepositories, repositoryAdd, repositoryDelete } from "../../data/websocket";
 import { scrollBarStyle } from "../../styles/element-styles";
 import { HacsStyles } from "../../styles/hacs-common-style";
@@ -23,19 +24,21 @@ export class HacsCustomRepositoriesDialog extends HacsDialogBase {
 
   @state() private _addRepositoryData = { category: undefined, repository: undefined };
 
+  @state() private _customRepositories?: Repository[];
+
   shouldUpdate(changedProperties: PropertyValues) {
     return (
       changedProperties.has("narrow") ||
       changedProperties.has("active") ||
       changedProperties.has("_error") ||
       changedProperties.has("_addRepositoryData") ||
+      changedProperties.has("_customRepositories") ||
       changedProperties.has("_progress")
     );
   }
 
   protected render(): TemplateResult | void {
     if (!this.active) return html``;
-    const repositories = this.hacs.repositories?.filter((repo) => repo.custom);
     const addRepositorySchema: HaFormSchema[] = [
       {
         type: "string",
@@ -67,7 +70,7 @@ export class HacsCustomRepositoriesDialog extends HacsDialogBase {
                   ${this._error.message}
                 </ha-alert>`
               : ""}
-            ${repositories
+            ${this._customRepositories
               ?.filter((repo) => this.hacs.configuration.categories.includes(repo.category))
               .map(
                 (repo) => html`<ha-settings-row
@@ -116,6 +119,7 @@ export class HacsCustomRepositoriesDialog extends HacsDialogBase {
 
   protected firstUpdated() {
     this.hass.connection.subscribeEvents((msg) => (this._error = (msg as any).data), "hacs/error");
+    this._customRepositories = this.hacs.repositories?.filter((repo) => repo.custom);
   }
 
   private _valueChanged(ev) {
@@ -150,11 +154,11 @@ export class HacsCustomRepositoriesDialog extends HacsDialogBase {
         composed: true,
       })
     );
+    this._customRepositories = repositories.filter((repo) => repo.custom);
     this._progress = false;
   }
 
   private async _removeRepository(repository: string) {
-    this._progress = true;
     this._error = undefined;
     await repositoryDelete(this.hass, repository);
     const repositories = await getRepositories(this.hass);
@@ -165,7 +169,7 @@ export class HacsCustomRepositoriesDialog extends HacsDialogBase {
         composed: true,
       })
     );
-    this._progress = false;
+    this._customRepositories = repositories.filter((repo) => repo.custom);
   }
 
   private async _showReopsitoryInfo(repository: string) {
