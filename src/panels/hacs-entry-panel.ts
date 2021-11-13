@@ -7,6 +7,7 @@ import "@polymer/paper-item/paper-item-body";
 import { css, CSSResultGroup, html, LitElement, TemplateResult } from "lit";
 import { customElement, property } from "lit/decorators";
 import { isComponentLoaded } from "../../homeassistant-frontend/src/common/config/is_component_loaded";
+import { navigate } from "../../homeassistant-frontend/src/common/navigate";
 import { computeRTL } from "../../homeassistant-frontend/src/common/util/compute_rtl";
 import "../../homeassistant-frontend/src/components/ha-alert";
 import "../../homeassistant-frontend/src/components/ha-card";
@@ -105,10 +106,13 @@ export class HacsEntryPanel extends LitElement {
                           ? `${message.name} - ${message.secondary}`
                           : message.name}
                         .rtl=${computeRTL(this.hass)}
-                        .actionText=${message.dialog
+                        .actionText=${message.path
+                          ? this.hacs.localize("common.navigate")
+                          : message.dialog
                           ? this.hacs.localize(`common.${message.dialog}`)
                           : ""}
-                        @alert-action-clicked=${() => this._openDialog(message)}
+                        @alert-action-clicked=${() =>
+                          message.path ? navigate(message.path) : this._openDialog(message)}
                       >
                         ${message.info}
                       </ha-alert>
