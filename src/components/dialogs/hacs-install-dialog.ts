@@ -108,12 +108,12 @@ export class HacsInstallDialog extends HacsDialogBase {
           this._repository.version_or_commit === "version"
             ? this._repository.releases
                 .map((version) => [version, version])
-                .concat([
+                .concat(
                   this._repository.full_name === "hacs/integration" ||
-                  this._repository.hide_default_branch
-                    ? ["", ""]
-                    : [this._repository.default_branch, this._repository.default_branch],
-                ])
+                    this._repository.hide_default_branch
+                    ? []
+                    : [[this._repository.default_branch, this._repository.default_branch]]
+                )
             : [],
       },
     ];
