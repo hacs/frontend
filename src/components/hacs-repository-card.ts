@@ -4,6 +4,7 @@ import {
   mdiAlertCircleOutline,
   mdiArrowDownCircle,
   mdiClose,
+  mdiGithub,
   mdiInformation,
   mdiLanguageJavascript,
   mdiReload,
@@ -117,39 +118,6 @@ export class HacsRepositoryCard extends LitElement {
           </paper-item>
         </div>
         <div class="card-actions">
-          ${this.repository.new && !this.repository.installed
-            ? html`<div>
-                  <mwc-button @click=${this._installRepository}>
-                    ${this.hacs.localize("common.download")}</mwc-button
-                  >
-                </div>
-                <div>
-                  <hacs-link .url="https://github.com/${this.repository.full_name}">
-                    <mwc-button>${this.hacs.localize("common.repository")}</mwc-button>
-                  </hacs-link>
-                </div>
-                <div>
-                  <mwc-button @click=${this._setNotNew}>
-                    ${this.hacs.localize("repository_card.dismiss")}
-                  </mwc-button>
-                </div>`
-            : this.repository.pending_upgrade &&
-              this.hacs.addedToLovelace!(this.hacs, this.repository)
-            ? html`<div>
-                  <mwc-button class="update-header" @click=${this._updateRepository} raised>
-                    ${this.hacs.localize("common.update")}
-                  </mwc-button>
-                </div>
-                <div>
-                  <hacs-link .url="https://github.com/${this.repository.full_name}">
-                    <mwc-button>${this.hacs.localize("common.repository")}</mwc-button>
-                  </hacs-link>
-                </div>`
-            : html`<div>
-                <hacs-link .url="https://github.com/${this.repository.full_name}">
-                  <mwc-button>${this.hacs.localize("common.repository")}</mwc-button>
-                </hacs-link>
-              </div>`}
           ${this.repository.installed
             ? html` <ha-icon-overflow-menu
                 slot="toolbar-icon"
@@ -160,6 +128,16 @@ export class HacsRepositoryCard extends LitElement {
                     path: mdiInformation,
                     label: this.hacs.localize("repository_card.information"),
                     action: () => this._showReopsitoryInfo(),
+                  },
+                  {
+                    path: mdiGithub,
+                    label: this.hacs.localize("common.repository"),
+                    action: () =>
+                      top?.open(
+                        `https://github.com/${this.repository.full_name}`,
+                        "_blank",
+                        "noreferrer=true"
+                      ),
                   },
                   {
                     path: mdiArrowDownCircle,
@@ -216,6 +194,24 @@ export class HacsRepositoryCard extends LitElement {
                 )}
               >
               </ha-icon-overflow-menu>`
+            : ""}
+          ${this.repository.new && !this.repository.installed
+            ? html`<div>
+                  <mwc-button @click=${this._setNotNew}>
+                    ${this.hacs.localize("repository_card.dismiss")}
+                  </mwc-button>
+                </div>
+                <div>
+                  <mwc-button @click=${this._installRepository} raised>
+                    ${this.hacs.localize("common.download")}
+                  </mwc-button>
+                </div> `
+            : this.repository.pending_upgrade && this.addedToLovelace
+            ? html`<div>
+                <mwc-button class="update-header" @click=${this._updateRepository} raised>
+                  ${this.hacs.localize("common.update")}
+                </mwc-button>
+              </div> `
             : ""}
         </div>
       </ha-card>
@@ -343,6 +339,7 @@ export class HacsRepositoryCard extends LitElement {
           border-top: none;
           bottom: 0;
           display: flex;
+          flex-direction: row-reverse;
           justify-content: space-between;
           align-items: center;
           padding: 5px;
