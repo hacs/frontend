@@ -20,6 +20,8 @@ import "../hacs-filter";
 import "./hacs-dialog";
 import { HacsDialogBase } from "./hacs-dialog-base";
 
+const SORT_BY = ["stars", "last_updated", "name"];
+
 @customElement("hacs-add-repository-dialog")
 export class HacsAddRepositoryDialog extends HacsDialogBase {
   @property({ attribute: false }) public filters: any = [];
@@ -30,7 +32,7 @@ export class HacsAddRepositoryDialog extends HacsDialogBase {
 
   @property() private _searchInput = "";
 
-  @property() private _sortBy = "stars";
+  @property() private _sortBy = SORT_BY[0];
 
   @property() public section!: string;
 
@@ -116,7 +118,7 @@ export class HacsAddRepositoryDialog extends HacsDialogBase {
             .hass=${this.hass}
             no-label-float
             .label=${this.hacs.localize("search.placeholder")}
-            .filter=${this._searchInput || ""}
+            .filter=${this._searchInput}
             @value-changed=${this._inputValueChanged}
             ?narrow=${this.narrow}
           ></search-input>
@@ -127,11 +129,12 @@ export class HacsAddRepositoryDialog extends HacsDialogBase {
             @selected=${(ev) => (this._sortBy = ev.currentTarget.value)}
             @closed=${stopPropagation}
           >
-            <mwc-list-item value="stars"> ${this.hacs.localize("store.stars")} </mwc-list-item>
-            <mwc-list-item value="name"> ${this.hacs.localize("store.name")} </mwc-list-item>
-            <mwc-list-item value="last_updated">
-              ${this.hacs.localize("store.last_updated")}
-            </mwc-list-item>
+            ${SORT_BY.map(
+              (value) =>
+                html`<mwc-list-item .value=${value}>
+                  ${this.hacs.localize(`store.${value}`)}
+                </mwc-list-item>`
+            )}
           </mwc-select>
         </div>
         ${this.filters.length > 1

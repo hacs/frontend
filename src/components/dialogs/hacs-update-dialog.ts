@@ -45,7 +45,7 @@ export class HacsUpdateDialog extends HacsDialogBase {
 
   protected async firstUpdated(changedProps) {
     super.firstUpdated(changedProps);
-    const repository = this._getRepository(this.repositories, this.repository);
+    const repository = this._getRepository(this.hacs.repositories, this.repository);
     if (!repository) {
       return;
     }
@@ -61,7 +61,7 @@ export class HacsUpdateDialog extends HacsDialogBase {
 
   protected render(): TemplateResult {
     if (!this.active) return html``;
-    const repository = this._getRepository(this.repositories, this.repository);
+    const repository = this._getRepository(this.hacs.repositories, this.repository);
     if (!repository) {
       return html``;
     }
@@ -155,7 +155,7 @@ export class HacsUpdateDialog extends HacsDialogBase {
           </mwc-button
         >
         <div class="secondary" slot="secondaryaction">
-          <hacs-link .url=${this._getChanglogURL()}>
+          <hacs-link .url=${this._getChanglogURL() || ""}>
             <mwc-button>${this.hacs.localize("dialog_update.changelog")}
           </mwc-button>
           </hacs-link>
@@ -170,7 +170,7 @@ export class HacsUpdateDialog extends HacsDialogBase {
 
   private async _updateRepository(): Promise<void> {
     this._updating = true;
-    const repository = this._getRepository(this.repositories, this.repository);
+    const repository = this._getRepository(this.hacs.repositories, this.repository);
     if (!repository) {
       return;
     }
@@ -203,7 +203,7 @@ export class HacsUpdateDialog extends HacsDialogBase {
   }
 
   private _getChanglogURL(): string | undefined {
-    const repository = this._getRepository(this.repositories, this.repository);
+    const repository = this._getRepository(this.hacs.repositories, this.repository);
     if (!repository) {
       return;
     }

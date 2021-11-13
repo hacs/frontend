@@ -22,8 +22,8 @@ export class HacsGenericDialog extends HacsDialogBase {
   );
 
   protected render(): TemplateResult | void {
-    if (!this.active) return html``;
-    const repository = this._getRepository(this.repositories, this.repository);
+    if (!this.active || !this.repository) return html``;
+    const repository = this._getRepository(this.hacs.repositories, this.repository);
     return html`
       <hacs-dialog .active=${this.active} .narrow=${this.narrow} .hass=${this.hass}>
         <div slot="header">${this.header || ""}</div>

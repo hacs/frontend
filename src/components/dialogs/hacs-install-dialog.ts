@@ -43,7 +43,7 @@ export class HacsInstallDialog extends HacsDialogBase {
         this.sidebarDocked = window.localStorage.getItem("dockedSidebar") === '"docked"';
       }
       if (propName === "repositories") {
-        this._repository = this._getRepository(this.repositories, this.repository!);
+        this._repository = this._getRepository(this.hacs.repositories, this.repository!);
       }
     });
     return (
@@ -71,10 +71,17 @@ export class HacsInstallDialog extends HacsDialogBase {
   });
 
   protected async firstUpdated() {
-    this._repository = this._getRepository(this.repositories, this.repository!);
+    this._repository = this._getRepository(this.hacs.repositories, this.repository!);
     if (!this._repository?.updated_info) {
       await repositoryUpdate(this.hass, this._repository!.id);
-      this.repositories = await getRepositories(this.hass);
+      const repositories = await getRepositories(this.hass);
+      this.dispatchEvent(
+        new CustomEvent("update-hacs", {
+          detail: { repositories },
+          bubbles: true,
+          composed: true,
+        })
+      );
     }
     this._toggle = false;
     this.hass.connection.subscribeEvents((msg) => (this._error = (msg as any).data), "hacs/error");
@@ -96,6 +103,7 @@ export class HacsInstallDialog extends HacsDialogBase {
         type: "select",
         name: "version",
         optional: true,
+        //@ts-ignore
         options:
           this._repository.version_or_commit === "version"
             ? this._repository.releases
@@ -190,7 +198,14 @@ export class HacsInstallDialog extends HacsDialogBase {
     if (this._downloadRepositoryData.beta !== ev.detail.value.beta) {
       this._toggle = true;
       await repositoryToggleBeta(this.hass, this.repository!);
-      this.repositories = await getRepositories(this.hass);
+      const repositories = await getRepositories(this.hass);
+      this.dispatchEvent(
+        new CustomEvent("update-hacs", {
+          detail: { repositories },
+          bubbles: true,
+          composed: true,
+        })
+      );
       this._toggle = false;
     }
     this._downloadRepositoryData = ev.detail.value;

@@ -6,16 +6,7 @@ import { makeDialogManager } from "../homeassistant-frontend/src/dialogs/make-di
 import "../homeassistant-frontend/src/resources/ha-style";
 import { HomeAssistant, Route } from "../homeassistant-frontend/src/types";
 import "./components/dialogs/hacs-event-dialog";
-import {
-  Configuration,
-  Critical,
-  HacsDialogEvent,
-  LocationChangedEvent,
-  LovelaceResource,
-  RemovedRepository,
-  Repository,
-  Status,
-} from "./data/common";
+import { HacsDialogEvent, LocationChangedEvent } from "./data/common";
 import {
   getConfiguration,
   getCritical,
@@ -33,21 +24,9 @@ import { hacsStyleVariables } from "./styles/variables";
 class HacsFrontend extends HacsElement {
   @property({ attribute: false }) public hass!: HomeAssistant;
 
-  @property({ attribute: false }) public configuration: Configuration;
-
-  @property({ attribute: false }) public critical!: Critical[];
-
-  @property({ attribute: false }) public lovelace: LovelaceResource[];
-
   @property({ attribute: false }) public narrow!: boolean;
 
-  @property({ attribute: false }) public removed: RemovedRepository[];
-
-  @property({ attribute: false }) public repositories: Repository[];
-
   @property({ attribute: false }) public route!: Route;
-
-  @property({ attribute: false }) public status: Status;
 
   @query("#hacs-dialog") private _hacsDialog?: any;
 
@@ -66,23 +45,23 @@ class HacsFrontend extends HacsElement {
     );
 
     this.hass.connection.subscribeEvents(
-      async () => await this._updateProperties("configuration"),
+      async () => this._updateProperties("configuration"),
       "hacs/config"
     );
     this.hass.connection.subscribeEvents(
-      async () => await this._updateProperties("status"),
+      async () => this._updateProperties("status"),
       "hacs/status"
     );
     this.hass.connection.subscribeEvents(
-      async () => await this._updateProperties("status"),
+      async () => this._updateProperties("status"),
       "hacs/stage"
     );
     this.hass.connection.subscribeEvents(
-      async () => await this._updateProperties("repositories"),
+      async () => this._updateProperties("repositories"),
       "hacs/repository"
     );
     this.hass.connection.subscribeEvents(
-      async () => await this._updateProperties("lovelace"),
+      async () => this._updateProperties("lovelace"),
       "lovelace_updated"
     );
 
@@ -115,16 +94,12 @@ class HacsFrontend extends HacsElement {
         getLovelaceConfiguration(this.hass),
         getRemovedRepositories(this.hass),
       ]);
-
-      this.lovelace = _fetch.resources;
-      this.repositories = _fetch.repositories;
     } else if (prop === "configuration") {
       _fetch.configuration = await getConfiguration(this.hass);
     } else if (prop === "status") {
       _fetch.status = await getStatus(this.hass);
     } else if (prop === "repositories") {
       _fetch.repositories = await getRepositories(this.hass);
-      this.repositories = _fetch.repositories;
     } else if (prop === "lovelace") {
       _fetch.resources = await getLovelaceConfiguration(this.hass);
     }
@@ -150,23 +125,12 @@ class HacsFrontend extends HacsElement {
         .hacs=${this.hacs}
         .route=${this.route}
         .narrow=${this.narrow}
-        .configuration=${this.configuration}
-        .lovelace=${this.lovelace}
-        .status=${this.status}
-        .critical=${this.critical}
-        .removed=${this.removed}
-        .repositories=${this.repositories}
       ></hacs-router>
       <hacs-event-dialog
         .hass=${this.hass}
         .hacs=${this.hacs}
         .route=${this.route}
         .narrow=${this.narrow}
-        .configuration=${this.configuration}
-        .lovelace=${this.lovelace}
-        .status=${this.status}
-        .removed=${this.removed}
-        .repositories=${this.repositories}
         id="hacs-dialog"
       ></hacs-event-dialog>
       <hacs-event-dialog
@@ -174,11 +138,6 @@ class HacsFrontend extends HacsElement {
         .hacs=${this.hacs}
         .route=${this.route}
         .narrow=${this.narrow}
-        .configuration=${this.configuration}
-        .lovelace=${this.lovelace}
-        .status=${this.status}
-        .removed=${this.removed}
-        .repositories=${this.repositories}
         id="hacs-dialog-secondary"
       ></hacs-event-dialog>
     `;
@@ -207,6 +166,9 @@ class HacsFrontend extends HacsElement {
   }
 
   private _setRoute(ev: LocationChangedEvent): void {
+    if (!ev.detail?.route) {
+      return;
+    }
     this.route = ev.detail.route;
     navigate(this.route.path, { replace: true });
     this.requestUpdate();
@@ -228,10 +190,12 @@ class HacsFrontend extends HacsElement {
       };
     }
 
-    applyThemesOnElement(this.parentElement, this.hass.themes, themeName, {
-      ...options,
-      dark: this.hass.themes.darkMode,
-    });
-    this.parentElement.style.backgroundColor = "var(--primary-background-color)";
+    if (this.parentElement) {
+      applyThemesOnElement(this.parentElement, this.hass.themes, themeName, {
+        ...options,
+        dark: this.hass.themes.darkMode,
+      });
+      this.parentElement.style.backgroundColor = "var(--primary-background-color)";
+    }
   }
 }

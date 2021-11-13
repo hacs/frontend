@@ -7,13 +7,13 @@ import { HacsDialogBase } from "./hacs-dialog-base";
 
 @customElement("hacs-progress-dialog")
 export class HacsProgressDialog extends HacsDialogBase {
-  @property() public title?: string;
+  @property() public title!: string;
 
   @property() public content?: string;
 
   @property() public confirmText?: string;
 
-  @property() public confirm: () => Promise<void>;
+  @property() public confirm!: () => Promise<void>;
 
   @property({ type: Boolean }) private _inProgress = false;
 
