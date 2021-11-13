@@ -206,7 +206,8 @@ export class HacsRepositoryCard extends LitElement {
                     ${this.hacs.localize("common.download")}
                   </mwc-button>
                 </div> `
-            : this.repository.pending_upgrade && this.addedToLovelace
+            : this.repository.pending_upgrade &&
+              this.hacs.addedToLovelace!(this.hacs, this.repository)
             ? html`<div>
                 <mwc-button class="update-header" @click=${this._updateRepository} raised>
                   ${this.hacs.localize("common.update")}
