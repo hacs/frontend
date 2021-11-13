@@ -7,6 +7,7 @@ const log = require("fancy-log");
 const { string } = require("rollup-plugin-string");
 const handler = require("serve-handler");
 const json = require("@rollup/plugin-json");
+const ignore = require("../../homeassistant-frontend/build-scripts/rollup-plugins/ignore-plugin");
 const commonjs = require("@rollup/plugin-commonjs");
 const babel = require("@rollup/plugin-babel").babel;
 const babelTypescript = require("@babel/preset-typescript");
@@ -49,6 +50,9 @@ const DevelopPlugins = [
     ].filter(Boolean),
     extensions,
     exclude: [require.resolve("@mdi/js/mdi.js")],
+  }),
+  ignore({
+    files: [require.resolve("@polymer/font-roboto/roboto.js")],
   }),
   entrypointHashmanifest({ manifestName: "./hacs_frontend/manifest.json" }),
 ];
