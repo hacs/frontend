@@ -104,8 +104,8 @@ export class HacsRepositoryCard extends LitElement {
         <div class="card-content">
           <div class="group-header">
             <div class="status-header ${classMap(this._headerClass)}">${this._headerTitle}</div>
-            <div class="title">
-              <h1 class="pointer" @click=${this._showReopsitoryInfo}>${this.repository.name}</h1>
+            <div class="title pointer" @click=${this._showReopsitoryInfo}>
+              <h1>${this.repository.name}</h1>
               ${this.repository.category !== "integration"
                 ? html` <ha-chip>
                     ${this.hacs.localize(`common.${this.repository.category}`)}
