@@ -44,10 +44,11 @@ export class HacsRepositoryDialog extends HacsDialogBase {
       if (propName === "hass") {
         this.sidebarDocked = window.localStorage.getItem("dockedSidebar") === '"docked"';
       }
-      if (propName === "repositories") {
+      if (propName === "hacs") {
         this._repository = this._getRepository(this.hacs.repositories, this.repository!);
       }
     });
+    console.log(changedProperties);
     return (
       changedProperties.has("sidebarDocked") ||
       changedProperties.has("narrow") ||
@@ -68,6 +69,7 @@ export class HacsRepositoryDialog extends HacsDialogBase {
           composed: true,
         })
       );
+      this._repository = this._getRepository(repositories, this.repository!);
     }
   }
 

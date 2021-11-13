@@ -82,6 +82,7 @@ export class HacsInstallDialog extends HacsDialogBase {
           composed: true,
         })
       );
+      this._repository = this._getRepository(repositories, this.repository!);
     }
     this._toggle = false;
     this.hass.connection.subscribeEvents((msg) => (this._error = (msg as any).data), "hacs/error");
@@ -206,6 +207,7 @@ export class HacsInstallDialog extends HacsDialogBase {
           composed: true,
         })
       );
+      this._repository = this._getRepository(repositories, this.repository!);
       this._toggle = false;
     }
     this._downloadRepositoryData = ev.detail.value;
