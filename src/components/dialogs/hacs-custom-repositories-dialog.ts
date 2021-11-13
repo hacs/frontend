@@ -29,8 +29,7 @@ export class HacsCustomRepositoriesDialog extends HacsDialogBase {
       changedProperties.has("active") ||
       changedProperties.has("_error") ||
       changedProperties.has("_addRepositoryData") ||
-      changedProperties.has("_progress") ||
-      changedProperties.has("repositories")
+      changedProperties.has("_progress")
     );
   }
 
@@ -155,6 +154,7 @@ export class HacsCustomRepositoriesDialog extends HacsDialogBase {
   }
 
   private async _removeRepository(repository: string) {
+    this._progress = true;
     this._error = undefined;
     await repositoryDelete(this.hass, repository);
     const repositories = await getRepositories(this.hass);
@@ -165,6 +165,7 @@ export class HacsCustomRepositoriesDialog extends HacsDialogBase {
         composed: true,
       })
     );
+    this._progress = false;
   }
 
   private async _showReopsitoryInfo(repository: string) {
