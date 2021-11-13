@@ -28,12 +28,8 @@ export class HacsEventDialog extends HacsDialogBase {
     el.hass = this.hass;
     el.hacs = this.hacs;
     el.narrow = this.narrow;
-    el.configuration = this.configuration;
-    el.lovelace = this.lovelace;
     el.secondary = this.secondary;
-    el.repositories = this.repositories;
     el.route = this.route;
-    el.status = this.status;
 
     if (this.params) {
       for (const [key, value] of Object.entries(this.params)) {

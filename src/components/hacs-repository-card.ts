@@ -21,7 +21,7 @@ import "../../homeassistant-frontend/src/components/ha-icon-overflow-menu";
 import { getConfigEntries } from "../../homeassistant-frontend/src/data/config_entries";
 import { showAlertDialog } from "../../homeassistant-frontend/src/dialogs/generic/show-dialog-box";
 import { HomeAssistant } from "../../homeassistant-frontend/src/types";
-import { RemovedRepository, Repository, Status } from "../data/common";
+import { Repository } from "../data/common";
 import { Hacs } from "../data/hacs";
 import {
   deleteResource,
@@ -42,17 +42,14 @@ export class HacsRepositoryCard extends LitElement {
 
   @property({ attribute: false }) public repository!: Repository;
 
-  @property({ attribute: false }) public status!: Status;
-
-  @property({ attribute: false }) public removed!: RemovedRepository[];
-
   @property({ type: Boolean }) public narrow!: boolean;
-
-  @property({ type: Boolean }) public addedToLovelace!: boolean;
 
   private get _borderClass(): ClassInfo {
     const classes = {};
-    if (!this.addedToLovelace || this.repository.status === "pending-restart") {
+    if (
+      !this.hacs.addedToLovelace!(this.hacs, this.repository) ||
+      this.repository.status === "pending-restart"
+    ) {
       classes["status-issue"] = true;
     } else if (this.repository.pending_upgrade) {
       classes["status-update"] = true;
@@ -68,7 +65,10 @@ export class HacsRepositoryCard extends LitElement {
 
   private get _headerClass(): ClassInfo {
     const classes = {};
-    if (!this.addedToLovelace || this.repository.status === "pending-restart") {
+    if (
+      !this.hacs.addedToLovelace!(this.hacs, this.repository) ||
+      this.repository.status === "pending-restart"
+    ) {
       classes["issue-header"] = true;
     } else if (this.repository.pending_upgrade) {
       classes["update-header"] = true;
@@ -82,7 +82,7 @@ export class HacsRepositoryCard extends LitElement {
   }
 
   private get _headerTitle(): string {
-    if (!this.addedToLovelace) {
+    if (!this.hacs.addedToLovelace!(this.hacs, this.repository)) {
       return this.hacs.localize("repository_card.not_loaded");
     }
     if (this.repository.status === "pending-restart") {

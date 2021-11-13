@@ -36,7 +36,7 @@ export class HacsCustomRepositoriesDialog extends HacsDialogBase {
 
   protected render(): TemplateResult | void {
     if (!this.active) return html``;
-    const repositories = this.repositories?.filter((repo) => repo.custom);
+    const repositories = this.hacs.repositories?.filter((repo) => repo.custom);
     const addRepositorySchema: HaFormSchema[] = [
       {
         type: "string",
@@ -146,14 +146,28 @@ export class HacsCustomRepositoriesDialog extends HacsDialogBase {
       this._addRepositoryData.repository,
       this._addRepositoryData.category
     );
-    this.repositories = await getRepositories(this.hass);
+    const repositories = await getRepositories(this.hass);
+    this.dispatchEvent(
+      new CustomEvent("update-hacs", {
+        detail: { repositories },
+        bubbles: true,
+        composed: true,
+      })
+    );
     this._progress = false;
   }
 
   private async _removeRepository(repository: string) {
     this._error = undefined;
     await repositoryDelete(this.hass, repository);
-    this.repositories = await getRepositories(this.hass);
+    const repositories = await getRepositories(this.hass);
+    this.dispatchEvent(
+      new CustomEvent("update-hacs", {
+        detail: { repositories },
+        bubbles: true,
+        composed: true,
+      })
+    );
   }
 
   private async _showReopsitoryInfo(repository: string) {

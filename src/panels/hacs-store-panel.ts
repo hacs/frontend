@@ -1,4 +1,3 @@
-import "../../homeassistant-frontend/src/components/ha-alert";
 import {
   mdiAlertCircleOutline,
   mdiFileDocument,
@@ -11,6 +10,7 @@ import { css, html, LitElement, TemplateResult } from "lit";
 import { customElement, property } from "lit/decorators";
 import memoizeOne from "memoize-one";
 import "../../homeassistant-frontend/src/common/search/search-input";
+import "../../homeassistant-frontend/src/components/ha-alert";
 import "../../homeassistant-frontend/src/components/ha-card";
 import "../../homeassistant-frontend/src/components/ha-fab";
 import "../../homeassistant-frontend/src/components/ha-icon-overflow-menu";
@@ -41,8 +41,6 @@ export class HacsStorePanel extends LitElement {
 
   @property({ attribute: false }) public isWide!: boolean;
 
-  @property({ attribute: false }) public repositories!: Repository[];
-
   @property({ attribute: false }) public route!: Route;
 
   @property({ attribute: false }) public sections!: any;
@@ -71,7 +69,7 @@ export class HacsStorePanel extends LitElement {
 
   private get allRepositories(): Repository[] {
     const [installedRepositories, newRepositories] = this._repositoriesInActiveSection(
-      this.repositories,
+      this.hacs.repositories,
       this.section
     );
 
@@ -103,7 +101,10 @@ export class HacsStorePanel extends LitElement {
       return html``;
     }
 
-    const newRepositories = this._repositoriesInActiveSection(this.repositories, this.section)[1];
+    const newRepositories = this._repositoriesInActiveSection(
+      this.hacs.repositories,
+      this.section
+    )[1];
 
     if (!this.filters[this.section] && this.hacs.configuration.categories) {
       const categories = activePanel(this.hacs.language, this.route)?.categories;
@@ -156,7 +157,7 @@ export class HacsStorePanel extends LitElement {
                 new CustomEvent("hacs-dialog", {
                   detail: {
                     type: "custom-repositories",
-                    repositories: this.repositories,
+                    repositories: this.hacs.repositories,
                   },
                   bubbles: true,
                   composed: true,
@@ -216,7 +217,7 @@ export class HacsStorePanel extends LitElement {
             </ha-alert> `
           : ""}
         <div class="container ${this.narrow ? "narrow" : ""}">
-          ${this.repositories === undefined
+          ${this.hacs.repositories === undefined
             ? ""
             : this.allRepositories.length === 0
             ? this._renderEmpty()
@@ -245,9 +246,6 @@ export class HacsStorePanel extends LitElement {
           .repository=${repo}
           .narrow=${this.narrow}
           ?narrow=${this.narrow}
-          .status=${this.hacs.status}
-          .removed=${this.hacs.removed}
-          .addedToLovelace=${this.hacs.addedToLovelace!(this.hacs, repo)}
         ></hacs-repository-card>`
     );
   }
@@ -290,7 +288,7 @@ export class HacsStorePanel extends LitElement {
       new CustomEvent("hacs-dialog", {
         detail: {
           type: "add-repository",
-          repositories: this.repositories,
+          repositories: this.hacs.repositories,
           section: this.section,
         },
         bubbles: true,
