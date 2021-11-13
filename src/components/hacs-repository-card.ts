@@ -20,7 +20,7 @@ import "../../homeassistant-frontend/src/components/ha-icon-overflow-menu";
 import { getConfigEntries } from "../../homeassistant-frontend/src/data/config_entries";
 import { showAlertDialog } from "../../homeassistant-frontend/src/dialogs/generic/show-dialog-box";
 import { HomeAssistant } from "../../homeassistant-frontend/src/types";
-import { RemovedRepository, Repository, Status } from "../data/common";
+import { Repository } from "../data/common";
 import { Hacs } from "../data/hacs";
 import {
   deleteResource,
