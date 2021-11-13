@@ -173,7 +173,7 @@ export class HacsAddRepositoryDialog extends HacsDialogBase {
                             @load=${this._onImageLoad}
                           />
                         `
-                      : html`<ha-svg-icon .path=${mdiGithub} slot="prefix"></ha-svg-icon>`
+                      : ""
                     : ""}
                   <span slot="heading"> ${repo.name} </span>
                   <span slot="description">${repo.description}</span>
