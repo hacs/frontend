@@ -1,7 +1,6 @@
 import memoizeOne from "memoize-one";
 import { Message, Repository } from "../data/common";
 import { Hacs } from "../data/hacs";
-import { addedToLovelace } from "./added-to-lovelace";
 
 export const getMessages = memoizeOne((hacs: Hacs): Message[] => {
   const messages: Message[] = [];
@@ -12,7 +11,7 @@ export const getMessages = memoizeOne((hacs: Hacs): Message[] => {
     if (repo.status === "pending-restart") {
       repositoriesRestartPending.push(repo);
     }
-    if (repo.installed && repo.category === "plugin" && !addedToLovelace(hacs, repo)) {
+    if (!hacs.addedToLovelace!(hacs, repo)) {
       repositoriesNotAddedToLovelace.push(repo);
     }
     if (repo.installed && hacs.removed.map((r) => r.repository)?.includes(repo.full_name)) {

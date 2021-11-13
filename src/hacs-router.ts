@@ -5,35 +5,16 @@ import {
   RouterOptions,
 } from "../homeassistant-frontend/src/layouts/hass-router-page";
 import { HomeAssistant, Route } from "../homeassistant-frontend/src/types";
-import {
-  Configuration,
-  Critical,
-  LovelaceResource,
-  RemovedRepository,
-  Repository,
-  Status,
-} from "./data/common";
+
 import { Hacs } from "./data/hacs";
 
 @customElement("hacs-router")
 class HacsRouter extends HassRouterPage {
   @property({ attribute: false }) public hacs?: Hacs;
 
-  @property({ attribute: false }) public configuration!: Configuration;
-
-  @property({ attribute: false }) public critical!: Critical[];
-
   @property({ attribute: false }) public hass!: HomeAssistant;
 
-  @property({ attribute: false }) public lovelace!: LovelaceResource[];
-
-  @property({ attribute: false }) public removed!: RemovedRepository[];
-
-  @property({ attribute: false }) public repositories!: Repository[];
-
   @property({ attribute: false }) public route!: Route;
-
-  @property({ attribute: false }) public status!: Status;
 
   @property({ type: Boolean }) public narrow!: boolean;
 
@@ -94,12 +75,6 @@ class HacsRouter extends HassRouterPage {
     el.route = this.route;
     el.narrow = this.narrow;
     el.isWide = isWide;
-    el.configuration = this.configuration;
-    el.critical = this.critical;
-    el.lovelace = this.lovelace;
-    el.removed = this.removed;
-    el.repositories = this.repositories;
-    el.status = this.status;
     el.section = section;
   }
 }

@@ -18,15 +18,7 @@ import { haStyle } from "../../homeassistant-frontend/src/resources/styles";
 import { HomeAssistant, Route } from "../../homeassistant-frontend/src/types";
 import { showDialogAbout } from "../components/dialogs/hacs-about-dialog";
 import "../components/hacs-section-navigation";
-import {
-  Configuration,
-  LovelaceResource,
-  Message,
-  RemovedRepository,
-  Repository,
-  sortRepositoriesByName,
-  Status,
-} from "../data/common";
+import { Message, Repository, sortRepositoriesByName } from "../data/common";
 import { Hacs } from "../data/hacs";
 import { HacsStyles } from "../styles/hacs-common-style";
 import { getMessages } from "../tools/get-messages";
@@ -35,19 +27,9 @@ import { getMessages } from "../tools/get-messages";
 export class HacsEntryPanel extends LitElement {
   @property({ attribute: false }) public hacs!: Hacs;
 
-  @property({ attribute: false }) public configuration: Configuration;
-
-  @property({ attribute: false }) public repositories: Repository[];
-
   @property({ attribute: false }) public hass!: HomeAssistant;
 
-  @property({ attribute: false }) public lovelace: LovelaceResource[];
-
   @property({ attribute: false }) public route!: Route;
-
-  @property({ attribute: false }) public status: Status;
-
-  @property({ attribute: false }) public removed: RemovedRepository[];
 
   @property({ type: Boolean }) public isWide!: boolean;
 

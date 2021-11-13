@@ -8,7 +8,7 @@ import { HacsDialogBase } from "./hacs-dialog-base";
 
 @customElement("hacs-removed-dialog")
 export class HacsRemovedDialog extends HacsDialogBase {
-  @property({ attribute: false }) public repository: Repository;
+  @property({ attribute: false }) public repository!: Repository;
 
   @property({ type: Boolean }) private _updating = false;
 
@@ -48,9 +48,6 @@ export class HacsRemovedDialog extends HacsDialogBase {
             ? html`<ha-circular-progress active size="small"></ha-circular-progress>`
             : this.hacs.localize("common.remove")}</mwc-button
         >
-        <!--<mwc-button slot="secondaryaction" @click=${this._ignoreMessage}
-          >${this.hacs.localize("common.ignore")}</mwc-button
-        >-->
       </hacs-dialog>
     `;
   }
@@ -85,11 +82,6 @@ export class HacsRemovedDialog extends HacsDialogBase {
         });
     }
     await repositoryUninstall(this.hass, this.repository.id);
-    this._updating = false;
-    this.active = false;
-  }
-
-  private async _ignoreMessage(): Promise<void> {
     this._updating = false;
     this.active = false;
   }

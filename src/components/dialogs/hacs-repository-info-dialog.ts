@@ -45,7 +45,7 @@ export class HacsRepositoryDialog extends HacsDialogBase {
         this.sidebarDocked = window.localStorage.getItem("dockedSidebar") === '"docked"';
       }
       if (propName === "repositories") {
-        this._repository = this._getRepository(this.repositories, this.repository!);
+        this._repository = this._getRepository(this.hacs.repositories, this.repository!);
       }
     });
     return (
@@ -57,10 +57,17 @@ export class HacsRepositoryDialog extends HacsDialogBase {
   }
 
   protected async firstUpdated() {
-    this._repository = this._getRepository(this.repositories, this.repository!);
+    this._repository = this._getRepository(this.hacs.repositories, this.repository!);
     if (!this._repository?.updated_info) {
       await repositoryUpdate(this.hass, this._repository!.id);
-      this.repositories = await getRepositories(this.hass);
+      const repositories = await getRepositories(this.hass);
+      this.dispatchEvent(
+        new CustomEvent("update-hacs", {
+          detail: { repositories },
+          bubbles: true,
+          composed: true,
+        })
+      );
     }
   }
 
