@@ -1,5 +1,5 @@
 import "@material/mwc-button/mwc-button";
-import { mdiDelete, mdiGithub } from "@mdi/js";
+import { mdiDelete } from "@mdi/js";
 import { css, html, PropertyValues, TemplateResult } from "lit";
 import { customElement, property, state } from "lit/decorators";
 import { computeRTL } from "../../../homeassistant-frontend/src/common/util/compute_rtl";
@@ -74,9 +74,6 @@ export class HacsCustomRepositoriesDialog extends HacsDialogBase {
                 (repo) => html`<ha-settings-row
                   @click=${() => this._showReopsitoryInfo(String(repo.id))}
                 >
-                  ${!this.narrow
-                    ? html`<ha-svg-icon slot="prefix" .path=${mdiGithub}></ha-svg-icon>`
-                    : ""}
                   <span slot="heading">${repo.name}</span>
                   <span slot="description">${repo.full_name} (${repo.category})</span>
 
