@@ -1,6 +1,4 @@
-import "../../homeassistant-frontend/src/panels/config/dashboard/ha-config-navigation";
 import { mdiAlertCircle, mdiHomeAssistant, mdiInformation, mdiOpenInNew } from "@mdi/js";
-import "@polymer/app-layout/app-header-layout/app-header-layout";
 import "@polymer/app-layout/app-header/app-header";
 import "@polymer/app-layout/app-toolbar/app-toolbar";
 import "@polymer/paper-item/paper-icon-item";
@@ -15,6 +13,8 @@ import "../../homeassistant-frontend/src/components/ha-alert";
 import "../../homeassistant-frontend/src/components/ha-card";
 import "../../homeassistant-frontend/src/components/ha-menu-button";
 import "../../homeassistant-frontend/src/components/ha-svg-icon";
+import "../../homeassistant-frontend/src/layouts/ha-app-layout";
+import "../../homeassistant-frontend/src/panels/config/dashboard/ha-config-navigation";
 import "../../homeassistant-frontend/src/panels/config/ha-config-section";
 import { haStyle } from "../../homeassistant-frontend/src/resources/styles";
 import { HomeAssistant, Route } from "../../homeassistant-frontend/src/types";
@@ -68,101 +68,104 @@ export class HacsEntryPanel extends LitElement {
       })
     );
 
+    const content = html`
+      <ha-config-section .narrow=${this.narrow} .isWide=${this.isWide}>
+        <div slot="header">${this.narrow ? "HACS" : "Home Assistant Community Store"}</div>
+
+        <div slot="introduction">
+          ${this.hacs.messages?.length !== 0
+            ? this.hacs.messages.map(
+                (message) =>
+                  html`
+                    <ha-alert
+                      .alertType=${message.severity!}
+                      .title=${message.secondary
+                        ? `${message.name} - ${message.secondary}`
+                        : message.name}
+                      .rtl=${computeRTL(this.hass)}
+                      .actionText=${message.path
+                        ? this.hacs.localize("common.navigate")
+                        : message.dialog
+                        ? this.hacs.localize(`common.${message.dialog}`)
+                        : ""}
+                      @alert-action-clicked=${() =>
+                        message.path ? navigate(message.path) : this._openDialog(message)}
+                    >
+                      ${message.info}
+                    </ha-alert>
+                  `
+              )
+            : !this.narrow
+            ? this.hacs.localize("entry.intro")
+            : ""}
+        </div>
+
+        ${this.hacs.updates?.length !== 0
+          ? html` <ha-card>
+              ${sortRepositoriesByName(this.hacs.updates).map(
+                (repository) =>
+                  html`
+                    <ha-alert
+                      .title=${repository.name}
+                      .rtl=${computeRTL(this.hass)}
+                      .actionText=${this.hacs.localize("common.update")}
+                      @alert-action-clicked=${() => this._openUpdateDialog(repository)}
+                    >
+                      ${this.hacs.localize("sections.pending_repository_upgrade", {
+                        installed: repository.installed_version,
+                        available: repository.available_version,
+                      })}
+                    </ha-alert>
+                  `
+              )}
+            </ha-card>`
+          : ""}
+
+        <ha-card>
+          <ha-config-navigation .hass=${this.hass} .pages=${this.hacs.sections}>
+          </ha-config-navigation>
+        </ha-card>
+
+        <ha-card>
+          ${isComponentLoaded(this.hass, "hassio")
+            ? html`
+                <paper-icon-item @click=${this._openSupervisorDialog}>
+                  <ha-svg-icon .path=${mdiHomeAssistant} slot="item-icon"></ha-svg-icon>
+                  <paper-item-body two-line>
+                    ${this.hacs.localize(`sections.addon.title`)}
+                    <div secondary>${this.hacs.localize(`sections.addon.description`)}</div>
+                  </paper-item-body>
+                  <ha-svg-icon right .path=${mdiOpenInNew}></ha-svg-icon>
+                </paper-icon-item>
+              `
+            : ""}
+        </ha-card>
+
+        <ha-card>
+          <paper-icon-item @click=${this._openAboutDialog}>
+            <ha-svg-icon .path=${mdiInformation} slot="item-icon"></ha-svg-icon>
+            <paper-item-body two-line>
+              ${this.hacs.localize(`sections.about.title`)}
+              <div secondary>${this.hacs.localize(`sections.about.description`)}</div>
+            </paper-item-body>
+          </paper-icon-item>
+        </ha-card>
+      </ha-config-section>
+    `;
+
+    if (!this.narrow && this.hass.dockedSidebar !== "always_hidden") {
+      return content;
+    }
+
     return html`
-      <app-header-layout has-scrolling-region>
+      <ha-app-layout>
         <app-header fixed slot="header">
           <app-toolbar>
             <ha-menu-button .hass=${this.hass} .narrow=${this.narrow}></ha-menu-button>
           </app-toolbar>
         </app-header>
-        <ha-config-section .narrow=${this.narrow} .isWide=${this.isWide}>
-          <div slot="header">${this.narrow ? "HACS" : "Home Assistant Community Store"}</div>
-
-          <div slot="introduction">
-            ${this.hacs.messages?.length !== 0
-              ? this.hacs.messages.map(
-                  (message) =>
-                    html`
-                      <ha-alert
-                        .alertType=${message.severity!}
-                        .title=${message.secondary
-                          ? `${message.name} - ${message.secondary}`
-                          : message.name}
-                        .rtl=${computeRTL(this.hass)}
-                      >
-                        ${message.info}
-                        <mwc-button
-                          slot="action"
-                          .label=${message.path
-                            ? this.hacs.localize("common.navigate")
-                            : message.dialog
-                            ? this.hacs.localize(`common.${message.dialog}`)
-                            : ""}
-                          @click=${() =>
-                            message.path ? navigate(message.path) : this._openDialog(message)}
-                        >
-                        </mwc-button>
-                      </ha-alert>
-                    `
-                )
-              : !this.narrow
-              ? this.hacs.localize("entry.intro")
-              : ""}
-          </div>
-
-          ${this.hacs.updates?.length !== 0
-            ? html` <ha-card>
-                ${sortRepositoriesByName(this.hacs.updates).map(
-                  (repository) =>
-                    html`
-                      <ha-alert .title=${repository.name} .rtl=${computeRTL(this.hass)}>
-                        ${this.hacs.localize("sections.pending_repository_upgrade", {
-                          installed: repository.installed_version,
-                          available: repository.available_version,
-                        })}
-                        <mwc-button
-                          slot="action"
-                          .label=${this.hacs.localize("common.update")}
-                          @click=${() => this._openUpdateDialog(repository)}
-                        >
-                        </mwc-button>
-                      </ha-alert>
-                    `
-                )}
-              </ha-card>`
-            : ""}
-
-          <ha-card>
-            <ha-config-navigation .hass=${this.hass} .pages=${this.hacs.sections}>
-            </ha-config-navigation>
-          </ha-card>
-
-          <ha-card>
-            ${isComponentLoaded(this.hass, "hassio")
-              ? html`
-                  <paper-icon-item @click=${this._openSupervisorDialog}>
-                    <ha-svg-icon .path=${mdiHomeAssistant} slot="item-icon"></ha-svg-icon>
-                    <paper-item-body two-line>
-                      ${this.hacs.localize(`sections.addon.title`)}
-                      <div secondary>${this.hacs.localize(`sections.addon.description`)}</div>
-                    </paper-item-body>
-                    <ha-svg-icon right .path=${mdiOpenInNew}></ha-svg-icon>
-                  </paper-icon-item>
-                `
-              : ""}
-          </ha-card>
-
-          <ha-card>
-            <paper-icon-item @click=${this._openAboutDialog}>
-              <ha-svg-icon .path=${mdiInformation} slot="item-icon"></ha-svg-icon>
-              <paper-item-body two-line>
-                ${this.hacs.localize(`sections.about.title`)}
-                <div secondary>${this.hacs.localize(`sections.about.description`)}</div>
-              </paper-item-body>
-            </paper-icon-item>
-          </ha-card>
-        </ha-config-section>
-      </app-header-layout>
+        ${content}
+      </ha-app-layout>
     `;
   }
 
@@ -223,18 +226,8 @@ export class HacsEntryPanel extends LitElement {
         paper-icon-item {
           cursor: pointer;
         }
-        paper-icon-item[information] {
-          cursor: normal;
-        }
 
-        app-header-layout {
-          display: contents;
-        }
-        app-header,
-        app-toolbar,
-        ha-menu-button {
-          color: var(--secondary-text-color);
-          background-color: var(--primary-background-color);
+        app-header {
           --app-header-background-color: var(--primary-background-color);
         }
 
@@ -244,8 +237,7 @@ export class HacsEntryPanel extends LitElement {
 
         ha-config-section {
           color: var(--primary-text-color);
-          padding-bottom: 24px;
-          margin-top: -24px;
+          margin-top: -12px;
         }
 
         paper-item-body {
@@ -255,7 +247,8 @@ export class HacsEntryPanel extends LitElement {
           flex-direction: var(--layout-vertical_-_flex-direction);
           justify-content: var(--layout-center-justified_-_justify-content);
         }
-        paper-item-body {
+        paper-item-body,
+        ha-menu-button {
           color: var(--hcv-text-color-primary);
         }
         paper-item-body div {
