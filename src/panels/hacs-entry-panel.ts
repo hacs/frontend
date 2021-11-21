@@ -1,3 +1,4 @@
+import "../../homeassistant-frontend/src/panels/config/dashboard/ha-config-navigation";
 import { mdiAlertCircle, mdiHomeAssistant, mdiInformation, mdiOpenInNew } from "@mdi/js";
 import "@polymer/app-layout/app-header-layout/app-header-layout";
 import "@polymer/app-layout/app-header/app-header";
@@ -17,7 +18,6 @@ import "../../homeassistant-frontend/src/panels/config/ha-config-section";
 import { haStyle } from "../../homeassistant-frontend/src/resources/styles";
 import { HomeAssistant, Route } from "../../homeassistant-frontend/src/types";
 import { showDialogAbout } from "../components/dialogs/hacs-about-dialog";
-import "../components/hacs-section-navigation";
 import { Message, Repository, sortRepositoriesByName } from "../data/common";
 import { Hacs } from "../data/hacs";
 import { HacsStyles } from "../styles/hacs-common-style";
@@ -125,7 +125,11 @@ export class HacsEntryPanel extends LitElement {
                 )}
               </ha-card>`
             : ""}
-          <hacs-section-navigation .pages=${this.hacs.sections}></hacs-section-navigation>
+
+          <ha-card>
+            <ha-config-navigation .hass=${this.hass} .pages=${this.hacs.sections}>
+            </ha-config-navigation>
+          </ha-card>
 
           <ha-card>
             ${isComponentLoaded(this.hass, "hassio")
