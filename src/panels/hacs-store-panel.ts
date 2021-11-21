@@ -10,6 +10,7 @@ import { css, html, LitElement, TemplateResult } from "lit";
 import { customElement, property } from "lit/decorators";
 import memoizeOne from "memoize-one";
 import "../../homeassistant-frontend/src/common/search/search-input";
+import { computeRTL } from "../../homeassistant-frontend/src/common/util/compute_rtl";
 import "../../homeassistant-frontend/src/components/ha-alert";
 import "../../homeassistant-frontend/src/components/ha-card";
 import "../../homeassistant-frontend/src/components/ha-fab";
@@ -209,11 +210,14 @@ export class HacsStorePanel extends LitElement {
             </div>`
           : ""}
         ${newRepositories?.length
-          ? html`<ha-alert
-              @alert-action-clicked=${this._clearAllNewRepositories}
-              .actionText=${this.hacs.localize("menu.dismiss")}
-            >
+          ? html`<ha-alert .rtl=${computeRTL(this.hass)}>
               ${this.hacs.localize("store.new_repositories_note")}
+              <mwc-button
+                slot="action"
+                .label=${this.hacs.localize("menu.dismiss")}
+                @click=${this._clearAllNewRepositories}
+              >
+              </mwc-button>
             </ha-alert> `
           : ""}
         <div class="container ${this.narrow ? "narrow" : ""}">
@@ -259,6 +263,7 @@ export class HacsStorePanel extends LitElement {
 
   private _renderNoResultsFound(): TemplateResult {
     return html`<ha-alert
+      .rtl=${computeRTL(this.hass)}
       alert-type="warning"
       .title="${this.hacs!.localize("store.no_repositories")} 😕"
     >
@@ -271,7 +276,10 @@ export class HacsStorePanel extends LitElement {
   }
 
   private _renderEmpty(): TemplateResult {
-    return html`<ha-alert .title="${this.hacs!.localize("store.no_repositories")} 😕">
+    return html`<ha-alert
+      .title="${this.hacs!.localize("store.no_repositories")} 😕"
+      .rtl=${computeRTL(this.hass)}
+    >
       ${this.hacs!.localize("store.no_repositories_desc1")}
       <br />
       ${this.hacs!.localize("store.no_repositories_desc2")}
