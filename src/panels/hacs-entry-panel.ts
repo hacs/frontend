@@ -4,6 +4,7 @@ import "@polymer/app-layout/app-header/app-header";
 import "@polymer/app-layout/app-toolbar/app-toolbar";
 import "@polymer/paper-item/paper-icon-item";
 import "@polymer/paper-item/paper-item-body";
+import "@material/mwc-button/mwc-button";
 import { css, CSSResultGroup, html, LitElement, TemplateResult } from "lit";
 import { customElement, property } from "lit/decorators";
 import { isComponentLoaded } from "../../homeassistant-frontend/src/common/config/is_component_loaded";
@@ -88,15 +89,19 @@ export class HacsEntryPanel extends LitElement {
                           ? `${message.name} - ${message.secondary}`
                           : message.name}
                         .rtl=${computeRTL(this.hass)}
-                        .actionText=${message.path
-                          ? this.hacs.localize("common.navigate")
-                          : message.dialog
-                          ? this.hacs.localize(`common.${message.dialog}`)
-                          : ""}
-                        @alert-action-clicked=${() =>
-                          message.path ? navigate(message.path) : this._openDialog(message)}
                       >
                         ${message.info}
+                        <mwc-button
+                          slot="action"
+                          .label=${message.path
+                            ? this.hacs.localize("common.navigate")
+                            : message.dialog
+                            ? this.hacs.localize(`common.${message.dialog}`)
+                            : ""}
+                          @click=${() =>
+                            message.path ? navigate(message.path) : this._openDialog(message)}
+                        >
+                        </mwc-button>
                       </ha-alert>
                     `
                 )
@@ -110,16 +115,17 @@ export class HacsEntryPanel extends LitElement {
                 ${sortRepositoriesByName(this.hacs.updates).map(
                   (repository) =>
                     html`
-                      <ha-alert
-                        .title=${repository.name}
-                        .rtl=${computeRTL(this.hass)}
-                        .actionText=${this.hacs.localize("common.update")}
-                        @alert-action-clicked=${() => this._openUpdateDialog(repository)}
-                      >
+                      <ha-alert .title=${repository.name} .rtl=${computeRTL(this.hass)}>
                         ${this.hacs.localize("sections.pending_repository_upgrade", {
                           installed: repository.installed_version,
                           available: repository.available_version,
                         })}
+                        <mwc-button
+                          slot="action"
+                          .label=${this.hacs.localize("common.update")}
+                          @click=${() => this._openUpdateDialog(repository)}
+                        >
+                        </mwc-button>
                       </ha-alert>
                     `
                 )}
