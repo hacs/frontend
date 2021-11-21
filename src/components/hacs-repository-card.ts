@@ -19,7 +19,7 @@ import "../../homeassistant-frontend/src/components/ha-card";
 import "../../homeassistant-frontend/src/components/ha-chip";
 import "../../homeassistant-frontend/src/components/ha-icon-overflow-menu";
 import { getConfigEntries } from "../../homeassistant-frontend/src/data/config_entries";
-import { showAlertDialog } from "../../homeassistant-frontend/src/dialogs/generic/show-dialog-box";
+import { showConfirmationDialog } from "../../homeassistant-frontend/src/dialogs/generic/show-dialog-box";
 import { HomeAssistant } from "../../homeassistant-frontend/src/types";
 import { Repository } from "../data/common";
 import { Hacs } from "../data/hacs";
@@ -272,15 +272,18 @@ export class HacsRepositoryCard extends LitElement {
         (entry) => entry.domain === this.repository.domain
       );
       if (configFlows) {
-        await showAlertDialog(this, {
+        const ignore = await showConfirmationDialog(this, {
           title: this.hacs.localize("dialog.configured.title"),
           text: this.hacs.localize("dialog.configured.message", { name: this.repository.name }),
-          confirmText: this.hacs.localize("dialog.configured.confirm"),
+          dismissText: this.hacs.localize("common.ignore"),
+          confirmText: this.hacs.localize("common.navigate"),
           confirm: () => {
             navigate("/config/integrations", { replace: true });
           },
         });
-        return;
+        if (ignore) {
+          return;
+        }
       }
     }
     this.dispatchEvent(

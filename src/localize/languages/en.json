@@ -279,7 +279,7 @@
     },
     "configured": {
       "title": "Integration is configured",
-      "message": "The {name} integration is configured, you need to delete the configuration for it before removing it from HACS",
+      "message": "The {name} integration is configured or ignored, you need to delete the configuration for it before removing it from HACS",
       "confirm": "Go to integrations"
     }
   },
