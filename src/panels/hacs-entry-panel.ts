@@ -83,15 +83,19 @@ export class HacsEntryPanel extends LitElement {
                         ? `${message.name} - ${message.secondary}`
                         : message.name}
                       .rtl=${computeRTL(this.hass)}
-                      .actionText=${message.path
-                        ? this.hacs.localize("common.navigate")
-                        : message.dialog
-                        ? this.hacs.localize(`common.${message.dialog}`)
-                        : ""}
-                      @alert-action-clicked=${() =>
-                        message.path ? navigate(message.path) : this._openDialog(message)}
                     >
                       ${message.info}
+                      <mwc-button
+                        slot="action"
+                        .label=${message.path
+                          ? this.hacs.localize("common.navigate")
+                          : message.dialog
+                          ? this.hacs.localize(`common.${message.dialog}`)
+                          : ""}
+                        @click=${() =>
+                          message.path ? navigate(message.path) : this._openDialog(message)}
+                      >
+                      </mwc-button>
                     </ha-alert>
                   `
               )
@@ -105,16 +109,17 @@ export class HacsEntryPanel extends LitElement {
               ${sortRepositoriesByName(this.hacs.updates).map(
                 (repository) =>
                   html`
-                    <ha-alert
-                      .title=${repository.name}
-                      .rtl=${computeRTL(this.hass)}
-                      .actionText=${this.hacs.localize("common.update")}
-                      @alert-action-clicked=${() => this._openUpdateDialog(repository)}
-                    >
+                    <ha-alert .title=${repository.name} .rtl=${computeRTL(this.hass)}>
                       ${this.hacs.localize("sections.pending_repository_upgrade", {
                         installed: repository.installed_version,
                         available: repository.available_version,
                       })}
+                      <mwc-button
+                        slot="action"
+                        .label=${this.hacs.localize("common.update")}
+                        @click=${() => this._openUpdateDialog(repository)}
+                      >
+                      </mwc-button>
                     </ha-alert>
                   `
               )}
