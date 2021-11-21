@@ -48,7 +48,6 @@ export class HacsRepositoryDialog extends HacsDialogBase {
         this._repository = this._getRepository(this.hacs.repositories, this.repository!);
       }
     });
-    console.log(changedProperties);
     return (
       changedProperties.has("sidebarDocked") ||
       changedProperties.has("narrow") ||
@@ -85,49 +84,43 @@ export class HacsRepositoryDialog extends HacsDialogBase {
         maxWidth
       >
         <div class="content">
-          ${!this.narrow
-            ? html`
-                <div class="chips">
-                  ${this._repository.installed
-                    ? html`
-                        <ha-chip
-                          title="${this.hacs.localize("dialog_info.version_installed")}"
-                          hasIcon
-                        >
-                          <ha-svg-icon slot="icon" .path=${mdiCube}></ha-svg-icon>
-                          ${this._repository.installed_version}
-                        </ha-chip>
-                      `
-                    : ""}
-                  ${authors
-                    ? authors.map(
-                        (author) => html`<hacs-link .url="https://github.com/${author}">
-                          <ha-chip title="${this.hacs.localize("dialog_info.author")}" hasIcon>
-                            <ha-svg-icon slot="icon" .path=${mdiAccount}></ha-svg-icon>
-                            @${author}
-                          </ha-chip>
-                        </hacs-link>`
-                      )
-                    : ""}
-                  ${this._repository.downloads
-                    ? html` <ha-chip hasIcon title="${this.hacs.localize("dialog_info.downloads")}">
-                        <ha-svg-icon slot="icon" .path=${mdiArrowDownBold}></ha-svg-icon>
-                        ${this._repository.downloads}
-                      </ha-chip>`
-                    : ""}
-                  <ha-chip title="${this.hacs.localize("dialog_info.stars")}" hasIcon>
-                    <ha-svg-icon slot="icon" .path=${mdiStar}></ha-svg-icon>
-                    ${this._repository.stars}
+          <div class="chips">
+            ${this._repository.installed
+              ? html`
+                  <ha-chip title="${this.hacs.localize("dialog_info.version_installed")}" hasIcon>
+                    <ha-svg-icon slot="icon" .path=${mdiCube}></ha-svg-icon>
+                    ${this._repository.installed_version}
                   </ha-chip>
-                  <hacs-link .url="https://github.com/${this._repository.full_name}/issues">
-                    <ha-chip title="${this.hacs.localize("dialog_info.open_issues")}" hasIcon>
-                      <ha-svg-icon slot="icon" .path=${mdiExclamationThick}></ha-svg-icon>
-                      ${this._repository.issues}
+                `
+              : ""}
+            ${authors
+              ? authors.map(
+                  (author) => html`<hacs-link .url="https://github.com/${author}">
+                    <ha-chip title="${this.hacs.localize("dialog_info.author")}" hasIcon>
+                      <ha-svg-icon slot="icon" .path=${mdiAccount}></ha-svg-icon>
+                      @${author}
                     </ha-chip>
-                  </hacs-link>
-                </div>
-              `
-            : ""}
+                  </hacs-link>`
+                )
+              : ""}
+            ${this._repository.downloads
+              ? html` <ha-chip hasIcon title="${this.hacs.localize("dialog_info.downloads")}">
+                  <ha-svg-icon slot="icon" .path=${mdiArrowDownBold}></ha-svg-icon>
+                  ${this._repository.downloads}
+                </ha-chip>`
+              : ""}
+            <ha-chip title="${this.hacs.localize("dialog_info.stars")}" hasIcon>
+              <ha-svg-icon slot="icon" .path=${mdiStar}></ha-svg-icon>
+              ${this._repository.stars}
+            </ha-chip>
+            <hacs-link .url="https://github.com/${this._repository.full_name}/issues">
+              <ha-chip title="${this.hacs.localize("dialog_info.open_issues")}" hasIcon>
+                <ha-svg-icon slot="icon" .path=${mdiExclamationThick}></ha-svg-icon>
+                ${this._repository.issues}
+              </ha-chip>
+            </hacs-link>
+          </div>
+
           ${this._repository.updated_info
             ? markdown.html(
                 this._repository.additional_info || this.hacs.localize("dialog_info.no_info"),
@@ -160,9 +153,6 @@ export class HacsRepositoryDialog extends HacsDialogBase {
     return [
       HacsStyles,
       css`
-        ha-chip {
-          --ha-chip-icon-color: var(--hacs-chip-color, var(--primary-color));
-        }
         img {
           max-width: 100%;
         }
@@ -174,6 +164,7 @@ export class HacsRepositoryDialog extends HacsDialogBase {
         }
         .chips {
           display: flex;
+          flex-wrap: wrap;
           padding-bottom: 8px;
           gap: 4px;
         }
