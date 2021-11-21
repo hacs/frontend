@@ -3,6 +3,7 @@ import { HacsLogger } from "../tools/hacs-logger";
 import { languages } from "./generated";
 
 const DEFAULT_LANGUAGE = "en";
+const IGNORE_LANGUAGES = new Set(["en_GB"]);
 const logger = new HacsLogger("localize");
 const warnings: { language: string[]; sting: Record<string, Array<string>> } = {
   language: [],
@@ -17,7 +18,7 @@ export function localize(language: string, string: string, replace?: Record<stri
     .replace("-", "_");
 
   if (!languages[lang]) {
-    if (!warnings.language?.includes(lang)) {
+    if (!IGNORE_LANGUAGES.has(lang) && !warnings.language?.includes(lang)) {
       warnings.language.push(lang);
       logger.warn(
         `Language '${lang.replace(
