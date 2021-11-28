@@ -13,7 +13,7 @@ export const showDialogAbout = async (element: any, hacs: Hacs) =>
   --|--
   **${hacs.localize("dialog_about.frontend_version")}:** | ${version}
   **${hacs.localize("common.repositories")}:** | ${hacs.repositories.length}
-  **${hacs.localize("dialog_about.installed_repositories")}:** | ${
+  **${hacs.localize("dialog_about.downloaded_repositories")}:** | ${
       hacs.repositories.filter((repo) => repo.installed).length
     }
 

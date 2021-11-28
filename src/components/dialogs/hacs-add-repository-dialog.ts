@@ -132,7 +132,7 @@ export class HacsAddRepositoryDialog extends HacsDialogBase {
             ${SORT_BY.map(
               (value) =>
                 html`<mwc-list-item .value=${value}>
-                  ${this.hacs.localize(`store.${value}`)}
+                  ${this.hacs.localize(`dialog_add_repo.sort_by_values.${value}`) || value}
                 </mwc-list-item>`
             )}
           </mwc-select>

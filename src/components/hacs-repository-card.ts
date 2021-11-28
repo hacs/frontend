@@ -257,7 +257,7 @@ export class HacsRepositoryCard extends LitElement {
     this.dispatchEvent(
       new CustomEvent("hacs-dialog", {
         detail: {
-          type: "install",
+          type: "download",
           repository: this.repository.id,
         },
         bubbles: true,
