@@ -42,7 +42,7 @@ export class HacsProgressDialog extends HacsDialogBase {
           ${
             this._inProgress
               ? html`<ha-circular-progress active size="small"></ha-circular-progress>`
-              : this.confirmText || this.hacs.localize("confirm.yes")
+              : this.confirmText || this.hacs.localize("common.yes")
           }</mwc-button
           >
         </mwc-button>

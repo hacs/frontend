@@ -135,7 +135,7 @@ export class HacsRepositoryDialog extends HacsDialogBase {
         ${!this._repository.installed && this._repository.updated_info
           ? html`
               <mwc-button slot="primaryaction" @click=${this._installRepository}>
-                ${this.hacs.localize("dialog_info.install")}
+                ${this.hacs.localize("dialog_info.download")}
               </mwc-button>
               <hacs-link
                 slot="secondaryaction"
@@ -180,7 +180,7 @@ export class HacsRepositoryDialog extends HacsDialogBase {
     this.dispatchEvent(
       new CustomEvent("hacs-dialog-secondary", {
         detail: {
-          type: "install",
+          type: "download",
           repository: this._repository!.id,
         },
         bubbles: true,

@@ -80,7 +80,7 @@ export class HacsUpdateDialog extends HacsDialogBase {
             <div class="version-element">
               <span class="version-number">${repository.installed_version}</span>
               <small class="version-text">${this.hacs.localize(
-                "dialog_update.installed_version"
+                "dialog_update.downloaded_version"
               )}</small>
             </div>
 
@@ -130,7 +130,7 @@ export class HacsUpdateDialog extends HacsDialogBase {
           }
           ${
             repository.category === "integration"
-              ? html`<p>${this.hacs.localize("dialog_install.restart")}</p>`
+              ? html`<p>${this.hacs.localize("dialog_download.restart")}</p>`
               : ""
           }
           ${
