@@ -232,7 +232,7 @@ export class HacsStorePanel extends LitElement {
       </div>
       <ha-fab
         slot="fab"
-        .label=${this.hacs.localize("store.add")}
+        .label=${this.hacs.localize("store.explore")}
         .extended=${!this.narrow}
         @click=${this._addRepository}
       >

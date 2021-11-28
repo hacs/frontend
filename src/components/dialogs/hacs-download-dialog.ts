@@ -23,8 +23,8 @@ import "../hacs-link";
 import "./hacs-dialog";
 import { HacsDialogBase } from "./hacs-dialog-base";
 
-@customElement("hacs-install-dialog")
-export class HacsInstallDialog extends HacsDialogBase {
+@customElement("hacs-download-dialog")
+export class HacsDonwloadDialog extends HacsDialogBase {
   @property() public repository?: string;
 
   @state() private _toggle = true;
@@ -136,8 +136,8 @@ export class HacsInstallDialog extends HacsDialogBase {
                   .schema=${donwloadRepositorySchema}
                   .computeLabel=${(schema: HaFormSchema) =>
                     schema.name === "beta"
-                      ? this.hacs.localize("dialog_install.show_beta")
-                      : this.hacs.localize("dialog_install.select_version")}
+                      ? this.hacs.localize("dialog_download.show_beta")
+                      : this.hacs.localize("dialog_download.select_version")}
                   @value-changed=${this._valueChanged}
                 >
                 </ha-form>
@@ -152,7 +152,7 @@ export class HacsInstallDialog extends HacsDialogBase {
               </ha-alert>`
             : ""}
           <div class="note">
-            ${this.hacs.localize(`repository.note_installed`)}
+            ${this.hacs.localize(`repository.note_downloaded`)}
             <code>'${installPath}'</code>
             ${this._repository.category === "plugin" && this.hacs.status.lovelace_mode !== "storage"
               ? html`
@@ -165,7 +165,7 @@ export class HacsInstallDialog extends HacsDialogBase {
                 `
               : ""}
             ${this._repository.category === "integration"
-              ? html`<p>${this.hacs.localize("dialog_install.restart")}</p>`
+              ? html`<p>${this.hacs.localize("dialog_download.restart")}</p>`
               : ""}
           </div>
           ${this._error?.message

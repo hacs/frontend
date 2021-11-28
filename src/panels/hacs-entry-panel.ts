@@ -111,7 +111,7 @@ export class HacsEntryPanel extends LitElement {
                   html`
                     <ha-alert .title=${repository.name} .rtl=${computeRTL(this.hass)}>
                       ${this.hacs.localize("sections.pending_repository_upgrade", {
-                        installed: repository.installed_version,
+                        downloaded: repository.installed_version,
                         available: repository.available_version,
                       })}
                       <mwc-button
