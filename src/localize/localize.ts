@@ -17,7 +17,7 @@ export function localize(language: string, string: string, replace?: Record<stri
     .replace(/['"]+/g, "")
     .replace("-", "_");
 
-  if (!languages[lang]) {
+  if (IGNORE_LANGUAGES.has(lang) || !languages[lang]) {
     if (!IGNORE_LANGUAGES.has(lang) && !warnings.language?.includes(lang)) {
       warnings.language.push(lang);
       logger.warn(
