@@ -27,6 +27,7 @@ import { hassTabsSubpage, scrollBarStyle, searchStyles } from "../styles/element
 import { HacsStyles } from "../styles/hacs-common-style";
 import { filterRepositoriesByInput } from "../tools/filter-repositories-by-input";
 import { activePanel } from "./hacs-sections";
+import { mainWindow } from "../../homeassistant-frontend/src/common/dom/get_main_window";
 
 @customElement("hacs-store-panel")
 export class HacsStorePanel extends LitElement {
@@ -137,17 +138,17 @@ export class HacsStorePanel extends LitElement {
           {
             path: mdiFileDocument,
             label: this.hacs.localize("menu.documentation"),
-            action: () => top?.open("https://hacs.xyz/", "_blank", "noreferrer=true"),
+            action: () => mainWindow.open("https://hacs.xyz/", "_blank", "noreferrer=true"),
           },
           {
             path: mdiGithub,
             label: "GitHub",
-            action: () => top?.open("https://github.com/hacs", "_blank", "noreferrer=true"),
+            action: () => mainWindow.open("https://github.com/hacs", "_blank", "noreferrer=true"),
           },
           {
             path: mdiAlertCircleOutline,
             label: this.hacs.localize("menu.open_issue"),
-            action: () => top?.open("https://hacs.xyz/docs/issues", "_blank", "noreferrer=true"),
+            action: () => mainWindow.open("https://hacs.xyz/docs/issues", "_blank", "noreferrer=true"),
           },
           {
             path: mdiGit,
