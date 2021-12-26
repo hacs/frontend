@@ -13,6 +13,7 @@ import {
   getRepositories,
   repositoryInstall,
   repositoryInstallVersion,
+  repositorySetVersion,
   repositoryToggleBeta,
   repositoryUpdate,
 } from "../../data/websocket";
@@ -196,9 +197,19 @@ export class HacsDonwloadDialog extends HacsDialogBase {
   }
 
   private async _valueChanged(ev) {
+    let updateNeeded = false;
     if (this._downloadRepositoryData.beta !== ev.detail.value.beta) {
+      updateNeeded = true;
       this._toggle = true;
       await repositoryToggleBeta(this.hass, this.repository!);
+    }
+    if (ev.detail.value.version) {
+      updateNeeded = true;
+      this._toggle = true;
+
+      await repositorySetVersion(this.hass, this.repository!, ev.detail.value.version);
+    }
+    if (updateNeeded) {
       const repositories = await getRepositories(this.hass);
       this.dispatchEvent(
         new CustomEvent("update-hacs", {
