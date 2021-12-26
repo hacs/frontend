@@ -33,6 +33,7 @@ import {
 import { HacsStyles } from "../styles/hacs-common-style";
 import { generateLovelaceURL } from "../tools/added-to-lovelace";
 import "./hacs-link";
+import { mainWindow } from "../../homeassistant-frontend/src/common/dom/get_main_window";
 
 @customElement("hacs-repository-card")
 export class HacsRepositoryCard extends LitElement {
@@ -133,7 +134,7 @@ export class HacsRepositoryCard extends LitElement {
                     path: mdiGithub,
                     label: this.hacs.localize("common.repository"),
                     action: () =>
-                      top?.open(
+                      mainWindow.open(
                         `https://github.com/${this.repository.full_name}`,
                         "_blank",
                         "noreferrer=true"
@@ -154,7 +155,7 @@ export class HacsRepositoryCard extends LitElement {
                     path: mdiLanguageJavascript,
                     label: this.hacs.localize("repository_card.open_source"),
                     action: () =>
-                      top?.open(
+                      mainWindow.open(
                         `/hacsfiles/${path.pop()}/${this.repository.file_name}`,
                         "_blank",
                         "noreferrer=true"
@@ -164,7 +165,7 @@ export class HacsRepositoryCard extends LitElement {
                     path: mdiAlertCircleOutline,
                     label: this.hacs.localize("repository_card.open_issue"),
                     action: () =>
-                      top?.open(
+                      mainWindow.open(
                         `https://github.com/${this.repository.full_name}/issues`,
                         "_blank",
                         "noreferrer=true"
@@ -175,7 +176,7 @@ export class HacsRepositoryCard extends LitElement {
                     path: mdiAlert,
                     label: this.hacs.localize("repository_card.report"),
                     action: () =>
-                      top?.open(
+                      mainWindow.open(
                         `https://github.com/hacs/integration/issues/new?assignees=ludeeus&labels=flag&template=removal.yml&repo=${this.repository.full_name}&title=Request for removal of ${this.repository.full_name}`,
                         "_blank",
                         "noreferrer=true"
