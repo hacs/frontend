@@ -1,9 +1,9 @@
-import { mdiAlertCircle, mdiHomeAssistant, mdiInformation, mdiOpenInNew } from "@mdi/js";
+import "@material/mwc-button/mwc-button";
+import { mdiAlertCircle, mdiGithub, mdiHomeAssistant, mdiInformation, mdiOpenInNew } from "@mdi/js";
 import "@polymer/app-layout/app-header/app-header";
 import "@polymer/app-layout/app-toolbar/app-toolbar";
 import "@polymer/paper-item/paper-icon-item";
 import "@polymer/paper-item/paper-item-body";
-import "@material/mwc-button/mwc-button";
 import { css, CSSResultGroup, html, LitElement, TemplateResult } from "lit";
 import { customElement, property } from "lit/decorators";
 import { isComponentLoaded } from "../../homeassistant-frontend/src/common/config/is_component_loaded";
@@ -18,6 +18,7 @@ import "../../homeassistant-frontend/src/panels/config/dashboard/ha-config-navig
 import "../../homeassistant-frontend/src/panels/config/ha-config-section";
 import { haStyle } from "../../homeassistant-frontend/src/resources/styles";
 import { HomeAssistant, Route } from "../../homeassistant-frontend/src/types";
+import { brandsUrl } from "../../homeassistant-frontend/src/util/brands-url";
 import { showDialogAbout } from "../components/dialogs/hacs-about-dialog";
 import { Message, Repository, sortRepositoriesByName } from "../data/common";
 import { Hacs } from "../data/hacs";
@@ -32,9 +33,10 @@ export class HacsEntryPanel extends LitElement {
 
   @property({ attribute: false }) public route!: Route;
 
-  @property({ type: Boolean }) public isWide!: boolean;
+  @property({ type: Boolean, reflect: true })
+  public narrow!: boolean;
 
-  @property({ type: Boolean }) public narrow!: boolean;
+  @property({ type: Boolean }) public isWide!: boolean;
 
   protected render(): TemplateResult | void {
     const updates: Repository[] = [];
@@ -68,11 +70,15 @@ export class HacsEntryPanel extends LitElement {
       })
     );
 
-    const content = html`
-      <ha-config-section .narrow=${this.narrow} .isWide=${this.isWide}>
-        <div slot="header">${this.narrow ? "HACS" : "Home Assistant Community Store"}</div>
-
-        <div slot="introduction">
+    return html`
+      <ha-app-layout>
+        <app-header fixed slot="header">
+          <app-toolbar>
+            <ha-menu-button .hass=${this.hass} .narrow=${this.narrow}></ha-menu-button>
+            <div main-title>${this.narrow ? "HACS" : "Home Assistant Community Store"}</div>
+          </app-toolbar>
+        </app-header>
+        <ha-config-section .narrow=${this.narrow} .isWide=${this.isWide} full-width>
           ${this.hacs.messages?.length !== 0
             ? this.hacs.messages.map(
                 (message) =>
@@ -100,78 +106,113 @@ export class HacsEntryPanel extends LitElement {
                   `
               )
             : !this.narrow
-            ? this.hacs.localize("entry.intro")
+            ? ""
             : ""}
-        </div>
-
-        ${this.hacs.updates?.length !== 0
-          ? html` <ha-card>
-              ${sortRepositoriesByName(this.hacs.updates).map(
-                (repository) =>
-                  html`
-                    <ha-alert .title=${repository.name} .rtl=${computeRTL(this.hass)}>
-                      ${this.hacs.localize("sections.pending_repository_upgrade", {
-                        downloaded: repository.installed_version,
-                        available: repository.available_version,
-                      })}
-                      <mwc-button
-                        slot="action"
-                        .label=${this.hacs.localize("common.update")}
-                        @click=${() => this._openUpdateDialog(repository)}
-                      >
-                      </mwc-button>
-                    </ha-alert>
-                  `
-              )}
-            </ha-card>`
-          : ""}
-
-        <ha-card>
-          <ha-config-navigation .hass=${this.hass} .pages=${this.hacs.sections}>
-          </ha-config-navigation>
-        </ha-card>
-
-        <ha-card>
-          ${isComponentLoaded(this.hass, "hassio")
-            ? html`
-                <paper-icon-item @click=${this._openSupervisorDialog}>
-                  <ha-svg-icon .path=${mdiHomeAssistant} slot="item-icon"></ha-svg-icon>
-                  <paper-item-body two-line>
-                    ${this.hacs.localize(`sections.addon.title`)}
-                    <div secondary>${this.hacs.localize(`sections.addon.description`)}</div>
-                  </paper-item-body>
-                  <ha-svg-icon right .path=${mdiOpenInNew}></ha-svg-icon>
-                </paper-icon-item>
-              `
+          ${this.hacs.updates?.length !== 0
+            ? html` <ha-card>
+                <div class="title">${this.hacs.localize("common.updates")}</div>
+                ${sortRepositoriesByName(this.hacs.updates).map(
+                  (repository) =>
+                    html`
+                      <paper-icon-item @click=${() => this._openUpdateDialog(repository)}>
+                        ${repository.category === "integration"
+                          ? html`
+                              <img
+                                slot="item-icon"
+                                loading="lazy"
+                                .src=${brandsUrl({
+                                  domain: repository.domain,
+                                  darkOptimized: this.hass.themes.darkMode,
+                                  type: "icon",
+                                })}
+                                referrerpolicy="no-referrer"
+                                @error=${this._onImageError}
+                                @load=${this._onImageLoad}
+                              />
+                            `
+                          : html`
+                              <div slot="item-icon" class="icon-background">
+                                <ha-svg-icon
+                                  path="${mdiGithub}"
+                                  style="padding-left: 0; height: 40px; width: 40px;"
+                                ></ha-svg-icon>
+                              </div>
+                            `}
+                        <paper-item-body two-line>
+                          ${repository.name}
+                          <div secondary>
+                            ${this.hacs.localize("sections.pending_repository_upgrade", {
+                              downloaded: repository.installed_version,
+                              available: repository.available_version,
+                            })}
+                          </div>
+                        </paper-item-body>
+                        ${!this.narrow ? html`<ha-icon-next></ha-icon-next>` : ""}
+                      </paper-icon-item>
+                    `
+                )}
+              </ha-card>`
             : ""}
-        </ha-card>
 
-        <ha-card>
-          <paper-icon-item @click=${this._openAboutDialog}>
-            <ha-svg-icon .path=${mdiInformation} slot="item-icon"></ha-svg-icon>
-            <paper-item-body two-line>
-              ${this.hacs.localize(`sections.about.title`)}
-              <div secondary>${this.hacs.localize(`sections.about.description`)}</div>
-            </paper-item-body>
-          </paper-icon-item>
-        </ha-card>
-      </ha-config-section>
-    `;
+          <ha-card>
+            <ha-config-navigation
+              .hass=${this.hass}
+              .pages=${this.hacs.sections}
+              .narrow=${this.narrow}
+            >
+            </ha-config-navigation>
 
-    if (!this.narrow && this.hass.dockedSidebar !== "always_hidden") {
-      return content;
-    }
+            ${isComponentLoaded(this.hass, "hassio")
+              ? html`
+                  <paper-icon-item @click=${this._openSupervisorDialog}>
+                    <div
+                      class="icon-background"
+                      slot="item-icon"
+                      style="background-color: rgb(64, 132, 205)"
+                    >
+                      <ha-svg-icon .path=${mdiHomeAssistant} slot="item-icon"></ha-svg-icon>
+                    </div>
+                    <paper-item-body two-line>
+                      ${this.hacs.localize(`sections.addon.title`)}
+                      <div secondary>${this.hacs.localize(`sections.addon.description`)}</div>
+                    </paper-item-body>
+                    ${!this.narrow
+                      ? html`<ha-svg-icon right .path=${mdiOpenInNew}></ha-svg-icon>`
+                      : ""}
+                  </paper-icon-item>
+                `
+              : ""}
 
-    return html`
-      <ha-app-layout>
-        <app-header fixed slot="header">
-          <app-toolbar>
-            <ha-menu-button .hass=${this.hass} .narrow=${this.narrow}></ha-menu-button>
-          </app-toolbar>
-        </app-header>
-        ${content}
+            <paper-icon-item @click=${this._openAboutDialog}>
+              <div
+                class="icon-background"
+                slot="item-icon"
+                style="background-color: rgb(74, 89, 99)"
+              >
+                <ha-svg-icon .path=${mdiInformation} slot="item-icon"></ha-svg-icon>
+              </div>
+              <paper-item-body two-line>
+                ${this.hacs.localize(`sections.about.title`)}
+                <div secondary>${this.hacs.localize(`sections.about.description`)}</div>
+              </paper-item-body>
+            </paper-icon-item>
+          </ha-card>
+        </ha-config-section>
       </ha-app-layout>
     `;
+  }
+
+  private _onImageLoad(ev) {
+    ev.target.style.visibility = "initial";
+  }
+
+  private _onImageError(ev) {
+    if (ev.target) {
+      ev.target.outerHTML = `
+      <div slot="item-icon" class="icon-background">
+        <ha-svg-icon path="${mdiGithub}" style="padding-left: 0; height: 40px; width: 40px;"></ha-svg-icon>
+      </div>`;
+    }
   }
 
   private _openDialog(message: Message) {
@@ -228,40 +269,60 @@ export class HacsEntryPanel extends LitElement {
       haStyle,
       HacsStyles,
       css`
-        paper-icon-item {
-          cursor: pointer;
+        :host(:not([narrow])) ha-card:last-child {
+          margin-bottom: 24px;
         }
-
-        app-header {
-          --app-header-background-color: var(--primary-background-color);
-        }
-
-        ha-svg-icon {
+        ha-config-section {
+          margin: auto;
+          margin-top: -32px;
+          max-width: 600px;
           color: var(--secondary-text-color);
         }
-
-        ha-config-section {
+        ha-card {
+          overflow: hidden;
+        }
+        ha-card a {
+          text-decoration: none;
           color: var(--primary-text-color);
-          margin-top: -12px;
+        }
+        .title {
+          font-size: 16px;
+          padding: 16px;
+          padding-bottom: 0;
+        }
+        :host([narrow]) ha-card {
+          border-radius: 0;
+          box-shadow: unset;
         }
 
-        paper-item-body {
-          width: 100%;
-          min-height: var(--paper-item-body-two-line-min-height, 72px);
-          display: var(--layout-vertical_-_display);
-          flex-direction: var(--layout-vertical_-_flex-direction);
-          justify-content: var(--layout-center-justified_-_justify-content);
+        :host([narrow]) ha-config-section {
+          margin-top: -42px;
         }
-        paper-item-body,
-        ha-menu-button {
-          color: var(--hcv-text-color-primary);
+        .icon-background {
+          border-radius: 50%;
         }
-        paper-item-body div {
-          font-size: 14px;
-          color: var(--hcv-text-color-secondary);
+        .icon-background ha-svg-icon {
+          color: #fff;
         }
-        div[secondary] {
-          white-space: normal;
+        .title {
+          font-size: 16px;
+          padding: 16px;
+          padding-bottom: 0;
+        }
+        ha-svg-icon,
+        ha-icon-next {
+          color: var(--secondary-text-color);
+          height: 24px;
+          width: 24px;
+        }
+        ha-svg-icon {
+          padding: 8px;
+        }
+
+        img {
+          max-height: 40px;
+          max-width: 40px;
+          border-radius: 50%;
         }
       `,
     ];

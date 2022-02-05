@@ -1,4 +1,4 @@
 [submodule "homeassistant-frontend"]
 	path = homeassistant-frontend
 	url = https://github.com/home-assistant/frontend.git
-	branch = dev
+	branch = master
