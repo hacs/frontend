@@ -37,6 +37,14 @@ gulp.task("generate-translations", async function (task) {
     log(`Generating transtions for '${lang}'`);
   });
 
+  await fs.mkdirs("./homeassistant-frontend/build/translations");
+
+  await fs.writeFile(
+    "./homeassistant-frontend/build/translations/translationMetadata.json",
+    "{}",
+    "utf-8"
+  );
+
   await fs.writeFile(
     "./src/localize/generated.ts",
     "export const languages = " + JSON.stringify(languages, null, 2),

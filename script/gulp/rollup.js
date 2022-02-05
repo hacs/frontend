@@ -52,7 +52,10 @@ const DevelopPlugins = [
     exclude: [require.resolve("@mdi/js/mdi.js")],
   }),
   ignore({
-    files: [require.resolve("@polymer/font-roboto/roboto.js")],
+    files: [
+      require.resolve("@polymer/font-roboto/roboto.js"),
+      path.resolve("./homeassistant-frontend/src/components/ha-icon.ts"),
+    ],
   }),
   entrypointHashmanifest({ manifestName: "./hacs_frontend/manifest.json" }),
 ];

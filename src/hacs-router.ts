@@ -36,6 +36,10 @@ class HacsRouter extends HassRouterPage {
         this._wideSidebar = matches;
       })
     );
+
+    this.style.setProperty("--app-header-background-color", "var(--sidebar-background-color)");
+    this.style.setProperty("--app-header-text-color", "var(--sidebar-text-color)");
+    this.style.setProperty("--app-header-border-bottom", "1px solid var(--divider-color)");
   }
 
   public disconnectedCallback() {

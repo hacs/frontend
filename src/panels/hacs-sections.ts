@@ -15,6 +15,7 @@ export const sections = (language: string) => ({
         categories: ["integration"],
         iconPath: mdiPuzzle,
         id: "integrations",
+        iconColor: "rgb(13, 71, 161)",
         description: localize(language, "sections.integrations.description"),
         name: localize(language, "sections.integrations.title"),
         path: "/hacs/integrations",
@@ -24,6 +25,7 @@ export const sections = (language: string) => ({
         categories: ["plugin", "theme"],
         iconPath: mdiPalette,
         id: "frontend",
+        iconColor: "rgb(177, 52, 92)",
         description: localize(language, "sections.frontend.description"),
         name: localize(language, "sections.frontend.title"),
         path: "/hacs/frontend",
@@ -33,6 +35,7 @@ export const sections = (language: string) => ({
         categories: ["python_script", "appdaemon", "netdaemon"],
         iconPath: mdiRobot,
         id: "automation",
+        iconColor: "rgb(81, 140, 67)",
         description: localize(language, "sections.automation.description"),
         name: localize(language, "sections.automation.title"),
         path: "/hacs/automation",
@@ -45,7 +48,10 @@ export const sections = (language: string) => ({
 export const sectionsEnabled = memoizeOne((language: string, config: Configuration) =>
   sections(language).subsections.main.filter((section) => {
     const categories = section.categories;
-    return categories?.filter((category) => config?.categories?.includes(category)).length !== 0;
+    return (
+      categories?.filter((category) => config.dev || config?.categories?.includes(category))
+        .length !== 0
+    );
   })
 );
 
