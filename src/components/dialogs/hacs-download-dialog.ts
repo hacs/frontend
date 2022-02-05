@@ -153,8 +153,9 @@ export class HacsDonwloadDialog extends HacsDialogBase {
               </ha-alert>`
             : ""}
           <div class="note">
-            ${this.hacs.localize(`repository.note_downloaded`)}
-            <code>'${installPath}'</code>
+            ${this.hacs.localize("dialog_download.note_downloaded", {
+              location: html`<code>'${installPath}'</code>`,
+            })}
             ${this._repository.category === "plugin" && this.hacs.status.lovelace_mode !== "storage"
               ? html`
                   <p>${this.hacs.localize(`repository.lovelace_instruction`)}</p>

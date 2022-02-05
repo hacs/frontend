@@ -91,7 +91,8 @@
     "url": "URL",
     "select_version": "Select version",
     "show_beta": "Show beta versions",
-    "restart": "Remember that you need to restart Home Assistant before changes to integrations (custom_components) are applied."
+    "restart": "Remember that you need to restart Home Assistant before changes to integrations (custom_components) are applied.",
+    "note_downloaded": "When downloaded this will be located in {location}"
   },
   "dialog_info": {
     "version_installed": "Version downloaded",
