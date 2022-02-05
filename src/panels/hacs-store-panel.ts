@@ -148,7 +148,8 @@ export class HacsStorePanel extends LitElement {
           {
             path: mdiAlertCircleOutline,
             label: this.hacs.localize("menu.open_issue"),
-            action: () => mainWindow.open("https://hacs.xyz/docs/issues", "_blank", "noreferrer=true"),
+            action: () =>
+              mainWindow.open("https://hacs.xyz/docs/issues", "_blank", "noreferrer=true"),
           },
           {
             path: mdiGit,
@@ -214,6 +215,7 @@ export class HacsStorePanel extends LitElement {
           ? html`<ha-alert .rtl=${computeRTL(this.hass)}>
               ${this.hacs.localize("store.new_repositories_note")}
               <mwc-button
+                class="max-content"
                 slot="action"
                 .label=${this.hacs.localize("menu.dismiss")}
                 @click=${this._clearAllNewRepositories}
@@ -360,6 +362,9 @@ export class HacsStorePanel extends LitElement {
 
         .bottom-bar {
           position: fixed !important;
+        }
+        .max-content {
+          width: max-content;
         }
       `,
     ];
