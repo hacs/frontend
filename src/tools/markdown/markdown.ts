@@ -31,7 +31,7 @@ marked.setOptions({
 
 export class markdown {
   static convert(input: string): string {
-    return marked(input);
+    return marked.parse(input);
   }
 
   static html(input: string, repo?: Repository): TemplateResult {
@@ -77,7 +77,7 @@ export class markdown {
 
     const content = document.createElement("div");
     content.className = "markdown-body";
-    content.innerHTML = DOMPurify.sanitize(marked(input), {
+    content.innerHTML = DOMPurify.sanitize(marked.parse(input), {
       css: false,
     }).replace(/\<a href="http\w:\/\/.*.\">.*.\<\/a>\W/g, function (x) {
       return x.replace(/<a href=/gm, "<hacs-link url=").replace(/<\/a>/gm, "</hacs-link>");
