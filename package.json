@@ -205,7 +205,7 @@
     "leaflet-draw": "^1.0.4",
     "lit": "^2.1.2",
     "lit-vaadin-helpers": "^0.2.1",
-    "marked": "^3.0.2",
+    "marked": "^4.0.10",
     "memoize-one": "^5.2.1",
     "node-vibrant": "3.2.1-alpha.1",
     "proxy-polyfill": "^0.3.2",
