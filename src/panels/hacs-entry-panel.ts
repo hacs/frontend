@@ -324,6 +324,9 @@ export class HacsEntryPanel extends LitElement {
           max-width: 40px;
           border-radius: 50%;
         }
+        paper-icon-item {
+          cursor: pointer;
+        }
       `,
     ];
   }
