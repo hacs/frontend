@@ -158,7 +158,7 @@ export class HacsDonwloadDialog extends HacsDialogBase {
             })}
             ${this._repository.category === "plugin" && this.hacs.status.lovelace_mode !== "storage"
               ? html`
-                  <p>${this.hacs.localize(`repository.lovelace_instruction`)}</p>
+                  <p>${this.hacs.localize(`dialog_download.lovelace_instruction`)}</p>
                   <pre>
                 url: ${generateLovelaceURL({ repository: this._repository, skipTag: true })}
                 type: module

@@ -92,7 +92,8 @@
     "select_version": "Select version",
     "show_beta": "Show beta versions",
     "restart": "Remember that you need to restart Home Assistant before changes to integrations (custom_components) are applied.",
-    "note_downloaded": "When downloaded this will be located in {location}"
+    "note_downloaded": "When downloaded this will be located in {location}",
+    "lovelace_instruction": "After the download completes, since you are not using Lovelace in storage mode you need to manually add the resource with these settings:"
   },
   "dialog_info": {
     "version_installed": "Version downloaded",
