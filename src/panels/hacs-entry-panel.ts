@@ -96,7 +96,7 @@ export class HacsEntryPanel extends LitElement {
                         .label=${message.path
                           ? this.hacs.localize("common.navigate")
                           : message.dialog
-                          ? this.hacs.localize(`common.${message.dialog}`)
+                          ? this.hacs.localize("common.show")
                           : ""}
                         @click=${() =>
                           message.path ? navigate(message.path) : this._openDialog(message)}

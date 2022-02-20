@@ -1,7 +1,13 @@
 import { css, html, TemplateResult } from "lit";
 import { customElement, property } from "lit/decorators";
 import { Repository } from "../../data/common";
-import { deleteResource, fetchResources, repositoryUninstall } from "../../data/websocket";
+import {
+  deleteResource,
+  fetchResources,
+  getRemovedRepositories,
+  repositoryIgnore,
+  repositoryUninstall,
+} from "../../data/websocket";
 import { HacsStyles } from "../../styles/hacs-common-style";
 import "./hacs-dialog";
 import { HacsDialogBase } from "./hacs-dialog-base";
@@ -43,6 +49,9 @@ export class HacsRemovedDialog extends HacsDialogBase {
           </div>`
             : ""}
         </div>
+        <mwc-button slot="secondaryaction" @click=${this._ignoreRepository}>
+          ${this.hacs.localize("common.ignore")}
+        </mwc-button>
         <mwc-button class="uninstall" slot="primaryaction" @click=${this._uninstallRepository}
           >${this._updating
             ? html`<ha-circular-progress active size="small"></ha-circular-progress>`
@@ -65,6 +74,26 @@ export class HacsRemovedDialog extends HacsDialogBase {
 
   private _lovelaceUrl(): string {
     return `/hacsfiles/${this.repository?.full_name.split("/")[1]}/${this.repository?.file_name}`;
+  }
+
+  private async _ignoreRepository(): Promise<void> {
+    await repositoryIgnore(this.hass, this.repository.full_name);
+
+    const removed = await getRemovedRepositories(this.hass);
+    this.dispatchEvent(
+      new CustomEvent("update-hacs", {
+        detail: { removed },
+        bubbles: true,
+        composed: true,
+      })
+    );
+
+    this.dispatchEvent(
+      new Event("hacs-dialog-closed", {
+        bubbles: true,
+        composed: true,
+      })
+    );
   }
 
   private async _uninstallRepository(): Promise<void> {

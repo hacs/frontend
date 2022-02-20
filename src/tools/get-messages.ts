@@ -21,7 +21,7 @@ export const getMessages = memoizeOne((hacs: Hacs): Message[] => {
           repository: removedrepo.repository,
         }),
         info: removedrepo.reason,
-        severity: "error",
+        severity: "warning",
         dialog: "remove",
         repository: repo,
       });
