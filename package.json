@@ -214,7 +214,7 @@
     "qrcode": "^1.4.4",
     "regenerator-runtime": "^0.13.8",
     "resize-observer-polyfill": "^1.5.1",
-    "follow-redirects": "^1.14.7",
+    "follow-redirects": "^1.14.8",
     "roboto-fontface": "^0.10.0",
     "sortablejs": "^1.14.0",
     "superstruct": "^0.15.2",
