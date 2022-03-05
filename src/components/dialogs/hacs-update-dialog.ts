@@ -189,9 +189,9 @@ export class HacsUpdateDialog extends HacsDialogBase {
     if (repository.category === "plugin" && this.hacs.status.lovelace_mode === "storage") {
       showConfirmationDialog(this, {
         title: this.hacs.localize!("common.reload"),
-        text: html`${this.hacs.localize!("dialog.reload.description")}</br>${this.hacs.localize!(
-          "dialog.reload.confirm"
-        )}`,
+        text: html`${this.hacs.localize!("dialog.reload.description")}<br />${this.hacs.localize!(
+            "dialog.reload.confirm"
+          )}`,
         dismissText: this.hacs.localize!("common.cancel"),
         confirmText: this.hacs.localize!("common.reload"),
         confirm: () => {
