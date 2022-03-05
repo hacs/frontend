@@ -23,7 +23,7 @@ import "../components/hacs-repository-card";
 import { Repository } from "../data/common";
 import { Hacs } from "../data/hacs";
 import { settingsClearAllNewRepositories } from "../data/websocket";
-import { hassTabsSubpage, scrollBarStyle } from "../styles/element-styles";
+import { scrollBarStyle } from "../styles/element-styles";
 import { HacsStyles } from "../styles/hacs-common-style";
 import { filterRepositoriesByInput } from "../tools/filter-repositories-by-input";
 import { activePanel } from "./hacs-sections";
@@ -310,7 +310,6 @@ export class HacsStorePanel extends LitElement {
   static get styles() {
     return [
       HacsStyles,
-      hassTabsSubpage,
       scrollBarStyle,
       css`
         .filter {
