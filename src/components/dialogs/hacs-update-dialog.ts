@@ -186,7 +186,7 @@ export class HacsUpdateDialog extends HacsDialogBase {
     }
     this._updating = false;
     this.dispatchEvent(new Event("hacs-dialog-closed", { bubbles: true, composed: true }));
-    if (repository.category === "plugin") {
+    if (repository.category === "plugin" && this.hacs.status.lovelace_mode === "storage") {
       showConfirmationDialog(this, {
         title: this.hacs.localize!("common.reload"),
         text: html`${this.hacs.localize!("dialog.reload.description")}</br>${this.hacs.localize!(
