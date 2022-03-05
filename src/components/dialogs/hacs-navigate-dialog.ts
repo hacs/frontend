@@ -25,18 +25,16 @@ export class HacsNavigateDialog extends HacsDialogBase {
         .active=${this.active}
         .hass=${this.hass}
         title="Navigating away from HACS"
-        >
+      >
         <div class="content">
           This takes you away from HACS and to another page, what you see on that page is not a part
           of HACS.
-          </br></br>
-          Redirect will happen automatically in 10 seconds, if you do not want to wait
-          click the "GO NOW" button.
+          <br /><br />
+          Redirect will happen automatically in 10 seconds, if you do not want to wait click the "GO
+          NOW" button.
         </div>
         <mwc-linear-progress .progress=${this._progress}></mwc-linear-progress>
-        <mwc-button slot="primaryaction" @click=${this._navigate}>
-          Go now
-        </mwc-button>
+        <mwc-button slot="primaryaction" @click=${this._navigate}> Go now </mwc-button>
       </hacs-dialog>
     `;
   }
