@@ -31,30 +31,6 @@ export const hassTabsSubpage = css`
   }
 `;
 
-export const searchStyles = css`
-  search-input.header {
-    display: block;
-    position: relative;
-    left: -22px;
-    top: -7px;
-    color: var(--secondary-text-color);
-    margin-left: 0;
-  }
-  .search {
-    padding: 0 16px;
-    background: var(--sidebar-background-color);
-    border-bottom: 1px solid var(--divider-color);
-  }
-  .search search-input {
-    position: relative;
-    top: 2px;
-  }
-
-  search-input {
-    --layout-fit_-_right: 100vw;
-  }
-`;
-
 export const scrollBarStyle = css`
   *::-webkit-scrollbar {
     width: 0.4rem;
