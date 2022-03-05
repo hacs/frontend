@@ -50,8 +50,9 @@ export class markdown {
 
     // Handle relative links
     if (repo) {
-      input = input.replace(/!\[*.*\]\(\w*\.\w*\)/g, function (x) {
+      input = input.replace(/!\[*.*\]\((?!.*:\/\/).*\/*.*\.\w*\)/g, function (x) {
         return x
+          .replace("(/", "(")
           .replace("(", `(https://raw.githubusercontent.com/${repo?.full_name}/master/`)
           .replace("/blob/", "/");
       });
