@@ -178,18 +178,14 @@ export class HacsStorePanel extends LitElement {
       </ha-icon-overflow-menu>
       ${this.narrow
         ? html`
-            <div slot="header">
-              <slot name="header">
-                <search-input
-                  .hass=${this.hass}
-                  class="header"
-                  no-label-float
-                  .label=${this.hacs.localize("search.downloaded")}
-                  .filter=${this._searchInput || ""}
-                  @value-changed=${this._inputValueChanged}
-                ></search-input>
-              </slot>
-            </div>
+            <search-input
+              .hass=${this.hass}
+              class="header"
+              slot="header"
+              .label=${this.hacs.localize("search.downloaded")}
+              .filter=${this._searchInput || ""}
+              @value-changed=${this._inputValueChanged}
+            ></search-input>
           `
         : html`<div class="search">
             <search-input
@@ -358,6 +354,10 @@ export class HacsStorePanel extends LitElement {
         }
         search-input {
           display: block;
+        }
+
+        search-input.header {
+          padding: 0;
         }
 
         .bottom-bar {
