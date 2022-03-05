@@ -2,8 +2,6 @@ import "@material/mwc-button/mwc-button";
 import { mdiAlertCircle, mdiGithub, mdiHomeAssistant, mdiInformation, mdiOpenInNew } from "@mdi/js";
 import "@polymer/app-layout/app-header/app-header";
 import "@polymer/app-layout/app-toolbar/app-toolbar";
-import "@polymer/paper-item/paper-icon-item";
-import "@polymer/paper-item/paper-item-body";
 import { css, CSSResultGroup, html, LitElement, TemplateResult } from "lit";
 import { customElement, property } from "lit/decorators";
 import { isComponentLoaded } from "../../homeassistant-frontend/src/common/config/is_component_loaded";
@@ -114,41 +112,41 @@ export class HacsEntryPanel extends LitElement {
                 ${sortRepositoriesByName(this.hacs.updates).map(
                   (repository) =>
                     html`
-                      <paper-icon-item @click=${() => this._openUpdateDialog(repository)}>
-                        ${repository.category === "integration"
-                          ? html`
-                              <img
-                                slot="item-icon"
-                                loading="lazy"
-                                .src=${brandsUrl({
-                                  domain: repository.domain,
-                                  darkOptimized: this.hass.themes.darkMode,
-                                  type: "icon",
-                                })}
-                                referrerpolicy="no-referrer"
-                                @error=${this._onImageError}
-                                @load=${this._onImageLoad}
-                              />
-                            `
-                          : html`
-                              <div slot="item-icon" class="icon-background">
+                      <div class="list-item" @click=${() => this._openUpdateDialog(repository)}>
+                        <div class="list-item-icon">
+                          ${repository.category === "integration"
+                            ? html`
+                                <img
+                                  loading="lazy"
+                                  .src=${brandsUrl({
+                                    domain: repository.domain,
+                                    darkOptimized: this.hass.themes.darkMode,
+                                    type: "icon",
+                                  })}
+                                  referrerpolicy="no-referrer"
+                                  @error=${this._onImageError}
+                                  @load=${this._onImageLoad}
+                                />
+                              `
+                            : html`
                                 <ha-svg-icon
                                   path="${mdiGithub}"
                                   style="padding-left: 0; height: 40px; width: 40px;"
-                                ></ha-svg-icon>
-                              </div>
-                            `}
-                        <paper-item-body two-line>
-                          ${repository.name}
-                          <div secondary>
+                                >
+                                </ha-svg-icon>
+                              `}
+                        </div>
+                        <div class="list-item-content">
+                          <div class="list-item-header">${repository.name}</div>
+                          <div class="list-item-description">
                             ${this.hacs.localize("sections.pending_repository_upgrade", {
                               downloaded: repository.installed_version,
                               available: repository.available_version,
                             })}
                           </div>
-                        </paper-item-body>
+                        </div>
                         ${!this.narrow ? html`<ha-icon-next></ha-icon-next>` : ""}
-                      </paper-icon-item>
+                      </div>
                     `
                 )}
               </ha-card>`
@@ -162,40 +160,41 @@ export class HacsEntryPanel extends LitElement {
             >
             </ha-config-navigation>
 
-            ${isComponentLoaded(this.hass, "hassio")
+            ${!isComponentLoaded(this.hass, "hassio")
               ? html`
-                  <paper-icon-item @click=${this._openSupervisorDialog}>
-                    <div
-                      class="icon-background"
-                      slot="item-icon"
-                      style="background-color: rgb(64, 132, 205)"
-                    >
-                      <ha-svg-icon .path=${mdiHomeAssistant} slot="item-icon"></ha-svg-icon>
+                  <div class="list-item" @click=${this._openSupervisorDialog}>
+                    <div class="list-item-icon">
+                      <div class="icon-background" style="background-color: rgb(64, 132, 205)">
+                        <ha-svg-icon .path=${mdiHomeAssistant}></ha-svg-icon>
+                      </div>
                     </div>
-                    <paper-item-body two-line>
-                      ${this.hacs.localize(`sections.addon.title`)}
-                      <div secondary>${this.hacs.localize(`sections.addon.description`)}</div>
-                    </paper-item-body>
+                    <div class="list-item-content">
+                      <div class="list-item-header">
+                        ${this.hacs.localize(`sections.addon.title`)}
+                      </div>
+                      <div class="list-item-description">
+                        ${this.hacs.localize(`sections.addon.description`)}
+                      </div>
+                    </div>
                     ${!this.narrow
                       ? html`<ha-svg-icon right .path=${mdiOpenInNew}></ha-svg-icon>`
                       : ""}
-                  </paper-icon-item>
+                  </div>
                 `
               : ""}
-
-            <paper-icon-item @click=${this._openAboutDialog}>
-              <div
-                class="icon-background"
-                slot="item-icon"
-                style="background-color: rgb(74, 89, 99)"
-              >
-                <ha-svg-icon .path=${mdiInformation} slot="item-icon"></ha-svg-icon>
+            <div class="list-item" @click=${this._openAboutDialog}>
+              <div class="list-item-icon">
+                <div class="icon-background" style="background-color: rgb(74, 89, 99)">
+                  <ha-svg-icon .path=${mdiInformation}></ha-svg-icon>
+                </div>
               </div>
-              <paper-item-body two-line>
-                ${this.hacs.localize(`sections.about.title`)}
-                <div secondary>${this.hacs.localize(`sections.about.description`)}</div>
-              </paper-item-body>
-            </paper-icon-item>
+              <div class="list-item-content">
+                <div class="list-item-header">${this.hacs.localize(`sections.about.title`)}</div>
+                <div class="list-item-description">
+                  ${this.hacs.localize(`sections.about.description`)}
+                </div>
+              </div>
+            </div>
           </ha-card>
         </ha-config-section>
       </ha-app-layout>
@@ -324,8 +323,27 @@ export class HacsEntryPanel extends LitElement {
           max-width: 40px;
           border-radius: 50%;
         }
-        paper-icon-item {
+        .list-item {
+          width: 100%;
           cursor: pointer;
+          display: flex;
+          padding: 16px;
+        }
+        .list-item-icon {
+          margin-right: 16px;
+        }
+        .list-item-header {
+          font-size: 16px;
+        }
+        .list-item-description {
+          color: var(--secondary-text-color);
+          margin-right: 16px;
+        }
+        .list-item ha-icon-next,
+        .list-item ha-svg-icon[right] {
+          right: 0;
+          padding: 16px;
+          position: absolute;
         }
       `,
     ];

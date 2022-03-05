@@ -9,8 +9,6 @@ import {
   mdiLanguageJavascript,
   mdiReload,
 } from "@mdi/js";
-import "@polymer/paper-item/paper-item";
-import "@polymer/paper-item/paper-item-body";
 import { css, CSSResultGroup, html, LitElement, TemplateResult } from "lit";
 import { customElement, property } from "lit/decorators";
 import { ClassInfo, classMap } from "lit/directives/class-map";
@@ -114,9 +112,7 @@ export class HacsRepositoryCard extends LitElement {
                 : ""}
             </div>
           </div>
-          <paper-item>
-            <paper-item-body> ${this.repository.description} </paper-item-body>
-          </paper-item>
+          <div class="description">${this.repository.description}</div>
         </div>
         <div class="card-actions">
           ${this.repository.installed
@@ -361,9 +357,10 @@ export class HacsRepositoryCard extends LitElement {
         .pointer {
           cursor: pointer;
         }
-        paper-item-body {
+        .description {
           opacity: var(--dark-primary-opacity);
           font-size: 14px;
+          padding: 8px 16px;
         }
 
         .status-new {

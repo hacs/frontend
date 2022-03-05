@@ -16,7 +16,6 @@ export const hacsCommonClasses = css`
     --mdc-theme-primary: var(--hcv-color-error);
   }
   .header {
-    font-size: var(--paper-font-headline_-_font-size);
     opacity: var(--dark-primary-opacity);
     padding: 8px 0 4px 16px;
   }
