@@ -55,6 +55,7 @@ const DevelopPlugins = [
     files: [
       require.resolve("@polymer/font-roboto/roboto.js"),
       path.resolve("./homeassistant-frontend/src/components/ha-icon.ts"),
+      path.resolve("./homeassistant-frontend/src/components/ha-icon-picker.ts"),
     ],
   }),
   entrypointHashmanifest({ manifestName: "./hacs_frontend/manifest.json" }),

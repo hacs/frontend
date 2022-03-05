@@ -1,3 +1,4 @@
+import "../../../homeassistant-frontend/src/components/search-input";
 import "@material/mwc-list/mwc-list-item";
 import "@material/mwc-select/mwc-select";
 import { mdiGithub } from "@mdi/js";
@@ -6,7 +7,6 @@ import { customElement, property } from "lit/decorators";
 import { classMap } from "lit/directives/class-map";
 import memoizeOne from "memoize-one";
 import { stopPropagation } from "../../../homeassistant-frontend/src/common/dom/stop_propagation";
-import "../../../homeassistant-frontend/src/common/search/search-input";
 import "../../../homeassistant-frontend/src/components/ha-chip";
 import "../../../homeassistant-frontend/src/components/ha-settings-row";
 import "../../../homeassistant-frontend/src/components/ha-svg-icon";

@@ -1,3 +1,4 @@
+import "../../homeassistant-frontend/src/components/search-input";
 import {
   mdiAlertCircleOutline,
   mdiFileDocument,
@@ -9,7 +10,6 @@ import {
 import { css, html, LitElement, TemplateResult } from "lit";
 import { customElement, property } from "lit/decorators";
 import memoizeOne from "memoize-one";
-import "../../homeassistant-frontend/src/common/search/search-input";
 import { computeRTL } from "../../homeassistant-frontend/src/common/util/compute_rtl";
 import "../../homeassistant-frontend/src/components/ha-alert";
 import "../../homeassistant-frontend/src/components/ha-card";
