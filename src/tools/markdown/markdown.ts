@@ -19,7 +19,7 @@ const marked = marked_;
 marked.setOptions({
   highlight: function (code, lang) {
     if (lang && hljs.getLanguage(lang)) {
-      return hljs.highlight(lang, code, true).value;
+      return hljs.highlight(code, { language: lang, ignoreIllegals: true }).value;
     }
     return hljs.highlightAuto(code).value;
   },
