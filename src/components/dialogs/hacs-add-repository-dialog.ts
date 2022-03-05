@@ -222,8 +222,12 @@ export class HacsAddRepositoryDialog extends HacsDialogBase {
   }
 
   private _onImageError(ev) {
-    if (ev.target) {
-      ev.target.outerHTML = `<ha-svg-icon path="${mdiGithub}" slot="prefix"></ha-svg-icon>`;
+    if (ev.target?.outerHTML) {
+      try {
+        ev.target.outerHTML = `<ha-svg-icon path="${mdiGithub}" slot="prefix"></ha-svg-icon>`;
+      } catch (_) {
+        // pass
+      }
     }
   }
 
