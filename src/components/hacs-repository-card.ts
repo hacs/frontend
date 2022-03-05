@@ -198,15 +198,10 @@ export class HacsRepositoryCard extends LitElement {
             : ""}
           ${this.repository.new && !this.repository.installed
             ? html`<div>
-                  <mwc-button @click=${this._setNotNew}>
-                    ${this.hacs.localize("repository_card.dismiss")}
-                  </mwc-button>
-                </div>
-                <div>
-                  <mwc-button @click=${this._installRepository} raised>
-                    ${this.hacs.localize("common.download")}
-                  </mwc-button>
-                </div> `
+                <mwc-button class="status-new" @click=${this._setNotNew}>
+                  ${this.hacs.localize("repository_card.dismiss")}
+                </mwc-button>
+              </div>`
             : this.repository.pending_upgrade &&
               this.hacs.addedToLovelace!(this.hacs, this.repository)
             ? html`<div>
@@ -373,6 +368,7 @@ export class HacsRepositoryCard extends LitElement {
 
         .status-new {
           border-color: var(--hcv-color-new);
+          --mdc-theme-primary: var(--hcv-color-new);
         }
 
         .status-update {
