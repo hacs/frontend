@@ -53,7 +53,12 @@ export class markdown {
       input = input.replace(/!\[*.*\]\((?!.*:\/\/).*\/*.*\.\w*\)/g, function (x) {
         return x
           .replace("(/", "(")
-          .replace("(", `(https://raw.githubusercontent.com/${repo?.full_name}/master/`)
+          .replace(
+            "(",
+            `(https://raw.githubusercontent.com/${repo.full_name}/${
+              repo.available_version || repo.default_branch
+            }/`
+          )
           .replace("/blob/", "/");
       });
     }
