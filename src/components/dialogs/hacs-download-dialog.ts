@@ -261,7 +261,7 @@ export class HacsDonwloadDialog extends HacsDialogBase {
         composed: true,
       })
     );
-    if (this._repository.category === "plugin" && this.hacs.status.lovelace_mode === "storage") {
+    if (this._repository.category === "plugin") {
       showConfirmationDialog(this, {
         title: this.hacs.localize!("common.reload"),
         text: html`${this.hacs.localize!("dialog.reload.description")}<br />${this.hacs.localize!(
