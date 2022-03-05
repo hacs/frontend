@@ -23,7 +23,7 @@ import "../components/hacs-repository-card";
 import { Repository } from "../data/common";
 import { Hacs } from "../data/hacs";
 import { settingsClearAllNewRepositories } from "../data/websocket";
-import { hassTabsSubpage, scrollBarStyle, searchStyles } from "../styles/element-styles";
+import { hassTabsSubpage, scrollBarStyle } from "../styles/element-styles";
 import { HacsStyles } from "../styles/hacs-common-style";
 import { filterRepositoriesByInput } from "../tools/filter-repositories-by-input";
 import { activePanel } from "./hacs-sections";
@@ -194,7 +194,6 @@ export class HacsStorePanel extends LitElement {
         : html`<div class="search">
             <search-input
               .hass=${this.hass}
-              no-label-float
               .label=${newRepositories.length === 0
                 ? this.hacs.localize("search.downloaded")
                 : this.hacs.localize("search.downloaded_new")}
@@ -312,7 +311,6 @@ export class HacsStorePanel extends LitElement {
     return [
       HacsStyles,
       hassTabsSubpage,
-      searchStyles,
       scrollBarStyle,
       css`
         .filter {
@@ -358,6 +356,9 @@ export class HacsStorePanel extends LitElement {
           display: block;
           padding: 0px;
           margin: 0;
+        }
+        search-input {
+          display: block;
         }
 
         .bottom-bar {

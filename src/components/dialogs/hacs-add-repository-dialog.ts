@@ -13,7 +13,7 @@ import "../../../homeassistant-frontend/src/components/ha-svg-icon";
 import { brandsUrl } from "../../../homeassistant-frontend/src/util/brands-url";
 import { Repository } from "../../data/common";
 import { activePanel } from "../../panels/hacs-sections";
-import { scrollBarStyle, searchStyles } from "../../styles/element-styles";
+import { scrollBarStyle } from "../../styles/element-styles";
 import { HacsStyles } from "../../styles/hacs-common-style";
 import { filterRepositoriesByInput } from "../../tools/filter-repositories-by-input";
 import "../hacs-filter";
@@ -110,13 +110,11 @@ export class HacsAddRepositoryDialog extends HacsDialogBase {
         .title=${this.hacs.localize("dialog_add_repo.title")}
         hideActions
         scrimClickAction
-        escapeKeyAction
         maxWidth
       >
         <div class="searchandfilter" ?narrow=${this.narrow}>
           <search-input
             .hass=${this.hass}
-            no-label-float
             .label=${this.hacs.localize("search.placeholder")}
             .filter=${this._searchInput}
             @value-changed=${this._inputValueChanged}
@@ -231,7 +229,6 @@ export class HacsAddRepositoryDialog extends HacsDialogBase {
 
   static get styles() {
     return [
-      searchStyles,
       scrollBarStyle,
       HacsStyles,
       css`
@@ -258,9 +255,9 @@ export class HacsAddRepositoryDialog extends HacsDialogBase {
           margin-right: 6px;
         }
         search-input {
+          display: block;
           float: left;
           width: 75%;
-          border-bottom: 1px var(--mdc-theme-primary) solid;
         }
         search-input[narrow],
         mwc-select[narrow] {
