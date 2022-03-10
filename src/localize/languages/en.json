@@ -62,7 +62,15 @@
     "integration_version": "Integration version",
     "frontend_version": "Frontend version",
     "downloaded_repositories": "Downloaded repositories",
-    "useful_links": "Useful links"
+    "useful_links": "Useful links",
+    "links": {
+      "general_documentation": "General documentation",
+      "configuration": "Configuration",
+      "faq": "FAQ",
+      "become_sponsor": "Become a GitHub sponsor?"
+    },
+    "disclaimer1": "Everything you find in HACS is **not** tested by Home Assistant, that includes HACS itself.",
+    "disclaimer2": "The HACS and Home Assistant teams do not support **anything** you find here."
   },
   "dialog_add_repo": {
     "title": "Add repository",

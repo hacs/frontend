@@ -19,16 +19,16 @@ export const showDialogAbout = async (element: any, hacs: Hacs) =>
 
   **${hacs.localize("dialog_about.useful_links")}:**
 
-  - [General documentation](https://hacs.xyz/)
-  - [Configuration](https://hacs.xyz/docs/configuration/start)
-  - [FAQ](https://hacs.xyz/docs/faq/what)
+  - [${hacs.localize("dialog_about.links.general_documentation")}](https://hacs.xyz/)
+  - [${hacs.localize("dialog_about.links.configuration")}](https://hacs.xyz/docs/configuration/start)
+  - [${hacs.localize("dialog_about.links.faq")}](https://hacs.xyz/docs/faq/what)
   - [GitHub](https://github.com/hacs)
   - [Discord](https://discord.gg/apgchf8)
-  - [Become a GitHub sponsor? ❤️](https://github.com/sponsors/ludeeus)
+  - [${hacs.localize("dialog_about.links.become_sponsor")} ❤️](https://github.com/sponsors/ludeeus)
   - [BuyMe~~Coffee~~Beer? 🍺🙈](https://buymeacoffee.com/ludeeus)
 
   ***
 
-  _Everything you find in HACS is **not** tested by Home Assistant, that includes HACS itself.
-  The HACS and Home Assistant teams do not support **anything** you find here._`),
+  _${hacs.localize("dialog_about.disclaimer1")}
+  ${hacs.localize("dialog_about.disclaimer2")}_`),
   });
