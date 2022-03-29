@@ -160,7 +160,7 @@ export class HacsEntryPanel extends LitElement {
             >
             </ha-config-navigation>
 
-            ${!isComponentLoaded(this.hass, "hassio")
+            ${isComponentLoaded(this.hass, "hassio")
               ? html`
                   <div class="list-item" @click=${this._openSupervisorDialog}>
                     <div class="list-item-icon">
