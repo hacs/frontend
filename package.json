@@ -190,7 +190,7 @@
     "@vue/web-component-wrapper": "^1.2.0",
     "@webcomponents/scoped-custom-element-registry": "^0.0.5",
     "@webcomponents/webcomponentsjs": "^2.2.10",
-    "app-datepicker": "^5.0.1",
+    "app-datepicker": "5.0.1",
     "chart.js": "^3.3.2",
     "comlink": "^4.3.1",
     "core-js": "^3.15.2",
@@ -249,6 +249,7 @@
     "@polymer/polymer": "3.4.1"
   },
   "dependenciesOverride": {
+    "app-datepicker": "5.0.1",
     "node-emoji": "1.10.0",
     "@lit-labs/virtualizer": "0.6.0",
     "@material/mwc-linear-progress": "canary",
