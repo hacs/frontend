@@ -318,9 +318,12 @@ export class HacsEntryPanel extends LitElement {
           padding: 8px;
         }
 
+        .list-item-icon > * {
+          height: 40px;
+          width: 40px;
+          padding: 0;
+        }
         img {
-          max-height: 40px;
-          max-width: 40px;
           border-radius: 50%;
         }
         .list-item {
