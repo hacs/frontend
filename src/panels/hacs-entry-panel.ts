@@ -340,7 +340,7 @@ export class HacsEntryPanel extends LitElement {
         }
         .list-item-description {
           color: var(--secondary-text-color);
-          margin-right: 16px;
+          margin-right: 56px;
         }
         .list-item ha-icon-next,
         .list-item ha-svg-icon[right] {
