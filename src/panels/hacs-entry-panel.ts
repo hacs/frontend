@@ -176,9 +176,6 @@ export class HacsEntryPanel extends LitElement {
                         ${this.hacs.localize(`sections.addon.description`)}
                       </div>
                     </div>
-                    ${!this.narrow
-                      ? html`<ha-svg-icon right .path=${mdiOpenInNew}></ha-svg-icon>`
-                      : ""}
                   </div>
                 `
               : ""}
@@ -340,7 +337,7 @@ export class HacsEntryPanel extends LitElement {
         }
         .list-item-description {
           color: var(--secondary-text-color);
-          margin-right: 56px;
+          margin-right: 16px;
         }
         .list-item ha-icon-next,
         .list-item ha-svg-icon[right] {
