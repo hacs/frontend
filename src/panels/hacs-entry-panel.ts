@@ -1,5 +1,5 @@
 import "@material/mwc-button/mwc-button";
-import { mdiAlertCircle, mdiGithub, mdiHomeAssistant, mdiInformation, mdiOpenInNew } from "@mdi/js";
+import { mdiAlertCircle, mdiGithub, mdiHomeAssistant, mdiInformation } from "@mdi/js";
 import "@polymer/app-layout/app-header/app-header";
 import "@polymer/app-layout/app-toolbar/app-toolbar";
 import { css, CSSResultGroup, html, LitElement, TemplateResult } from "lit";
