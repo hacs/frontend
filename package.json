@@ -113,7 +113,7 @@
     "rollup-plugin-entrypoint-hashmanifest": "^0.1.2"
   },
   "dependencies": {
-    "@braintree/sanitize-url": "^5.0.2",
+    "@braintree/sanitize-url": "^6.0.0",
     "@codemirror/autocomplete": "^0.19.12",
     "@codemirror/commands": "^0.19.8",
     "@codemirror/gutter": "^0.19.9",
