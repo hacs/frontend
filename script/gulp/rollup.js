@@ -82,7 +82,8 @@ const outputconfig = (isDev) => {
     entryFileNames: !isDev ? "[name]-[hash].js" : "[name]-dev.js",
     format: "es",
     intro: `const __DEMO__ = false;
-    const __SUPERVISOR__ = true`,
+    const __SUPERVISOR__ = true;
+    const __BUILD__ = "latest"`,
   };
 };
 

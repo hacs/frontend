@@ -41,17 +41,20 @@ export class HacsCustomRepositoriesDialog extends HacsDialogBase {
     if (!this.active) return html``;
     const addRepositorySchema: HaFormSchema[] = [
       {
-        type: "string",
         name: "repository",
+        selector: { text: {} },
       },
       {
-        type: "select",
         name: "category",
-        optional: true,
-        options: this.hacs.configuration.categories.map((category) => [
-          category,
-          this.hacs.localize(`common.${category}`),
-        ]),
+        selector: {
+          select: {
+            mode: "dropdown",
+            options: this.hacs.configuration.categories.map((category) => ({
+              value: category,
+              label: this.hacs.localize(`common.${category}`),
+            })),
+          },
+        },
       },
     ];
     return html`

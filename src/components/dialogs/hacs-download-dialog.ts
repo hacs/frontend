@@ -98,25 +98,25 @@ export class HacsDonwloadDialog extends HacsDialogBase {
 
     const donwloadRepositorySchema: HaFormSchema[] = [
       {
-        type: "boolean",
         name: "beta",
+        selector: { boolean: {} },
       },
       {
-        type: "select",
         name: "version",
-        optional: true,
-        //@ts-ignore
-        options:
-          this._repository.version_or_commit === "version"
-            ? this._repository.releases
-                .map((version) => [version, version])
-                .concat(
-                  this._repository.full_name === "hacs/integration" ||
-                    this._repository.hide_default_branch
-                    ? []
-                    : [[this._repository.default_branch, this._repository.default_branch]]
-                )
-            : [],
+        selector: {
+          select: {
+            options:
+              this._repository.version_or_commit === "version"
+                ? this._repository.releases.concat(
+                    this._repository.full_name === "hacs/integration" ||
+                      this._repository.hide_default_branch
+                      ? []
+                      : [this._repository.default_branch]
+                  )
+                : [],
+            mode: "dropdown",
+          },
+        },
       },
     ];
     return html`

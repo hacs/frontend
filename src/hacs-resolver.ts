@@ -33,23 +33,23 @@ import { navigate } from "../homeassistant-frontend/src/common/navigate";
 
 @customElement("hacs-resolver")
 export class HacsResolver extends LitElement {
-  @property({ attribute: false }) public configuration: Configuration;
+  @property({ attribute: false }) public configuration!: Configuration;
 
   @property({ attribute: false }) public critical!: Critical[];
 
   @property({ attribute: false }) public hass!: HomeAssistant;
 
-  @property({ attribute: false }) public lovelace: LovelaceResource[];
+  @property({ attribute: false }) public lovelace!: LovelaceResource[] | null;
 
   @property({ type: Boolean }) public narrow!: boolean;
 
-  @property({ attribute: false }) public repositories: Repository[];
+  @property({ attribute: false }) public repositories!: Repository[];
 
   @property({ attribute: false }) public route!: Route;
 
-  @property({ attribute: false }) public status: Status;
+  @property({ attribute: false }) public status!: Status;
 
-  @property({ attribute: false }) public removed: RemovedRepository[];
+  @property({ attribute: false }) public removed!: RemovedRepository[];
 
   @query("#hacs-dialog") private _hacsDialog?: any;
 
@@ -81,17 +81,11 @@ export class HacsResolver extends LitElement {
     };
 
     /* Backend event subscription */
-    this.hass.connection.subscribeEvents(async () => await this._updateProperties(), "hacs/config");
-    this.hass.connection.subscribeEvents(async () => await this._updateProperties(), "hacs/status");
+    this.hass.connection.subscribeEvents(async () => this._updateProperties(), "hacs/config");
+    this.hass.connection.subscribeEvents(async () => this._updateProperties(), "hacs/status");
 
-    this.hass.connection.subscribeEvents(
-      async () => await this._updateProperties(),
-      "hacs/repository"
-    );
-    this.hass.connection.subscribeEvents(
-      async () => await this._updateProperties(),
-      "lovelace_updated"
-    );
+    this.hass.connection.subscribeEvents(async () => this._updateProperties(), "hacs/repository");
+    this.hass.connection.subscribeEvents(async () => this._updateProperties(), "lovelace_updated");
     await this._updateProperties();
   }
 
@@ -184,7 +178,7 @@ export class HacsResolver extends LitElement {
   }
 
   private _setRoute(ev: LocationChangedEvent): void {
-    this.route = ev.detail.route;
+    this.route = ev.detail!.route;
     navigate(this.route.prefix + this.route.path);
     this.requestUpdate();
   }
