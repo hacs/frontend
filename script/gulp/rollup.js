@@ -14,12 +14,14 @@ const babelTypescript = require("@babel/preset-typescript");
 const babelDecorators = require("@babel/plugin-proposal-decorators");
 const babelClassProperties = require("@babel/plugin-proposal-class-properties");
 const entrypointHashmanifest = require("rollup-plugin-entrypoint-hashmanifest");
+const zopfli = require("gulp-zopfli-green");
 
 const nodeResolve = require("@rollup/plugin-node-resolve");
-const gzipPlugin = require("rollup-plugin-gzip");
 const { terser } = require("rollup-plugin-terser");
 
 const extensions = [".js", ".ts"];
+
+const zopfliOptions = { threshold: 150 };
 
 const DevelopPlugins = [
   string({
@@ -38,7 +40,7 @@ const DevelopPlugins = [
   }),
   babel({
     babelrc: false,
-    compact: true,
+    compact: false,
     presets: [babelTypescript.default],
     babelHelpers: "bundled",
     plugins: [
@@ -65,7 +67,6 @@ const BuildPlugins = DevelopPlugins.concat([
   terser({
     output: { comments: false },
   }),
-  gzipPlugin.default(),
 ]);
 
 const inputconfig = {
@@ -138,8 +139,16 @@ gulp.task("rollup-build", async function (task) {
   inputconfig.plugins = BuildPlugins;
   const bundle = await rollup.rollup(inputconfig);
   await bundle.write(outputconfig(false));
+
   writeEntrypoint();
   task();
+});
+
+gulp.task("compress", function compressApp() {
+  return gulp
+    .src(path.resolve(outputconfig(true).dir, "**/*.js"))
+    .pipe(zopfli(zopfliOptions))
+    .pipe(gulp.dest(outputconfig(true).dir));
 });
 
 function writeEntrypoint() {
