@@ -40,7 +40,7 @@ const DevelopPlugins = [
   }),
   babel({
     babelrc: false,
-    compact: false,
+    compact: true,
     presets: [babelTypescript.default],
     babelHelpers: "bundled",
     plugins: [
