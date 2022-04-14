@@ -1,4 +1,4 @@
-import { LitElement } from "lit";
+import { LitElement, PropertyValues } from "lit";
 import { property } from "lit/decorators";
 import { Hacs } from "./data/hacs";
 import { sectionsEnabled } from "./panels/hacs-sections";
@@ -50,7 +50,8 @@ export class HacsElement extends ProvideHassLitMixin(LitElement) {
     }
   }
 
-  protected updated() {
+  protected updated(changedProps: PropertyValues) {
+    super.updated(changedProps);
     if (this.hacs.language && this.hacs.configuration) {
       this.hacs.sections = sectionsEnabled(this.hacs.language, this.hacs.configuration);
     }

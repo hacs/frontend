@@ -11,11 +11,12 @@ import "../../../homeassistant-frontend/src/components/ha-circular-progress";
 import "../../../homeassistant-frontend/src/components/ha-expansion-panel";
 import "../../../homeassistant-frontend/src/components/ha-svg-icon";
 import { showConfirmationDialog } from "../../../homeassistant-frontend/src/dialogs/generic/show-dialog-box";
-import { Repository } from "../../data/common";
+import { HacsDispatchEvent, Repository } from "../../data/common";
 import {
   repositoryInstall,
   repositoryInstallVersion,
   repositoryReleasenotes,
+  websocketSubscription,
 } from "../../data/websocket";
 import { scrollBarStyle } from "../../styles/element-styles";
 import { HacsStyles } from "../../styles/hacs-common-style";
@@ -56,7 +57,7 @@ export class HacsUpdateDialog extends HacsDialogBase {
         (release) => release.tag > repository.installed_version
       );
     }
-    this.hass.connection.subscribeEvents((msg) => (this._error = (msg as any).data), "hacs/error");
+    websocketSubscription(this.hass, (data) => (this._error = data), HacsDispatchEvent.ERROR);
   }
 
   protected render(): TemplateResult {
