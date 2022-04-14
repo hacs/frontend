@@ -7,6 +7,7 @@ import {
   LovelaceResource,
   LovelaceResourcesMutableParams,
   RemovedRepository,
+  HacsDispatchEvent,
 } from "./common";
 
 export const getConfiguration = async (hass: HomeAssistant) => {
@@ -188,4 +189,14 @@ export const deleteResource = (hass: HomeAssistant, id: string) =>
   hass.callWS({
     type: "lovelace/resources/delete",
     resource_id: id,
+  });
+
+export const websocketSubscription = (
+  hass: HomeAssistant,
+  onChange: (result: Record<any, any> | null) => void,
+  event: HacsDispatchEvent
+) =>
+  hass.connection.subscribeMessage(onChange, {
+    type: "hacs/subscribe",
+    signal: event,
   });

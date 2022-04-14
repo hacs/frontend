@@ -14,6 +14,7 @@ import {
   LocationChangedEvent,
   HacsDialogEvent,
   RemovedRepository,
+  HacsDispatchEvent,
 } from "./data/common";
 
 import {
@@ -23,6 +24,7 @@ import {
   getCritical,
   getLovelaceConfiguration,
   getRemovedRepositories,
+  websocketSubscription,
 } from "./data/websocket";
 
 import "./panels/hacs-entry-panel";
@@ -81,11 +83,11 @@ export class HacsResolver extends LitElement {
     };
 
     /* Backend event subscription */
-    this.hass.connection.subscribeEvents(async () => this._updateProperties(), "hacs/config");
-    this.hass.connection.subscribeEvents(async () => this._updateProperties(), "hacs/status");
-
-    this.hass.connection.subscribeEvents(async () => this._updateProperties(), "hacs/repository");
+    websocketSubscription(this.hass, () => this._updateProperties(), HacsDispatchEvent.CONFIG);
+    websocketSubscription(this.hass, () => this._updateProperties(), HacsDispatchEvent.STATUS);
+    websocketSubscription(this.hass, () => this._updateProperties(), HacsDispatchEvent.REPOSITORY);
     this.hass.connection.subscribeEvents(async () => this._updateProperties(), "lovelace_updated");
+
     await this._updateProperties();
   }
 

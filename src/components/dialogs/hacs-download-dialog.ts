@@ -8,7 +8,7 @@ import "../../../homeassistant-frontend/src/components/ha-circular-progress";
 import "../../../homeassistant-frontend/src/components/ha-form/ha-form";
 import { HaFormSchema } from "../../../homeassistant-frontend/src/components/ha-form/types";
 import { showConfirmationDialog } from "../../../homeassistant-frontend/src/dialogs/generic/show-dialog-box";
-import { Repository } from "../../data/common";
+import { HacsDispatchEvent, Repository } from "../../data/common";
 import {
   getRepositories,
   repositoryInstall,
@@ -16,6 +16,7 @@ import {
   repositorySetVersion,
   repositoryToggleBeta,
   repositoryUpdate,
+  websocketSubscription,
 } from "../../data/websocket";
 import { HacsStyles } from "../../styles/hacs-common-style";
 import { generateLovelaceURL } from "../../tools/added-to-lovelace";
@@ -86,7 +87,7 @@ export class HacsDonwloadDialog extends HacsDialogBase {
       this._repository = this._getRepository(repositories, this.repository!);
     }
     this._toggle = false;
-    this.hass.connection.subscribeEvents((msg) => (this._error = (msg as any).data), "hacs/error");
+    websocketSubscription(this.hass, (data) => (this._error = data), HacsDispatchEvent.ERROR);
     this._downloadRepositoryData.beta = this._repository!.beta;
     this._downloadRepositoryData.version =
       this._repository?.version_or_commit === "version" ? this._repository.releases[0] : "";

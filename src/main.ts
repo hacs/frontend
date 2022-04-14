@@ -1,12 +1,15 @@
-import { html, TemplateResult } from "lit";
+import { html, PropertyValues, TemplateResult } from "lit";
 import { customElement, property, query } from "lit/decorators";
 import { applyThemesOnElement } from "../homeassistant-frontend/src/common/dom/apply_themes_on_element";
+import { mainWindow } from "../homeassistant-frontend/src/common/dom/get_main_window";
+import { fireEvent } from "../homeassistant-frontend/src/common/dom/fire_event";
+import { isNavigationClick } from "../homeassistant-frontend/src/common/dom/is-navigation-click";
 import { navigate } from "../homeassistant-frontend/src/common/navigate";
 import { makeDialogManager } from "../homeassistant-frontend/src/dialogs/make-dialog-manager";
 import "../homeassistant-frontend/src/resources/ha-style";
 import { HomeAssistant, Route } from "../homeassistant-frontend/src/types";
 import "./components/dialogs/hacs-event-dialog";
-import { HacsDialogEvent, LocationChangedEvent } from "./data/common";
+import { HacsDialogEvent, HacsDispatchEvent, LocationChangedEvent } from "./data/common";
 import {
   getConfiguration,
   getCritical,
@@ -14,6 +17,7 @@ import {
   getRemovedRepositories,
   getRepositories,
   getStatus,
+  websocketSubscription,
 } from "./data/websocket";
 import { HacsElement } from "./hacs";
 import "./hacs-router";
@@ -34,6 +38,9 @@ class HacsFrontend extends HacsElement {
 
   protected firstUpdated(changedProps) {
     super.firstUpdated(changedProps);
+
+    this._applyTheme();
+
     this.hacs.language = this.hass.language;
     this.addEventListener("hacs-location-changed", (e) =>
       this._setRoute(e as LocationChangedEvent)
@@ -44,34 +51,72 @@ class HacsFrontend extends HacsElement {
       this._showDialogSecondary(e as HacsDialogEvent)
     );
 
-    this.hass.connection.subscribeEvents(
-      async () => this._updateProperties("configuration"),
-      "hacs/config"
+    websocketSubscription(
+      this.hass,
+      () => this._updateProperties("configuration"),
+      HacsDispatchEvent.CONFIG
     );
-    this.hass.connection.subscribeEvents(
-      async () => this._updateProperties("status"),
-      "hacs/status"
+
+    websocketSubscription(
+      this.hass,
+      () => this._updateProperties("status"),
+      HacsDispatchEvent.STATUS
     );
-    this.hass.connection.subscribeEvents(
-      async () => this._updateProperties("status"),
-      "hacs/stage"
+
+    websocketSubscription(
+      this.hass,
+      () => this._updateProperties("status"),
+      HacsDispatchEvent.STAGE
     );
-    this.hass.connection.subscribeEvents(
-      async () => this._updateProperties("repositories"),
-      "hacs/repository"
+
+    websocketSubscription(
+      this.hass,
+      () => this._updateProperties("repositories"),
+      HacsDispatchEvent.REPOSITORY
     );
+
     this.hass.connection.subscribeEvents(
       async () => this._updateProperties("lovelace"),
       "lovelace_updated"
     );
-
-    makeDialogManager(this, this.shadowRoot!);
     this._updateProperties();
     if (this.route.path === "") {
       navigate("/hacs/entry", { replace: true });
     }
 
-    this._applyTheme();
+    window.addEventListener("haptic", (ev) => {
+      // @ts-ignore
+      fireEvent(window.parent, ev.type, ev.detail, {
+        bubbles: false,
+      });
+    });
+
+    document.body.addEventListener("click", (ev) => {
+      const href = isNavigationClick(ev);
+      if (href) {
+        navigate(href);
+      }
+    });
+
+    mainWindow.addEventListener("location-changed", (ev) =>
+      // @ts-ignore
+      fireEvent(this, ev.type, ev.detail, {
+        bubbles: false,
+      })
+    );
+
+    makeDialogManager(this, this.shadowRoot!);
+  }
+
+  protected updated(changedProps: PropertyValues) {
+    super.updated(changedProps);
+    const oldHass = changedProps.get("hass") as HomeAssistant | undefined;
+    if (!oldHass) {
+      return;
+    }
+    if (oldHass.themes !== this.hass.themes) {
+      this._applyTheme();
+    }
   }
 
   private async _updateProperties(prop = "all") {

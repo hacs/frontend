@@ -9,8 +9,13 @@ import "../../../homeassistant-frontend/src/components/ha-form/ha-form";
 import type { HaFormSchema } from "../../../homeassistant-frontend/src/components/ha-form/types";
 import "../../../homeassistant-frontend/src/components/ha-settings-row";
 import "../../../homeassistant-frontend/src/components/ha-svg-icon";
-import { Repository } from "../../data/common";
-import { getRepositories, repositoryAdd, repositoryDelete } from "../../data/websocket";
+import { HacsDispatchEvent, Repository } from "../../data/common";
+import {
+  getRepositories,
+  repositoryAdd,
+  repositoryDelete,
+  websocketSubscription,
+} from "../../data/websocket";
 import { scrollBarStyle } from "../../styles/element-styles";
 import { HacsStyles } from "../../styles/hacs-common-style";
 import "./hacs-dialog";
@@ -121,7 +126,7 @@ export class HacsCustomRepositoriesDialog extends HacsDialogBase {
   }
 
   protected firstUpdated() {
-    this.hass.connection.subscribeEvents((msg) => (this._error = (msg as any).data), "hacs/error");
+    websocketSubscription(this.hass, (data) => (this._error = data), HacsDispatchEvent.ERROR);
     this._customRepositories = this.hacs.repositories?.filter((repo) => repo.custom);
   }
 
