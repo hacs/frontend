@@ -2,7 +2,7 @@ import memoizeOne from "memoize-one";
 import { Message, Repository } from "../data/common";
 import { Hacs } from "../data/hacs";
 
-export const getMessages = memoizeOne((hacs: Hacs): Message[] => {
+export const getMessages = memoizeOne((hacs: Hacs, loadedIntegrationMy: boolean): Message[] => {
   const messages: Message[] = [];
   const repositoriesNotAddedToLovelace: Repository[] = [];
   const repositoriesRestartPending: Repository[] = [];
@@ -68,7 +68,7 @@ export const getMessages = memoizeOne((hacs: Hacs): Message[] => {
   if (repositoriesRestartPending.length > 0) {
     messages.push({
       name: hacs.localize("entry.messages.restart.title"),
-      path: "/config/server_control",
+      path: loadedIntegrationMy ? "/_my_redirect/server_controls" : undefined,
       info: hacs.localize("entry.messages.restart.content", {
         number: repositoriesRestartPending.length,
         pluralWording:

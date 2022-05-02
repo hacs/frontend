@@ -39,7 +39,7 @@ export class HacsEntryPanel extends LitElement {
   protected render(): TemplateResult | void {
     const updates: Repository[] = [];
     const messages: Message[] = [];
-    const allMessages: Message[] = getMessages(this.hacs);
+    const allMessages: Message[] = getMessages(this.hacs, isComponentLoaded(this.hass, "my"));
 
     this.hacs.repositories.forEach((repo) => {
       if (repo.pending_upgrade) {
