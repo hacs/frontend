@@ -105,6 +105,19 @@ class HacsFrontend extends HacsElement {
       })
     );
 
+    document.body.addEventListener("keydown", (ev: KeyboardEvent) => {
+      if (ev.key || ev.ctrlKey || ev.shiftKey || ev.metaKey) {
+        // Ignore if modifier keys are pressed
+        return;
+      }
+      if (["c", "m", "e"].includes(ev.key)) {
+        // @ts-ignore
+        fireEvent(mainWindow, "hass-quick-bar-trigger", ev, {
+          bubbles: false,
+        });
+      }
+    });
+
     makeDialogManager(this, this.shadowRoot!);
   }
 
