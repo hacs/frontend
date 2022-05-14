@@ -105,6 +105,16 @@ class HacsFrontend extends HacsElement {
       })
     );
 
+    // Forward keydown events to the main window for quickbar access
+    document.body.addEventListener("keydown", (ev: KeyboardEvent) => {
+      if (["c", "m", "e"].includes(ev.key)) {
+        // @ts-ignore
+        fireEvent(mainWindow, "hass-quick-bar-trigger", ev, {
+          bubbles: false,
+        });
+      }
+    });
+
     makeDialogManager(this, this.shadowRoot!);
   }
 
