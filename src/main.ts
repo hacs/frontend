@@ -106,7 +106,7 @@ class HacsFrontend extends HacsElement {
     );
 
     document.body.addEventListener("keydown", (ev: KeyboardEvent) => {
-      if (ev.key || ev.ctrlKey || ev.shiftKey || ev.metaKey) {
+      if (ev.ctrlKey || ev.shiftKey || ev.metaKey || ev.altKey) {
         // Ignore if modifier keys are pressed
         return;
       }
