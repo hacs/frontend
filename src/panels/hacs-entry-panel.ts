@@ -107,7 +107,7 @@ export class HacsEntryPanel extends LitElement {
             ? ""
             : ""}
           ${this.hacs.updates?.length !== 0
-            ? html` <ha-card>
+            ? html` <ha-card outlined>
                 <div class="title">${this.hacs.localize("common.updates")}</div>
                 ${sortRepositoriesByName(this.hacs.updates).map(
                   (repository) =>
@@ -152,7 +152,7 @@ export class HacsEntryPanel extends LitElement {
               </ha-card>`
             : ""}
 
-          <ha-card>
+          <ha-card outlined>
             <ha-config-navigation
               .hass=${this.hass}
               .pages=${this.hacs.sections}
@@ -269,8 +269,7 @@ export class HacsEntryPanel extends LitElement {
           margin-bottom: 24px;
         }
         ha-config-section {
-          margin: auto;
-          margin-top: -32px;
+          margin: -16px auto auto;
           max-width: 600px;
           color: var(--secondary-text-color);
         }
