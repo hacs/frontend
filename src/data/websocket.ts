@@ -68,13 +68,18 @@ export const repositoryIgnore = async (hass: HomeAssistant, repository: string) 
   });
 };
 
-export const repositoryReleasenotes = async (hass: HomeAssistant, repository: string) => {
+export const repositoryReleasenotes = async (
+  hass: HomeAssistant,
+  repository: string,
+  currentVersion: string
+) => {
   const response = await hass.connection.sendMessagePromise<
     { name: string; body: string; tag: string }[]
   >({
     type: "hacs/repository",
     action: "release_notes",
     repository: repository,
+    data: { current_version: currentVersion },
   });
   return response;
 };
