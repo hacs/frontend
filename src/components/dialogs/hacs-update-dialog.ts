@@ -50,11 +50,11 @@ export class HacsUpdateDialog extends HacsDialogBase {
     if (!repository) {
       return;
     }
-
     if (repository.version_or_commit !== "commit") {
-      this._releaseNotes = await repositoryReleasenotes(this.hass, repository.id);
-      this._releaseNotes = this._releaseNotes.filter(
-        (release) => release.tag > repository.installed_version
+      this._releaseNotes = await repositoryReleasenotes(
+        this.hass,
+        repository.id,
+        repository.installed_version
       );
     }
     websocketSubscription(this.hass, (data) => (this._error = data), HacsDispatchEvent.ERROR);
