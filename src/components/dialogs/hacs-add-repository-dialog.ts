@@ -1,4 +1,4 @@
-import "../../../homeassistant-frontend/src/components/search-input";
+import "@material/mwc-list/mwc-list";
 import "@material/mwc-list/mwc-list-item";
 import "@material/mwc-select/mwc-select";
 import { mdiGithub } from "@mdi/js";
@@ -7,9 +7,11 @@ import { customElement, property } from "lit/decorators";
 import { classMap } from "lit/directives/class-map";
 import memoizeOne from "memoize-one";
 import { stopPropagation } from "../../../homeassistant-frontend/src/common/dom/stop_propagation";
+import "../../../homeassistant-frontend/src/components/ha-alert";
 import "../../../homeassistant-frontend/src/components/ha-chip";
-import "../../../homeassistant-frontend/src/components/ha-settings-row";
+import "../../../homeassistant-frontend/src/components/ha-clickable-list-item";
 import "../../../homeassistant-frontend/src/components/ha-svg-icon";
+import "../../../homeassistant-frontend/src/components/search-input";
 import { brandsUrl } from "../../../homeassistant-frontend/src/util/brands-url";
 import { Repository } from "../../data/common";
 import { activePanel } from "../../panels/hacs-sections";
@@ -141,49 +143,58 @@ export class HacsAddRepositoryDialog extends HacsDialogBase {
             </div>`
           : ""}
         <div class=${classMap({ content: true, narrow: this.narrow })} @scroll=${this._loadMore}>
-          <div class=${classMap({ list: true, narrow: this.narrow })}>
-            ${repositories
-              .sort((a, b) => {
-                if (this._sortBy === "name") {
-                  return a.name.toLocaleLowerCase() < b.name.toLocaleLowerCase() ? -1 : 1;
-                }
-                return a[this._sortBy] > b[this._sortBy] ? -1 : 1;
-              })
-              .slice(0, this._load)
-              .map(
-                (repo) => html` <ha-settings-row
-                  class=${classMap({ narrow: this.narrow })}
-                  @click=${() => this._openInformation(repo)}
-                >
-                  ${!this.narrow
-                    ? repo.category === "integration"
-                      ? html`
-                          <img
-                            slot="prefix"
-                            loading="lazy"
-                            .src=${brandsUrl({
-                              domain: repo.domain,
-                              darkOptimized: this.hass.themes.darkMode,
-                              type: "icon",
-                            })}
-                            referrerpolicy="no-referrer"
-                            @error=${this._onImageError}
-                            @load=${this._onImageLoad}
-                          />
-                        `
-                      : ""
-                    : ""}
-                  <span slot="heading"> ${repo.name} </span>
-                  <span slot="description">${repo.description}</span>
-                  ${repo.category !== "integration"
-                    ? html`<ha-chip>${this.hacs.localize(`common.${repo.category}`)}</ha-chip> `
-                    : ""}
-                </ha-settings-row>`
-              )}
+          <mwc-list>
             ${repositories.length === 0
-              ? html`<p>${this.hacs.localize("dialog_add_repo.no_match")}</p>`
-              : ""}
-          </div>
+              ? html`<ha-alert>${this.hacs.localize("dialog_add_repo.no_match")}</ha-alert>`
+              : repositories
+                  .sort((a, b) => {
+                    if (this._sortBy === "name") {
+                      return a.name.toLocaleLowerCase() < b.name.toLocaleLowerCase() ? -1 : 1;
+                    }
+                    return a[this._sortBy] > b[this._sortBy] ? -1 : 1;
+                  })
+                  .slice(0, this._load)
+                  .map(
+                    (repo) => html`<ha-clickable-list-item
+                      graphic=${this.narrow ? "" : "avatar"}
+                      twoline
+                      @click=${() => this._openInformation(repo)}
+                      disableHref
+                      .hasMeta=${!this.narrow && repo.category !== "integration"}
+                    >
+                      ${this.narrow
+                        ? ""
+                        : repo.category === "integration"
+                        ? html`
+                            <img
+                              loading="lazy"
+                              .src=${brandsUrl({
+                                domain: repo.domain,
+                                darkOptimized: this.hass.themes.darkMode,
+                                type: "icon",
+                              })}
+                              referrerpolicy="no-referrer"
+                              @error=${this._onImageError}
+                              @load=${this._onImageLoad}
+                              slot="graphic"
+                            />
+                          `
+                        : html`
+                            <ha-svg-icon
+                              slot="graphic"
+                              path="${mdiGithub}"
+                              style="padding-left: 0; height: 40px; width: 40px;"
+                            >
+                            </ha-svg-icon>
+                          `}
+                      <span>${repo.name}</span>
+                      <span slot="secondary">${repo.description}</span>
+                      <ha-chip slot="meta"
+                        >${this.hacs.localize(`common.${repo.category}`)}</ha-chip
+                      >
+                    </ha-clickable-list-item>`
+                  )}
+          </mwc-list>
         </div>
       </hacs-dialog>
     `;
@@ -224,7 +235,7 @@ export class HacsAddRepositoryDialog extends HacsDialogBase {
   private _onImageError(ev) {
     if (ev.target?.outerHTML) {
       try {
-        ev.target.outerHTML = `<ha-svg-icon path="${mdiGithub}" slot="prefix"></ha-svg-icon>`;
+        ev.target.outerHTML = `<ha-svg-icon path="${mdiGithub}" slot="graphic"></ha-svg-icon>`;
       } catch (_) {
         // pass
       }
@@ -254,10 +265,6 @@ export class HacsAddRepositoryDialog extends HacsDialogBase {
           width: 1024px;
           max-width: 100%;
         }
-        ha-svg-icon {
-          --mdc-icon-size: 36px;
-          margin-right: 6px;
-        }
         search-input {
           display: block;
           float: left;
@@ -268,15 +275,6 @@ export class HacsAddRepositoryDialog extends HacsDialogBase {
           width: 100%;
           margin: 4px 0;
         }
-        img {
-          align-items: center;
-          display: block;
-          justify-content: center;
-          margin-right: 6px;
-          margin-bottom: 16px;
-          max-height: 36px;
-          max-width: 36px;
-        }
 
         .filters {
           width: 100%;
@@ -286,11 +284,6 @@ export class HacsAddRepositoryDialog extends HacsDialogBase {
         hacs-filter {
           width: 100%;
           margin-left: -32px;
-        }
-
-        ha-settings-row {
-          padding: 0px 16px 0 0;
-          cursor: pointer;
         }
 
         .searchandfilter {
