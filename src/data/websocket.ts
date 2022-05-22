@@ -71,7 +71,7 @@ export const repositoryIgnore = async (hass: HomeAssistant, repository: string) 
 export const repositoryReleasenotes = async (
   hass: HomeAssistant,
   repository: string,
-  currentVersion?: string
+  currentVersion: string
 ) => {
   const response = await hass.connection.sendMessagePromise<
     { name: string; body: string; tag: string }[]
