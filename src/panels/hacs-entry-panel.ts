@@ -1,4 +1,5 @@
 import "@material/mwc-button/mwc-button";
+import "@material/mwc-list/mwc-list";
 import { mdiAlertCircle, mdiGithub, mdiHomeAssistant, mdiInformation } from "@mdi/js";
 import "@polymer/app-layout/app-header/app-header";
 import "@polymer/app-layout/app-toolbar/app-toolbar";
@@ -9,10 +10,11 @@ import { navigate } from "../../homeassistant-frontend/src/common/navigate";
 import { computeRTL } from "../../homeassistant-frontend/src/common/util/compute_rtl";
 import "../../homeassistant-frontend/src/components/ha-alert";
 import "../../homeassistant-frontend/src/components/ha-card";
+import "../../homeassistant-frontend/src/components/ha-clickable-list-item";
+import "../../homeassistant-frontend/src/components/ha-icon-next";
 import "../../homeassistant-frontend/src/components/ha-menu-button";
 import "../../homeassistant-frontend/src/components/ha-svg-icon";
 import "../../homeassistant-frontend/src/layouts/ha-app-layout";
-import "../../homeassistant-frontend/src/panels/config/dashboard/ha-config-navigation";
 import "../../homeassistant-frontend/src/panels/config/ha-config-section";
 import { haStyle } from "../../homeassistant-frontend/src/resources/styles";
 import { HomeAssistant, Route } from "../../homeassistant-frontend/src/types";
@@ -109,89 +111,115 @@ export class HacsEntryPanel extends LitElement {
           ${this.hacs.updates?.length !== 0
             ? html` <ha-card outlined>
                 <div class="title">${this.hacs.localize("common.updates")}</div>
-                ${sortRepositoriesByName(this.hacs.updates).map(
-                  (repository) =>
-                    html`
-                      <div class="list-item" @click=${() => this._openUpdateDialog(repository)}>
-                        <div class="list-item-icon">
-                          ${repository.category === "integration"
-                            ? html`
-                                <img
-                                  loading="lazy"
-                                  .src=${brandsUrl({
-                                    domain: repository.domain,
-                                    darkOptimized: this.hass.themes.darkMode,
-                                    type: "icon",
-                                  })}
-                                  referrerpolicy="no-referrer"
-                                  @error=${this._onImageError}
-                                  @load=${this._onImageLoad}
-                                />
-                              `
-                            : html`
-                                <ha-svg-icon
-                                  path="${mdiGithub}"
-                                  style="padding-left: 0; height: 40px; width: 40px;"
-                                >
-                                </ha-svg-icon>
-                              `}
-                        </div>
-                        <div class="list-item-content">
-                          <div class="list-item-header">${repository.name}</div>
-                          <div class="list-item-description">
-                            ${this.hacs.localize("sections.pending_repository_upgrade", {
-                              downloaded: repository.installed_version,
-                              available: repository.available_version,
-                            })}
-                          </div>
-                        </div>
-                        ${!this.narrow ? html`<ha-icon-next></ha-icon-next>` : ""}
-                      </div>
+                <mwc-list>
+                  ${sortRepositoriesByName(this.hacs.updates).map(
+                    (repository) => html`
+                      <ha-clickable-list-item
+                        graphic="avatar"
+                        disableHref
+                        twoline
+                        @click=${() => this._openUpdateDialog(repository)}
+                      >
+                        ${repository.category === "integration"
+                          ? html`
+                              <img
+                                loading="lazy"
+                                .src=${brandsUrl({
+                                  domain: repository.domain,
+                                  darkOptimized: this.hass.themes.darkMode,
+                                  type: "icon",
+                                })}
+                                referrerpolicy="no-referrer"
+                                @error=${this._onImageError}
+                                @load=${this._onImageLoad}
+                                slot="graphic"
+                              />
+                            `
+                          : html`
+                              <ha-svg-icon
+                                slot="graphic"
+                                path="${mdiGithub}"
+                                style="padding-left: 0; height: 40px; width: 40px;"
+                              >
+                              </ha-svg-icon>
+                            `}
+                        <span>${repository.name}</span>
+                        <span slot="secondary"
+                          >${this.hacs.localize("sections.pending_repository_upgrade", {
+                            downloaded: repository.installed_version,
+                            available: repository.available_version,
+                          })}</span
+                        >
+                      </ha-clickable-list-item>
                     `
-                )}
+                  )}
+                </mwc-list>
               </ha-card>`
             : ""}
 
           <ha-card outlined>
-            <ha-config-navigation
-              .hass=${this.hass}
-              .pages=${this.hacs.sections}
-              .narrow=${this.narrow}
-            >
-            </ha-config-navigation>
-
-            ${isComponentLoaded(this.hass, "hassio")
-              ? html`
-                  <div class="list-item" @click=${this._openSupervisorDialog}>
-                    <div class="list-item-icon">
-                      <div class="icon-background" style="background-color: rgb(64, 132, 205)">
+            <mwc-list>
+              ${this.hacs.sections.map(
+                (page) => html`
+                  <ha-clickable-list-item
+                    graphic="avatar"
+                    twoline
+                    .hasMeta=${!this.narrow}
+                    href=${page.path}
+                  >
+                    <div
+                      slot="graphic"
+                      class=${page.iconColor ? "icon-background" : ""}
+                      .style="background-color: ${page.iconColor || "undefined"}"
+                    >
+                      <ha-svg-icon .path=${page.iconPath}></ha-svg-icon>
+                    </div>
+                    <span>${page.name}</span>
+                    <span slot="secondary">${page.description}</span>
+                    ${!this.narrow ? html`<ha-icon-next slot="meta"></ha-icon-next>` : ""}
+                  </ha-clickable-list-item>
+                `
+              )}
+              ${isComponentLoaded(this.hass, "hassio")
+                ? html`
+                    <ha-clickable-list-item
+                      graphic="avatar"
+                      disableHref
+                      twoline
+                      @click=${this._openSupervisorDialog}
+                      .hasMeta=${!this.narrow}
+                    >
+                      <div
+                        class="icon-background"
+                        slot="graphic"
+                        style="background-color: rgb(64, 132, 205)"
+                      >
                         <ha-svg-icon .path=${mdiHomeAssistant}></ha-svg-icon>
                       </div>
-                    </div>
-                    <div class="list-item-content">
-                      <div class="list-item-header">
-                        ${this.hacs.localize(`sections.addon.title`)}
-                      </div>
-                      <div class="list-item-description">
-                        ${this.hacs.localize(`sections.addon.description`)}
-                      </div>
-                    </div>
-                  </div>
-                `
-              : ""}
-            <div class="list-item" @click=${this._openAboutDialog}>
-              <div class="list-item-icon">
-                <div class="icon-background" style="background-color: rgb(74, 89, 99)">
+                      <span>${this.hacs.localize(`sections.addon.title`)}</span>
+                      <span slot="secondary"
+                        >${this.hacs.localize(`sections.addon.description`)}</span
+                      >
+                    </ha-clickable-list-item>
+                  `
+                : ""}
+              <ha-clickable-list-item
+                graphic="avatar"
+                twoline
+                @click=${this._openAboutDialog}
+                disableHref
+              >
+                <div
+                  class="icon-background"
+                  slot="graphic"
+                  style="background-color: rgb(74, 89, 99)"
+                >
                   <ha-svg-icon .path=${mdiInformation}></ha-svg-icon>
                 </div>
-              </div>
-              <div class="list-item-content">
-                <div class="list-item-header">${this.hacs.localize(`sections.about.title`)}</div>
-                <div class="list-item-description">
-                  ${this.hacs.localize(`sections.about.description`)}
-                </div>
-              </div>
-            </div>
+                <span>${this.hacs.localize(`sections.about.title`)}</span>
+                <span slot="secondary">${this.hacs.localize(`sections.about.description`)}</span>
+              </ha-clickable-list-item>
+            </mwc-list>
           </ha-card>
         </ha-config-section>
       </ha-app-layout>
@@ -265,13 +293,19 @@ export class HacsEntryPanel extends LitElement {
       haStyle,
       HacsStyles,
       css`
+        :host {
+          --mdc-list-vertical-padding: 0;
+        }
+        ha-card:last-child {
+          margin-bottom: env(safe-area-inset-bottom);
+        }
         :host(:not([narrow])) ha-card:last-child {
-          margin-bottom: 24px;
+          margin-bottom: max(24px, env(safe-area-inset-bottom));
         }
         ha-config-section {
-          margin: -16px auto auto;
+          margin: auto;
+          margin-top: -32px;
           max-width: 600px;
-          color: var(--secondary-text-color);
         }
         ha-card {
           overflow: hidden;
@@ -280,18 +314,37 @@ export class HacsEntryPanel extends LitElement {
           text-decoration: none;
           color: var(--primary-text-color);
         }
+        a.button {
+          display: block;
+          color: var(--primary-color);
+          padding: 16px;
+        }
         .title {
           font-size: 16px;
           padding: 16px;
           padding-bottom: 0;
         }
-        :host([narrow]) ha-card {
-          border-radius: 0;
-          box-shadow: unset;
+
+        @media all and (max-width: 600px) {
+          ha-card {
+            border-width: 1px 0;
+            border-radius: 0;
+            box-shadow: unset;
+          }
+          ha-config-section {
+            margin-top: -42px;
+          }
         }
 
-        :host([narrow]) ha-config-section {
-          margin-top: -42px;
+        ha-svg-icon,
+        ha-icon-next {
+          color: var(--secondary-text-color);
+          height: 24px;
+          width: 24px;
+          display: block;
+        }
+        ha-svg-icon {
+          padding: 8px;
         }
         .icon-background {
           border-radius: 50%;
@@ -299,50 +352,10 @@ export class HacsEntryPanel extends LitElement {
         .icon-background ha-svg-icon {
           color: #fff;
         }
-        .title {
-          font-size: 16px;
-          padding: 16px;
-          padding-bottom: 0;
-        }
-        ha-svg-icon,
-        ha-icon-next {
-          color: var(--secondary-text-color);
-          height: 24px;
-          width: 24px;
-        }
-        ha-svg-icon {
-          padding: 8px;
-        }
-
-        .list-item-icon > * {
-          height: 40px;
-          width: 40px;
-          padding: 0;
-        }
-        img {
-          border-radius: 50%;
-        }
-        .list-item {
-          width: 100%;
+        ha-clickable-list-item {
           cursor: pointer;
-          display: flex;
-          padding: 16px;
-        }
-        .list-item-icon {
-          margin-right: 16px;
-        }
-        .list-item-header {
           font-size: 16px;
-        }
-        .list-item-description {
-          color: var(--secondary-text-color);
-          margin-right: 16px;
-        }
-        .list-item ha-icon-next,
-        .list-item ha-svg-icon[right] {
-          right: 0;
-          padding: 16px;
-          position: absolute;
+          padding: 0;
         }
       `,
     ];
