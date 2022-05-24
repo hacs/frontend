@@ -68,7 +68,7 @@ export const getMessages = memoizeOne((hacs: Hacs, loadedIntegrationMy: boolean)
   if (repositoriesRestartPending.length > 0) {
     messages.push({
       name: hacs.localize("entry.messages.restart.title"),
-      path: loadedIntegrationMy ? "/_my_redirect/server_controls" : undefined,
+      path: loadedIntegrationMy ? "/_my_redirect/system_dashboard" : undefined,
       info: hacs.localize("entry.messages.restart.content", {
         number: repositoriesRestartPending.length,
         pluralWording:
