@@ -168,10 +168,6 @@ export class HacsRepositoryDialog extends HacsDialogBase {
           padding-bottom: 8px;
           gap: 4px;
         }
-
-        hacs-link mwc-button {
-          margin-top: -18px;
-        }
       `,
     ];
   }
