@@ -99,7 +99,7 @@ export class HacsRepositoryCard extends LitElement {
   protected render(): TemplateResult | void {
     const path = this.repository.local_path.split("/");
     return html`
-      <ha-card class=${classMap(this._borderClass)} ?narrow=${this.narrow}>
+      <ha-card class=${classMap(this._borderClass)} ?narrow=${this.narrow} outlined>
         <div class="card-content">
           <div class="group-header">
             <div class="status-header ${classMap(this._headerClass)}">${this._headerTitle}</div>
@@ -317,10 +317,6 @@ export class HacsRepositoryCard extends LitElement {
           flex-direction: column;
           height: 100%;
           width: 480px;
-          border-style: solid;
-          border-width: min(var(--ha-card-border-width, 1px), 10px);
-          border-color: transparent;
-          border-radius: var(--ha-card-border-radius, 4px);
         }
 
         .title {
