@@ -233,27 +233,14 @@ class HacsFrontend extends HacsElement {
   }
 
   private _applyTheme() {
-    let options: Partial<HomeAssistant["selectedTheme"]> | undefined;
-
-    const themeName =
-      this.hass.selectedTheme?.theme ||
-      (this.hass.themes.darkMode && this.hass.themes.default_dark_theme
-        ? this.hass.themes.default_dark_theme!
-        : this.hass.themes.default_theme);
-
-    options = this.hass.selectedTheme;
-    if (themeName === "default" && options?.dark === undefined) {
-      options = {
-        ...this.hass.selectedTheme,
-      };
-    }
-
-    if (this.parentElement) {
-      applyThemesOnElement(this.parentElement, this.hass.themes, themeName, {
-        ...options,
-        dark: this.hass.themes.darkMode,
-      });
-      this.parentElement.style.backgroundColor = "var(--primary-background-color)";
-    }
+    applyThemesOnElement(
+      this.parentElement,
+      this.hass.themes,
+      (this.hass.selectedTheme as unknown as string) || this.hass.themes.default_theme,
+      undefined,
+      true
+    );
+    this.parentElement!.style.backgroundColor = "var(--primary-background-color)";
+    this.parentElement!.style.color = "var(--primary-text-color)";
   }
 }
