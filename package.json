@@ -109,7 +109,6 @@
     "workbox-build": "^6.4.2",
     "patch-package": "^6.2.0",
     "dompurify": "^2.2.6",
-    "highlight.js": "^11.5.1",
     "rollup-plugin-entrypoint-hashmanifest": "^0.1.2"
   },
   "dependencies": {
@@ -234,7 +233,8 @@
     "workbox-routing": "^6.4.2",
     "workbox-strategies": "^6.4.2",
     "xss": "^1.0.9",
-    "node-emoji": "1.10.0"
+    "node-emoji": "1.10.0",
+    "highlight.js": "^11.5.1"
   },
   "resolutions": {
     "@polymer/polymer": "3.4.1",
