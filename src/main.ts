@@ -118,6 +118,10 @@ class HacsFrontend extends HacsElement {
       }
     });
 
+    mainWindow
+      .matchMedia("(prefers-color-scheme: dark)")
+      .addEventListener("change", (_) => this._applyTheme());
+
     makeDialogManager(this, this.shadowRoot!);
   }
 
@@ -236,9 +240,14 @@ class HacsFrontend extends HacsElement {
     applyThemesOnElement(
       this.parentElement,
       this.hass.themes,
-      (this.hass.selectedTheme as unknown as string) || this.hass.themes.default_theme,
-      undefined,
-      true
+      this.hass.selectedTheme?.theme ||
+        (this.hass.themes.darkMode && this.hass.themes.default_dark_theme
+          ? this.hass.themes.default_dark_theme!
+          : this.hass.themes.default_theme),
+      {
+        ...this.hass.selectedTheme,
+        dark: this.hass.themes.darkMode,
+      }
     );
     this.parentElement!.style.backgroundColor = "var(--primary-background-color)";
     this.parentElement!.style.color = "var(--primary-text-color)";
