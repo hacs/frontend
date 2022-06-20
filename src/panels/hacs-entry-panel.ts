@@ -180,7 +180,7 @@ export class HacsEntryPanel extends LitElement {
                   </ha-clickable-list-item>
                 `
               )}
-              ${isComponentLoaded(this.hass, "hassio")
+              ${isComponentLoaded(this.hass, "my") && isComponentLoaded(this.hass, "hassio")
                 ? html`
                     <ha-clickable-list-item
                       graphic="avatar"
@@ -280,7 +280,7 @@ export class HacsEntryPanel extends LitElement {
       new CustomEvent("hacs-dialog", {
         detail: {
           type: "navigate",
-          path: "/hassio",
+          path: "/_my_redirect/supervisor",
         },
         bubbles: true,
         composed: true,
