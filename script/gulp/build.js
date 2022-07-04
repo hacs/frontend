@@ -8,6 +8,7 @@ gulp.task(
       process.env.NODE_ENV = "production";
     },
     "common",
+    "gen-dummy-icons-json",
     "rollup-build",
     "compress"
   )

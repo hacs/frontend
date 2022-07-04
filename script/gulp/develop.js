@@ -8,6 +8,7 @@ gulp.task(
       process.env.NODE_ENV = "development";
     },
     "common",
+    "gen-dummy-icons-json",
     "rollup-develop"
   )
 );
