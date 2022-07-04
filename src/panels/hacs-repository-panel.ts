@@ -215,17 +215,10 @@ export class HacsRepositoryPanel extends LitElement {
               </ha-chip>
             </hacs-link>
           </div>
-
-          ${this._repository.updated_info
-            ? markdown.html(
-                this._repository.additional_info || this.hacs.localize("dialog_info.no_info"),
-                this._repository
-              )
-            : html`
-                <div class="loading">
-                  <ha-circular-progress active size="large"></ha-circular-progress>
-                </div>
-              `}
+          ${markdown.html(
+            this._repository.additional_info || this.hacs.localize("dialog_info.no_info"),
+            this._repository
+          )}
         </div>
       </hass-subpage>
     `;
@@ -237,6 +230,7 @@ export class HacsRepositoryPanel extends LitElement {
       css`
         hass-subpage {
           position: absolute;
+          width: 100vw;
         }
 
         .content {
