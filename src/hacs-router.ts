@@ -69,6 +69,10 @@ class HacsRouter extends HassRouterPage {
         tag: "hacs-store-panel",
         load: () => import("./panels/hacs-store-panel"),
       },
+      repository: {
+        tag: "hacs-repository-panel",
+        load: () => import("./panels/hacs-repository-panel"),
+      },
     },
   };
 

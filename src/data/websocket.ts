@@ -205,3 +205,13 @@ export const websocketSubscription = (
     type: "hacs/subscribe",
     signal: event,
   });
+
+export const fetchRepositoryInformation = async (
+  hass: HomeAssistant,
+  repositoryId: string
+): Promise<Repository | undefined> => {
+  const response = await hass.connection.sendMessagePromise<Repository[]>({
+    type: "hacs/repositories",
+  });
+  return response.find((repository) => repository.id === repositoryId);
+};
