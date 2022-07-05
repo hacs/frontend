@@ -10,7 +10,6 @@ const DIALOG = {
   navigate: () => import("./hacs-navigate-dialog"),
   removed: () => import("./hacs-removed-dialog"),
   update: () => import("./hacs-update-dialog"),
-  "repository-info": () => import("./hacs-repository-info-dialog"),
   progress: () => import("./hacs-progress-dialog"),
 };
 

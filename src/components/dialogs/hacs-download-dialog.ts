@@ -8,7 +8,8 @@ import "../../../homeassistant-frontend/src/components/ha-circular-progress";
 import "../../../homeassistant-frontend/src/components/ha-form/ha-form";
 import { HaFormSchema } from "../../../homeassistant-frontend/src/components/ha-form/types";
 import { showConfirmationDialog } from "../../../homeassistant-frontend/src/dialogs/generic/show-dialog-box";
-import { HacsDispatchEvent, Repository } from "../../data/common";
+import { HacsDispatchEvent } from "../../data/common";
+import { RepositoryBase, RepositoryInfo } from "../../data/repository";
 import {
   getRepositories,
   repositoryInstall,
@@ -35,7 +36,7 @@ export class HacsDonwloadDialog extends HacsDialogBase {
 
   @state() private _error?: any;
 
-  @state() public _repository?: Repository;
+  @state() public _repository?: RepositoryInfo;
 
   @state() private _downloadRepositoryData = { beta: false, version: "" };
 
@@ -60,11 +61,11 @@ export class HacsDonwloadDialog extends HacsDialogBase {
     );
   }
 
-  private _getRepository = memoizeOne((repositories: Repository[], repository: string) =>
+  private _getRepository = memoizeOne((repositories: RepositoryBase[], repository: string) =>
     repositories?.find((repo) => repo.id === repository)
   );
 
-  private _getInstallPath = memoizeOne((repository: Repository) => {
+  private _getInstallPath = memoizeOne((repository: RepositoryBase) => {
     let path: string = repository.local_path;
     if (repository.category === "theme") {
       path = `${path}/${repository.file_name}`;
@@ -145,7 +146,7 @@ export class HacsDonwloadDialog extends HacsDialogBase {
                 </ha-form>
               `
             : ""}
-          ${!this._repository.can_install
+          ${!this._repository.can_download
             ? html`<ha-alert alert-type="error" .rtl=${computeRTL(this.hass)}>
                 ${this.hacs.localize("confirm.home_assistant_version_not_correct", {
                   haversion: this.hass.config.version,
@@ -157,7 +158,7 @@ export class HacsDonwloadDialog extends HacsDialogBase {
             ${this.hacs.localize("dialog_download.note_downloaded", {
               location: html`<code>'${installPath}'</code>`,
             })}
-            ${this._repository.category === "plugin" && this.hacs.status.lovelace_mode !== "storage"
+            ${this._repository.category === "plugin" && this.hacs.info.lovelace_mode !== "storage"
               ? html`
                   <p>${this.hacs.localize(`dialog_download.lovelace_instruction`)}</p>
                   <pre>
@@ -180,7 +181,7 @@ export class HacsDonwloadDialog extends HacsDialogBase {
         <mwc-button
           raised
           slot="primaryaction"
-          ?disabled=${!this._repository.can_install ||
+          ?disabled=${!this._repository.can_download ||
           this._toggle ||
           this._repository.version_or_commit === "version"
             ? !this._downloadRepositoryData.version
@@ -238,13 +239,13 @@ export class HacsDonwloadDialog extends HacsDialogBase {
       this._repository.default_branch;
 
     if (this._repository?.version_or_commit !== "commit") {
-      await repositoryInstallVersion(this.hass, this._repository.id, selectedVersion);
+      await repositoryInstallVersion(this.hass, String(this._repository.id), selectedVersion);
     } else {
-      await repositoryInstall(this.hass, this._repository.id);
+      await repositoryInstall(this.hass, String(this._repository.id));
     }
     this.hacs.log.debug(this._repository.category, "_installRepository");
-    this.hacs.log.debug(this.hacs.status.lovelace_mode, "_installRepository");
-    if (this._repository.category === "plugin" && this.hacs.status.lovelace_mode === "storage") {
+    this.hacs.log.debug(this.hacs.info.lovelace_mode, "_installRepository");
+    if (this._repository.category === "plugin" && this.hacs.info.lovelace_mode === "storage") {
       await updateLovelaceResources(this.hass, this._repository, selectedVersion);
     }
     this._installing = false;

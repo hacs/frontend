@@ -20,7 +20,6 @@ import { HomeAssistant, Route } from "../../homeassistant-frontend/src/types";
 import { showDialogAbout } from "../components/dialogs/hacs-about-dialog";
 import "../components/hacs-filter";
 import "../components/hacs-repository-card";
-import { Repository } from "../data/common";
 import { Hacs } from "../data/hacs";
 import { settingsClearAllNewRepositories } from "../data/websocket";
 import { scrollBarStyle } from "../styles/element-styles";
@@ -28,6 +27,7 @@ import { HacsStyles } from "../styles/hacs-common-style";
 import { filterRepositoriesByInput } from "../tools/filter-repositories-by-input";
 import { activePanel } from "./hacs-sections";
 import { mainWindow } from "../../homeassistant-frontend/src/common/dom/get_main_window";
+import { RepositoryBase } from "../data/repository";
 
 @customElement("hacs-store-panel")
 export class HacsStorePanel extends LitElement {
@@ -50,14 +50,14 @@ export class HacsStorePanel extends LitElement {
   @property() public section!: string;
 
   private _repositoriesInActiveSection = memoizeOne(
-    (repositories: Repository[], section: string) => {
-      const installedRepositories: Repository[] = repositories?.filter(
+    (repositories: RepositoryBase[], section: string) => {
+      const installedRepositories: RepositoryBase[] = repositories?.filter(
         (repo) =>
           this.hacs.sections
             ?.find((panel) => panel.id === section)
             ?.categories?.includes(repo.category) && repo.installed
       );
-      const newRepositories: Repository[] = repositories?.filter(
+      const newRepositories: RepositoryBase[] = repositories?.filter(
         (repo) =>
           this.hacs.sections
             ?.find((panel) => panel.id === section)
@@ -69,7 +69,7 @@ export class HacsStorePanel extends LitElement {
     }
   );
 
-  private get allRepositories(): Repository[] {
+  private get allRepositories(): RepositoryBase[] {
     const [installedRepositories, newRepositories] = this._repositoriesInActiveSection(
       this.hacs.repositories,
       this.section
@@ -80,7 +80,7 @@ export class HacsStorePanel extends LitElement {
 
   private _filterRepositories = memoizeOne(filterRepositoriesByInput);
 
-  private get visibleRepositories(): Repository[] {
+  private get visibleRepositories(): RepositoryBase[] {
     const repositories = this.allRepositories.filter(
       (repo) => this.filters[this.section]?.find((filter) => filter.id === repo.category)?.checked
     );
@@ -108,11 +108,11 @@ export class HacsStorePanel extends LitElement {
       this.section
     )[1];
 
-    if (!this.filters[this.section] && this.hacs.configuration.categories) {
+    if (!this.filters[this.section] && this.hacs.info.categories) {
       const categories = activePanel(this.hacs.language, this.route)?.categories;
       this.filters[this.section] = [];
       categories
-        ?.filter((c) => this.hacs.configuration?.categories.includes(c))
+        ?.filter((c) => this.hacs.info?.categories.includes(c))
         .forEach((category) => {
           this.filters[this.section].push({
             id: category,
@@ -154,7 +154,7 @@ export class HacsStorePanel extends LitElement {
           {
             path: mdiGit,
             label: this.hacs.localize("menu.custom_repositories"),
-            disabled: this.hacs.status.disabled || this.hacs.status.background_task,
+            disabled: this.hacs.info.disabled_reason,
             action: () =>
               this.dispatchEvent(
                 new CustomEvent("hacs-dialog", {

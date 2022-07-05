@@ -3,8 +3,8 @@ import { mdiPuzzle, mdiPalette, mdiRobot } from "@mdi/js";
 
 import { Route } from "../../homeassistant-frontend/src/types";
 
-import { Configuration } from "../data/common";
 import { localize } from "../localize/localize";
+import { HacsInfo } from "../data/hacs";
 
 export const sections = (language: string) => ({
   updates: [],
@@ -45,12 +45,12 @@ export const sections = (language: string) => ({
   },
 });
 
-export const sectionsEnabled = memoizeOne((language: string, config: Configuration) =>
+export const sectionsEnabled = memoizeOne((language: string, info: HacsInfo) =>
   sections(language).subsections.main.filter((section) => {
     const categories = section.categories;
     return (
-      categories?.filter((category) => config.dev || config?.categories?.includes(category))
-        .length !== 0
+      categories?.filter((category) => info.dev || info?.categories?.includes(category)).length !==
+      0
     );
   })
 );

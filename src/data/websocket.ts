@@ -1,39 +1,27 @@
 import { HomeAssistant } from "../../homeassistant-frontend/src/types";
+import { HacsInfo } from "./hacs";
 import {
-  Configuration,
-  Repository,
   Critical,
-  Status,
   LovelaceResource,
   LovelaceResourcesMutableParams,
   RemovedRepository,
   HacsDispatchEvent,
 } from "./common";
+import { RepositoryBase } from "./repository";
 
-export const getConfiguration = async (hass: HomeAssistant) => {
-  const response = await hass.connection.sendMessagePromise<Configuration>({
-    type: "hacs/config",
+export const fetchHacsInfo = async (hass: HomeAssistant) =>
+  hass.connection.sendMessagePromise<HacsInfo>({
+    type: "hacs/info",
   });
-  return response;
-};
 
-export const getRepositories = async (hass: HomeAssistant) => {
-  const response = await hass.connection.sendMessagePromise<Repository[]>({
+export const getRepositories = async (hass: HomeAssistant) =>
+  hass.connection.sendMessagePromise<RepositoryBase[]>({
     type: "hacs/repositories",
   });
-  return response;
-};
 
 export const getCritical = async (hass: HomeAssistant) => {
   const response = await hass.connection.sendMessagePromise<Critical[]>({
     type: "hacs/get_critical",
-  });
-  return response;
-};
-
-export const getStatus = async (hass: HomeAssistant) => {
-  const response = await hass.connection.sendMessagePromise<Status>({
-    type: "hacs/status",
   });
   return response;
 };
@@ -54,7 +42,7 @@ export const repositoryInstall = async (hass: HomeAssistant, repository: string)
 };
 
 export const repositoryUninstall = async (hass: HomeAssistant, repository: string) => {
-  return await hass.connection.sendMessagePromise<void>({
+  await hass.connection.sendMessagePromise<void>({
     type: "hacs/repository",
     action: "uninstall",
     repository: repository,

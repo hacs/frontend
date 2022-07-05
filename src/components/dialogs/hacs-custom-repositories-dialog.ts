@@ -9,7 +9,8 @@ import "../../../homeassistant-frontend/src/components/ha-form/ha-form";
 import type { HaFormSchema } from "../../../homeassistant-frontend/src/components/ha-form/types";
 import "../../../homeassistant-frontend/src/components/ha-settings-row";
 import "../../../homeassistant-frontend/src/components/ha-svg-icon";
-import { HacsDispatchEvent, Repository } from "../../data/common";
+import { HacsDispatchEvent } from "../../data/common";
+import { RepositoryBase } from "../../data/repository";
 import {
   getRepositories,
   repositoryAdd,
@@ -29,7 +30,7 @@ export class HacsCustomRepositoriesDialog extends HacsDialogBase {
 
   @state() private _addRepositoryData = { category: undefined, repository: undefined };
 
-  @state() private _customRepositories?: Repository[];
+  @state() private _customRepositories?: RepositoryBase[];
 
   shouldUpdate(changedProperties: PropertyValues) {
     return (
@@ -54,7 +55,7 @@ export class HacsCustomRepositoriesDialog extends HacsDialogBase {
         selector: {
           select: {
             mode: "dropdown",
-            options: this.hacs.configuration.categories.map((category) => ({
+            options: this.hacs.info.categories.map((category) => ({
               value: category,
               label: this.hacs.localize(`common.${category}`),
             })),
@@ -79,7 +80,7 @@ export class HacsCustomRepositoriesDialog extends HacsDialogBase {
                 </ha-alert>`
               : ""}
             ${this._customRepositories
-              ?.filter((repo) => this.hacs.configuration.categories.includes(repo.category))
+              ?.filter((repo) => this.hacs.info.categories.includes(repo.category))
               .map(
                 (repo) => html`<ha-settings-row
                   @click=${() => this._showReopsitoryInfo(String(repo.id))}
@@ -87,15 +88,16 @@ export class HacsCustomRepositoriesDialog extends HacsDialogBase {
                   <span slot="heading">${repo.name}</span>
                   <span slot="description">${repo.full_name} (${repo.category})</span>
 
-                  <mwc-icon-button
-                    @click=${(ev) => {
-                      ev.stopPropagation();
-                      this._removeRepository(repo.id);
-                    }}
-                  >
-                    <ha-svg-icon class="delete" .path=${mdiDelete}></ha-svg-icon>
-                  </mwc-icon-button>
-                </ha-settings-row>`
+                    <mwc-icon-button
+                      @click=${(ev) => {
+                        ev.stopPropagation();
+                        this._removeRepository(String(repo.id));
+                      }}
+                    >
+                      <ha-svg-icon class="delete" .path=${mdiDelete}></ha-svg-icon>
+                    </mwc-icon-button>
+                  </ha-settings-row>
+                </a>`
               )}
           </div>
           <ha-form

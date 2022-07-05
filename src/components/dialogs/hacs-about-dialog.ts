@@ -9,7 +9,7 @@ export const showDialogAbout = async (element: any, hacs: Hacs) =>
     title: "Home Assistant Community Store",
     confirmText: hacs.localize("common.close"),
     text: markdown.html(`
-  **${hacs.localize("dialog_about.integration_version")}:** | ${hacs.configuration.version}
+  **${hacs.localize("dialog_about.integration_version")}:** | ${hacs.info.version}
   --|--
   **${hacs.localize("dialog_about.frontend_version")}:** | ${version}
   **${hacs.localize("common.repositories")}:** | ${hacs.repositories.length}

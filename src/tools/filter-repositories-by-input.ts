@@ -1,8 +1,8 @@
 import memoizeOne from "memoize-one";
-import { Repository } from "../data/common";
+import { RepositoryBase } from "../data/repository";
 
 export const filterRepositoriesByInput = memoizeOne(
-  (repositories: Repository[], filter: string): Repository[] =>
+  (repositories: RepositoryBase[], filter: string): RepositoryBase[] =>
     repositories.filter(
       (_repo) =>
         stringify(_repo.name).includes(stringify(filter)) ||

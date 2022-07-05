@@ -1,4 +1,5 @@
 import { PageNavigation } from "../../homeassistant-frontend/src/layouts/hass-tabs-subpage";
+import { RepositoryBase, RepositoryInfo } from "./repository";
 
 export interface HacsPageNavigation extends PageNavigation {
   class?: string;
@@ -6,7 +7,7 @@ export interface HacsPageNavigation extends PageNavigation {
   secondary?: string;
   dialog?: string;
   integration?: string;
-  repository?: Repository;
+  repository?: RepositoryBase;
 }
 export interface Route {
   path: string;
@@ -18,33 +19,6 @@ export interface Critical {
   reason: string;
   link: string;
   acknowledged: boolean;
-}
-
-export interface Configuration {
-  categories: [string];
-  country: string;
-  debug: boolean;
-  dev: string;
-  experimental: boolean;
-  frontend_compact: boolean;
-  frontend_expected: string;
-  frontend_mode: string;
-  frontend_running: string;
-  onboarding_done: boolean;
-  version: string;
-}
-
-export interface Status {
-  background_task: boolean;
-  disabled: boolean;
-  disabled_reason?: string;
-  lovelace_mode: "storage" | "yaml" | "auto-gen";
-  stage: "startup" | "waiting" | "running" | "setup";
-  reloading_data: boolean;
-  startup: boolean;
-  manage_mode: boolean;
-  upgrading_all: boolean;
-  has_pending_tasks: boolean;
 }
 
 export interface LovelaceResource {
@@ -67,7 +41,7 @@ export interface Message {
   path?: string;
   iconPath?: string;
   dialog?: string;
-  repository?: Repository;
+  repository?: RepositoryBase;
 }
 
 export interface LocationChangedEvent {
@@ -81,52 +55,8 @@ export interface HacsDialogEvent {
     content?: string;
     markdown?: boolean;
     frosen?: boolean;
-    repository?: Repository;
+    repository?: RepositoryBase;
   };
-}
-
-export interface Repository {
-  has_icon_url: boolean;
-  additional_info: string;
-  authors: [string];
-  available_version: string;
-  beta: boolean;
-  can_install: boolean;
-  category: string;
-  config_flow: boolean;
-  country: string;
-  custom: boolean;
-  default_branch: string;
-  description: string;
-  domain: string;
-  downloads: number;
-  file_name: string;
-  first_install: boolean;
-  full_name: string;
-  hide: boolean;
-  hide_default_branch: boolean;
-  homeassistant: string;
-  id: string;
-  info: string;
-  installed_version: string;
-  installed: boolean;
-  issues: number;
-  javascript_type: string;
-  last_updated: string;
-  local_path: string;
-  main_action: string;
-  name: string;
-  new: string;
-  pending_upgrade: boolean;
-  releases: [string];
-  selected_tag: string;
-  stars: number;
-  state: string;
-  status_description: string;
-  status: string;
-  topics: [string];
-  updated_info: boolean;
-  version_or_commit: string;
 }
 
 export interface RemovedRepository {
@@ -142,10 +72,10 @@ export interface Filter {
   checked?: boolean;
 }
 
-export const sortRepositoriesByName = (repositories: Repository[]): Repository[] =>
-  repositories?.sort((a: Repository, b: Repository) =>
-    a.name.toLowerCase() > b.name.toLowerCase() ? 1 : -1
-  );
+export const sortRepositoriesByName = (
+  repositories: RepositoryBase[] | RepositoryInfo[]
+): RepositoryBase[] | RepositoryInfo[] =>
+  repositories?.sort((a, b) => (a.name.toLowerCase() > b.name.toLowerCase() ? 1 : -1));
 
 export enum HacsDispatchEvent {
   CONFIG = "hacs_dispatch_config",

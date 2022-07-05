@@ -22,8 +22,7 @@ export class HacsElement extends ProvideHassLitMixin(LitElement) {
         repositories: [],
         removed: [],
         sections: [],
-        configuration: {} as any,
-        status: {} as any,
+        info: {} as any,
         addedToLovelace,
         localize: (string: string, replace?: Record<string, any>) =>
           localize(this.hacs?.language || "en", string, replace),
@@ -52,8 +51,8 @@ export class HacsElement extends ProvideHassLitMixin(LitElement) {
 
   protected updated(changedProps: PropertyValues) {
     super.updated(changedProps);
-    if (this.hacs.language && this.hacs.configuration) {
-      this.hacs.sections = sectionsEnabled(this.hacs.language, this.hacs.configuration);
+    if (this.hacs.language && this.hacs.info) {
+      this.hacs.sections = sectionsEnabled(this.hacs.language, this.hacs.info);
     }
   }
 }

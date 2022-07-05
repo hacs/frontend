@@ -1,6 +1,6 @@
 import { css, html, TemplateResult } from "lit";
 import { customElement, property } from "lit/decorators";
-import { Repository } from "../../data/common";
+import { RepositoryBase } from "../../data/repository";
 import {
   deleteResource,
   fetchResources,
@@ -14,7 +14,7 @@ import { HacsDialogBase } from "./hacs-dialog-base";
 
 @customElement("hacs-removed-dialog")
 export class HacsRemovedDialog extends HacsDialogBase {
-  @property({ attribute: false }) public repository!: Repository;
+  @property({ attribute: false }) public repository!: RepositoryBase;
 
   @property({ type: Boolean }) private _updating = false;
 
@@ -100,8 +100,8 @@ export class HacsRemovedDialog extends HacsDialogBase {
     this._updating = true;
     if (
       this.repository.category === "plugin" &&
-      this.hacs.status &&
-      this.hacs.status.lovelace_mode !== "yaml"
+      this.hacs.info &&
+      this.hacs.info.lovelace_mode !== "yaml"
     ) {
       const resources = await fetchResources(this.hass);
       resources
@@ -110,7 +110,7 @@ export class HacsRemovedDialog extends HacsDialogBase {
           deleteResource(this.hass, String(resource.id));
         });
     }
-    await repositoryUninstall(this.hass, this.repository.id);
+    await repositoryUninstall(this.hass, String(this.repository.id));
     this._updating = false;
     this.active = false;
   }

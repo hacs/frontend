@@ -11,7 +11,8 @@ import "../../../homeassistant-frontend/src/components/ha-circular-progress";
 import "../../../homeassistant-frontend/src/components/ha-expansion-panel";
 import "../../../homeassistant-frontend/src/components/ha-svg-icon";
 import { showConfirmationDialog } from "../../../homeassistant-frontend/src/dialogs/generic/show-dialog-box";
-import { HacsDispatchEvent, Repository } from "../../data/common";
+import { HacsDispatchEvent } from "../../data/common";
+import { RepositoryBase } from "../../data/repository";
 import {
   repositoryInstall,
   repositoryInstallVersion,
@@ -40,7 +41,7 @@ export class HacsUpdateDialog extends HacsDialogBase {
     tag: string;
   }[] = [];
 
-  private _getRepository = memoizeOne((repositories: Repository[], repository: string) =>
+  private _getRepository = memoizeOne((repositories: RepositoryBase[], repository: string) =>
     repositories.find((repo) => repo.id === repository)
   );
 
@@ -120,7 +121,7 @@ export class HacsUpdateDialog extends HacsDialogBase {
               : ""
           }
           ${
-            !repository.can_install
+            !repository.can_download
               ? html`<ha-alert alert-type="error" .rtl=${computeRTL(this.hass)}>
                   ${this.hacs.localize("confirm.home_assistant_version_not_correct", {
                     haversion: this.hass.config.version,
@@ -144,7 +145,7 @@ export class HacsUpdateDialog extends HacsDialogBase {
         </div>
         <mwc-button
           slot="primaryaction"
-          ?disabled=${!repository.can_install}
+          ?disabled=${!repository.can_download}
           @click=${this._updateRepository}
           raised
           >
@@ -181,7 +182,7 @@ export class HacsUpdateDialog extends HacsDialogBase {
       await repositoryInstall(this.hass, repository.id);
     }
     if (repository.category === "plugin") {
-      if (this.hacs.status.lovelace_mode === "storage") {
+      if (this.hacs.info.lovelace_mode === "storage") {
         await updateLovelaceResources(this.hass, repository, repository.available_version);
       }
     }

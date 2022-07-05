@@ -7,7 +7,7 @@ import { html, TemplateResult } from "lit";
 import marked_ from "marked";
 import emoji from "node-emoji";
 import "../../components/hacs-link";
-import { Repository } from "../../data/common";
+import { RepositoryInfo } from "../../data/repository";
 import { GFM, HLJS } from "./styles";
 
 hljs.registerLanguage("yaml", yaml);
@@ -34,7 +34,7 @@ export class markdown {
     return marked.parse(input);
   }
 
-  static html(input: string, repo?: Repository): TemplateResult {
+  static html(input: string, repo?: RepositoryInfo): TemplateResult {
     // Convert emoji short codes to real emojis
     input = emoji.emojify(input);
 

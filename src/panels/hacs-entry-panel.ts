@@ -20,8 +20,9 @@ import { haStyle } from "../../homeassistant-frontend/src/resources/styles";
 import { HomeAssistant, Route } from "../../homeassistant-frontend/src/types";
 import { brandsUrl } from "../../homeassistant-frontend/src/util/brands-url";
 import { showDialogAbout } from "../components/dialogs/hacs-about-dialog";
-import { Message, Repository, sortRepositoriesByName } from "../data/common";
+import { Message, sortRepositoriesByName } from "../data/common";
 import { Hacs } from "../data/hacs";
+import { RepositoryBase } from "../data/repository";
 import { HacsStyles } from "../styles/hacs-common-style";
 import { getMessages } from "../tools/get-messages";
 
@@ -39,7 +40,7 @@ export class HacsEntryPanel extends LitElement {
   @property({ type: Boolean }) public isWide!: boolean;
 
   protected render(): TemplateResult | void {
-    const updates: Repository[] = [];
+    const updates: RepositoryBase[] = [];
     const messages: Message[] = [];
     const allMessages: Message[] = getMessages(this.hacs, isComponentLoaded(this.hass, "my"));
 
@@ -258,7 +259,7 @@ export class HacsEntryPanel extends LitElement {
     );
   }
 
-  private _openUpdateDialog(repository: Repository) {
+  private _openUpdateDialog(repository: RepositoryBase) {
     this.dispatchEvent(
       new CustomEvent("hacs-dialog", {
         detail: {

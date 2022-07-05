@@ -19,7 +19,6 @@ import "../../homeassistant-frontend/src/components/ha-icon-overflow-menu";
 import { getConfigEntries } from "../../homeassistant-frontend/src/data/config_entries";
 import { showConfirmationDialog } from "../../homeassistant-frontend/src/dialogs/generic/show-dialog-box";
 import { HomeAssistant } from "../../homeassistant-frontend/src/types";
-import { Repository } from "../data/common";
 import { Hacs } from "../data/hacs";
 import {
   deleteResource,
@@ -32,6 +31,7 @@ import { HacsStyles } from "../styles/hacs-common-style";
 import { generateLovelaceURL } from "../tools/added-to-lovelace";
 import "./hacs-link";
 import { mainWindow } from "../../homeassistant-frontend/src/common/dom/get_main_window";
+import { RepositoryBase } from "../data/repository";
 
 @customElement("hacs-repository-card")
 export class HacsRepositoryCard extends LitElement {
@@ -39,7 +39,7 @@ export class HacsRepositoryCard extends LitElement {
 
   @property({ attribute: false }) public hacs!: Hacs;
 
-  @property({ attribute: false }) public repository!: Repository;
+  @property({ attribute: false }) public repository!: RepositoryBase;
 
   @property({ type: Boolean }) public narrow!: boolean;
 
@@ -212,7 +212,7 @@ export class HacsRepositoryCard extends LitElement {
   }
 
   private async _updateReopsitoryInfo() {
-    await repositoryUpdate(this.hass, this.repository.id);
+    await repositoryUpdate(this.hass, String(this.repository.id));
   }
 
   private async _showReopsitoryInfo() {
@@ -242,7 +242,7 @@ export class HacsRepositoryCard extends LitElement {
   }
 
   private async _setNotNew() {
-    await repositorySetNotNew(this.hass, this.repository.id);
+    await repositorySetNotNew(this.hass, String(this.repository.id));
   }
 
   private _installRepository() {
@@ -296,7 +296,7 @@ export class HacsRepositoryCard extends LitElement {
   }
 
   private async _uninstallRepository() {
-    if (this.repository.category === "plugin" && this.hacs.status?.lovelace_mode !== "yaml") {
+    if (this.repository.category === "plugin" && this.hacs.info?.lovelace_mode !== "yaml") {
       const resources = await fetchResources(this.hass);
       const expectedURL = generateLovelaceURL({ repository: this.repository, skipTag: true });
       await Promise.all(
@@ -305,7 +305,7 @@ export class HacsRepositoryCard extends LitElement {
           .map((resource) => deleteResource(this.hass, String(resource.id)))
       );
     }
-    await repositoryUninstall(this.hass, this.repository.id);
+    await repositoryUninstall(this.hass, String(this.repository.id));
   }
 
   static get styles(): CSSResultGroup {
