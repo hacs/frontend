@@ -16,19 +16,19 @@ export const fetchHacsInfo = async (hass: HomeAssistant) =>
 
 export const getRepositories = async (hass: HomeAssistant) =>
   hass.connection.sendMessagePromise<RepositoryBase[]>({
-    type: "hacs/repositories",
+    type: "hacs/repositories/list",
   });
 
 export const getCritical = async (hass: HomeAssistant) => {
   const response = await hass.connection.sendMessagePromise<Critical[]>({
-    type: "hacs/get_critical",
+    type: "hacs/critical/list",
   });
   return response;
 };
 
 export const getRemovedRepositories = async (hass: HomeAssistant) => {
   const response = await hass.connection.sendMessagePromise<RemovedRepository[]>({
-    type: "hacs/removed",
+    type: "hacs/repositories/removed",
   });
   return response;
 };
@@ -77,32 +77,6 @@ export const repositoryToggleBeta = async (hass: HomeAssistant, repository: stri
     type: "hacs/repository",
     action: "toggle_beta",
     repository: repository,
-  });
-};
-
-export const repositoryInstallVersion = async (
-  hass: HomeAssistant,
-  repository: string,
-  version: string
-) => {
-  await hass.connection.sendMessagePromise<void>({
-    type: "hacs/repository/data",
-    action: "install",
-    repository: repository,
-    data: version,
-  });
-};
-
-export const repositorySetVersion = async (
-  hass: HomeAssistant,
-  repository: string,
-  version: string
-) => {
-  await hass.connection.sendMessagePromise<void>({
-    type: "hacs/repository/data",
-    action: "set_version",
-    repository: repository,
-    data: version,
   });
 };
 
@@ -192,13 +166,4 @@ export const websocketSubscription = (
   hass.connection.subscribeMessage(onChange, {
     type: "hacs/subscribe",
     signal: event,
-  });
-
-export const fetchRepositoryInformation = async (
-  hass: HomeAssistant,
-  repositoryId: string
-): Promise<Repository | undefined> =>
-  hass.connection.sendMessagePromise<Repository>({
-    type: "hacs/repository/info",
-    repository_id: repositoryId,
   });

@@ -9,12 +9,15 @@ import "../../../homeassistant-frontend/src/components/ha-form/ha-form";
 import { HaFormSchema } from "../../../homeassistant-frontend/src/components/ha-form/types";
 import { showConfirmationDialog } from "../../../homeassistant-frontend/src/dialogs/generic/show-dialog-box";
 import { HacsDispatchEvent } from "../../data/common";
-import { RepositoryBase, RepositoryInfo } from "../../data/repository";
+import {
+  RepositoryBase,
+  repositoryDownloadVersion,
+  RepositoryInfo,
+  repositorySetVersion,
+} from "../../data/repository";
 import {
   getRepositories,
   repositoryInstall,
-  repositoryInstallVersion,
-  repositorySetVersion,
   repositoryToggleBeta,
   repositoryUpdate,
   websocketSubscription,
@@ -239,7 +242,7 @@ export class HacsDonwloadDialog extends HacsDialogBase {
       this._repository.default_branch;
 
     if (this._repository?.version_or_commit !== "commit") {
-      await repositoryInstallVersion(this.hass, String(this._repository.id), selectedVersion);
+      await repositoryDownloadVersion(this.hass, String(this._repository.id), selectedVersion);
     } else {
       await repositoryInstall(this.hass, String(this._repository.id));
     }

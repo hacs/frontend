@@ -58,3 +58,25 @@ export const fetchRepositoryInformation = async (
     type: "hacs/repository/info",
     repository_id: repositoryId,
   });
+
+export const repositoryDownloadVersion = async (
+  hass: HomeAssistant,
+  repository: string,
+  version: string
+) =>
+  hass.connection.sendMessagePromise<void>({
+    type: "hacs/repository/download",
+    repository: repository,
+    data: version,
+  });
+
+export const repositorySetVersion = async (
+  hass: HomeAssistant,
+  repository: string,
+  version: string
+) =>
+  hass.connection.sendMessagePromise<void>({
+    type: "hacs/repository/version",
+    repository: repository,
+    data: version,
+  });

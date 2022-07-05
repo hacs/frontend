@@ -12,10 +12,9 @@ import "../../../homeassistant-frontend/src/components/ha-expansion-panel";
 import "../../../homeassistant-frontend/src/components/ha-svg-icon";
 import { showConfirmationDialog } from "../../../homeassistant-frontend/src/dialogs/generic/show-dialog-box";
 import { HacsDispatchEvent } from "../../data/common";
-import { RepositoryBase } from "../../data/repository";
+import { RepositoryBase, repositoryDownloadVersion } from "../../data/repository";
 import {
   repositoryInstall,
-  repositoryInstallVersion,
   repositoryReleasenotes,
   websocketSubscription,
 } from "../../data/websocket";
@@ -177,7 +176,7 @@ export class HacsUpdateDialog extends HacsDialogBase {
       return;
     }
     if (repository.version_or_commit !== "commit") {
-      await repositoryInstallVersion(this.hass, repository.id, repository.available_version);
+      await repositoryDownloadVersion(this.hass, repository.id, repository.available_version);
     } else {
       await repositoryInstall(this.hass, repository.id);
     }
