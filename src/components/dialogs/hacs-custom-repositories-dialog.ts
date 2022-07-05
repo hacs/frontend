@@ -81,21 +81,24 @@ export class HacsCustomRepositoriesDialog extends HacsDialogBase {
             ${this._customRepositories
               ?.filter((repo) => this.hacs.configuration.categories.includes(repo.category))
               .map(
-                (repo) => html`<ha-settings-row
-                  @click=${() => this._showReopsitoryInfo(String(repo.id))}
+                (repo) => html`<a
+                  href="/hacs/repository/${repo.id}"
+                  @click=${() => (this.active = false)}
                 >
-                  <span slot="heading">${repo.name}</span>
-                  <span slot="description">${repo.full_name} (${repo.category})</span>
+                  <ha-settings-row>
+                    <span slot="heading">${repo.name}</span>
+                    <span slot="description">${repo.full_name} (${repo.category})</span>
 
-                  <mwc-icon-button
-                    @click=${(ev) => {
-                      ev.stopPropagation();
-                      this._removeRepository(repo.id);
-                    }}
-                  >
-                    <ha-svg-icon class="delete" .path=${mdiDelete}></ha-svg-icon>
-                  </mwc-icon-button>
-                </ha-settings-row>`
+                    <mwc-icon-button
+                      @click=${(ev) => {
+                        ev.stopPropagation();
+                        this._removeRepository(repo.id);
+                      }}
+                    >
+                      <ha-svg-icon class="delete" .path=${mdiDelete}></ha-svg-icon>
+                    </mwc-icon-button>
+                  </ha-settings-row>
+                </a>`
               )}
           </div>
           <ha-form
@@ -180,19 +183,6 @@ export class HacsCustomRepositoriesDialog extends HacsDialogBase {
     this._customRepositories = repositories.filter((repo) => repo.custom);
   }
 
-  private async _showReopsitoryInfo(repository: string) {
-    this.dispatchEvent(
-      new CustomEvent("hacs-dialog-secondary", {
-        detail: {
-          type: "repository-info",
-          repository,
-        },
-        bubbles: true,
-        composed: true,
-      })
-    );
-  }
-
   static get styles() {
     return [
       scrollBarStyle,
@@ -202,6 +192,9 @@ export class HacsCustomRepositoriesDialog extends HacsDialogBase {
           position: relative;
           max-height: calc(100vh - 500px);
           overflow: auto;
+        }
+        a {
+          all: unset;
         }
         ha-form {
           display: block;

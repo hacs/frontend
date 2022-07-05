@@ -158,8 +158,8 @@ export class HacsAddRepositoryDialog extends HacsDialogBase {
                     (repo) => html`<ha-clickable-list-item
                       graphic=${this.narrow ? "" : "avatar"}
                       twoline
-                      @click=${() => this._openInformation(repo)}
-                      disableHref
+                      @click=${() => (this.active = false)}
+                      href="/hacs/repository/${repo.id}"
                       .hasMeta=${!this.narrow && repo.category !== "integration"}
                     >
                       ${this.narrow
@@ -213,19 +213,6 @@ export class HacsAddRepositoryDialog extends HacsDialogBase {
   private _inputValueChanged(ev: any) {
     this._searchInput = ev.detail.value;
     window.localStorage.setItem("hacs-search", this._searchInput);
-  }
-
-  private _openInformation(repo) {
-    this.dispatchEvent(
-      new CustomEvent("hacs-dialog-secondary", {
-        detail: {
-          type: "repository-info",
-          repository: repo.id,
-        },
-        bubbles: true,
-        composed: true,
-      })
-    );
   }
 
   private _onImageLoad(ev) {

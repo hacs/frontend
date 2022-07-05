@@ -103,14 +103,16 @@ export class HacsRepositoryCard extends LitElement {
         <div class="card-content">
           <div class="group-header">
             <div class="status-header ${classMap(this._headerClass)}">${this._headerTitle}</div>
-            <div class="title pointer" @click=${this._showReopsitoryInfo}>
-              <h1>${this.repository.name}</h1>
-              ${this.repository.category !== "integration"
-                ? html` <ha-chip>
-                    ${this.hacs.localize(`common.${this.repository.category}`)}
-                  </ha-chip>`
-                : ""}
-            </div>
+            <a href="/hacs/repository/${this.repository.id}">
+              <div class="title pointer">
+                <h1>${this.repository.name}</h1>
+                ${this.repository.category !== "integration"
+                  ? html` <ha-chip>
+                      ${this.hacs.localize(`common.${this.repository.category}`)}
+                    </ha-chip>`
+                  : ""}
+              </div>
+            </a>
           </div>
           <div class="description">${this.repository.description}</div>
         </div>
@@ -124,7 +126,7 @@ export class HacsRepositoryCard extends LitElement {
                   {
                     path: mdiInformation,
                     label: this.hacs.localize("repository_card.information"),
-                    action: () => this._showReopsitoryInfo(),
+                    action: () => navigate(`/hacs/repository/${this.repository.id}`),
                   },
                   {
                     path: mdiGithub,
@@ -213,19 +215,6 @@ export class HacsRepositoryCard extends LitElement {
 
   private async _updateReopsitoryInfo() {
     await repositoryUpdate(this.hass, this.repository.id);
-  }
-
-  private async _showReopsitoryInfo() {
-    this.dispatchEvent(
-      new CustomEvent("hacs-dialog", {
-        detail: {
-          type: "repository-info",
-          repository: this.repository.id,
-        },
-        bubbles: true,
-        composed: true,
-      })
-    );
   }
 
   private async _updateRepository() {
@@ -348,6 +337,9 @@ export class HacsRepositoryCard extends LitElement {
         h1 {
           margin-top: 0;
           min-height: 24px;
+        }
+        a {
+          all: unset;
         }
 
         .pointer {
