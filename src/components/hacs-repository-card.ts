@@ -23,7 +23,7 @@ import { Hacs } from "../data/hacs";
 import {
   deleteResource,
   fetchResources,
-  repositorySetNotNew,
+  clearNewRepositories,
   repositoryUninstall,
   repositoryUpdate,
 } from "../data/websocket";
@@ -231,7 +231,7 @@ export class HacsRepositoryCard extends LitElement {
   }
 
   private async _setNotNew() {
-    await repositorySetNotNew(this.hass, String(this.repository.id));
+    await clearNewRepositories(this.hass, { repository: String(this.repository.id) });
   }
 
   private _installRepository() {

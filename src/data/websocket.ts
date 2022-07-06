@@ -19,110 +19,69 @@ export const getRepositories = async (hass: HomeAssistant) =>
     type: "hacs/repositories/list",
   });
 
-export const getCritical = async (hass: HomeAssistant) => {
-  const response = await hass.connection.sendMessagePromise<Critical[]>({
+export const getCritical = async (hass: HomeAssistant) =>
+  hass.connection.sendMessagePromise<Critical[]>({
     type: "hacs/critical/list",
   });
-  return response;
-};
 
-export const getRemovedRepositories = async (hass: HomeAssistant) => {
-  const response = await hass.connection.sendMessagePromise<RemovedRepository[]>({
+export const getRemovedRepositories = async (hass: HomeAssistant) =>
+  hass.connection.sendMessagePromise<RemovedRepository[]>({
     type: "hacs/repositories/removed",
   });
-  return response;
-};
 
-export const repositoryInstall = async (hass: HomeAssistant, repository: string) => {
-  await hass.connection.sendMessagePromise<void>({
-    type: "hacs/repository",
-    action: "install",
+export const repositoryUninstall = async (hass: HomeAssistant, repository: string) =>
+  hass.connection.sendMessagePromise<void>({
+    type: "hacs/repository/remove",
     repository: repository,
   });
-};
 
-export const repositoryUninstall = async (hass: HomeAssistant, repository: string) => {
-  await hass.connection.sendMessagePromise<void>({
-    type: "hacs/repository",
-    action: "uninstall",
-    repository: repository,
-  });
-};
-
-export const repositoryIgnore = async (hass: HomeAssistant, repository: string) => {
-  await hass.connection.sendMessagePromise<void>({
+export const repositoryIgnore = async (hass: HomeAssistant, repository: string) =>
+  hass.connection.sendMessagePromise<void>({
     type: "hacs/repository/ignore",
     repository: repository,
   });
-};
 
-export const repositoryReleasenotes = async (
-  hass: HomeAssistant,
-  repository: string,
-  currentVersion: string
-) => {
-  const response = await hass.connection.sendMessagePromise<
-    { name: string; body: string; tag: string }[]
-  >({
-    type: "hacs/repository",
-    action: "release_notes",
-    repository: repository,
-    data: { current_version: currentVersion },
-  });
-  return response;
-};
-
-export const repositoryToggleBeta = async (hass: HomeAssistant, repository: string) => {
-  await hass.connection.sendMessagePromise<void>({
-    type: "hacs/repository",
-    action: "toggle_beta",
+export const repositoryReleasenotes = async (hass: HomeAssistant, repository: string) =>
+  hass.connection.sendMessagePromise<{ name: string; body: string; tag: string }[]>({
+    type: "hacs/repository/release_notes",
     repository: repository,
   });
-};
 
-export const repositoryAdd = async (hass: HomeAssistant, repository: string, category: string) => {
-  await hass.connection.sendMessagePromise<void>({
+export const repositoryAdd = async (hass: HomeAssistant, repository: string, category: string) =>
+  hass.connection.sendMessagePromise<void>({
     type: "hacs/repository/data",
     action: "add",
     repository: repository,
     data: category,
   });
-};
 
-export const repositorySetNotNew = async (hass: HomeAssistant, repository: string) => {
-  await hass.connection.sendMessagePromise<void>({
-    type: "hacs/repository",
-    action: "not_new",
+export const repositoryBeta = async (hass: HomeAssistant, repository: string, beta: boolean) =>
+  hass.connection.sendMessagePromise<void>({
+    type: "hacs/repository/beta",
+    repository: repository,
+    beta,
+  });
+
+export const repositoryUpdate = async (hass: HomeAssistant, repository: string) =>
+  hass.connection.sendMessagePromise<void>({
+    type: "hacs/repository/refresh",
     repository: repository,
   });
-};
 
-export const repositoryUpdate = async (hass: HomeAssistant, repository: string) => {
-  await hass.connection.sendMessagePromise<void>({
-    type: "hacs/repository",
-    action: "update",
+export const repositoryDelete = async (hass: HomeAssistant, repository: string) =>
+  hass.connection.sendMessagePromise<void>({
+    type: "hacs/repositories/remove",
     repository: repository,
   });
-};
 
-export const repositoryDelete = async (hass: HomeAssistant, repository: string) => {
-  await hass.connection.sendMessagePromise<void>({
-    type: "hacs/repository",
-    action: "delete",
-    repository: repository,
-  });
-};
-
-export const settingsClearAllNewRepositories = async (
+export const clearNewRepositories = async (
   hass: HomeAssistant,
-  categories: string[]
-) => {
-  await hass.connection.sendMessagePromise<void>({
-    type: "hacs/settings",
-    action: "clear_new",
-    categories,
+  data: { categories?: string[]; repository: string }
+) =>
+  hass.connection.sendMessagePromise<void>({
+    type: "hacs/repositories/clear_new",
+    data,
   });
-};
 
 export const getLovelaceConfiguration = async (hass: HomeAssistant) => {
   try {

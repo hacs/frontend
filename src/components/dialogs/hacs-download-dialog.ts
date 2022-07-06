@@ -17,7 +17,6 @@ import {
 } from "../../data/repository";
 import {
   getRepositories,
-  repositoryInstall,
   repositoryToggleBeta,
   repositoryUpdate,
   websocketSubscription,
@@ -207,7 +206,7 @@ export class HacsDonwloadDialog extends HacsDialogBase {
     if (this._downloadRepositoryData.beta !== ev.detail.value.beta) {
       updateNeeded = true;
       this._toggle = true;
-      await repositoryToggleBeta(this.hass, this.repository!);
+      await repositoryBeta(this.hass, this.repository!, ev.detail.value.beta);
     }
     if (ev.detail.value.version) {
       updateNeeded = true;
@@ -244,7 +243,7 @@ export class HacsDonwloadDialog extends HacsDialogBase {
     if (this._repository?.version_or_commit !== "commit") {
       await repositoryDownloadVersion(this.hass, String(this._repository.id), selectedVersion);
     } else {
-      await repositoryInstall(this.hass, String(this._repository.id));
+      await repositoryDownloadVersion(this.hass, String(this._repository.id));
     }
     this.hacs.log.debug(this._repository.category, "_installRepository");
     this.hacs.log.debug(this.hacs.info.lovelace_mode, "_installRepository");

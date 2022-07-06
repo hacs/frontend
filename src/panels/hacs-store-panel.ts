@@ -21,7 +21,7 @@ import { showDialogAbout } from "../components/dialogs/hacs-about-dialog";
 import "../components/hacs-filter";
 import "../components/hacs-repository-card";
 import { Hacs } from "../data/hacs";
-import { settingsClearAllNewRepositories } from "../data/websocket";
+import { clearNewRepositories } from "../data/websocket";
 import { scrollBarStyle } from "../styles/element-styles";
 import { HacsStyles } from "../styles/hacs-common-style";
 import { filterRepositoriesByInput } from "../tools/filter-repositories-by-input";
@@ -253,7 +253,7 @@ export class HacsStorePanel extends LitElement {
   }
 
   private async _clearAllNewRepositories() {
-    await settingsClearAllNewRepositories(
+    await clearNewRepositories(
       this.hass,
       activePanel(this.hacs.language, this.route)?.categories || []
     );

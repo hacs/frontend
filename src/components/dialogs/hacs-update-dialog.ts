@@ -13,11 +13,7 @@ import "../../../homeassistant-frontend/src/components/ha-svg-icon";
 import { showConfirmationDialog } from "../../../homeassistant-frontend/src/dialogs/generic/show-dialog-box";
 import { HacsDispatchEvent } from "../../data/common";
 import { RepositoryBase, repositoryDownloadVersion } from "../../data/repository";
-import {
-  repositoryInstall,
-  repositoryReleasenotes,
-  websocketSubscription,
-} from "../../data/websocket";
+import { repositoryReleasenotes, websocketSubscription } from "../../data/websocket";
 import { scrollBarStyle } from "../../styles/element-styles";
 import { HacsStyles } from "../../styles/hacs-common-style";
 import { markdown } from "../../tools/markdown/markdown";
@@ -51,11 +47,7 @@ export class HacsUpdateDialog extends HacsDialogBase {
       return;
     }
     if (repository.version_or_commit !== "commit") {
-      this._releaseNotes = await repositoryReleasenotes(
-        this.hass,
-        repository.id,
-        repository.installed_version
-      );
+      this._releaseNotes = await repositoryReleasenotes(this.hass, repository.id);
     }
     websocketSubscription(this.hass, (data) => (this._error = data), HacsDispatchEvent.ERROR);
   }
@@ -178,7 +170,7 @@ export class HacsUpdateDialog extends HacsDialogBase {
     if (repository.version_or_commit !== "commit") {
       await repositoryDownloadVersion(this.hass, repository.id, repository.available_version);
     } else {
-      await repositoryInstall(this.hass, repository.id);
+      await repositoryDownloadVersion(this.hass, repository.id);
     }
     if (repository.category === "plugin") {
       if (this.hacs.info.lovelace_mode === "storage") {
