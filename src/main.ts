@@ -22,7 +22,6 @@ import { HacsElement } from "./hacs";
 import "./hacs-router";
 import { HacsStyles } from "./styles/hacs-common-style";
 import { hacsStyleVariables } from "./styles/variables";
-import { showToast } from "../homeassistant-frontend/src/util/toast";
 
 @customElement("hacs-frontend")
 class HacsFrontend extends HacsElement {
