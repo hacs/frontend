@@ -32,46 +32,45 @@ export const getRemovedRepositories = async (hass: HomeAssistant) =>
 export const repositoryUninstall = async (hass: HomeAssistant, repository: string) =>
   hass.connection.sendMessagePromise<void>({
     type: "hacs/repository/remove",
-    repository: repository,
+    repository,
   });
 
 export const repositoryIgnore = async (hass: HomeAssistant, repository: string) =>
   hass.connection.sendMessagePromise<void>({
     type: "hacs/repository/ignore",
-    repository: repository,
+    repository,
   });
 
 export const repositoryReleasenotes = async (hass: HomeAssistant, repository: string) =>
   hass.connection.sendMessagePromise<{ name: string; body: string; tag: string }[]>({
     type: "hacs/repository/release_notes",
-    repository: repository,
+    repository,
   });
 
 export const repositoryAdd = async (hass: HomeAssistant, repository: string, category: string) =>
   hass.connection.sendMessagePromise<void>({
-    type: "hacs/repository/data",
-    action: "add",
+    type: "hacs/repositories/add",
     repository: repository,
-    data: category,
+    category,
   });
 
 export const repositoryBeta = async (hass: HomeAssistant, repository: string, beta: boolean) =>
   hass.connection.sendMessagePromise<void>({
     type: "hacs/repository/beta",
-    repository: repository,
+    repository,
     beta,
   });
 
 export const repositoryUpdate = async (hass: HomeAssistant, repository: string) =>
   hass.connection.sendMessagePromise<void>({
     type: "hacs/repository/refresh",
-    repository: repository,
+    repository,
   });
 
 export const repositoryDelete = async (hass: HomeAssistant, repository: string) =>
   hass.connection.sendMessagePromise<void>({
     type: "hacs/repositories/remove",
-    repository: repository,
+    repository,
   });
 
 export const clearNewRepositories = async (
@@ -80,7 +79,7 @@ export const clearNewRepositories = async (
 ) =>
   hass.connection.sendMessagePromise<void>({
     type: "hacs/repositories/clear_new",
-    data,
+    ...data,
   });
 
 export const getLovelaceConfiguration = async (hass: HomeAssistant) => {
