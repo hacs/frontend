@@ -116,7 +116,7 @@ export class HacsRepositoryCard extends LitElement {
   }
 
   private _updateRepository(ev: Event) {
-    ev.stopPropagation();
+    ev.preventDefault();
     this.dispatchEvent(
       new CustomEvent("hacs-dialog", {
         detail: {
@@ -130,7 +130,7 @@ export class HacsRepositoryCard extends LitElement {
   }
 
   private async _setNotNew(ev: Event) {
-    ev.stopPropagation();
+    ev.preventDefault();
     await clearNewRepositories(this.hass, { repository: String(this.repository.id) });
   }
 
