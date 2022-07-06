@@ -60,16 +60,25 @@ export class HacsRepositoryPanel extends LitElement {
       this._error = "Missing repositoryId from route";
       return;
     }
-    fetchRepositoryInformation(this.hass, repositoryId)
-      .then((data) => {
-        this._repository = data;
-        if (!this._repository) {
-          this._error = "No repository for " + repositoryId;
-        }
-      })
-      .catch((err) => {
-        this._error = err;
-      });
+    this._fetchRepository(repositoryId);
+  }
+
+  protected updated(changedProps) {
+    super.updated(changedProps);
+    if (changedProps.has("repositories") && this._repository) {
+      this._fetchRepository();
+    }
+  }
+
+  private async _fetchRepository(repositoryId?: string) {
+    try {
+      this._repository = await fetchRepositoryInformation(
+        this.hass,
+        repositoryId || String(this._repository!.id)
+      );
+    } catch (err: any) {
+      this._error = err?.message;
+    }
   }
 
   private _getAuthors = memoizeOne((repository: RepositoryInfo) => {
@@ -131,7 +140,7 @@ export class HacsRepositoryPanel extends LitElement {
               path: mdiReload,
               label: this.hacs.localize("repository_card.redownload"),
               action: () => this._downloadRepositoryDialog(),
-              hideForInstalled: true,
+              hideForUninstalled: true,
             },
             {
               category: "plugin",
@@ -182,7 +191,6 @@ export class HacsRepositoryPanel extends LitElement {
             (entry) =>
               (!entry.category || this._repository!.category === entry.category) &&
               (!entry.hideForId || String(this._repository!.id) !== entry.hideForId) &&
-              (!entry.hideForInstalled || !this._repository!.installed_version) &&
               (!entry.hideForUninstalled || this._repository!.installed_version)
           )}
         >
@@ -284,6 +292,7 @@ export class HacsRepositoryPanel extends LitElement {
           content: this.hacs.localize("dialog.remove.message", { name: this._repository!.name }),
           confirm: async () => {
             await repositoryUninstall(this.hass, String(this._repository!.id));
+            history.back();
           },
         },
         bubbles: true,
