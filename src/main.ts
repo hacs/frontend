@@ -22,6 +22,7 @@ import { HacsElement } from "./hacs";
 import "./hacs-router";
 import { HacsStyles } from "./styles/hacs-common-style";
 import { hacsStyleVariables } from "./styles/variables";
+import { showToast } from "../homeassistant-frontend/src/util/toast";
 
 @customElement("hacs-frontend")
 class HacsFrontend extends HacsElement {
@@ -109,7 +110,7 @@ class HacsFrontend extends HacsElement {
         // Ignore if modifier keys are pressed
         return;
       }
-      if (["c", "m", "e"].includes(ev.key)) {
+      if (["c", "e"].includes(ev.key)) {
         // @ts-ignore
         fireEvent(mainWindow, "hass-quick-bar-trigger", ev, {
           bubbles: false,

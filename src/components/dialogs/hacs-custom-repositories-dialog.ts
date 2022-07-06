@@ -91,8 +91,8 @@ export class HacsCustomRepositoriesDialog extends HacsDialogBase {
                     <span slot="description">${repo.full_name} (${repo.category})</span>
 
                     <mwc-icon-button
-                      @click=${(ev) => {
-                        ev.stopPropagation();
+                      @click=${(ev: Event) => {
+                        ev.preventDefault();
                         this._removeRepository(String(repo.id));
                       }}
                     >
