@@ -58,7 +58,7 @@ export const repositoryBeta = async (hass: HomeAssistant, repository: string, be
   hass.connection.sendMessagePromise<void>({
     type: "hacs/repository/beta",
     repository,
-    beta,
+    show_beta: beta,
   });
 
 export const repositoryUpdate = async (hass: HomeAssistant, repository: string) =>
@@ -75,7 +75,7 @@ export const repositoryDelete = async (hass: HomeAssistant, repository: string) 
 
 export const clearNewRepositories = async (
   hass: HomeAssistant,
-  data: { categories?: string[]; repository: string }
+  data: { categories?: string[]; repository?: string }
 ) =>
   hass.connection.sendMessagePromise<void>({
     type: "hacs/repositories/clear_new",

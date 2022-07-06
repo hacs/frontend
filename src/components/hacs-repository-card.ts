@@ -1,37 +1,16 @@
 import "@material/mwc-button/mwc-button";
-import {
-  mdiAlert,
-  mdiAlertCircleOutline,
-  mdiArrowDownCircle,
-  mdiClose,
-  mdiGithub,
-  mdiInformation,
-  mdiLanguageJavascript,
-  mdiReload,
-} from "@mdi/js";
 import { css, CSSResultGroup, html, LitElement, TemplateResult } from "lit";
 import { customElement, property } from "lit/decorators";
 import { ClassInfo, classMap } from "lit/directives/class-map";
-import { navigate } from "../../homeassistant-frontend/src/common/navigate";
 import "../../homeassistant-frontend/src/components/ha-card";
 import "../../homeassistant-frontend/src/components/ha-chip";
 import "../../homeassistant-frontend/src/components/ha-icon-overflow-menu";
-import { getConfigEntries } from "../../homeassistant-frontend/src/data/config_entries";
-import { showConfirmationDialog } from "../../homeassistant-frontend/src/dialogs/generic/show-dialog-box";
 import { HomeAssistant } from "../../homeassistant-frontend/src/types";
 import { Hacs } from "../data/hacs";
-import {
-  deleteResource,
-  fetchResources,
-  clearNewRepositories,
-  repositoryUninstall,
-  repositoryUpdate,
-} from "../data/websocket";
-import { HacsStyles } from "../styles/hacs-common-style";
-import { generateLovelaceURL } from "../tools/added-to-lovelace";
-import "./hacs-link";
-import { mainWindow } from "../../homeassistant-frontend/src/common/dom/get_main_window";
 import { RepositoryBase } from "../data/repository";
+import { clearNewRepositories } from "../data/websocket";
+import { HacsStyles } from "../styles/hacs-common-style";
+import "./hacs-link";
 
 @customElement("hacs-repository-card")
 export class HacsRepositoryCard extends LitElement {
@@ -97,13 +76,13 @@ export class HacsRepositoryCard extends LitElement {
   }
 
   protected render(): TemplateResult | void {
-    const path = this.repository.local_path.split("/");
     return html`
-      <ha-card class=${classMap(this._borderClass)} ?narrow=${this.narrow} outlined>
-        <div class="card-content">
-          <div class="group-header">
-            <div class="status-header ${classMap(this._headerClass)}">${this._headerTitle}</div>
-            <a href="/hacs/repository/${this.repository.id}">
+      <a href="/hacs/repository/${this.repository.id}">
+        <ha-card class=${classMap(this._borderClass)} ?narrow=${this.narrow} outlined>
+          <div class="card-content">
+            <div class="group-header">
+              <div class="status-header ${classMap(this._headerClass)}">${this._headerTitle}</div>
+
               <div class="title pointer">
                 <h1>${this.repository.name}</h1>
                 ${this.repository.category !== "integration"
@@ -112,112 +91,32 @@ export class HacsRepositoryCard extends LitElement {
                     </ha-chip>`
                   : ""}
               </div>
-            </a>
+            </div>
+            <div class="description">${this.repository.description}</div>
           </div>
-          <div class="description">${this.repository.description}</div>
-        </div>
-        <div class="card-actions">
-          ${this.repository.installed
-            ? html` <ha-icon-overflow-menu
-                slot="toolbar-icon"
-                narrow
-                .hass=${this.hass}
-                .items=${[
-                  {
-                    path: mdiInformation,
-                    label: this.hacs.localize("repository_card.information"),
-                    action: () => navigate(`/hacs/repository/${this.repository.id}`),
-                  },
-                  {
-                    path: mdiGithub,
-                    label: this.hacs.localize("common.repository"),
-                    action: () =>
-                      mainWindow.open(
-                        `https://github.com/${this.repository.full_name}`,
-                        "_blank",
-                        "noreferrer=true"
-                      ),
-                  },
-                  {
-                    path: mdiArrowDownCircle,
-                    label: this.hacs.localize("repository_card.update_information"),
-                    action: () => this._updateReopsitoryInfo(),
-                  },
-                  {
-                    path: mdiReload,
-                    label: this.hacs.localize("repository_card.redownload"),
-                    action: () => this._installRepository(),
-                  },
-                  {
-                    category: "plugin",
-                    path: mdiLanguageJavascript,
-                    label: this.hacs.localize("repository_card.open_source"),
-                    action: () =>
-                      mainWindow.open(
-                        `/hacsfiles/${path.pop()}/${this.repository.file_name}`,
-                        "_blank",
-                        "noreferrer=true"
-                      ),
-                  },
-                  {
-                    path: mdiAlertCircleOutline,
-                    label: this.hacs.localize("repository_card.open_issue"),
-                    action: () =>
-                      mainWindow.open(
-                        `https://github.com/${this.repository.full_name}/issues`,
-                        "_blank",
-                        "noreferrer=true"
-                      ),
-                  },
-                  {
-                    hideForId: "172733314",
-                    path: mdiAlert,
-                    label: this.hacs.localize("repository_card.report"),
-                    action: () =>
-                      mainWindow.open(
-                        `https://github.com/hacs/integration/issues/new?assignees=ludeeus&labels=flag&template=removal.yml&repo=${this.repository.full_name}&title=Request for removal of ${this.repository.full_name}`,
-                        "_blank",
-                        "noreferrer=true"
-                      ),
-                  },
-                  {
-                    hideForId: "172733314",
-                    path: mdiClose,
-                    label: this.hacs.localize("common.remove"),
-                    action: () => this._uninstallRepositoryDialog(),
-                  },
-                ].filter(
-                  (entry) =>
-                    (!entry.category || this.repository.category === entry.category) &&
-                    (!entry.hideForId || String(this.repository.id) !== entry.hideForId)
-                )}
-              >
-              </ha-icon-overflow-menu>`
-            : ""}
-          ${this.repository.new && !this.repository.installed
-            ? html`<div>
-                <mwc-button class="status-new" @click=${this._setNotNew}>
-                  ${this.hacs.localize("repository_card.dismiss")}
-                </mwc-button>
-              </div>`
-            : this.repository.pending_upgrade &&
-              this.hacs.addedToLovelace!(this.hacs, this.repository)
-            ? html`<div>
-                <mwc-button class="update-header" @click=${this._updateRepository} raised>
-                  ${this.hacs.localize("common.update")}
-                </mwc-button>
-              </div> `
-            : ""}
-        </div>
-      </ha-card>
+          <div class="card-actions">
+            ${this.repository.new && !this.repository.installed
+              ? html`<div>
+                  <mwc-button class="status-new" @click=${this._setNotNew}>
+                    ${this.hacs.localize("repository_card.dismiss")}
+                  </mwc-button>
+                </div>`
+              : this.repository.pending_upgrade &&
+                this.hacs.addedToLovelace!(this.hacs, this.repository)
+              ? html`<div>
+                  <mwc-button class="update-header" @click=${this._updateRepository} raised>
+                    ${this.hacs.localize("common.update")}
+                  </mwc-button>
+                </div> `
+              : ""}
+          </div>
+        </ha-card>
+      </a>
     `;
   }
 
-  private async _updateReopsitoryInfo() {
-    await repositoryUpdate(this.hass, String(this.repository.id));
-  }
-
-  private async _updateRepository() {
+  private _updateRepository(ev: Event) {
+    ev.stopPropagation();
     this.dispatchEvent(
       new CustomEvent("hacs-dialog", {
         detail: {
@@ -230,71 +129,9 @@ export class HacsRepositoryCard extends LitElement {
     );
   }
 
-  private async _setNotNew() {
+  private async _setNotNew(ev: Event) {
+    ev.stopPropagation();
     await clearNewRepositories(this.hass, { repository: String(this.repository.id) });
-  }
-
-  private _installRepository() {
-    this.dispatchEvent(
-      new CustomEvent("hacs-dialog", {
-        detail: {
-          type: "download",
-          repository: this.repository.id,
-        },
-        bubbles: true,
-        composed: true,
-      })
-    );
-  }
-
-  private async _uninstallRepositoryDialog() {
-    if (this.repository.category === "integration" && this.repository.config_flow) {
-      const configFlows = (await getConfigEntries(this.hass)).some(
-        (entry) => entry.domain === this.repository.domain
-      );
-      if (configFlows) {
-        const ignore = await showConfirmationDialog(this, {
-          title: this.hacs.localize("dialog.configured.title"),
-          text: this.hacs.localize("dialog.configured.message", { name: this.repository.name }),
-          dismissText: this.hacs.localize("common.ignore"),
-          confirmText: this.hacs.localize("common.navigate"),
-          confirm: () => {
-            navigate("/config/integrations", { replace: true });
-          },
-        });
-        if (ignore) {
-          return;
-        }
-      }
-    }
-    this.dispatchEvent(
-      new CustomEvent("hacs-dialog", {
-        detail: {
-          type: "progress",
-          title: this.hacs.localize("dialog.remove.title"),
-          confirmText: this.hacs.localize("dialog.remove.title"),
-          content: this.hacs.localize("dialog.remove.message", { name: this.repository.name }),
-          confirm: async () => {
-            await this._uninstallRepository();
-          },
-        },
-        bubbles: true,
-        composed: true,
-      })
-    );
-  }
-
-  private async _uninstallRepository() {
-    if (this.repository.category === "plugin" && this.hacs.info?.lovelace_mode !== "yaml") {
-      const resources = await fetchResources(this.hass);
-      const expectedURL = generateLovelaceURL({ repository: this.repository, skipTag: true });
-      await Promise.all(
-        resources
-          .filter((resource) => resource.url.includes(expectedURL))
-          .map((resource) => deleteResource(this.hass, String(resource.id)))
-      );
-    }
-    await repositoryUninstall(this.hass, String(this.repository.id));
   }
 
   static get styles(): CSSResultGroup {
@@ -340,11 +177,9 @@ export class HacsRepositoryCard extends LitElement {
         }
         a {
           all: unset;
-        }
-
-        .pointer {
           cursor: pointer;
         }
+
         .description {
           opacity: var(--dark-primary-opacity);
           font-size: 14px;

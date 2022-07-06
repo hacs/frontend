@@ -10,17 +10,13 @@ import { HaFormSchema } from "../../../homeassistant-frontend/src/components/ha-
 import { showConfirmationDialog } from "../../../homeassistant-frontend/src/dialogs/generic/show-dialog-box";
 import { HacsDispatchEvent } from "../../data/common";
 import {
+  fetchRepositoryInformation,
   RepositoryBase,
   repositoryDownloadVersion,
   RepositoryInfo,
   repositorySetVersion,
 } from "../../data/repository";
-import {
-  getRepositories,
-  repositoryToggleBeta,
-  repositoryUpdate,
-  websocketSubscription,
-} from "../../data/websocket";
+import { getRepositories, repositoryBeta, websocketSubscription } from "../../data/websocket";
 import { HacsStyles } from "../../styles/hacs-common-style";
 import { generateLovelaceURL } from "../../tools/added-to-lovelace";
 import { updateLovelaceResources } from "../../tools/update-lovelace-resources";
@@ -30,7 +26,7 @@ import { HacsDialogBase } from "./hacs-dialog-base";
 
 @customElement("hacs-download-dialog")
 export class HacsDonwloadDialog extends HacsDialogBase {
-  @property() public repository?: string;
+  @property() public repository!: string;
 
   @state() private _toggle = true;
 
@@ -48,7 +44,7 @@ export class HacsDonwloadDialog extends HacsDialogBase {
         this.sidebarDocked = window.localStorage.getItem("dockedSidebar") === '"docked"';
       }
       if (propName === "repositories") {
-        this._repository = this._getRepository(this.hacs.repositories, this.repository!);
+        this._fetchRepository();
       }
     });
     return (
@@ -63,10 +59,6 @@ export class HacsDonwloadDialog extends HacsDialogBase {
     );
   }
 
-  private _getRepository = memoizeOne((repositories: RepositoryBase[], repository: string) =>
-    repositories?.find((repo) => repo.id === repository)
-  );
-
   private _getInstallPath = memoizeOne((repository: RepositoryBase) => {
     let path: string = repository.local_path;
     if (repository.category === "theme") {
@@ -76,24 +68,16 @@ export class HacsDonwloadDialog extends HacsDialogBase {
   });
 
   protected async firstUpdated() {
-    this._repository = this._getRepository(this.hacs.repositories, this.repository!);
-    if (!this._repository?.updated_info) {
-      await repositoryUpdate(this.hass, this._repository!.id);
-      const repositories = await getRepositories(this.hass);
-      this.dispatchEvent(
-        new CustomEvent("update-hacs", {
-          detail: { repositories },
-          bubbles: true,
-          composed: true,
-        })
-      );
-      this._repository = this._getRepository(repositories, this.repository!);
-    }
+    await this._fetchRepository();
     this._toggle = false;
     websocketSubscription(this.hass, (data) => (this._error = data), HacsDispatchEvent.ERROR);
     this._downloadRepositoryData.beta = this._repository!.beta;
     this._downloadRepositoryData.version =
       this._repository?.version_or_commit === "version" ? this._repository.releases[0] : "";
+  }
+
+  private async _fetchRepository() {
+    this._repository = await fetchRepositoryInformation(this.hass, this.repository);
   }
 
   protected render(): TemplateResult | void {
@@ -181,7 +165,6 @@ export class HacsDonwloadDialog extends HacsDialogBase {
             : ""}
         </div>
         <mwc-button
-          raised
           slot="primaryaction"
           ?disabled=${!this._repository.can_download ||
           this._toggle ||
@@ -194,9 +177,6 @@ export class HacsDonwloadDialog extends HacsDialogBase {
             ? html`<ha-circular-progress active size="small"></ha-circular-progress>`
             : this.hacs.localize("common.download")}
         </mwc-button>
-        <hacs-link slot="secondaryaction" .url="https://github.com/${this._repository.full_name}">
-          <mwc-button> ${this.hacs.localize("common.repository")} </mwc-button>
-        </hacs-link>
       </hacs-dialog>
     `;
   }
@@ -216,6 +196,7 @@ export class HacsDonwloadDialog extends HacsDialogBase {
     }
     if (updateNeeded) {
       const repositories = await getRepositories(this.hass);
+      await this._fetchRepository();
       this.dispatchEvent(
         new CustomEvent("update-hacs", {
           detail: { repositories },
@@ -223,7 +204,6 @@ export class HacsDonwloadDialog extends HacsDialogBase {
           composed: true,
         })
       );
-      this._repository = this._getRepository(repositories, this.repository!);
       this._toggle = false;
     }
     this._downloadRepositoryData = ev.detail.value;

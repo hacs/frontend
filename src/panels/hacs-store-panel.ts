@@ -253,10 +253,9 @@ export class HacsStorePanel extends LitElement {
   }
 
   private async _clearAllNewRepositories() {
-    await clearNewRepositories(
-      this.hass,
-      activePanel(this.hacs.language, this.route)?.categories || []
-    );
+    await clearNewRepositories(this.hass, {
+      categories: activePanel(this.hacs.language, this.route)?.categories || [],
+    });
   }
 
   private _renderNoResultsFound(): TemplateResult {
