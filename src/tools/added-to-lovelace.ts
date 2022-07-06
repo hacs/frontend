@@ -1,7 +1,7 @@
-import { Repository } from "../data/common";
 import { Hacs } from "../data/hacs";
+import { RepositoryBase, RepositoryInfo } from "../data/repository";
 
-const generateUniqueTag = (repository: Repository, version?: string): string =>
+const generateUniqueTag = (repository: RepositoryInfo, version?: string): string =>
   String(
     `${repository.id}${(
       version ||
@@ -12,7 +12,7 @@ const generateUniqueTag = (repository: Repository, version?: string): string =>
   );
 
 export const generateLovelaceURL = (options: {
-  repository: Repository;
+  repository: RepositoryBase;
   version?: string;
   skipTag?: boolean;
 }): string =>
@@ -20,14 +20,14 @@ export const generateLovelaceURL = (options: {
     !options.skipTag ? `?hacstag=${generateUniqueTag(options.repository, options.version)}` : ""
   }`;
 
-export const addedToLovelace = (hacs: Hacs, repository: Repository): boolean => {
+export const addedToLovelace = (hacs: Hacs, repository: RepositoryBase): boolean => {
   if (!repository.installed) {
     return true;
   }
   if (repository.category !== "plugin") {
     return true;
   }
-  if (hacs.status?.lovelace_mode !== "storage") {
+  if (hacs.info?.lovelace_mode !== "storage") {
     return true;
   }
   const expectedUrl = generateLovelaceURL({ repository, skipTag: true });

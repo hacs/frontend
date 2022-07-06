@@ -13,7 +13,7 @@ import "../../../homeassistant-frontend/src/components/ha-clickable-list-item";
 import "../../../homeassistant-frontend/src/components/ha-svg-icon";
 import "../../../homeassistant-frontend/src/components/search-input";
 import { brandsUrl } from "../../../homeassistant-frontend/src/util/brands-url";
-import { Repository } from "../../data/common";
+import { RepositoryBase } from "../../data/repository";
 import { activePanel } from "../../panels/hacs-sections";
 import { scrollBarStyle } from "../../styles/element-styles";
 import { HacsStyles } from "../../styles/hacs-common-style";
@@ -54,7 +54,7 @@ export class HacsAddRepositoryDialog extends HacsDialogBase {
     );
   }
 
-  private _repositoriesInActiveCategory = (repositories: Repository[], categories: string[]) =>
+  private _repositoriesInActiveCategory = (repositories: RepositoryBase[], categories: string[]) =>
     repositories?.filter(
       (repo) =>
         !repo.installed &&
@@ -70,7 +70,7 @@ export class HacsAddRepositoryDialog extends HacsDialogBase {
     if (this.filters?.length === 0) {
       const categories = activePanel(this.hacs.language, this.route)?.categories;
       categories
-        ?.filter((c) => this.hacs.configuration?.categories.includes(c))
+        ?.filter((c) => this.hacs.info?.categories.includes(c))
         .forEach((category) => {
           this.filters.push({
             id: category,
@@ -95,7 +95,7 @@ export class HacsAddRepositoryDialog extends HacsDialogBase {
     this._searchInput = window.localStorage.getItem("hacs-search") || "";
 
     let repositories = this._filterRepositories(
-      this._repositoriesInActiveCategory(this.repositories, this.hacs.configuration?.categories),
+      this._repositoriesInActiveCategory(this.repositories, this.hacs.info?.categories),
       this._searchInput
     );
 

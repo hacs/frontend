@@ -11,12 +11,11 @@ import { HomeAssistant, Route } from "../homeassistant-frontend/src/types";
 import "./components/dialogs/hacs-event-dialog";
 import { HacsDialogEvent, HacsDispatchEvent, LocationChangedEvent } from "./data/common";
 import {
-  getConfiguration,
+  fetchHacsInfo,
   getCritical,
   getLovelaceConfiguration,
   getRemovedRepositories,
   getRepositories,
-  getStatus,
   websocketSubscription,
 } from "./data/websocket";
 import { HacsElement } from "./hacs";
@@ -141,25 +140,16 @@ class HacsFrontend extends HacsElement {
     const _fetch: any = {};
 
     if (prop === "all") {
-      [
-        _fetch.repositories,
-        _fetch.configuration,
-        _fetch.status,
-        _fetch.critical,
-        _fetch.resources,
-        _fetch.removed,
-      ] = await Promise.all([
-        getRepositories(this.hass),
-        getConfiguration(this.hass),
-        getStatus(this.hass),
-        getCritical(this.hass),
-        getLovelaceConfiguration(this.hass),
-        getRemovedRepositories(this.hass),
-      ]);
-    } else if (prop === "configuration") {
-      _fetch.configuration = await getConfiguration(this.hass);
-    } else if (prop === "status") {
-      _fetch.status = await getStatus(this.hass);
+      [_fetch.repositories, _fetch.info, _fetch.critical, _fetch.resources, _fetch.removed] =
+        await Promise.all([
+          getRepositories(this.hass),
+          fetchHacsInfo(this.hass),
+          getCritical(this.hass),
+          getLovelaceConfiguration(this.hass),
+          getRemovedRepositories(this.hass),
+        ]);
+    } else if (prop === "info") {
+      _fetch.info = await fetchHacsInfo(this.hass);
     } else if (prop === "repositories") {
       _fetch.repositories = await getRepositories(this.hass);
     } else if (prop === "lovelace") {

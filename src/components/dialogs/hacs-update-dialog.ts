@@ -11,13 +11,9 @@ import "../../../homeassistant-frontend/src/components/ha-circular-progress";
 import "../../../homeassistant-frontend/src/components/ha-expansion-panel";
 import "../../../homeassistant-frontend/src/components/ha-svg-icon";
 import { showConfirmationDialog } from "../../../homeassistant-frontend/src/dialogs/generic/show-dialog-box";
-import { HacsDispatchEvent, Repository } from "../../data/common";
-import {
-  repositoryInstall,
-  repositoryInstallVersion,
-  repositoryReleasenotes,
-  websocketSubscription,
-} from "../../data/websocket";
+import { HacsDispatchEvent } from "../../data/common";
+import { RepositoryBase, repositoryDownloadVersion } from "../../data/repository";
+import { repositoryReleasenotes, websocketSubscription } from "../../data/websocket";
 import { scrollBarStyle } from "../../styles/element-styles";
 import { HacsStyles } from "../../styles/hacs-common-style";
 import { markdown } from "../../tools/markdown/markdown";
@@ -40,7 +36,7 @@ export class HacsUpdateDialog extends HacsDialogBase {
     tag: string;
   }[] = [];
 
-  private _getRepository = memoizeOne((repositories: Repository[], repository: string) =>
+  private _getRepository = memoizeOne((repositories: RepositoryBase[], repository: string) =>
     repositories.find((repo) => repo.id === repository)
   );
 
@@ -51,11 +47,7 @@ export class HacsUpdateDialog extends HacsDialogBase {
       return;
     }
     if (repository.version_or_commit !== "commit") {
-      this._releaseNotes = await repositoryReleasenotes(
-        this.hass,
-        repository.id,
-        repository.installed_version
-      );
+      this._releaseNotes = await repositoryReleasenotes(this.hass, repository.id);
     }
     websocketSubscription(this.hass, (data) => (this._error = data), HacsDispatchEvent.ERROR);
   }
@@ -120,7 +112,7 @@ export class HacsUpdateDialog extends HacsDialogBase {
               : ""
           }
           ${
-            !repository.can_install
+            !repository.can_download
               ? html`<ha-alert alert-type="error" .rtl=${computeRTL(this.hass)}>
                   ${this.hacs.localize("confirm.home_assistant_version_not_correct", {
                     haversion: this.hass.config.version,
@@ -144,7 +136,7 @@ export class HacsUpdateDialog extends HacsDialogBase {
         </div>
         <mwc-button
           slot="primaryaction"
-          ?disabled=${!repository.can_install}
+          ?disabled=${!repository.can_download}
           @click=${this._updateRepository}
           raised
           >
@@ -176,12 +168,12 @@ export class HacsUpdateDialog extends HacsDialogBase {
       return;
     }
     if (repository.version_or_commit !== "commit") {
-      await repositoryInstallVersion(this.hass, repository.id, repository.available_version);
+      await repositoryDownloadVersion(this.hass, repository.id, repository.available_version);
     } else {
-      await repositoryInstall(this.hass, repository.id);
+      await repositoryDownloadVersion(this.hass, repository.id);
     }
     if (repository.category === "plugin") {
-      if (this.hacs.status.lovelace_mode === "storage") {
+      if (this.hacs.info.lovelace_mode === "storage") {
         await updateLovelaceResources(this.hass, repository, repository.available_version);
       }
     }

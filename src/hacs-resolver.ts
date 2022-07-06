@@ -8,9 +8,6 @@ import {
   Route,
   Critical,
   LovelaceResource,
-  Status,
-  Configuration,
-  Repository,
   LocationChangedEvent,
   HacsDialogEvent,
   RemovedRepository,
@@ -19,12 +16,11 @@ import {
 
 import {
   getRepositories,
-  getConfiguration,
-  getStatus,
   getCritical,
   getLovelaceConfiguration,
   getRemovedRepositories,
   websocketSubscription,
+  fetchHacsInfo,
 } from "./data/websocket";
 
 import "./panels/hacs-entry-panel";
@@ -32,10 +28,12 @@ import "./panels/hacs-store-panel";
 
 import "./components/dialogs/hacs-event-dialog";
 import { navigate } from "../homeassistant-frontend/src/common/navigate";
+import { HacsInfo } from "./data/hacs";
+import { RepositoryBase } from "./data/repository";
 
 @customElement("hacs-resolver")
 export class HacsResolver extends LitElement {
-  @property({ attribute: false }) public configuration!: Configuration;
+  @property({ attribute: false }) public info!: HacsInfo;
 
   @property({ attribute: false }) public critical!: Critical[];
 
@@ -45,11 +43,9 @@ export class HacsResolver extends LitElement {
 
   @property({ type: Boolean }) public narrow!: boolean;
 
-  @property({ attribute: false }) public repositories!: Repository[];
+  @property({ attribute: false }) public repositories!: RepositoryBase[];
 
   @property({ attribute: false }) public route!: Route;
-
-  @property({ attribute: false }) public status!: Status;
 
   @property({ attribute: false }) public removed!: RemovedRepository[];
 
@@ -57,8 +53,8 @@ export class HacsResolver extends LitElement {
 
   @query("#hacs-dialog-secondary") private _hacsDialogSecondary?: any;
 
-  private _sortRepositoriesByName = memoizeOne((repositories: Repository[]) =>
-    repositories.sort((a: Repository, b: Repository) =>
+  private _sortRepositoriesByName = memoizeOne((repositories: RepositoryBase[]) =>
+    repositories.sort((a: RepositoryBase, b: RepositoryBase) =>
       a.name.toLowerCase() > b.name.toLowerCase() ? 1 : -1
     )
   );
@@ -92,21 +88,18 @@ export class HacsResolver extends LitElement {
   }
 
   private async _updateProperties() {
-    const [repositories, configuration, status, critical, lovelace, removed] = await Promise.all([
+    const [repositories, info, critical, lovelace, removed] = await Promise.all([
       getRepositories(this.hass),
-      getConfiguration(this.hass),
-      getStatus(this.hass),
+      fetchHacsInfo(this.hass),
       getCritical(this.hass),
       getLovelaceConfiguration(this.hass),
       getRemovedRepositories(this.hass),
     ]);
 
-    this.configuration = configuration;
-    this.status = status;
+    this.info = info;
     this.removed = removed;
     this.critical = critical;
     this.lovelace = lovelace;
-    this.configuration = configuration;
     this.repositories = this._sortRepositoriesByName(repositories);
   }
 
@@ -120,10 +113,9 @@ export class HacsResolver extends LitElement {
             .hass=${this.hass}
             .route=${this.route}
             .narrow=${this.narrow}
-            .configuration=${this.configuration}
+            .info=${this.info}
             .lovelace=${this.lovelace}
             .repositories=${this.repositories}
-            .status=${this.status}
             .removed=${this.removed}
             .section=${this.route.path.split("/")[1]}
           ></hacs-store-panel>`
@@ -131,9 +123,8 @@ export class HacsResolver extends LitElement {
             .hass=${this.hass}
             .route=${this.route}
             .narrow=${this.narrow}
-            .configuration=${this.configuration}
+            .info=${this.info}
             .lovelace=${this.lovelace}
-            .status=${this.status}
             .removed=${this.removed}
             .repositories=${this.repositories}
           ></hacs-entry-panel>`}
@@ -141,9 +132,8 @@ export class HacsResolver extends LitElement {
         .hass=${this.hass}
         .route=${this.route}
         .narrow=${this.narrow}
-        .configuration=${this.configuration}
+        .info=${this.info}
         .lovelace=${this.lovelace}
-        .status=${this.status}
         .removed=${this.removed}
         .repositories=${this.repositories}
         id="hacs-dialog"
@@ -152,9 +142,8 @@ export class HacsResolver extends LitElement {
         .hass=${this.hass}
         .route=${this.route}
         .narrow=${this.narrow}
-        .configuration=${this.configuration}
+        .info=${this.info}
         .lovelace=${this.lovelace}
-        .status=${this.status}
         .removed=${this.removed}
         .repositories=${this.repositories}
         id="hacs-dialog-secondary"

@@ -1,11 +1,12 @@
 import memoizeOne from "memoize-one";
-import { Message, Repository } from "../data/common";
+import { Message } from "../data/common";
 import { Hacs } from "../data/hacs";
+import { RepositoryBase } from "../data/repository";
 
 export const getMessages = memoizeOne((hacs: Hacs, loadedIntegrationMy: boolean): Message[] => {
   const messages: Message[] = [];
-  const repositoriesNotAddedToLovelace: Repository[] = [];
-  const repositoriesRestartPending: Repository[] = [];
+  const repositoriesNotAddedToLovelace: RepositoryBase[] = [];
+  const repositoriesRestartPending: RepositoryBase[] = [];
 
   hacs.repositories.forEach((repo) => {
     if (repo.status === "pending-restart") {
@@ -28,28 +29,20 @@ export const getMessages = memoizeOne((hacs: Hacs, loadedIntegrationMy: boolean)
     }
   });
 
-  if (hacs.status?.startup && ["setup", "waiting", "startup"].includes(hacs.status.stage)) {
+  if (hacs.info?.startup && ["setup", "waiting", "startup"].includes(hacs.info.stage)) {
     messages.push({
-      name: hacs.localize(`entry.messages.${hacs.status.stage}.title`),
-      info: hacs.localize(`entry.messages.${hacs.status.stage}.content`),
+      name: hacs.localize(`entry.messages.${hacs.info.stage}.title`),
+      info: hacs.localize(`entry.messages.${hacs.info.stage}.content`),
       severity: "warning",
     });
   }
 
-  if (hacs.status?.has_pending_tasks) {
-    messages.push({
-      name: hacs.localize("entry.messages.has_pending_tasks.title"),
-      info: hacs.localize("entry.messages.has_pending_tasks.content"),
-      severity: "warning",
-    });
-  }
-
-  if (hacs.status?.disabled) {
+  if (hacs.info?.disabled_reason) {
     return [
       {
         name: hacs.localize("entry.messages.disabled.title"),
-        secondary: hacs.localize(`entry.messages.disabled.${hacs.status?.disabled_reason}.title`),
-        info: hacs.localize(`entry.messages.disabled.${hacs.status?.disabled_reason}.description`),
+        secondary: hacs.localize(`entry.messages.disabled.${hacs.info?.disabled_reason}.title`),
+        info: hacs.localize(`entry.messages.disabled.${hacs.info?.disabled_reason}.description`),
         severity: "error",
       },
     ];

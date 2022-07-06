@@ -1,21 +1,3 @@
-import { css, html, LitElement, TemplateResult, PropertyValues } from "lit";
-import { customElement, property, state } from "lit/decorators";
-import "../../homeassistant-frontend/src/components/ha-alert";
-import "../../homeassistant-frontend/src/components/ha-card";
-import "../../homeassistant-frontend/src/components/ha-fab";
-import "../../homeassistant-frontend/src/components/ha-icon-overflow-menu";
-import "../../homeassistant-frontend/src/components/search-input";
-import "../../homeassistant-frontend/src/layouts/hass-tabs-subpage";
-import { HomeAssistant, Route } from "../../homeassistant-frontend/src/types";
-import "../components/hacs-filter";
-import "../components/hacs-repository-card";
-import "@polymer/app-layout/app-header/app-header";
-import "@polymer/app-layout/app-toolbar/app-toolbar";
-import "../../homeassistant-frontend/src/layouts/hass-subpage";
-import "../../homeassistant-frontend/src/layouts/hass-loading-screen";
-import "../../homeassistant-frontend/src/layouts/hass-error-screen";
-import { Hacs } from "../data/hacs";
-import { HacsStyles } from "../styles/hacs-common-style";
 import {
   mdiAccount,
   mdiAlert,
@@ -24,17 +6,35 @@ import {
   mdiArrowDownCircle,
   mdiClose,
   mdiCube,
+  mdiDownload,
   mdiExclamationThick,
   mdiGithub,
   mdiLanguageJavascript,
   mdiReload,
   mdiStar,
 } from "@mdi/js";
-import { Repository } from "../data/common";
-import { fetchRepositoryInformation } from "../data/websocket";
-import { mainWindow } from "../../homeassistant-frontend/src/common/dom/get_main_window";
-import { markdown } from "../tools/markdown/markdown";
+import "@polymer/app-layout/app-header/app-header";
+import "@polymer/app-layout/app-toolbar/app-toolbar";
+import { css, html, LitElement, PropertyValues, TemplateResult } from "lit";
+import { customElement, property, state } from "lit/decorators";
 import memoizeOne from "memoize-one";
+import { mainWindow } from "../../homeassistant-frontend/src/common/dom/get_main_window";
+import { navigate } from "../../homeassistant-frontend/src/common/navigate";
+import "../../homeassistant-frontend/src/components/ha-fab";
+import "../../homeassistant-frontend/src/components/ha-icon-overflow-menu";
+import { getConfigEntries } from "../../homeassistant-frontend/src/data/config_entries";
+import { showConfirmationDialog } from "../../homeassistant-frontend/src/dialogs/generic/show-dialog-box";
+import "../../homeassistant-frontend/src/layouts/hass-error-screen";
+import "../../homeassistant-frontend/src/layouts/hass-loading-screen";
+import "../../homeassistant-frontend/src/layouts/hass-subpage";
+import { HomeAssistant, Route } from "../../homeassistant-frontend/src/types";
+import "../components/hacs-filter";
+import "../components/hacs-repository-card";
+import { Hacs } from "../data/hacs";
+import { fetchRepositoryInformation, RepositoryInfo } from "../data/repository";
+import { repositoryUninstall, repositoryUpdate } from "../data/websocket";
+import { HacsStyles } from "../styles/hacs-common-style";
+import { markdown } from "../tools/markdown/markdown";
 
 @customElement("hacs-repository-panel")
 export class HacsRepositoryPanel extends LitElement {
@@ -48,7 +48,7 @@ export class HacsRepositoryPanel extends LitElement {
 
   @property({ attribute: false }) public route!: Route;
 
-  @property({ attribute: false }) public _repository?: Repository;
+  @property({ attribute: false }) public _repository?: RepositoryInfo;
 
   @state() private _error?: string;
 
@@ -60,19 +60,28 @@ export class HacsRepositoryPanel extends LitElement {
       this._error = "Missing repositoryId from route";
       return;
     }
-    fetchRepositoryInformation(this.hass, repositoryId)
-      .then((data) => {
-        this._repository = data;
-        if (!this._repository) {
-          this._error = "No repository for " + repositoryId;
-        }
-      })
-      .catch((err) => {
-        this._error = err;
-      });
+    this._fetchRepository(repositoryId);
   }
 
-  private _getAuthors = memoizeOne((repository: Repository) => {
+  protected updated(changedProps) {
+    super.updated(changedProps);
+    if (changedProps.has("repositories") && this._repository) {
+      this._fetchRepository();
+    }
+  }
+
+  private async _fetchRepository(repositoryId?: string) {
+    try {
+      this._repository = await fetchRepositoryInformation(
+        this.hass,
+        repositoryId || String(this._repository!.id)
+      );
+    } catch (err: any) {
+      this._error = err?.message;
+    }
+  }
+
+  private _getAuthors = memoizeOne((repository: RepositoryInfo) => {
     const authors: string[] = [];
     if (!repository.authors) return authors;
     repository.authors.forEach((author) => authors.push(author.replace("@", "")));
@@ -105,6 +114,7 @@ export class HacsRepositoryPanel extends LitElement {
         .narrow=${this.narrow}
         .route=${this.route}
         .header=${this._repository.name}
+        hasFab
       >
         <ha-icon-overflow-menu
           slot="toolbar-icon"
@@ -124,20 +134,24 @@ export class HacsRepositoryPanel extends LitElement {
             {
               path: mdiArrowDownCircle,
               label: this.hacs.localize("repository_card.update_information"),
-              action: () => this._updateReopsitoryInfo(),
+              action: () => this._refreshReopsitoryInfo(),
             },
             {
               path: mdiReload,
               label: this.hacs.localize("repository_card.redownload"),
-              action: () => this._installRepository(),
+              action: () => this._downloadRepositoryDialog(),
+              hideForUninstalled: true,
             },
             {
               category: "plugin",
+              hideForUninstalled: true,
               path: mdiLanguageJavascript,
               label: this.hacs.localize("repository_card.open_source"),
               action: () =>
                 mainWindow.open(
-                  `/hacsfiles/${path.pop()}/${this._repository!.file_name}`,
+                  `/hacsfiles/${this._repository!.local_path.split("/").pop()}/${
+                    this._repository!.file_name
+                  }`,
                   "_blank",
                   "noreferrer=true"
                 ),
@@ -147,7 +161,7 @@ export class HacsRepositoryPanel extends LitElement {
               label: this.hacs.localize("repository_card.open_issue"),
               action: () =>
                 mainWindow.open(
-                  `https://github.com/${this._repository.full_name}/issues`,
+                  `https://github.com/${this._repository!.full_name}/issues`,
                   "_blank",
                   "noreferrer=true"
                 ),
@@ -156,6 +170,7 @@ export class HacsRepositoryPanel extends LitElement {
               hideForId: "172733314",
               path: mdiAlert,
               label: this.hacs.localize("repository_card.report"),
+              hideForUninstalled: true,
               action: () =>
                 mainWindow.open(
                   `https://github.com/hacs/integration/issues/new?assignees=ludeeus&labels=flag&template=removal.yml&repo=${
@@ -167,14 +182,16 @@ export class HacsRepositoryPanel extends LitElement {
             },
             {
               hideForId: "172733314",
+              hideForUninstalled: true,
               path: mdiClose,
               label: this.hacs.localize("common.remove"),
-              action: () => this._uninstallRepositoryDialog(),
+              action: () => this._removeRepositoryDialog(),
             },
           ].filter(
             (entry) =>
               (!entry.category || this._repository!.category === entry.category) &&
-              (!entry.hideForId || String(this._repository!.id) !== entry.hideForId)
+              (!entry.hideForId || String(this._repository!.id) !== entry.hideForId) &&
+              (!entry.hideForUninstalled || this._repository!.installed_version)
           )}
         >
         </ha-icon-overflow-menu>
@@ -220,21 +237,110 @@ export class HacsRepositoryPanel extends LitElement {
             this._repository
           )}
         </div>
+        ${!this._repository.installed_version
+          ? html`<ha-fab
+              .label=${this.hacs.localize("common.download")}
+              .extended=${!this.narrow}
+              @click=${this._downloadRepositoryDialog}
+            >
+              <ha-svg-icon slot="icon" .path=${mdiDownload}></ha-svg-icon>
+            </ha-fab>`
+          : ""}
       </hass-subpage>
     `;
+  }
+
+  private _downloadRepositoryDialog() {
+    this.dispatchEvent(
+      new CustomEvent("hacs-dialog", {
+        detail: {
+          type: "download",
+          repository: this._repository!.id,
+        },
+        bubbles: true,
+        composed: true,
+      })
+    );
+  }
+
+  private async _removeRepositoryDialog() {
+    if (this._repository!.category === "integration" && this._repository!.config_flow) {
+      const configFlows = (await getConfigEntries(this.hass)).some(
+        (entry) => entry.domain === this._repository!.domain
+      );
+      if (configFlows) {
+        const ignore = await showConfirmationDialog(this, {
+          title: this.hacs.localize("dialog.configured.title"),
+          text: this.hacs.localize("dialog.configured.message", { name: this._repository!.name }),
+          dismissText: this.hacs.localize("common.ignore"),
+          confirmText: this.hacs.localize("common.navigate"),
+          confirm: () => {
+            navigate("/config/integrations", { replace: true });
+          },
+        });
+        if (ignore) {
+          return;
+        }
+      }
+    }
+    this.dispatchEvent(
+      new CustomEvent("hacs-dialog", {
+        detail: {
+          type: "progress",
+          title: this.hacs.localize("dialog.remove.title"),
+          confirmText: this.hacs.localize("dialog.remove.title"),
+          content: this.hacs.localize("dialog.remove.message", { name: this._repository!.name }),
+          confirm: async () => {
+            await repositoryUninstall(this.hass, String(this._repository!.id));
+            history.back();
+          },
+        },
+        bubbles: true,
+        composed: true,
+      })
+    );
+  }
+
+  private async _refreshReopsitoryInfo() {
+    await repositoryUpdate(this.hass, String(this._repository!.id));
   }
 
   static get styles() {
     return [
       HacsStyles,
       css`
+        hass-loading-screen {
+          --app-header-background-color: var(--sidebar-background-color);
+          --app-header-text-color: var(--sidebar-text-color);
+          height: 100vh;
+        }
+
         hass-subpage {
           position: absolute;
           width: 100vw;
         }
 
+        ha-svg-icon {
+          color: var(--hcv-text-color-on-background);
+        }
+
+        ha-fab {
+          position: fixed;
+          float: right;
+          right: calc(18px + env(safe-area-inset-right));
+          bottom: calc(16px + env(safe-area-inset-bottom));
+          z-index: 1;
+        }
+
+        ha-fab.rtl {
+          float: left;
+          right: auto;
+          left: calc(18px + env(safe-area-inset-left));
+        }
+
         .content {
-          margin: 12px;
+          padding: 12px;
+          margin-bottom: 64px;
         }
 
         .chips {
@@ -246,7 +352,7 @@ export class HacsRepositoryPanel extends LitElement {
 
         @media all and (max-width: 500px) {
           .content {
-            margin: 8px 4px;
+            margin: 8px 4px 64px;
           }
         }
       `,
