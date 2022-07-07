@@ -109,7 +109,7 @@ class HacsFrontend extends HacsElement {
         // Ignore if modifier keys are pressed
         return;
       }
-      if (["c", "m", "e"].includes(ev.key)) {
+      if (["c", "e"].includes(ev.key)) {
         // @ts-ignore
         fireEvent(mainWindow, "hass-quick-bar-trigger", ev, {
           bubbles: false,

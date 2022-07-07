@@ -20,6 +20,7 @@ import { customElement, property, state } from "lit/decorators";
 import memoizeOne from "memoize-one";
 import { mainWindow } from "../../homeassistant-frontend/src/common/dom/get_main_window";
 import { navigate } from "../../homeassistant-frontend/src/common/navigate";
+import { extractSearchParamsObject } from "../../homeassistant-frontend/src/common/url/search-params";
 import "../../homeassistant-frontend/src/components/ha-fab";
 import "../../homeassistant-frontend/src/components/ha-icon-overflow-menu";
 import { getConfigEntries } from "../../homeassistant-frontend/src/data/config_entries";
@@ -31,8 +32,13 @@ import { HomeAssistant, Route } from "../../homeassistant-frontend/src/types";
 import "../components/hacs-filter";
 import "../components/hacs-repository-card";
 import { Hacs } from "../data/hacs";
-import { fetchRepositoryInformation, RepositoryInfo } from "../data/repository";
-import { repositoryUninstall, repositoryUpdate } from "../data/websocket";
+import { fetchRepositoryInformation, RepositoryBase, RepositoryInfo } from "../data/repository";
+import {
+  getRepositories,
+  repositoryAdd,
+  repositoryUninstall,
+  repositoryUpdate,
+} from "../data/websocket";
 import { HacsStyles } from "../styles/hacs-common-style";
 import { markdown } from "../tools/markdown/markdown";
 
@@ -52,15 +58,76 @@ export class HacsRepositoryPanel extends LitElement {
 
   @state() private _error?: string;
 
-  protected firstUpdated(changedProperties: PropertyValues): void {
+  protected async firstUpdated(changedProperties: PropertyValues): Promise<void> {
     super.firstUpdated(changedProperties);
-    const dividerPos = this.route.path.indexOf("/", 1);
-    const repositoryId = this.route.path.substr(dividerPos + 1);
-    if (!repositoryId) {
-      this._error = "Missing repositoryId from route";
-      return;
+    document.body.addEventListener("keydown", (ev: KeyboardEvent) => {
+      if (ev.ctrlKey || ev.shiftKey || ev.metaKey || ev.altKey) {
+        // Ignore if modifier keys are pressed
+        return;
+      }
+      if (["m"].includes(ev.key)) {
+        const myParams = new URLSearchParams({
+          redirect: "hacs_repository",
+          owner: this._repository!.full_name.split("/")[0],
+          repository: this._repository!.full_name.split("/")[0],
+          category: this._repository!.category,
+        });
+        window.open(`https://my.home-assistant.io/create-link/?${myParams.toString()}`, "_blank");
+      }
+    });
+
+    const params = extractSearchParamsObject();
+    if (Object.entries(params).length) {
+      let existing: RepositoryBase | undefined;
+      const requestedRepository = `${params.owner}/${params.repository}`;
+      existing = this.hacs.repositories.find(
+        (repository) =>
+          repository.full_name.toLocaleLowerCase() === requestedRepository.toLocaleLowerCase()
+      );
+      if (!existing && params.category) {
+        if (
+          !(await showConfirmationDialog(this, {
+            title: this.hacs.localize("my.add_repository_title"),
+            text: this.hacs.localize("my.add_repository_description", {
+              repository: requestedRepository,
+            }),
+            confirmText: this.hacs.localize("common.add"),
+            dismissText: this.hacs.localize("common.cancel"),
+          }))
+        ) {
+          this._error = this.hacs.localize("my.repository_not_found", {
+            repository: requestedRepository,
+          });
+          return;
+        }
+        try {
+          await repositoryAdd(this.hass, requestedRepository, params.category);
+          this.hacs.repositories = await getRepositories(this.hass);
+          existing = this.hacs.repositories.find(
+            (repository) =>
+              repository.full_name.toLocaleLowerCase() === requestedRepository.toLocaleLowerCase()
+          );
+        } catch (err: any) {
+          this._error = err;
+          return;
+        }
+      }
+      if (existing) {
+        this._fetchRepository(String(existing.id));
+      } else {
+        this._error = this.hacs.localize("my.repository_not_found", {
+          repository: requestedRepository,
+        });
+      }
+    } else {
+      const dividerPos = this.route.path.indexOf("/", 1);
+      const repositoryId = this.route.path.substr(dividerPos + 1);
+      if (!repositoryId) {
+        this._error = "Missing repositoryId from route";
+        return;
+      }
+      this._fetchRepository(repositoryId);
     }
-    this._fetchRepository(repositoryId);
   }
 
   protected updated(changedProps) {

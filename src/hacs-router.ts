@@ -52,7 +52,12 @@ class HacsRouter extends HassRouterPage {
 
   protected routerOptions: RouterOptions = {
     defaultPage: "entry",
+    showLoading: true,
     routes: {
+      _my_redirect: {
+        tag: "hacs-my-redirect",
+        load: () => import("./hacs-my-redirect"),
+      },
       entry: {
         tag: "hacs-entry-panel",
         load: () => import("./panels/hacs-entry-panel"),
