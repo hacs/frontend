@@ -141,7 +141,7 @@ export class HacsRepositoryCard extends LitElement {
         ha-card {
           display: flex;
           flex-direction: column;
-          height: 100%;
+          height: 195px;
           width: 480px;
         }
 
@@ -184,6 +184,8 @@ export class HacsRepositoryCard extends LitElement {
           opacity: var(--dark-primary-opacity);
           font-size: 14px;
           padding: 8px 16px;
+          max-height: 52px;
+          overflow: hidden;
         }
 
         .status-new {
