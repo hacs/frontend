@@ -34,6 +34,8 @@ import "../components/hacs-repository-card";
 import { Hacs } from "../data/hacs";
 import { fetchRepositoryInformation, RepositoryBase, RepositoryInfo } from "../data/repository";
 import {
+  deleteResource,
+  fetchResources,
   getRepositories,
   repositoryAdd,
   repositoryUninstall,
@@ -358,14 +360,30 @@ export class HacsRepositoryPanel extends LitElement {
           confirmText: this.hacs.localize("dialog.remove.title"),
           content: this.hacs.localize("dialog.remove.message", { name: this._repository!.name }),
           confirm: async () => {
-            await repositoryUninstall(this.hass, String(this._repository!.id));
-            history.back();
+            await this._repositoryRemove();
           },
         },
         bubbles: true,
         composed: true,
       })
     );
+  }
+
+  private async _repositoryRemove() {
+    if (this._repository!.category === "plugin" && this.hacs.info?.lovelace_mode !== "yaml") {
+      const resources = await fetchResources(this.hass);
+      resources
+        .filter((resource) =>
+          resource.url.startsWith(
+            `/hacsfiles/${this._repository!.full_name.split("/")[1]}/${this._repository!.file_name}`
+          )
+        )
+        .forEach(async (resource) => {
+          await deleteResource(this.hass, String(resource.id));
+        });
+    }
+    await repositoryUninstall(this.hass, String(this._repository!.id));
+    history.back();
   }
 
   private async _refreshReopsitoryInfo() {
