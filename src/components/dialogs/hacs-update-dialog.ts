@@ -1,9 +1,8 @@
 import "@material/mwc-button/mwc-button";
 import { mdiArrowRight } from "@mdi/js";
 import { css, CSSResultGroup, html, TemplateResult } from "lit";
-import { customElement, property } from "lit/decorators";
+import { customElement, property, state } from "lit/decorators";
 import { classMap } from "lit/directives/class-map";
-import memoizeOne from "memoize-one";
 import { mainWindow } from "../../../homeassistant-frontend/src/common/dom/get_main_window";
 import { computeRTL } from "../../../homeassistant-frontend/src/common/util/compute_rtl";
 import "../../../homeassistant-frontend/src/components/ha-alert";
@@ -12,7 +11,11 @@ import "../../../homeassistant-frontend/src/components/ha-expansion-panel";
 import "../../../homeassistant-frontend/src/components/ha-svg-icon";
 import { showConfirmationDialog } from "../../../homeassistant-frontend/src/dialogs/generic/show-dialog-box";
 import { HacsDispatchEvent } from "../../data/common";
-import { RepositoryBase, repositoryDownloadVersion } from "../../data/repository";
+import {
+  fetchRepositoryInformation,
+  repositoryDownloadVersion,
+  RepositoryInfo,
+} from "../../data/repository";
 import { repositoryReleasenotes, websocketSubscription } from "../../data/websocket";
 import { scrollBarStyle } from "../../styles/element-styles";
 import { HacsStyles } from "../../styles/hacs-common-style";
@@ -36,28 +39,22 @@ export class HacsUpdateDialog extends HacsDialogBase {
     tag: string;
   }[] = [];
 
-  private _getRepository = memoizeOne((repositories: RepositoryBase[], repository: string) =>
-    repositories.find((repo) => repo.id === repository)
-  );
+  @state() private _repository?: RepositoryInfo;
 
   protected async firstUpdated(changedProps) {
     super.firstUpdated(changedProps);
-    const repository = this._getRepository(this.hacs.repositories, this.repository);
-    if (!repository) {
+    this._repository = await fetchRepositoryInformation(this.hass, this.repository);
+    if (!this._repository) {
       return;
     }
-    if (repository.version_or_commit !== "commit") {
-      this._releaseNotes = await repositoryReleasenotes(this.hass, repository.id);
+    if (this._repository.version_or_commit !== "commit") {
+      this._releaseNotes = await repositoryReleasenotes(this.hass, String(this._repository.id));
     }
     websocketSubscription(this.hass, (data) => (this._error = data), HacsDispatchEvent.ERROR);
   }
 
   protected render(): TemplateResult {
-    if (!this.active) return html``;
-    const repository = this._getRepository(this.hacs.repositories, this.repository);
-    if (!repository) {
-      return html``;
-    }
+    if (!this.active || !this._repository) return html``;
 
     return html`
       <hacs-dialog
@@ -67,11 +64,11 @@ export class HacsUpdateDialog extends HacsDialogBase {
       >
         <div class=${classMap({ content: true, narrow: this.narrow })}>
           <p class="message">
-            ${this.hacs.localize("dialog_update.message", { name: repository.name })}
+            ${this.hacs.localize("dialog_update.message", { name: this._repository.name })}
           </p>
           <div class="version-container">
             <div class="version-element">
-              <span class="version-number">${repository.installed_version}</span>
+              <span class="version-number">${this._repository.installed_version}</span>
               <small class="version-text">${this.hacs.localize(
                 "dialog_update.downloaded_version"
               )}</small>
@@ -84,7 +81,7 @@ export class HacsUpdateDialog extends HacsDialogBase {
             </span>
 
             <div class="version-element">
-                <span class="version-number">${repository.available_version}</span>
+                <span class="version-number">${this._repository.available_version}</span>
                 <small class="version-text">${this.hacs.localize(
                   "dialog_update.available_version"
                 )}</small>
@@ -104,7 +101,7 @@ export class HacsUpdateDialog extends HacsDialogBase {
                       ?expanded=${this._releaseNotes.length === 1}
                     >
                       ${release.body
-                        ? markdown.html(release.body, repository)
+                        ? markdown.html(release.body, this._repository)
                         : this.hacs.localize("dialog_update.no_info")}
                     </ha-expansion-panel>
                   `
@@ -112,17 +109,17 @@ export class HacsUpdateDialog extends HacsDialogBase {
               : ""
           }
           ${
-            !repository.can_download
+            !this._repository.can_download
               ? html`<ha-alert alert-type="error" .rtl=${computeRTL(this.hass)}>
                   ${this.hacs.localize("confirm.home_assistant_version_not_correct", {
                     haversion: this.hass.config.version,
-                    minversion: repository.homeassistant,
+                    minversion: this._repository.homeassistant,
                   })}
                 </ha-alert>`
               : ""
           }
           ${
-            repository.category === "integration"
+            this._repository.category === "integration"
               ? html`<p>${this.hacs.localize("dialog_download.restart")}</p>`
               : ""
           }
@@ -136,7 +133,7 @@ export class HacsUpdateDialog extends HacsDialogBase {
         </div>
         <mwc-button
           slot="primaryaction"
-          ?disabled=${!repository.can_download}
+          ?disabled=${!this._repository.can_download}
           @click=${this._updateRepository}
           raised
           >
@@ -152,7 +149,7 @@ export class HacsUpdateDialog extends HacsDialogBase {
             <mwc-button>${this.hacs.localize("dialog_update.changelog")}
           </mwc-button>
           </hacs-link>
-          <hacs-link .url="https://github.com/${repository.full_name}">
+          <hacs-link .url="https://github.com/${this._repository.full_name}">
             <mwc-button>${this.hacs.localize("common.repository")}
           </mwc-button>
           </hacs-link>
@@ -163,23 +160,28 @@ export class HacsUpdateDialog extends HacsDialogBase {
 
   private async _updateRepository(): Promise<void> {
     this._updating = true;
-    const repository = this._getRepository(this.hacs.repositories, this.repository);
-    if (!repository) {
-      return;
-    }
-    if (repository.version_or_commit !== "commit") {
-      await repositoryDownloadVersion(this.hass, repository.id, repository.available_version);
+
+    if (this._repository!.version_or_commit !== "commit") {
+      await repositoryDownloadVersion(
+        this.hass,
+        String(this._repository!.id),
+        this._repository!.available_version
+      );
     } else {
-      await repositoryDownloadVersion(this.hass, repository.id);
+      await repositoryDownloadVersion(this.hass, String(this._repository!.id));
     }
-    if (repository.category === "plugin") {
+    if (this._repository!.category === "plugin") {
       if (this.hacs.info.lovelace_mode === "storage") {
-        await updateLovelaceResources(this.hass, repository, repository.available_version);
+        await updateLovelaceResources(
+          this.hass,
+          this._repository!,
+          this._repository!.available_version
+        );
       }
     }
     this._updating = false;
     this.dispatchEvent(new Event("hacs-dialog-closed", { bubbles: true, composed: true }));
-    if (repository.category === "plugin") {
+    if (this._repository!.category === "plugin") {
       showConfirmationDialog(this, {
         title: this.hacs.localize!("common.reload"),
         text: html`${this.hacs.localize!("dialog.reload.description")}<br />${this.hacs.localize!(
@@ -196,15 +198,12 @@ export class HacsUpdateDialog extends HacsDialogBase {
   }
 
   private _getChanglogURL(): string | undefined {
-    const repository = this._getRepository(this.hacs.repositories, this.repository);
-    if (!repository) {
-      return;
+    if (this._repository!.version_or_commit === "commit") {
+      return `https://github.com/${this._repository!.full_name}/compare/${
+        this._repository!.installed_version
+      }...${this._repository!.available_version}`;
     }
-
-    if (repository.version_or_commit === "commit") {
-      return `https://github.com/${repository.full_name}/compare/${repository.installed_version}...${repository.available_version}`;
-    }
-    return `https://github.com/${repository.full_name}/releases`;
+    return `https://github.com/${this._repository!.full_name}/releases`;
   }
 
   static get styles(): CSSResultGroup {

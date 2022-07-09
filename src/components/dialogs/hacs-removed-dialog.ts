@@ -105,7 +105,7 @@ export class HacsRemovedDialog extends HacsDialogBase {
     ) {
       const resources = await fetchResources(this.hass);
       resources
-        .filter((resource) => resource.url === this._lovelaceUrl())
+        .filter((resource) => resource.url.startsWith(this._lovelaceUrl()))
         .forEach((resource) => {
           deleteResource(this.hass, String(resource.id));
         });

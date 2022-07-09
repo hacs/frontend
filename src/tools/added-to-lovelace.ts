@@ -1,5 +1,5 @@
 import { Hacs } from "../data/hacs";
-import { RepositoryBase, RepositoryInfo } from "../data/repository";
+import { RepositoryInfo } from "../data/repository";
 
 const generateUniqueTag = (repository: RepositoryInfo, version?: string): string =>
   String(
@@ -12,7 +12,7 @@ const generateUniqueTag = (repository: RepositoryInfo, version?: string): string
   );
 
 export const generateLovelaceURL = (options: {
-  repository: RepositoryBase;
+  repository: RepositoryInfo;
   version?: string;
   skipTag?: boolean;
 }): string =>
@@ -20,7 +20,7 @@ export const generateLovelaceURL = (options: {
     !options.skipTag ? `?hacstag=${generateUniqueTag(options.repository, options.version)}` : ""
   }`;
 
-export const addedToLovelace = (hacs: Hacs, repository: RepositoryBase): boolean => {
+export const addedToLovelace = (hacs: Hacs, repository: RepositoryInfo): boolean => {
   if (!repository.installed) {
     return true;
   }

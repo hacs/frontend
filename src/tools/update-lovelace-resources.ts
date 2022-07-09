@@ -1,5 +1,5 @@
 import { HomeAssistant } from "../../homeassistant-frontend/src/types";
-import { RepositoryBase } from "../data/repository";
+import { RepositoryInfo } from "../data/repository";
 import { createResource, fetchResources, updateResource } from "../data/websocket";
 import { generateLovelaceURL } from "./added-to-lovelace";
 
@@ -7,7 +7,7 @@ import { HacsLogger } from "./hacs-logger";
 
 export async function updateLovelaceResources(
   hass: HomeAssistant,
-  repository: RepositoryBase,
+  repository: RepositoryInfo,
   version?: string
 ): Promise<void> {
   const logger = new HacsLogger("updateLovelaceResources");
