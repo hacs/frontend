@@ -60,23 +60,37 @@ export class HacsRepositoryPanel extends LitElement {
 
   @state() private _error?: string;
 
-  protected async firstUpdated(changedProperties: PropertyValues): Promise<void> {
-    super.firstUpdated(changedProperties);
-    document.body.addEventListener("keydown", (ev: KeyboardEvent) => {
-      if (ev.ctrlKey || ev.shiftKey || ev.metaKey || ev.altKey) {
-        // Ignore if modifier keys are pressed
+  public connectedCallback() {
+    super.connectedCallback();
+    document.body.addEventListener("keydown", this._generateMyLink);
+  }
+
+  public disconnectedCallback() {
+    super.disconnectedCallback();
+    document.body.removeEventListener("keydown", this._generateMyLink);
+  }
+
+  private _generateMyLink = (ev: KeyboardEvent) => {
+    if (ev.ctrlKey || ev.shiftKey || ev.metaKey || ev.altKey) {
+      // Ignore if modifier keys are pressed
+      return;
+    }
+    if (ev.key === "m" && mainWindow.location.pathname.startsWith("/hacs/repository/")) {
+      if (!this._repository) {
         return;
       }
-      if (["m"].includes(ev.key)) {
-        const myParams = new URLSearchParams({
-          redirect: "hacs_repository",
-          owner: this._repository!.full_name.split("/")[0],
-          repository: this._repository!.full_name.split("/")[0],
-          category: this._repository!.category,
-        });
-        window.open(`https://my.home-assistant.io/create-link/?${myParams.toString()}`, "_blank");
-      }
-    });
+      const myParams = new URLSearchParams({
+        redirect: "hacs_repository",
+        owner: this._repository!.full_name.split("/")[0],
+        repository: this._repository!.full_name.split("/")[1],
+        category: this._repository!.category,
+      });
+      window.open(`https://my.home-assistant.io/create-link/?${myParams.toString()}`, "_blank");
+    }
+  };
+
+  protected async firstUpdated(changedProperties: PropertyValues): Promise<void> {
+    super.firstUpdated(changedProperties);
 
     const params = extractSearchParamsObject();
     if (Object.entries(params).length) {
