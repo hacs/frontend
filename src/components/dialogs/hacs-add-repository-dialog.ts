@@ -189,9 +189,9 @@ export class HacsAddRepositoryDialog extends HacsDialogBase {
                           `}
                       <span>${repo.name}</span>
                       <span slot="secondary">${repo.description}</span>
-                      <ha-chip slot="meta"
-                        >${this.hacs.localize(`common.${repo.category}`)}</ha-chip
-                      >
+                      <ha-chip slot="meta">
+                        ${this.hacs.localize(`common.${repo.category}`)}
+                      </ha-chip>
                     </ha-clickable-list-item>`
                   )}
           </mwc-list>
@@ -281,6 +281,10 @@ export class HacsAddRepositoryDialog extends HacsDialogBase {
 
         .searchandfilter[narrow] {
           flex-direction: column;
+        }
+
+        ha-chip {
+          margin-left: -52px;
         }
       `,
     ];

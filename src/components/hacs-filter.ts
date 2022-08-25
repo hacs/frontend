@@ -20,13 +20,10 @@ export class HacsFilter extends LitElement {
             <ha-formfield
               class="checkbox"
               .label=${this.hacs.localize(`common.${filter.id}`) || filter.value}
+              .id=${filter.id}
+              @click=${this._filterClick}
             >
-              <ha-checkbox
-                .checked=${filter.checked || false}
-                .id=${filter.id}
-                @click=${this._filterClick}
-              >
-              </ha-checkbox>
+              <ha-checkbox .checked=${filter.checked || false}> </ha-checkbox>
             </ha-formfield>
           `
         )}
