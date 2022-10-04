@@ -10,7 +10,7 @@ import { Hacs } from "./data/hacs";
 
 @customElement("hacs-router")
 class HacsRouter extends HassRouterPage {
-  @property({ attribute: false }) public hacs?: Hacs;
+  @property({ attribute: false }) public hacs!: Hacs;
 
   @property({ attribute: false }) public hass!: HomeAssistant;
 
@@ -41,6 +41,49 @@ class HacsRouter extends HassRouterPage {
     this.style.setProperty("--app-header-text-color", "var(--sidebar-text-color)");
     this.style.setProperty("--app-header-border-bottom", "1px solid var(--divider-color)");
     this.style.setProperty("--ha-card-border-radius", "var(--ha-config-card-border-radius, 8px)");
+
+    this.routerOptions = {
+      defaultPage: "entry",
+      showLoading: true,
+      routes: {
+        _my_redirect: {
+          tag: "hacs-my-redirect",
+          load: () => import("./hacs-my-redirect"),
+        },
+        entry: {
+          tag: this.hacs.info.experimental ? "hacs-experimental-panel" : "hacs-entry-panel",
+          load: () =>
+            this.hacs.info.experimental
+              ? import("./panels/hacs-experimental-panel")
+              : import("./panels/hacs-entry-panel"),
+        },
+        integrations: {
+          tag: this.hacs.info.experimental ? "hacs-experimental-panel" : "hacs-store-panel",
+          load: () =>
+            this.hacs.info.experimental
+              ? import("./panels/hacs-experimental-panel")
+              : import("./panels/hacs-store-panel"),
+        },
+        frontend: {
+          tag: this.hacs.info.experimental ? "hacs-experimental-panel" : "hacs-store-panel",
+          load: () =>
+            this.hacs.info.experimental
+              ? import("./panels/hacs-experimental-panel")
+              : import("./panels/hacs-store-panel"),
+        },
+        automation: {
+          tag: this.hacs.info.experimental ? "hacs-experimental-panel" : "hacs-store-panel",
+          load: () =>
+            this.hacs.info.experimental
+              ? import("./panels/hacs-experimental-panel")
+              : import("./panels/hacs-store-panel"),
+        },
+        repository: {
+          tag: "hacs-repository-panel",
+          load: () => import("./panels/hacs-repository-panel"),
+        },
+      },
+    };
   }
 
   public disconnectedCallback() {
@@ -49,37 +92,6 @@ class HacsRouter extends HassRouterPage {
       this._listeners.pop()!();
     }
   }
-
-  protected routerOptions: RouterOptions = {
-    defaultPage: "entry",
-    showLoading: true,
-    routes: {
-      _my_redirect: {
-        tag: "hacs-my-redirect",
-        load: () => import("./hacs-my-redirect"),
-      },
-      entry: {
-        tag: "hacs-entry-panel",
-        load: () => import("./panels/hacs-entry-panel"),
-      },
-      integrations: {
-        tag: "hacs-store-panel",
-        load: () => import("./panels/hacs-store-panel"),
-      },
-      frontend: {
-        tag: "hacs-store-panel",
-        load: () => import("./panels/hacs-store-panel"),
-      },
-      automation: {
-        tag: "hacs-store-panel",
-        load: () => import("./panels/hacs-store-panel"),
-      },
-      repository: {
-        tag: "hacs-repository-panel",
-        load: () => import("./panels/hacs-repository-panel"),
-      },
-    },
-  };
 
   protected updatePageEl(el) {
     const section = this.route.path.replace("/", "");

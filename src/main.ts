@@ -1,8 +1,9 @@
-import { html, PropertyValues, TemplateResult } from "lit";
+import { css, html, PropertyValues, TemplateResult } from "lit";
 import { customElement, property, query } from "lit/decorators";
 import { applyThemesOnElement } from "../homeassistant-frontend/src/common/dom/apply_themes_on_element";
 import { mainWindow } from "../homeassistant-frontend/src/common/dom/get_main_window";
 import { fireEvent } from "../homeassistant-frontend/src/common/dom/fire_event";
+import "../homeassistant-frontend/src/layouts/hass-loading-screen";
 import { isNavigationClick } from "../homeassistant-frontend/src/common/dom/is-navigation-click";
 import { navigate } from "../homeassistant-frontend/src/common/navigate";
 import { makeDialogManager } from "../homeassistant-frontend/src/dialogs/make-dialog-manager";
@@ -163,12 +164,13 @@ class HacsFrontend extends HacsElement {
     });
     if (_updates) {
       this._updateHacs(_updates);
+      this.requestUpdate();
     }
   }
 
   protected render(): TemplateResult | void {
-    if (!this.hass || !this.hacs) {
-      return html``;
+    if (!this.hass || !this.hacs?.info.categories?.length) {
+      return html`<hass-loading-screen no-toolbar></hass-loading-screen>`;
     }
 
     return html`
@@ -196,7 +198,15 @@ class HacsFrontend extends HacsElement {
   }
 
   static get styles() {
-    return [HacsStyles, hacsStyleVariables];
+    return [
+      HacsStyles,
+      hacsStyleVariables,
+      css`
+        hass-loading-screen {
+          height: 100vh;
+        }
+      `,
+    ];
   }
 
   private _showDialog(ev: HacsDialogEvent): void {
