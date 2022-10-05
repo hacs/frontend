@@ -140,7 +140,7 @@
     "@fullcalendar/list": "5.9.0",
     "@fullcalendar/timegrid": "5.9.0",
     "@lit-labs/motion": "^1.0.2",
-    "@lit-labs/virtualizer": "0.6.0",
+    "@lit-labs/virtualizer": "0.7.2",
     "@material/chips": "14.0.0-canary.261f2db59.0",
     "@material/data-table": "14.0.0-canary.261f2db59.0",
     "@material/mwc-button": "0.25.3",
@@ -252,7 +252,7 @@
     "app-datepicker": "5.0.1",
     "node-emoji": "1.10.0",
     "highlight.js": "^11.5.1",
-    "@lit-labs/virtualizer": "0.6.0",
+    "@lit-labs/virtualizer": "0.7.2",
     "@material/mwc-linear-progress": "canary",
     "@material/mwc-icon-button": "0.25.3"
   },
