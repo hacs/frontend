@@ -23,6 +23,12 @@
     "updates": "Updates",
     "yes": "Yes"
   },
+  "collumn": {
+    "name": "Repository name",
+    "downloads": "Downloads",
+    "stars": "Stars",
+    "category": "Category"
+  },
   "confirm": {
     "home_assistant_version_not_correct": "You are running Home Assistant version '{haversion}', but this repository requires minimum version '{minversion}' to be installed."
   },

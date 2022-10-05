@@ -5,16 +5,16 @@ import {
   mdiAlertCircleOutline,
   mdiDotsVertical,
   mdiFileDocument,
+  mdiFilterVariant,
   mdiGit,
   mdiGithub,
   mdiInformation,
-  mdiPlaylistEdit,
   mdiPlus,
 } from "@mdi/js";
 import "@polymer/app-layout/app-header/app-header";
 import "@polymer/app-layout/app-toolbar/app-toolbar";
 import { css, CSSResultGroup, html, LitElement, TemplateResult } from "lit";
-import { customElement, property } from "lit/decorators";
+import { customElement, property, state } from "lit/decorators";
 import memoize from "memoize-one";
 import { LocalStorage } from "../../homeassistant-frontend/src/common/decorators/local-storage";
 import { navigate } from "../../homeassistant-frontend/src/common/navigate";
@@ -37,6 +37,7 @@ import { HacsStyles } from "../styles/hacs-common-style";
 import "../../homeassistant-frontend/src/components/ha-chip";
 import { mainWindow } from "../../homeassistant-frontend/src/common/dom/get_main_window";
 import { showDialogAbout } from "../components/dialogs/hacs-about-dialog";
+import "../../homeassistant-frontend/src/components/ha-check-list-item";
 
 interface TableColumnsOptions {
   entry: { [key: string]: boolean };
@@ -58,19 +59,21 @@ export class HacsExperimentalPanel extends LitElement {
 
   @property({ attribute: false }) public section!: string;
 
+  @state() activeFilters?: string[];
+
   @LocalStorage("hacs-table-columns", true, false)
   private _tableColumns: TableColumnsOptions = {
     entry: {
       name: true,
-      category: true,
       downloads: false,
       stars: false,
+      category: true,
     },
     explore: {
       name: true,
+      downloads: false,
+      stars: false,
       category: true,
-      downloads: true,
-      stars: true,
     },
   };
 
@@ -86,7 +89,11 @@ export class HacsExperimentalPanel extends LitElement {
       },
     ]}
     .columns=${this._columns(this.narrow, this._tableColumns)}
-    .data=${this._filterRepositories(this.hacs.repositories, this.section === "entry")}
+    .data=${this._filterRepositories(
+      this.hacs.repositories,
+      this.section === "entry",
+      this.activeFilters
+    )}
     .hass=${this.hass}
     isWide=${this.isWide}
     .localizeFunc=${this.hass.localize}
@@ -94,11 +101,13 @@ export class HacsExperimentalPanel extends LitElement {
     .narrow=${this.narrow}
     .route=${this.route}
     clickable
+    .activeFilters=${this.activeFilters}
     .hasFab=${this.section === "entry"}
     .noDataText=${this.section === "entry"
       ? "No downloaded repositories"
       : "No repositories matching search"}
     @row-click=${this._handleRowClicked}
+    @clear-filter=${this._handleClearFilter}
   >
     <ha-button-menu corner="BOTTOM_START" slot="toolbar-icon" @action=${this._handleMenuAction}>
       <ha-icon-button
@@ -123,14 +132,54 @@ export class HacsExperimentalPanel extends LitElement {
         <ha-svg-icon slot="graphic" .path=${mdiGit}></ha-svg-icon>
         ${this.hacs.localize("menu.custom_repositories")}
       </mwc-list-item>
-      <mwc-list-item graphic="icon" @click=${(ev) => ev.preventDefault()}>
-        <ha-svg-icon slot="graphic" .path=${mdiPlaylistEdit}></ha-svg-icon>
-        Edit columns
-      </mwc-list-item>
       <mwc-list-item graphic="icon">
         <ha-svg-icon slot="graphic" .path=${mdiInformation}></ha-svg-icon>
         ${this.hacs.localize("menu.about")}
       </mwc-list-item>
+    </ha-button-menu>
+
+    <ha-button-menu slot="filter-menu" corner="BOTTOM_START" multi>
+      <ha-icon-button
+        slot="trigger"
+        .label=${this.hass!.localize("ui.panel.config.entities.picker.filter.filter")}
+        .path=${mdiFilterVariant}
+      >
+      </ha-icon-button>
+      <p class="menu_header">Hide categories</p>
+      ${this.narrow && this.activeFilters?.length
+        ? html`<mwc-list-item @click=${this._handleClearFilter}>
+            >${this.hass.localize("ui.components.data-table.filtering_by")}
+            ${this.activeFilters.join(", ")} <span class="clear">Clear</span>
+          </mwc-list-item>`
+        : ""}
+      ${this.hacs.info.categories.map(
+        (category) => html`
+          <ha-check-list-item
+            @request-selected=${this._handleCategoryFilterChange}
+            .category=${category}
+            .selected=${(this.activeFilters || []).includes(`Hide ${category}`)}
+            left
+          >
+            ${this.hacs.localize(`common.${category}`)}
+          </ha-check-list-item>
+        `
+      )}
+      <div class="divider"></div>
+
+      <p class="menu_header">columns</p>
+      ${Object.keys(this._tableColumns[this.section]).map(
+        (entry) => html`
+          <ha-check-list-item
+            @request-selected=${this._handleColumnChange}
+            graphic="control"
+            .column=${entry}
+            .selected=${this._tableColumns[this.section][entry]}
+            left
+          >
+            ${this.hacs.localize(`column.${entry}`)}
+          </ha-check-list-item>
+        `
+      )}
     </ha-button-menu>
 
     ${this.section === "entry"
@@ -144,11 +193,19 @@ export class HacsExperimentalPanel extends LitElement {
   </hacs-tabs-subpage-data-table>`;
 
   private _filterRepositories = memoize(
-    (repositories: RepositoryBase[], downloaded: boolean): DataTableRowData[] =>
-      repositories.filter(
-        (reposiotry) =>
-          (!downloaded && !reposiotry.installed) || (downloaded && reposiotry.installed)
-      )
+    (
+      repositories: RepositoryBase[],
+      downloaded: boolean,
+      activeFilters?: string[]
+    ): DataTableRowData[] =>
+      repositories
+        .filter((reposiotry) => {
+          if (activeFilters?.includes(`Hide ${reposiotry.category}`)) {
+            return false;
+          }
+          return (!downloaded && !reposiotry.installed) || (downloaded && reposiotry.installed);
+        })
+        .sort((a, b) => (a.stars < b.stars ? 1 : -1))
   );
 
   private _columns = memoize(
@@ -156,18 +213,11 @@ export class HacsExperimentalPanel extends LitElement {
       narrow: boolean,
       tableColumnsOptions: TableColumnsOptions
     ): DataTableColumnContainer<RepositoryBase> => ({
-      id: {
-        title: "ID",
-        hidden: true,
-        sortable: true,
-        filterable: true,
-      },
       name: {
         title: "Name",
         main: true,
         sortable: true,
         filterable: true,
-        direction: narrow || tableColumnsOptions[this.section].stars ? undefined : "asc",
         hidden: !tableColumnsOptions[this.section].name,
         grows: true,
         template: !narrow
@@ -191,7 +241,6 @@ export class HacsExperimentalPanel extends LitElement {
         hidden: narrow || !tableColumnsOptions[this.section].stars,
         sortable: true,
         filterable: true,
-        direction: "desc",
         width: "10%",
       },
       category: {
@@ -202,21 +251,28 @@ export class HacsExperimentalPanel extends LitElement {
         width: "10%",
       },
       authors: {
-        title: "Authros",
+        title: "",
         hidden: true,
-        sortable: true,
         filterable: true,
       },
       topics: {
-        title: "Topics",
+        title: "",
         hidden: true,
-        sortable: true,
         filterable: true,
       },
       full_name: {
-        title: "Full name",
+        title: "",
         hidden: true,
-        sortable: true,
+        filterable: true,
+      },
+      id: {
+        title: "",
+        hidden: true,
+        filterable: true,
+      },
+      description: {
+        title: "",
+        hidden: true,
         filterable: true,
       },
     })
@@ -224,6 +280,33 @@ export class HacsExperimentalPanel extends LitElement {
 
   private _handleRowClicked(ev: CustomEvent) {
     navigate(`/hacs/repository/${ev.detail.id}`);
+  }
+
+  private _handleCategoryFilterChange(ev: CustomEvent) {
+    ev.stopPropagation();
+    const category = `Hide ${(ev.target as any).category}`;
+    if (ev.detail.selected) {
+      this.activeFilters = Array.from(new Set([...(this.activeFilters || []), category]));
+      return;
+    }
+    this.activeFilters = this.activeFilters?.filter((item) => item !== category);
+  }
+
+  private _handleColumnChange(ev: CustomEvent) {
+    ev.stopPropagation();
+    const currentSection = this._tableColumns[this.section];
+
+    this._tableColumns = {
+      ...this._tableColumns,
+      [this.section]: {
+        ...currentSection,
+        [(ev.currentTarget as any).column]: ev.detail.selected,
+      },
+    };
+  }
+
+  private _handleClearFilter() {
+    this.activeFilters = undefined;
   }
 
   private _handleMenuAction(ev: CustomEvent) {
@@ -250,15 +333,31 @@ export class HacsExperimentalPanel extends LitElement {
         );
         break;
       case 4:
-        // Nothing
-        break;
-      case 5:
         showDialogAbout(this, this.hacs);
         break;
     }
   }
 
   static get styles(): CSSResultGroup {
-    return [haStyle, HacsStyles, css``];
+    return [
+      haStyle,
+      HacsStyles,
+      css`
+        .menu_header {
+          font-size: 14px;
+          margin: 8px;
+        }
+        .divider {
+          bottom: 112px;
+          padding: 10px 0px;
+        }
+        .divider::before {
+          content: " ";
+          display: block;
+          height: 1px;
+          background-color: var(--divider-color);
+        }
+      `,
+    ];
   }
 }
