@@ -78,6 +78,13 @@ class HacsRouter extends HassRouterPage {
               ? import("./panels/hacs-experimental-panel")
               : import("./panels/hacs-store-panel"),
         },
+        explore: {
+          tag: this.hacs.info.experimental ? "hacs-experimental-panel" : "hacs-store-panel",
+          load: () =>
+            this.hacs.info.experimental
+              ? import("./panels/hacs-experimental-panel")
+              : import("./panels/hacs-store-panel"),
+        },
         repository: {
           tag: "hacs-repository-panel",
           load: () => import("./panels/hacs-repository-panel"),
