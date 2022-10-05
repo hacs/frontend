@@ -5,7 +5,7 @@ import { mdiDotsVertical, mdiPlus } from "@mdi/js";
 import "@polymer/app-layout/app-header/app-header";
 import "@polymer/app-layout/app-toolbar/app-toolbar";
 import { css, CSSResultGroup, html, LitElement, TemplateResult } from "lit";
-import { customElement, property, state } from "lit/decorators";
+import { customElement, property } from "lit/decorators";
 import memoize from "memoize-one";
 import type {
   DataTableColumnContainer,
@@ -16,10 +16,10 @@ import "../../homeassistant-frontend/src/components/ha-button-menu";
 import "../../homeassistant-frontend/src/components/ha-fab";
 import "../../homeassistant-frontend/src/components/ha-menu-button";
 import "../../homeassistant-frontend/src/components/ha-svg-icon";
-import "../../homeassistant-frontend/src/layouts/hass-tabs-subpage-data-table";
 import { haStyle } from "../../homeassistant-frontend/src/resources/styles";
 import type { HomeAssistant, Route } from "../../homeassistant-frontend/src/types";
 import { hacsIcon } from "../components/hacs-icon";
+import "../components/hacs-tabs-subpage-data-table";
 import type { Hacs } from "../data/hacs";
 import type { RepositoryBase } from "../data/repository";
 import { HacsStyles } from "../styles/hacs-common-style";
@@ -37,9 +37,7 @@ export class HacsExperimentalPanel extends LitElement {
 
   @property({ type: Boolean }) public isWide!: boolean;
 
-  @state() filter = "";
-
-  protected render = (): TemplateResult | void => html`<hass-tabs-subpage-data-table
+  protected render = (): TemplateResult | void => html`<hacs-tabs-subpage-data-table
     .tabs=${[
       {
         name: "Home Assistant Community Store - EXPERIMENTAL",
@@ -47,9 +45,8 @@ export class HacsExperimentalPanel extends LitElement {
         iconPath: hacsIcon,
       },
     ]}
-    @search-changed=${this._handleSearchChanged}
     .columns=${this._columns(this.narrow)}
-    .data=${this._filterRepositories(this.hacs.repositories, this.filter)}
+    .data=${this._filterRepositories(this.hacs.repositories)}
     .hass=${this.hass}
     isWide=${this.isWide}
     .localizeFunc=${this.hass.localize}
@@ -59,7 +56,6 @@ export class HacsExperimentalPanel extends LitElement {
     clickable
     hasFab
     noDataText="No downloaded repositories"
-    hideFilterMenu
   >
     <ha-button-menu corner="BOTTOM_START" slot="toolbar-icon" @action=${this._handleAction}>
       <ha-icon-button
@@ -77,21 +73,10 @@ export class HacsExperimentalPanel extends LitElement {
     >
       <ha-svg-icon slot="icon" .path=${mdiPlus}></ha-svg-icon>
     </ha-fab>
-  </hass-tabs-subpage-data-table>`;
+  </hacs-tabs-subpage-data-table>`;
 
-  private _handleSearchChanged(ev) {
-    this.filter = ev.detail.value;
-    console.log(this.filter, ev.detail);
-  }
-
-  private _filterRepositories = memoize(
-    (repositories: RepositoryBase[], filter: string): DataTableRowData[] =>
-      repositories.filter((repository) => {
-        if (!filter) {
-          return repository.can_download;
-        }
-        return repository.name.toLowerCase().includes(filter.toLowerCase());
-      })
+  private _filterRepositories = memoize((repositories: RepositoryBase[]): DataTableRowData[] =>
+    repositories.filter((reposiotry) => reposiotry.installed)
   );
 
   private _columns = memoize(
@@ -99,6 +84,9 @@ export class HacsExperimentalPanel extends LitElement {
       name: {
         title: "Name",
         main: true,
+        sortable: true,
+        filterable: true,
+        direction: "asc",
         grows: true,
         template: !narrow
           ? (name, repository: RepositoryBase) =>
@@ -111,6 +99,8 @@ export class HacsExperimentalPanel extends LitElement {
       category: {
         title: "Category",
         hidden: narrow,
+        sortable: true,
+        filterable: true,
       },
     })
   );
