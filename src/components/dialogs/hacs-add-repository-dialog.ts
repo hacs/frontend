@@ -14,7 +14,6 @@ import "../../../homeassistant-frontend/src/components/ha-svg-icon";
 import "../../../homeassistant-frontend/src/components/search-input";
 import { brandsUrl } from "../../../homeassistant-frontend/src/util/brands-url";
 import { RepositoryBase } from "../../data/repository";
-import { activePanel } from "../../panels/hacs-sections";
 import { scrollBarStyle } from "../../styles/element-styles";
 import { HacsStyles } from "../../styles/hacs-common-style";
 import { filterRepositoriesByInput } from "../../tools/filter-repositories-by-input";

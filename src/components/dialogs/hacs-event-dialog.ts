@@ -9,7 +9,6 @@ const DIALOG = {
   download: () => import("./hacs-download-dialog"),
   navigate: () => import("./hacs-navigate-dialog"),
   removed: () => import("./hacs-removed-dialog"),
-  update: () => import("./hacs-update-dialog"),
   progress: () => import("./hacs-progress-dialog"),
 };
 

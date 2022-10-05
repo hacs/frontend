@@ -30,7 +30,6 @@ import "../../homeassistant-frontend/src/layouts/hass-loading-screen";
 import "../../homeassistant-frontend/src/layouts/hass-subpage";
 import { HomeAssistant, Route } from "../../homeassistant-frontend/src/types";
 import "../components/hacs-filter";
-import "../components/hacs-repository-card";
 import { Hacs } from "../data/hacs";
 import { fetchRepositoryInformation, RepositoryBase, RepositoryInfo } from "../data/repository";
 import {
@@ -43,6 +42,7 @@ import {
 } from "../data/websocket";
 import { HacsStyles } from "../styles/hacs-common-style";
 import { markdown } from "../tools/markdown/markdown";
+import "../../homeassistant-frontend/src/components/ha-chip";
 
 @customElement("hacs-repository-panel")
 export class HacsRepositoryPanel extends LitElement {
