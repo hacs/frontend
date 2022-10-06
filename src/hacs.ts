@@ -15,12 +15,7 @@ export class HacsElement extends ProvideHassLitMixin(LitElement) {
     if (this.hacs === undefined) {
       this.hacs = {
         language: "en",
-        messages: [],
-        updates: [],
-        resources: [],
         repositories: [],
-        removed: [],
-        sections: [],
         info: {} as any,
         addedToLovelace,
         localize: (string: string, replace?: Record<string, any>) =>

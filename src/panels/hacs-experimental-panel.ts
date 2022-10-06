@@ -116,18 +116,25 @@ export class HacsExperimentalPanel extends LitElement {
         slot="trigger"
       >
       </ha-icon-button>
-      <mwc-list-item graphic="icon">
-        <ha-svg-icon slot="graphic" .path=${mdiFileDocument}></ha-svg-icon>
-        ${this.hacs.localize("menu.documentation")}
-      </mwc-list-item>
-      <mwc-list-item graphic="icon">
-        <ha-svg-icon slot="graphic" .path=${mdiGithub}></ha-svg-icon>
-        GitHub
-      </mwc-list-item>
-      <mwc-list-item graphic="icon">
-        <ha-svg-icon slot="graphic" .path=${mdiAlertCircleOutline}></ha-svg-icon>
-        ${this.hacs.localize("menu.open_issue")}
-      </mwc-list-item>
+
+      <a href="https://hacs.xyz/" target="_blank" rel="noreferrer">
+        <mwc-list-item graphic="icon">
+          <ha-svg-icon slot="graphic" .path=${mdiFileDocument}></ha-svg-icon>
+          ${this.hacs.localize("menu.documentation")}
+        </mwc-list-item>
+      </a>
+      <a href="https://github.com/hacs" target="_blank" rel="noreferrer">
+        <mwc-list-item graphic="icon">
+          <ha-svg-icon slot="graphic" .path=${mdiGithub}></ha-svg-icon>
+          GitHub
+        </mwc-list-item>
+      </a>
+      <a href="https://hacs.xyz/docs/issues" target="_blank" rel="noreferrer">
+        <mwc-list-item graphic="icon">
+          <ha-svg-icon slot="graphic" .path=${mdiAlertCircleOutline}></ha-svg-icon>
+          ${this.hacs.localize("menu.open_issue")}
+        </mwc-list-item>
+      </a>
       <mwc-list-item graphic="icon" ?disabled=${Boolean(this.hacs.info.disabled_reason)}>
         <ha-svg-icon slot="graphic" .path=${mdiGit}></ha-svg-icon>
         ${this.hacs.localize("menu.custom_repositories")}
@@ -141,14 +148,14 @@ export class HacsExperimentalPanel extends LitElement {
     <ha-button-menu slot="filter-menu" corner="BOTTOM_START" multi>
       <ha-icon-button
         slot="trigger"
-        .label=${this.hass!.localize("ui.panel.config.entities.picker.filter.filter")}
+        .label=${this.hass.localize("ui.panel.config.entities.picker.filter.filter")}
         .path=${mdiFilterVariant}
       >
       </ha-icon-button>
-      <p class="menu_header">Hide categories</p>
+      ${!this.narrow ? html`<p class="menu_header">Hide categories</p>` : " "}
       ${this.narrow && this.activeFilters?.length
         ? html`<mwc-list-item @click=${this._handleClearFilter}>
-            >${this.hass.localize("ui.components.data-table.filtering_by")}
+            ${this.hass.localize("ui.components.data-table.filtering_by")}
             ${this.activeFilters.join(", ")} <span class="clear">Clear</span>
           </mwc-list-item>`
         : ""}
@@ -164,22 +171,25 @@ export class HacsExperimentalPanel extends LitElement {
           </ha-check-list-item>
         `
       )}
-      <div class="divider"></div>
-
-      <p class="menu_header">columns</p>
-      ${Object.keys(this._tableColumns[this.section]).map(
-        (entry) => html`
-          <ha-check-list-item
-            @request-selected=${this._handleColumnChange}
-            graphic="control"
-            .column=${entry}
-            .selected=${this._tableColumns[this.section][entry]}
-            left
-          >
-            ${this.hacs.localize(`column.${entry}`)}
-          </ha-check-list-item>
-        `
-      )}
+      ${!this.narrow
+        ? html`
+            <div class="divider"></div>
+            <p class="menu_header">Columns</p>
+            ${Object.keys(this._tableColumns[this.section]).map(
+              (entry) => html`
+                <ha-check-list-item
+                  @request-selected=${this._handleColumnChange}
+                  graphic="control"
+                  .column=${entry}
+                  .selected=${this._tableColumns[this.section][entry]}
+                  left
+                >
+                  ${this.hacs.localize(`column.${entry}`)}
+                </ha-check-list-item>
+              `
+            )}
+          `
+        : " "}
     </ha-button-menu>
 
     ${this.section === "entry"
@@ -220,13 +230,15 @@ export class HacsExperimentalPanel extends LitElement {
         filterable: true,
         hidden: !tableColumnsOptions[this.section].name,
         grows: true,
-        template: !narrow
-          ? (name, repository: RepositoryBase) =>
-              html`
-                ${name}<br />
-                <div class="secondary">${repository.description}</div>
-              `
-          : undefined,
+        template: (name, repository: RepositoryBase) =>
+          html`
+            ${name}<br />
+            <div class="secondary">
+              ${narrow
+                ? this.hacs.localize(`common.${repository.category}`)
+                : repository.description}
+            </div>
+          `,
       },
       downloads: {
         title: "Downloads",
@@ -311,15 +323,6 @@ export class HacsExperimentalPanel extends LitElement {
 
   private _handleMenuAction(ev: CustomEvent) {
     switch (ev.detail.index) {
-      case 0:
-        mainWindow.open("https://hacs.xyz/", "_blank", "noreferrer=true");
-        break;
-      case 1:
-        mainWindow.open("https://github.com/hacs", "_blank", "noreferrer=true");
-        break;
-      case 2:
-        mainWindow.open("https://hacs.xyz/docs/issues", "_blank", "noreferrer=true");
-        break;
       case 3:
         this.dispatchEvent(
           new CustomEvent("hacs-dialog", {

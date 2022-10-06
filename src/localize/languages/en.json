@@ -9,7 +9,6 @@
     "integration_plural": "Integrations",
     "integration": "Integration",
     "lovelace": "Lovelace",
-    "navigate": "navigate",
     "netdaemon": "NetDaemon",
     "plugin": "Lovelace",
     "python_script": "Python Script",
@@ -23,7 +22,7 @@
     "updates": "Updates",
     "yes": "Yes"
   },
-  "collumn": {
+  "column": {
     "name": "Repository name",
     "downloads": "Downloads",
     "stars": "Stars",

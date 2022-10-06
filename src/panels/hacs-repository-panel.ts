@@ -13,14 +13,13 @@ import {
   mdiReload,
   mdiStar,
 } from "@mdi/js";
-import "@polymer/app-layout/app-header/app-header";
-import "@polymer/app-layout/app-toolbar/app-toolbar";
 import { css, html, LitElement, PropertyValues, TemplateResult } from "lit";
 import { customElement, property, state } from "lit/decorators";
 import memoizeOne from "memoize-one";
 import { mainWindow } from "../../homeassistant-frontend/src/common/dom/get_main_window";
 import { navigate } from "../../homeassistant-frontend/src/common/navigate";
 import { extractSearchParamsObject } from "../../homeassistant-frontend/src/common/url/search-params";
+import "../../homeassistant-frontend/src/components/ha-chip";
 import "../../homeassistant-frontend/src/components/ha-fab";
 import "../../homeassistant-frontend/src/components/ha-icon-overflow-menu";
 import { getConfigEntries } from "../../homeassistant-frontend/src/data/config_entries";
@@ -29,7 +28,7 @@ import "../../homeassistant-frontend/src/layouts/hass-error-screen";
 import "../../homeassistant-frontend/src/layouts/hass-loading-screen";
 import "../../homeassistant-frontend/src/layouts/hass-subpage";
 import { HomeAssistant, Route } from "../../homeassistant-frontend/src/types";
-import "../components/hacs-filter";
+import "../components/hacs-link";
 import { Hacs } from "../data/hacs";
 import { fetchRepositoryInformation, RepositoryBase, RepositoryInfo } from "../data/repository";
 import {
@@ -42,7 +41,6 @@ import {
 } from "../data/websocket";
 import { HacsStyles } from "../styles/hacs-common-style";
 import { markdown } from "../tools/markdown/markdown";
-import "../../homeassistant-frontend/src/components/ha-chip";
 
 @customElement("hacs-repository-panel")
 export class HacsRepositoryPanel extends LitElement {

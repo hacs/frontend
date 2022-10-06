@@ -1,4 +1,3 @@
-import { Message } from "./common";
 import { RepositoryBase } from "./repository";
 
 export interface HacsInfo {
@@ -16,12 +15,7 @@ export interface HacsInfo {
 
 export interface Hacs {
   language: string;
-  messages: Message[];
-  updates: any[];
-  resources: any[];
   repositories: RepositoryBase[];
-  removed: any[];
-  sections: any;
   info: HacsInfo;
   localize(string: string, replace?: Record<string, any>): string;
   addedToLovelace?(hacs: Hacs, repository: RepositoryBase): boolean;
