@@ -24,20 +24,19 @@ import type {
 } from "../../homeassistant-frontend/src/components/data-table/ha-data-table";
 
 import "../../homeassistant-frontend/src/components/ha-button-menu";
+import "../../homeassistant-frontend/src/components/ha-check-list-item";
+import "../../homeassistant-frontend/src/components/ha-chip";
 import "../../homeassistant-frontend/src/components/ha-fab";
 import "../../homeassistant-frontend/src/components/ha-menu-button";
 import "../../homeassistant-frontend/src/components/ha-svg-icon";
 import { haStyle } from "../../homeassistant-frontend/src/resources/styles";
 import type { HomeAssistant, Route } from "../../homeassistant-frontend/src/types";
+import { showDialogAbout } from "../components/dialogs/hacs-about-dialog";
 import { hacsIcon } from "../components/hacs-icon";
 import "../components/hacs-tabs-subpage-data-table";
 import type { Hacs } from "../data/hacs";
 import type { RepositoryBase } from "../data/repository";
 import { HacsStyles } from "../styles/hacs-common-style";
-import "../../homeassistant-frontend/src/components/ha-chip";
-import { mainWindow } from "../../homeassistant-frontend/src/common/dom/get_main_window";
-import { showDialogAbout } from "../components/dialogs/hacs-about-dialog";
-import "../../homeassistant-frontend/src/components/ha-check-list-item";
 
 interface TableColumnsOptions {
   entry: { [key: string]: boolean };
