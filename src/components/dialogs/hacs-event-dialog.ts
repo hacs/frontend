@@ -3,13 +3,9 @@ import { customElement, property } from "lit/decorators";
 import { HacsDialogBase } from "./hacs-dialog-base";
 
 const DIALOG = {
-  "add-repository": () => import("./hacs-add-repository-dialog"),
   "custom-repositories": () => import("./hacs-custom-repositories-dialog"),
   generic: () => import("./hacs-generic-dialog"),
   download: () => import("./hacs-download-dialog"),
-  navigate: () => import("./hacs-navigate-dialog"),
-  removed: () => import("./hacs-removed-dialog"),
-  update: () => import("./hacs-update-dialog"),
   progress: () => import("./hacs-progress-dialog"),
 };
 

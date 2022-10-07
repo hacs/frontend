@@ -9,7 +9,6 @@
     "integration_plural": "Integrations",
     "integration": "Integration",
     "lovelace": "Lovelace",
-    "navigate": "navigate",
     "netdaemon": "NetDaemon",
     "plugin": "Lovelace",
     "python_script": "Python Script",
@@ -22,6 +21,12 @@
     "update": "Update",
     "updates": "Updates",
     "yes": "Yes"
+  },
+  "column": {
+    "name": "Repository name",
+    "downloads": "Downloads",
+    "stars": "Stars",
+    "category": "Category"
   },
   "confirm": {
     "home_assistant_version_not_correct": "You are running Home Assistant version '{haversion}', but this repository requires minimum version '{minversion}' to be installed."

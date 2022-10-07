@@ -1,8 +1,9 @@
-import { html, PropertyValues, TemplateResult } from "lit";
+import { css, html, PropertyValues, TemplateResult } from "lit";
 import { customElement, property, query } from "lit/decorators";
 import { applyThemesOnElement } from "../homeassistant-frontend/src/common/dom/apply_themes_on_element";
 import { mainWindow } from "../homeassistant-frontend/src/common/dom/get_main_window";
 import { fireEvent } from "../homeassistant-frontend/src/common/dom/fire_event";
+import "../homeassistant-frontend/src/layouts/hass-loading-screen";
 import { isNavigationClick } from "../homeassistant-frontend/src/common/dom/is-navigation-click";
 import { navigate } from "../homeassistant-frontend/src/common/navigate";
 import { makeDialogManager } from "../homeassistant-frontend/src/dialogs/make-dialog-manager";
@@ -10,14 +11,7 @@ import "../homeassistant-frontend/src/resources/ha-style";
 import { HomeAssistant, Route } from "../homeassistant-frontend/src/types";
 import "./components/dialogs/hacs-event-dialog";
 import { HacsDialogEvent, HacsDispatchEvent, LocationChangedEvent } from "./data/common";
-import {
-  fetchHacsInfo,
-  getCritical,
-  getLovelaceConfiguration,
-  getRemovedRepositories,
-  getRepositories,
-  websocketSubscription,
-} from "./data/websocket";
+import { fetchHacsInfo, getRepositories, websocketSubscription } from "./data/websocket";
 import { HacsElement } from "./hacs";
 import "./hacs-router";
 import { HacsStyles } from "./styles/hacs-common-style";
@@ -140,20 +134,14 @@ class HacsFrontend extends HacsElement {
     const _fetch: any = {};
 
     if (prop === "all") {
-      [_fetch.repositories, _fetch.info, _fetch.critical, _fetch.resources, _fetch.removed] =
-        await Promise.all([
-          getRepositories(this.hass),
-          fetchHacsInfo(this.hass),
-          getCritical(this.hass),
-          getLovelaceConfiguration(this.hass),
-          getRemovedRepositories(this.hass),
-        ]);
+      [_fetch.repositories, _fetch.info] = await Promise.all([
+        getRepositories(this.hass),
+        fetchHacsInfo(this.hass),
+      ]);
     } else if (prop === "info") {
       _fetch.info = await fetchHacsInfo(this.hass);
     } else if (prop === "repositories") {
       _fetch.repositories = await getRepositories(this.hass);
-    } else if (prop === "lovelace") {
-      _fetch.resources = await getLovelaceConfiguration(this.hass);
     }
 
     Object.keys(_fetch).forEach((update) => {
@@ -163,12 +151,13 @@ class HacsFrontend extends HacsElement {
     });
     if (_updates) {
       this._updateHacs(_updates);
+      this.requestUpdate();
     }
   }
 
   protected render(): TemplateResult | void {
-    if (!this.hass || !this.hacs) {
-      return html``;
+    if (!this.hass || !this.hacs?.info.categories?.length) {
+      return html`<hass-loading-screen no-toolbar></hass-loading-screen>`;
     }
 
     return html`
@@ -196,7 +185,15 @@ class HacsFrontend extends HacsElement {
   }
 
   static get styles() {
-    return [HacsStyles, hacsStyleVariables];
+    return [
+      HacsStyles,
+      hacsStyleVariables,
+      css`
+        hass-loading-screen {
+          height: 100vh;
+        }
+      `,
+    ];
   }
 
   private _showDialog(ev: HacsDialogEvent): void {

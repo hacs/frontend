@@ -10,7 +10,7 @@ import { Hacs } from "./data/hacs";
 
 @customElement("hacs-router")
 class HacsRouter extends HassRouterPage {
-  @property({ attribute: false }) public hacs?: Hacs;
+  @property({ attribute: false }) public hacs!: Hacs;
 
   @property({ attribute: false }) public hass!: HomeAssistant;
 
@@ -50,37 +50,6 @@ class HacsRouter extends HassRouterPage {
     }
   }
 
-  protected routerOptions: RouterOptions = {
-    defaultPage: "entry",
-    showLoading: true,
-    routes: {
-      _my_redirect: {
-        tag: "hacs-my-redirect",
-        load: () => import("./hacs-my-redirect"),
-      },
-      entry: {
-        tag: "hacs-entry-panel",
-        load: () => import("./panels/hacs-entry-panel"),
-      },
-      integrations: {
-        tag: "hacs-store-panel",
-        load: () => import("./panels/hacs-store-panel"),
-      },
-      frontend: {
-        tag: "hacs-store-panel",
-        load: () => import("./panels/hacs-store-panel"),
-      },
-      automation: {
-        tag: "hacs-store-panel",
-        load: () => import("./panels/hacs-store-panel"),
-      },
-      repository: {
-        tag: "hacs-repository-panel",
-        load: () => import("./panels/hacs-repository-panel"),
-      },
-    },
-  };
-
   protected updatePageEl(el) {
     const section = this.route.path.replace("/", "");
     const isWide = this.hass.dockedSidebar === "docked" ? this._wideSidebar : this._wide;
@@ -91,4 +60,29 @@ class HacsRouter extends HassRouterPage {
     el.isWide = isWide;
     el.section = section;
   }
+
+  protected routerOptions: RouterOptions = {
+    defaultPage: "entry",
+    showLoading: true,
+    beforeRender: (page: string) =>
+      !["_my_redirect", "entry", "explore", "repository"].includes(page) ? "entry" : undefined,
+    routes: {
+      _my_redirect: {
+        tag: "hacs-my-redirect",
+        load: () => import("./hacs-my-redirect"),
+      },
+      entry: {
+        tag: "hacs-experimental-panel",
+        load: () => import("./panels/hacs-experimental-panel"),
+      },
+      explore: {
+        tag: "hacs-experimental-panel",
+        load: () => import("./panels/hacs-experimental-panel"),
+      },
+      repository: {
+        tag: "hacs-repository-panel",
+        load: () => import("./panels/hacs-repository-panel"),
+      },
+    },
+  };
 }

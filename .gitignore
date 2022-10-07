@@ -9,3 +9,4 @@ hacs_frontend/*.js.gz
 !hacs_frontend/*.py
 
 yarn-error.log
+.yarn

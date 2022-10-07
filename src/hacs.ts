@@ -1,7 +1,6 @@
-import { LitElement, PropertyValues } from "lit";
+import { LitElement } from "lit";
 import { property } from "lit/decorators";
 import { Hacs } from "./data/hacs";
-import { sectionsEnabled } from "./panels/hacs-sections";
 import { addedToLovelace } from "./tools/added-to-lovelace";
 import { HacsLogger } from "./tools/hacs-logger";
 import { localize } from "./localize/localize";
@@ -16,12 +15,7 @@ export class HacsElement extends ProvideHassLitMixin(LitElement) {
     if (this.hacs === undefined) {
       this.hacs = {
         language: "en",
-        messages: [],
-        updates: [],
-        resources: [],
         repositories: [],
-        removed: [],
-        sections: [],
         info: {} as any,
         addedToLovelace,
         localize: (string: string, replace?: Record<string, any>) =>
@@ -46,13 +40,6 @@ export class HacsElement extends ProvideHassLitMixin(LitElement) {
 
     if (shouldUpdate) {
       this.hacs = { ...this.hacs, ...obj };
-    }
-  }
-
-  protected updated(changedProps: PropertyValues) {
-    super.updated(changedProps);
-    if (this.hacs.language && this.hacs.info) {
-      this.hacs.sections = sectionsEnabled(this.hacs.language, this.hacs.info);
     }
   }
 }
