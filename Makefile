@@ -23,3 +23,6 @@ update-submodule: ## Udpate submodules
 	rm -R homeassistant-frontend;
 	git submodule update --init --recursive --remote;
 	script/bootstrap
+
+tag-name: ## Create a tag name
+	@date --utc '+%Y%m%d%H%M%S'
