@@ -2,6 +2,10 @@ import { HomeAssistant } from "../../homeassistant-frontend/src/types";
 import { HacsInfo } from "./hacs";
 import { HacsDispatchEvent } from "./common";
 import { RepositoryBase } from "./repository";
+import {
+  LovelaceResource,
+  LovelaceResourcesMutableParams,
+} from "../../homeassistant-frontend/src/data/lovelace";
 
 export const fetchHacsInfo = async (hass: HomeAssistant) =>
   hass.connection.sendMessagePromise<HacsInfo>({
@@ -43,6 +47,29 @@ export const repositoryDelete = async (hass: HomeAssistant, repository: string) 
   hass.connection.sendMessagePromise<void>({
     type: "hacs/repositories/remove",
     repository,
+  });
+
+export const fetchResources = (hass: HomeAssistant): Promise<LovelaceResource[]> =>
+  hass.connection.sendMessagePromise({
+    type: "lovelace/resources",
+  });
+
+export const createResource = (hass: HomeAssistant, values: LovelaceResourcesMutableParams) =>
+  hass.callWS<LovelaceResource>({
+    type: "lovelace/resources/create",
+    ...values,
+  });
+
+export const updateResource = (hass: HomeAssistant, values: LovelaceResourcesMutableParams) =>
+  hass.callWS<LovelaceResource>({
+    type: "lovelace/resources/update",
+    ...values,
+  });
+
+export const deleteResource = (hass: HomeAssistant, id: string) =>
+  hass.callWS({
+    type: "lovelace/resources/delete",
+    resource_id: id,
   });
 
 export const websocketSubscription = (
