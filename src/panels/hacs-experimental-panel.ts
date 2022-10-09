@@ -322,7 +322,7 @@ export class HacsExperimentalPanel extends LitElement {
 
   private _handleMenuAction(ev: CustomEvent) {
     switch (ev.detail.index) {
-      case 3:
+      case 0:
         this.dispatchEvent(
           new CustomEvent("hacs-dialog", {
             detail: {
@@ -334,7 +334,7 @@ export class HacsExperimentalPanel extends LitElement {
           })
         );
         break;
-      case 4:
+      case 1:
         showDialogAbout(this, this.hacs);
         break;
     }
