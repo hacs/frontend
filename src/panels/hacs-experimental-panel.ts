@@ -56,7 +56,7 @@ export class HacsExperimentalPanel extends LitElement {
 
   @property({ type: Boolean }) public isWide!: boolean;
 
-  @property({ attribute: false }) public section!: string;
+  @property({ attribute: false }) public section!: "entry" | "explore";
 
   @state() activeFilters?: string[];
 
@@ -227,6 +227,7 @@ export class HacsExperimentalPanel extends LitElement {
         main: true,
         sortable: true,
         filterable: true,
+        direction: this.section === "entry" ? "asc" : undefined,
         hidden: !tableColumnsOptions[this.section].name,
         grows: true,
         template: (name, repository: RepositoryBase) =>
@@ -250,6 +251,7 @@ export class HacsExperimentalPanel extends LitElement {
       stars: {
         title: "Stars",
         hidden: narrow || !tableColumnsOptions[this.section].stars,
+        direction: this.section === "explore" ? "desc" : undefined,
         sortable: true,
         filterable: true,
         width: "10%",
