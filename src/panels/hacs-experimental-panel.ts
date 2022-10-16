@@ -308,14 +308,20 @@ export class HacsExperimentalPanel extends LitElement {
 
   private _handleColumnChange(ev: CustomEvent) {
     ev.stopPropagation();
-    const currentSection = this._tableColumns[this.section];
+    const update = {
+      ...this._tableColumns[this.section],
+      [(ev.currentTarget as any).column]: ev.detail.selected,
+    };
 
     this._tableColumns = {
       ...this._tableColumns,
-      [this.section]: {
-        ...currentSection,
-        [(ev.currentTarget as any).column]: ev.detail.selected,
-      },
+      [this.section]: Object.keys(tableColumnDefaults[this.section]).reduce(
+        (entries, key) => ({
+          ...entries,
+          [key]: update[key] || tableColumnDefaults[this.section][key],
+        }),
+        {}
+      ),
     };
   }
 
