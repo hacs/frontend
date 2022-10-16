@@ -26,14 +26,15 @@ import type {
 
 import "../../homeassistant-frontend/src/components/ha-button-menu";
 import "../../homeassistant-frontend/src/components/ha-check-list-item";
-import "../../homeassistant-frontend/src/components/ha-chip";
 import "../../homeassistant-frontend/src/components/ha-fab";
 import "../../homeassistant-frontend/src/components/ha-menu-button";
 import "../../homeassistant-frontend/src/components/ha-svg-icon";
 import { haStyle } from "../../homeassistant-frontend/src/resources/styles";
 import type { HomeAssistant, Route } from "../../homeassistant-frontend/src/types";
+import { brandsUrl } from "../../homeassistant-frontend/src/util/brands-url";
 import { showDialogAbout } from "../components/dialogs/hacs-about-dialog";
 import { hacsIcon } from "../components/hacs-icon";
+import { repositoryMenuItems } from "../components/hacs-repository-owerflow-menu";
 import "../components/hacs-tabs-subpage-data-table";
 import type { Hacs } from "../data/hacs";
 import type { RepositoryBase } from "../data/repository";
@@ -206,7 +207,7 @@ export class HacsExperimentalPanel extends LitElement {
     ${this.section === "entry"
       ? html`
           <a href="/hacs/explore" slot="fab">
-            <ha-fab .label=${this.hacs.localize("store.explore")} .extended=${!this.narrow}>
+            <ha-fab .label=${this.hacs.localize("common.explore")} .extended=${!this.narrow}>
               <ha-svg-icon slot="icon" .path=${mdiPlus}></ha-svg-icon> </ha-fab
           ></a>
         `
@@ -234,6 +235,26 @@ export class HacsExperimentalPanel extends LitElement {
       narrow: boolean,
       tableColumnsOptions: TableColumnsOptions
     ): DataTableColumnContainer<RepositoryBase> => ({
+      icon: {
+        title: "",
+        label: this.hass.localize("ui.panel.config.lovelace.dashboards.picker.headers.icon"),
+        hidden: this.narrow || this.section !== "entry",
+        type: "icon",
+        template: (_, repository: RepositoryBase) =>
+          html`
+            <img
+              style="height: 32px; width: 32px"
+              slot="item-icon"
+              src=${brandsUrl({
+                domain: repository.domain || "github",
+                type: "icon",
+                useFallback: true,
+                darkOptimized: this.hass.themes?.darkMode,
+              })}
+              referrerpolicy="no-referrer"
+            />
+          `,
+      },
       name: {
         ...defaultKeyData,
         title: this.hacs.localize("column.name"),
@@ -282,6 +303,7 @@ export class HacsExperimentalPanel extends LitElement {
         hidden: narrow || !tableColumnsOptions[this.section].category,
         sortable: true,
         width: "10%",
+        template: (category: string) => this.hacs.localize(`common.${category}`),
       },
       authors: defaultKeyData,
       description: defaultKeyData,
@@ -289,6 +311,21 @@ export class HacsExperimentalPanel extends LitElement {
       full_name: defaultKeyData,
       id: defaultKeyData,
       topics: defaultKeyData,
+      actions: {
+        title: "",
+        width: this.narrow ? undefined : "10%",
+        hidden: this.section !== "entry",
+        type: "overflow-menu",
+        template: (_, repository: RepositoryBase) =>
+          html`
+            <ha-icon-overflow-menu
+              .hass=${this.hass}
+              narrow
+              .items=${repositoryMenuItems(this, repository)}
+            >
+            </ha-icon-overflow-menu>
+          `,
+      },
     })
   );
 
