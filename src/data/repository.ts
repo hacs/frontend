@@ -23,7 +23,7 @@ export interface RepositoryBase {
   full_name: string;
   hide: boolean;
   homeassistant: string | null;
-  id: number;
+  id: string;
   installed_version: string;
   installed: boolean;
   last_updated: string;
@@ -33,7 +33,6 @@ export interface RepositoryBase {
   pending_upgrade: boolean;
   stars: number;
   state: string;
-  status_description: string;
   status: string;
   topics: string[];
 }

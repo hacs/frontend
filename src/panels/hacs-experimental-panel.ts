@@ -16,6 +16,7 @@ import "@polymer/app-layout/app-toolbar/app-toolbar";
 import { css, CSSResultGroup, html, LitElement, TemplateResult } from "lit";
 import { customElement, property, state } from "lit/decorators";
 import memoize from "memoize-one";
+import { relativeTime } from "../../homeassistant-frontend/src/common/datetime/relative_time";
 import { LocalStorage } from "../../homeassistant-frontend/src/common/decorators/local-storage";
 import { navigate } from "../../homeassistant-frontend/src/common/navigate";
 import type {
@@ -43,6 +44,29 @@ interface TableColumnsOptions {
   explore: { [key: string]: boolean };
 }
 
+const tableColumnDefaults = {
+  entry: {
+    name: true,
+    downloads: false,
+    stars: false,
+    last_updated: false,
+    category: true,
+  },
+  explore: {
+    name: true,
+    downloads: false,
+    stars: false,
+    last_updated: false,
+    category: true,
+  },
+};
+
+const defaultKeyData = {
+  title: "",
+  hidden: true,
+  filterable: true,
+};
+
 @customElement("hacs-experimental-panel")
 export class HacsExperimentalPanel extends LitElement {
   @property({ attribute: false }) public hacs!: Hacs;
@@ -61,20 +85,7 @@ export class HacsExperimentalPanel extends LitElement {
   @state() activeFilters?: string[];
 
   @LocalStorage("hacs-table-columns", true, false)
-  private _tableColumns: TableColumnsOptions = {
-    entry: {
-      name: true,
-      downloads: false,
-      stars: false,
-      category: true,
-    },
-    explore: {
-      name: true,
-      downloads: false,
-      stars: false,
-      category: true,
-    },
-  };
+  private _tableColumns: TableColumnsOptions = tableColumnDefaults;
 
   protected render = (): TemplateResult | void => html`<hacs-tabs-subpage-data-table
     .tabs=${[
@@ -174,13 +185,14 @@ export class HacsExperimentalPanel extends LitElement {
         ? html`
             <div class="divider"></div>
             <p class="menu_header">Columns</p>
-            ${Object.keys(this._tableColumns[this.section]).map(
+            ${Object.keys(tableColumnDefaults[this.section]).map(
               (entry) => html`
                 <ha-check-list-item
                   @request-selected=${this._handleColumnChange}
                   graphic="control"
                   .column=${entry}
-                  .selected=${this._tableColumns[this.section][entry]}
+                  .selected=${this._tableColumns[this.section][entry] ||
+                  tableColumnDefaults[this.section][entry]}
                   left
                 >
                   ${this.hacs.localize(`column.${entry}`)}
@@ -223,10 +235,10 @@ export class HacsExperimentalPanel extends LitElement {
       tableColumnsOptions: TableColumnsOptions
     ): DataTableColumnContainer<RepositoryBase> => ({
       name: {
-        title: "Name",
+        ...defaultKeyData,
+        title: this.hacs.localize("column.name"),
         main: true,
         sortable: true,
-        filterable: true,
         direction: this.section === "entry" ? "asc" : undefined,
         hidden: !tableColumnsOptions[this.section].name,
         grows: true,
@@ -241,53 +253,42 @@ export class HacsExperimentalPanel extends LitElement {
           `,
       },
       downloads: {
-        title: "Downloads",
+        ...defaultKeyData,
+        title: this.hacs.localize("column.downloads"),
         hidden: narrow || !tableColumnsOptions[this.section].downloads,
         sortable: true,
-        filterable: true,
         width: "10%",
-        template: (downloads: number, _: RepositoryBase) => html`${downloads || "-"}`,
+        template: (downloads: number) => html`${downloads || "-"}`,
       },
       stars: {
-        title: "Stars",
+        ...defaultKeyData,
+        title: this.hacs.localize("column.stars"),
         hidden: narrow || !tableColumnsOptions[this.section].stars,
         direction: this.section === "explore" ? "desc" : undefined,
         sortable: true,
-        filterable: true,
         width: "10%",
+      },
+      last_updated: {
+        ...defaultKeyData,
+        title: this.hacs.localize("column.last_updated"),
+        hidden: narrow || !tableColumnsOptions[this.section].last_updated,
+        sortable: true,
+        width: "15%",
+        template: (last_updated: string) => relativeTime(new Date(last_updated), this.hass.locale),
       },
       category: {
-        title: "Category",
+        ...defaultKeyData,
+        title: this.hacs.localize("column.category"),
         hidden: narrow || !tableColumnsOptions[this.section].category,
         sortable: true,
-        filterable: true,
         width: "10%",
       },
-      authors: {
-        title: "",
-        hidden: true,
-        filterable: true,
-      },
-      topics: {
-        title: "",
-        hidden: true,
-        filterable: true,
-      },
-      full_name: {
-        title: "",
-        hidden: true,
-        filterable: true,
-      },
-      id: {
-        title: "",
-        hidden: true,
-        filterable: true,
-      },
-      description: {
-        title: "",
-        hidden: true,
-        filterable: true,
-      },
+      authors: defaultKeyData,
+      description: defaultKeyData,
+      domain: defaultKeyData,
+      full_name: defaultKeyData,
+      id: defaultKeyData,
+      topics: defaultKeyData,
     })
   );
 
