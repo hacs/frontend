@@ -3,7 +3,6 @@ import "@material/mwc-list/mwc-list";
 import "@material/mwc-list/mwc-list-item";
 import {
   mdiAlertCircleOutline,
-  mdiDotsVertical,
   mdiFileDocument,
   mdiFilterVariant,
   mdiGit,
@@ -19,12 +18,14 @@ import { customElement, property, state } from "lit/decorators";
 import memoize from "memoize-one";
 import { relativeTime } from "../../homeassistant-frontend/src/common/datetime/relative_time";
 import { LocalStorage } from "../../homeassistant-frontend/src/common/decorators/local-storage";
+import { mainWindow } from "../../homeassistant-frontend/src/common/dom/get_main_window";
 import { navigate } from "../../homeassistant-frontend/src/common/navigate";
 import type { DataTableColumnContainer } from "../../homeassistant-frontend/src/components/data-table/ha-data-table";
 
 import "../../homeassistant-frontend/src/components/ha-button-menu";
 import "../../homeassistant-frontend/src/components/ha-check-list-item";
 import "../../homeassistant-frontend/src/components/ha-fab";
+import { IconOverflowMenuItem } from "../../homeassistant-frontend/src/components/ha-icon-overflow-menu";
 import "../../homeassistant-frontend/src/components/ha-menu-button";
 import "../../homeassistant-frontend/src/components/ha-svg-icon";
 import { haStyle } from "../../homeassistant-frontend/src/resources/styles";
@@ -36,6 +37,7 @@ import { repositoryMenuItems } from "../components/hacs-repository-owerflow-menu
 import "../components/hacs-tabs-subpage-data-table";
 import type { Hacs } from "../data/hacs";
 import type { RepositoryBase } from "../data/repository";
+import { repositoriesClearNew } from "../data/websocket";
 import { HacsStyles } from "../styles/hacs-common-style";
 
 interface TableColumnsOptions {
@@ -94,6 +96,7 @@ export class HacsExperimentalPanel extends LitElement {
     );
     const newRepositories = repositories.filter((repo) => repo.new);
     const restRepositories = repositories.filter((repo) => !repo.new);
+    const hasNew = this.section === "explore" && newRepositories.length !== 0;
 
     return html`<hacs-tabs-subpage-data-table
       .tabs=${[
@@ -106,11 +109,7 @@ export class HacsExperimentalPanel extends LitElement {
           iconPath: hacsIcon,
         },
       ]}
-      .columns=${this._columns(
-        this.narrow,
-        this.section === "explore" && newRepositories.length !== 0,
-        this._tableColumns
-      )}
+      .columns=${this._columns(this.narrow, hasNew, this._tableColumns)}
       .data=${newRepositories.concat(restRepositories)}
       .hass=${this.hass}
       isWide=${this.isWide}
@@ -127,41 +126,63 @@ export class HacsExperimentalPanel extends LitElement {
       @row-click=${this._handleRowClicked}
       @clear-filter=${this._handleClearFilter}
     >
-      <ha-button-menu corner="BOTTOM_START" slot="toolbar-icon" @action=${this._handleMenuAction}>
-        <ha-icon-button
-          .label=${this.hass?.localize("ui.common.menu")}
-          .path=${mdiDotsVertical}
-          slot="trigger"
-        >
-        </ha-icon-button>
-
-        <a href="https://hacs.xyz/" target="_blank" rel="noreferrer">
-          <mwc-list-item graphic="icon">
-            <ha-svg-icon slot="graphic" .path=${mdiFileDocument}></ha-svg-icon>
-            ${this.hacs.localize("menu.documentation")}
-          </mwc-list-item>
-        </a>
-        <a href="https://github.com/hacs" target="_blank" rel="noreferrer">
-          <mwc-list-item graphic="icon">
-            <ha-svg-icon slot="graphic" .path=${mdiGithub}></ha-svg-icon>
-            GitHub
-          </mwc-list-item>
-        </a>
-        <a href="https://hacs.xyz/docs/issues" target="_blank" rel="noreferrer">
-          <mwc-list-item graphic="icon">
-            <ha-svg-icon slot="graphic" .path=${mdiAlertCircleOutline}></ha-svg-icon>
-            ${this.hacs.localize("menu.open_issue")}
-          </mwc-list-item>
-        </a>
-        <mwc-list-item graphic="icon" ?disabled=${Boolean(this.hacs.info.disabled_reason)}>
-          <ha-svg-icon slot="graphic" .path=${mdiGit}></ha-svg-icon>
-          ${this.hacs.localize("menu.custom_repositories")}
-        </mwc-list-item>
-        <mwc-list-item graphic="icon">
-          <ha-svg-icon slot="graphic" .path=${mdiInformation}></ha-svg-icon>
-          ${this.hacs.localize("menu.about")}
-        </mwc-list-item>
-      </ha-button-menu>
+      <ha-icon-overflow-menu
+        narrow
+        slot="toolbar-icon"
+        .hass=${this.hass}
+        .items=${[
+          {
+            path: mdiFileDocument,
+            label: this.hacs.localize("menu.documentation"),
+            action: () => mainWindow.open(`https://hacs.xyz/`, "_blank", "noreferrer=true"),
+          },
+          {
+            path: mdiGithub,
+            label: "GitHub",
+            action: () => mainWindow.open(`https://github.com/hacs`, "_blank", "noreferrer=true"),
+          },
+          {
+            path: mdiAlertCircleOutline,
+            label: this.hacs.localize("menu.open_issue"),
+            action: () =>
+              mainWindow.open(`https://hacs.xyz/docs/issues`, "_blank", "noreferrer=true"),
+          },
+          {
+            path: mdiGit,
+            disabled: Boolean(this.hacs.info.disabled_reason),
+            label: this.hacs.localize("menu.custom_repositories"),
+            action: () => {
+              this.dispatchEvent(
+                new CustomEvent("hacs-dialog", {
+                  detail: {
+                    type: "custom-repositories",
+                    repositories: this.hacs.repositories,
+                  },
+                  bubbles: true,
+                  composed: true,
+                })
+              );
+            },
+          },
+          hasNew
+            ? {
+                path: mdiNewBox,
+                label: this.hacs.localize("menu.dismiss"),
+                action: () => {
+                  repositoriesClearNew(this.hass, this.hacs);
+                },
+              }
+            : undefined,
+          {
+            path: mdiInformation,
+            label: this.hacs.localize("menu.about"),
+            action: () => {
+              showDialogAbout(this, this.hacs);
+            },
+          },
+        ].filter((item) => item !== undefined) as IconOverflowMenuItem[]}
+      >
+      </ha-icon-overflow-menu>
 
       <ha-button-menu slot="filter-menu" corner="BOTTOM_START" multi>
         <ha-icon-button
@@ -334,8 +355,8 @@ export class HacsExperimentalPanel extends LitElement {
           html`
             <ha-icon-overflow-menu
               .hass=${this.hass}
-              narrow
               .items=${repositoryMenuItems(this, repository)}
+              narrow
             >
             </ha-icon-overflow-menu>
           `,
@@ -378,26 +399,6 @@ export class HacsExperimentalPanel extends LitElement {
 
   private _handleClearFilter() {
     this.activeFilters = undefined;
-  }
-
-  private _handleMenuAction(ev: CustomEvent) {
-    switch (ev.detail.index) {
-      case 0:
-        this.dispatchEvent(
-          new CustomEvent("hacs-dialog", {
-            detail: {
-              type: "custom-repositories",
-              repositories: this.hacs.repositories,
-            },
-            bubbles: true,
-            composed: true,
-          })
-        );
-        break;
-      case 1:
-        showDialogAbout(this, this.hacs);
-        break;
-    }
   }
 
   static get styles(): CSSResultGroup {

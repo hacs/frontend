@@ -1,5 +1,5 @@
 import { HomeAssistant } from "../../homeassistant-frontend/src/types";
-import { HacsInfo } from "./hacs";
+import { Hacs, HacsInfo } from "./hacs";
 import { HacsDispatchEvent } from "./common";
 import { RepositoryBase } from "./repository";
 import {
@@ -47,6 +47,12 @@ export const repositoryDelete = async (hass: HomeAssistant, repository: string) 
   hass.connection.sendMessagePromise<void>({
     type: "hacs/repositories/remove",
     repository,
+  });
+
+export const repositoriesClearNew = async (hass: HomeAssistant, hacs: Hacs) =>
+  hass.connection.sendMessagePromise<void>({
+    type: "hacs/repositories/clear_new",
+    categories: hacs.info.categories,
   });
 
 export const fetchResources = (hass: HomeAssistant): Promise<LovelaceResource[]> =>
