@@ -20,14 +20,10 @@ import memoize from "memoize-one";
 import { relativeTime } from "../../homeassistant-frontend/src/common/datetime/relative_time";
 import { LocalStorage } from "../../homeassistant-frontend/src/common/decorators/local-storage";
 import { navigate } from "../../homeassistant-frontend/src/common/navigate";
-import type {
-  DataTableColumnContainer,
-  DataTableRowData,
-} from "../../homeassistant-frontend/src/components/data-table/ha-data-table";
+import type { DataTableColumnContainer } from "../../homeassistant-frontend/src/components/data-table/ha-data-table";
 
 import "../../homeassistant-frontend/src/components/ha-button-menu";
 import "../../homeassistant-frontend/src/components/ha-check-list-item";
-import "../../homeassistant-frontend/src/components/ha-chip";
 import "../../homeassistant-frontend/src/components/ha-fab";
 import "../../homeassistant-frontend/src/components/ha-menu-button";
 import "../../homeassistant-frontend/src/components/ha-svg-icon";
