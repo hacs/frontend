@@ -14,17 +14,19 @@ import {
 import "@polymer/app-layout/app-header/app-header";
 import "@polymer/app-layout/app-toolbar/app-toolbar";
 import { css, CSSResultGroup, html, LitElement, TemplateResult } from "lit";
-import { customElement, property, state } from "lit/decorators";
+import { customElement, property } from "lit/decorators";
 import memoize from "memoize-one";
 import { relativeTime } from "../../homeassistant-frontend/src/common/datetime/relative_time";
 import { LocalStorage } from "../../homeassistant-frontend/src/common/decorators/local-storage";
 import { mainWindow } from "../../homeassistant-frontend/src/common/dom/get_main_window";
+import { stopPropagation } from "../../homeassistant-frontend/src/common/dom/stop_propagation";
 import { navigate } from "../../homeassistant-frontend/src/common/navigate";
 import type { DataTableColumnContainer } from "../../homeassistant-frontend/src/components/data-table/ha-data-table";
 
 import "../../homeassistant-frontend/src/components/ha-button-menu";
 import "../../homeassistant-frontend/src/components/ha-check-list-item";
 import "../../homeassistant-frontend/src/components/ha-fab";
+import "../../homeassistant-frontend/src/components/ha-select";
 import { IconOverflowMenuItem } from "../../homeassistant-frontend/src/components/ha-icon-overflow-menu";
 import "../../homeassistant-frontend/src/components/ha-menu-button";
 import "../../homeassistant-frontend/src/components/ha-svg-icon";
@@ -83,7 +85,8 @@ export class HacsExperimentalPanel extends LitElement {
 
   @property({ attribute: false }) public section!: "entry" | "explore";
 
-  @state() activeFilters?: string[];
+  @LocalStorage("hacs-table-filters", true, false)
+  private activeFilters?: string[];
 
   @LocalStorage("hacs-table-columns", true, false)
   private _tableColumns: TableColumnsOptions = tableColumnDefaults;
@@ -191,25 +194,28 @@ export class HacsExperimentalPanel extends LitElement {
           .path=${mdiFilterVariant}
         >
         </ha-icon-button>
-        ${!this.narrow ? html`<p class="menu_header">Hide categories</p>` : " "}
-        ${this.narrow && this.activeFilters?.length
-          ? html`<mwc-list-item @click=${this._handleClearFilter}>
-              ${this.hass.localize("ui.components.data-table.filtering_by")}
-              ${this.activeFilters.join(", ")} <span class="clear">Clear</span>
-            </mwc-list-item>`
-          : ""}
-        ${this.hacs.info.categories.map(
-          (category) => html`
-            <ha-check-list-item
-              @request-selected=${this._handleCategoryFilterChange}
-              .category=${category}
-              .selected=${(this.activeFilters || []).includes(`Hide ${category}`)}
-              left
-            >
-              ${this.hacs.localize(`common.${category}`)}
-            </ha-check-list-item>
-          `
-        )}
+        <ha-select
+          label="Category filter"
+          @selected=${this._handleCategoryFilterChange}
+          @closed=${stopPropagation}
+          naturalMenuWidth
+          .value=${this.activeFilters?.find((filter) =>
+            filter.startsWith(`${this.hacs.localize(`dialog_custom_repositories.category`)}: `)
+          ) || ""}
+        >
+          ${this.hacs.info.categories.map(
+            (category) =>
+              html`
+                <mwc-list-item
+                  .value="${this.hacs.localize(
+                    `dialog_custom_repositories.category`
+                  )}: ${this.hacs.localize(`common.${category}`)}"
+                >
+                  ${this.hacs.localize(`common.${category}`)}
+                </mwc-list-item>
+              `
+          )}
+        </ha-select>
         ${!this.narrow
           ? html`
               <div class="divider"></div>
@@ -251,7 +257,14 @@ export class HacsExperimentalPanel extends LitElement {
     ): RepositoryBase[] =>
       repositories
         .filter((reposiotry) => {
-          if (activeFilters?.includes(`Hide ${reposiotry.category}`)) {
+          if (
+            activeFilters &&
+            !activeFilters.includes(
+              `${this.hacs.localize(`dialog_custom_repositories.category`)}: ${this.hacs.localize(
+                `common.${reposiotry.category}`
+              )}`
+            )
+          ) {
             return false;
           }
           return (!downloaded && !reposiotry.installed) || (downloaded && reposiotry.installed);
@@ -355,7 +368,7 @@ export class HacsExperimentalPanel extends LitElement {
           html`
             <ha-icon-overflow-menu
               .hass=${this.hass}
-              .items=${repositoryMenuItems(this, repository)}
+              .items=${repositoryMenuItems(this, repository) as IconOverflowMenuItem[]}
               narrow
             >
             </ha-icon-overflow-menu>
@@ -370,12 +383,10 @@ export class HacsExperimentalPanel extends LitElement {
 
   private _handleCategoryFilterChange(ev: CustomEvent) {
     ev.stopPropagation();
-    const category = `Hide ${(ev.target as any).category}`;
-    if (ev.detail.selected) {
-      this.activeFilters = Array.from(new Set([...(this.activeFilters || []), category]));
-      return;
+    const categoryFilter = (ev.target as any).value;
+    if (categoryFilter) {
+      this.activeFilters = [categoryFilter];
     }
-    this.activeFilters = this.activeFilters?.filter((item) => item !== category);
   }
 
   private _handleColumnChange(ev: CustomEvent) {
@@ -419,6 +430,9 @@ export class HacsExperimentalPanel extends LitElement {
           display: block;
           height: 1px;
           background-color: var(--divider-color);
+        }
+        ha-select {
+          margin: 0 8px;
         }
       `,
     ];
