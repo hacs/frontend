@@ -186,58 +186,55 @@ export class HacsExperimentalPanel extends LitElement {
         ].filter((item) => item !== undefined) as IconOverflowMenuItem[]}
       >
       </ha-icon-overflow-menu>
+      ${!this.narrow
+        ? html` <ha-button-menu slot="filter-menu" corner="BOTTOM_START" multi>
+            <ha-icon-button
+              slot="trigger"
+              .label=${this.hass.localize("ui.panel.config.entities.picker.filter.filter")}
+              .path=${mdiFilterVariant}
+            >
+            </ha-icon-button>
 
-      <ha-button-menu slot="filter-menu" corner="BOTTOM_START" multi>
-        <ha-icon-button
-          slot="trigger"
-          .label=${this.hass.localize("ui.panel.config.entities.picker.filter.filter")}
-          .path=${mdiFilterVariant}
-        >
-        </ha-icon-button>
-        <ha-select
-          label="Category filter"
-          @selected=${this._handleCategoryFilterChange}
-          @closed=${stopPropagation}
-          naturalMenuWidth
-          .value=${this.activeFilters?.find((filter) =>
-            filter.startsWith(`${this.hacs.localize(`dialog_custom_repositories.category`)}: `)
-          ) || ""}
-        >
-          ${this.hacs.info.categories.map(
-            (category) =>
-              html`
-                <mwc-list-item
-                  .value="${this.hacs.localize(
-                    `dialog_custom_repositories.category`
-                  )}: ${this.hacs.localize(`common.${category}`)}"
-                >
-                  ${this.hacs.localize(`common.${category}`)}
-                </mwc-list-item>
-              `
-          )}
-        </ha-select>
-        ${!this.narrow
-          ? html`
-              <div class="divider"></div>
-              <p class="menu_header">Columns</p>
-              ${Object.keys(tableColumnDefaults[this.section]).map(
-                (entry) => html`
-                  <ha-check-list-item
-                    @request-selected=${this._handleColumnChange}
-                    graphic="control"
-                    .column=${entry}
-                    .selected=${this._tableColumns[this.section][entry] ||
-                    tableColumnDefaults[this.section][entry]}
-                    left
-                  >
-                    ${this.hacs.localize(`column.${entry}`)}
-                  </ha-check-list-item>
-                `
+            <ha-select
+              label="Category filter"
+              @selected=${this._handleCategoryFilterChange}
+              @closed=${stopPropagation}
+              naturalMenuWidth
+              .value=${this.activeFilters?.find((filter) =>
+                filter.startsWith(`${this.hacs.localize(`dialog_custom_repositories.category`)}: `)
+              ) || ""}
+            >
+              ${this.hacs.info.categories.map(
+                (category) =>
+                  html`
+                    <mwc-list-item
+                      .value="${this.hacs.localize(
+                        `dialog_custom_repositories.category`
+                      )}: ${this.hacs.localize(`common.${category}`)}"
+                    >
+                      ${this.hacs.localize(`common.${category}`)}
+                    </mwc-list-item>
+                  `
               )}
-            `
-          : " "}
-      </ha-button-menu>
-
+            </ha-select>
+            <div class="divider"></div>
+            <p class="menu_header">Columns</p>
+            ${Object.keys(tableColumnDefaults[this.section]).map(
+              (entry) => html`
+                <ha-check-list-item
+                  @request-selected=${this._handleColumnChange}
+                  graphic="control"
+                  .column=${entry}
+                  .selected=${this._tableColumns[this.section][entry] ||
+                  tableColumnDefaults[this.section][entry]}
+                  left
+                >
+                  ${this.hacs.localize(`column.${entry}`)}
+                </ha-check-list-item>
+              `
+            )}
+          </ha-button-menu>`
+        : " "}
       ${this.section === "entry"
         ? html`
             <a href="/hacs/explore" slot="fab">
