@@ -41,7 +41,7 @@ export class HacsDonwloadDialog extends HacsDialogBase {
   shouldUpdate(changedProperties: PropertyValues) {
     changedProperties.forEach((_oldValue, propName) => {
       if (propName === "hass") {
-        this.sidebarDocked = window.localStorage.getItem("dockedSidebar") === '"docked"';
+        this.sidebarDocked = window?.localStorage?.getItem("dockedSidebar") === '"docked"';
       }
       if (propName === "repositories") {
         this._fetchRepository();

@@ -24,7 +24,7 @@ export class HacsDialogBase extends LitElement {
   shouldUpdate(changedProperties: PropertyValues) {
     changedProperties.forEach((_oldValue, propName) => {
       if (propName === "hass") {
-        this.sidebarDocked = window.localStorage.getItem("dockedSidebar") === '"docked"';
+        this.sidebarDocked = window?.localStorage?.getItem("dockedSidebar") === '"docked"';
       }
     });
     return (
@@ -42,6 +42,6 @@ export class HacsDialogBase extends LitElement {
 
   public connectedCallback() {
     super.connectedCallback();
-    this.sidebarDocked = window.localStorage.getItem("dockedSidebar") === '"docked"';
+    this.sidebarDocked = window?.localStorage?.getItem("dockedSidebar") === '"docked"';
   }
 }
