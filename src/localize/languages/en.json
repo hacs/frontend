@@ -127,5 +127,8 @@
       "message": "The {name} integration is configured or ignored, you need to delete the configuration for it before removing it from HACS",
       "confirm": "Go to integrations"
     }
+  },
+  "sections": {
+    "pending_repository_upgrade": "You are running version {installed}, version {available} is available"
   }
 }
