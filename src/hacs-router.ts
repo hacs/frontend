@@ -51,25 +51,29 @@ class HacsRouter extends HassRouterPage {
   }
 
   protected updatePageEl(el) {
-    const section = this.route.path.replace("/", "");
     const isWide = this.hass.dockedSidebar === "docked" ? this._wideSidebar : this._wide;
     el.hass = this.hass;
     el.hacs = this.hacs;
     el.route = this.route;
     el.narrow = this.narrow;
     el.isWide = isWide;
-    el.section = section;
   }
 
   protected routerOptions: RouterOptions = {
-    defaultPage: "entry",
+    defaultPage: "dashboard",
     showLoading: true,
     beforeRender: (page: string) =>
-      !["_my_redirect", "entry", "explore", "repository"].includes(page) ? "entry" : undefined,
+      !["_my_redirect", "dashboard", "entry", "explore", "repository"].includes(page)
+        ? "dashboard"
+        : undefined,
     routes: {
       _my_redirect: {
         tag: "hacs-my-redirect",
         load: () => import("./hacs-my-redirect"),
+      },
+      dashboard: {
+        tag: "hacs-experimental-panel",
+        load: () => import("./panels/hacs-experimental-panel"),
       },
       entry: {
         tag: "hacs-experimental-panel",
