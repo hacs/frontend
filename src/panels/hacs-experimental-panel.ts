@@ -42,6 +42,7 @@ import type { Hacs } from "../data/hacs";
 import type { RepositoryBase } from "../data/repository";
 import { repositoriesClearNew } from "../data/websocket";
 import { HacsStyles } from "../styles/hacs-common-style";
+import { categoryIcon } from "../tools/category-icon";
 
 const tableColumnDefaults = {
   name: true,
@@ -329,19 +330,27 @@ export class HacsExperimentalPanel extends LitElement {
         hidden: this.narrow,
         type: "icon",
         template: (_, repository: RepositoryBase) =>
-          html`
-            <img
-              style="height: 32px; width: 32px"
-              slot="item-icon"
-              src=${brandsUrl({
-                domain: repository.domain || "github",
-                type: "icon",
-                useFallback: true,
-                darkOptimized: this.hass.themes?.darkMode,
-              })}
-              referrerpolicy="no-referrer"
-            />
-          `,
+          repository.category === "integration"
+            ? html`
+                <img
+                  style="height: 32px; width: 32px"
+                  slot="item-icon"
+                  src=${brandsUrl({
+                    domain: repository.domain || "invalid",
+                    type: "icon",
+                    useFallback: true,
+                    darkOptimized: this.hass.themes?.darkMode,
+                  })}
+                  referrerpolicy="no-referrer"
+                />
+              `
+            : html`
+                <ha-svg-icon
+                  style="height: 32px; width: 32px; fill: var(--secondary-text-color);"
+                  slot="item-icon"
+                  .path=${categoryIcon(repository.category)}
+                ></ha-svg-icon>
+              `,
       },
       name: {
         ...defaultKeyData,
