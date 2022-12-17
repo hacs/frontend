@@ -10,7 +10,6 @@ import {
   mdiGithub,
   mdiInformation,
   mdiNewBox,
-  mdiPlus,
 } from "@mdi/js";
 import "@polymer/app-layout/app-header/app-header";
 import "@polymer/app-layout/app-toolbar/app-toolbar";
@@ -26,7 +25,6 @@ import type { DataTableColumnContainer } from "../../homeassistant-frontend/src/
 
 import "../../homeassistant-frontend/src/components/ha-button-menu";
 import "../../homeassistant-frontend/src/components/ha-check-list-item";
-import "../../homeassistant-frontend/src/components/ha-fab";
 import "../../homeassistant-frontend/src/components/ha-select";
 import { IconOverflowMenuItem } from "../../homeassistant-frontend/src/components/ha-icon-overflow-menu";
 import "../../homeassistant-frontend/src/components/ha-menu-button";
@@ -263,18 +261,6 @@ export class HacsExperimentalPanel extends LitElement {
             `
           : ""}
       </ha-button-menu>
-      ${this.activeFilters?.includes(this.hacs.localize("common.downloaded"))
-        ? html`
-            <ha-fab
-              slot="fab"
-              .label=${this.hacs.localize("common.explore")}
-              .extended=${!this.narrow}
-              @click=${this._exploreFabClicked}
-            >
-              <ha-svg-icon slot="icon" .path=${mdiPlus}></ha-svg-icon>
-            </ha-fab>
-          `
-        : ""}
     </hacs-tabs-subpage-data-table>`;
   };
 
