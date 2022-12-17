@@ -1,12 +1,12 @@
 import { HomeAssistant } from "../../homeassistant-frontend/src/types";
 
 export type RepositoryCategory =
+  | "appdaemon"
   | "integration"
+  | "netdaemon"
   | "plugin"
   | "python_script"
-  | "theme"
-  | "appdaemon"
-  | "netdaemon";
+  | "theme";
 
 export interface RepositoryBase {
   authors: string[];
