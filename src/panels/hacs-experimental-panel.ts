@@ -3,6 +3,7 @@ import "@material/mwc-list/mwc-list";
 import "@material/mwc-list/mwc-list-item";
 import {
   mdiAlertCircleOutline,
+  mdiDownload,
   mdiFileDocument,
   mdiFilterVariant,
   mdiGit,
@@ -13,7 +14,7 @@ import {
 } from "@mdi/js";
 import "@polymer/app-layout/app-header/app-header";
 import "@polymer/app-layout/app-toolbar/app-toolbar";
-import { css, CSSResultGroup, html, LitElement, TemplateResult } from "lit";
+import { css, CSSResultGroup, html, LitElement, PropertyValues, TemplateResult } from "lit";
 import { customElement, property } from "lit/decorators";
 import memoize from "memoize-one";
 import { relativeTime } from "../../homeassistant-frontend/src/common/datetime/relative_time";
@@ -42,26 +43,12 @@ import type { RepositoryBase } from "../data/repository";
 import { repositoriesClearNew } from "../data/websocket";
 import { HacsStyles } from "../styles/hacs-common-style";
 
-interface TableColumnsOptions {
-  entry: { [key: string]: boolean };
-  explore: { [key: string]: boolean };
-}
-
 const tableColumnDefaults = {
-  entry: {
-    name: true,
-    downloads: false,
-    stars: false,
-    last_updated: false,
-    category: true,
-  },
-  explore: {
-    name: true,
-    downloads: false,
-    stars: false,
-    last_updated: false,
-    category: true,
-  },
+  name: true,
+  downloads: true,
+  stars: true,
+  last_updated: true,
+  category: true,
 };
 
 const defaultKeyData = {
@@ -83,51 +70,68 @@ export class HacsExperimentalPanel extends LitElement {
 
   @property({ type: Boolean }) public isWide!: boolean;
 
-  @property({ attribute: false }) public section!: "entry" | "explore";
-
   @LocalStorage("hacs-table-filters", true, false)
-  private activeFilters?: string[];
+  private activeFilters?: string[] = [];
 
-  @LocalStorage("hacs-table-columns", true, false)
-  private _tableColumns: TableColumnsOptions = tableColumnDefaults;
+  @LocalStorage("hacs-active-search", true, false)
+  private _activeSearch?: string;
+
+  @LocalStorage("hacs-table-active-columns", true, false)
+  private _tableColumns: { [key: string]: boolean } = tableColumnDefaults;
+
+  protected async firstUpdated(changedProperties: PropertyValues): Promise<void> {
+    super.firstUpdated(changedProperties);
+    const baseFilters =
+      this.activeFilters && this.activeFilters.length === 0
+        ? [this.hacs.localize("common.downloaded")]
+        : this.activeFilters;
+
+    const filters = !this._activeSearch?.length
+      ? baseFilters
+      : baseFilters?.filter((filter) => filter !== this.hacs.localize("common.downloaded"));
+    this.activeFilters = filters?.length ? filters : undefined;
+  }
+
+  protected updated(changedProperties: PropertyValues): void {
+    super.updated(changedProperties);
+    if (changedProperties.has("_activeSearch") && this._activeSearch?.length) {
+      this.activeFilters = this.activeFilters?.filter(
+        (filter) => filter !== this.hacs.localize("common.downloaded")
+      );
+    }
+  }
 
   protected render = (): TemplateResult | void => {
-    const repositories = this._filterRepositories(
-      this.hacs.repositories,
-      this.section === "entry",
-      this.activeFilters
-    );
-    const newRepositories = repositories.filter((repo) => repo.new);
-    const restRepositories = repositories.filter((repo) => !repo.new);
-    const hasNew = this.section === "explore" && newRepositories.length !== 0;
+    const repositories = this._filterRepositories(this.hacs.repositories, this.activeFilters);
+    const repositoriesContainsNew =
+      repositories.filter((repository) => repository.new).length !== 0;
 
     return html`<hacs-tabs-subpage-data-table
       .tabs=${[
         {
-          name:
-            this.section === "entry"
-              ? "Home Assistant Community Store - Downloaded"
-              : "Home Assistant Community Store - Explore",
-          path: `/hacs/entry`,
+          name: "Home Assistant Community Store",
+          path: `/hacs/dashboard`,
           iconPath: hacsIcon,
         },
       ]}
-      .columns=${this._columns(this.narrow, hasNew, this._tableColumns)}
-      .data=${newRepositories.concat(restRepositories)}
+      .columns=${this._columns(this.narrow, this._tableColumns)}
+      .data=${repositories}
       .hass=${this.hass}
       isWide=${this.isWide}
       .localizeFunc=${this.hass.localize}
-      .mainPage=${this.section === "entry"}
+      .mainPage=${true}
       .narrow=${this.narrow}
       .route=${this.route}
       clickable
+      .filter=${this._activeSearch}
       .activeFilters=${this.activeFilters}
-      .hasFab=${this.section === "entry"}
-      .noDataText=${this.section === "entry"
+      .hasFab=${this.activeFilters?.includes(this.hacs.localize("common.downloaded"))}
+      .noDataText=${this.activeFilters?.includes(this.hacs.localize("common.downloaded"))
         ? "No downloaded repositories"
         : "No repositories matching search"}
       @row-click=${this._handleRowClicked}
       @clear-filter=${this._handleClearFilter}
+      @value-changed=${this._handleSearchFilterChanged}
     >
       <ha-icon-overflow-menu
         narrow
@@ -167,7 +171,7 @@ export class HacsExperimentalPanel extends LitElement {
               );
             },
           },
-          hasNew
+          repositoriesContainsNew
             ? {
                 path: mdiNewBox,
                 label: this.hacs.localize("menu.dismiss"),
@@ -186,76 +190,118 @@ export class HacsExperimentalPanel extends LitElement {
         ].filter((item) => item !== undefined) as IconOverflowMenuItem[]}
       >
       </ha-icon-overflow-menu>
-      ${!this.narrow
-        ? html` <ha-button-menu slot="filter-menu" corner="BOTTOM_START" multi>
-            <ha-icon-button
-              slot="trigger"
-              .label=${this.hass.localize("ui.panel.config.entities.picker.filter.filter")}
-              .path=${mdiFilterVariant}
-            >
-            </ha-icon-button>
+      <ha-button-menu slot="filter-menu" corner="BOTTOM_START" multi>
+        <ha-icon-button
+          slot="trigger"
+          .label=${this.hass.localize("ui.panel.config.entities.picker.filter.filter")}
+          .path=${mdiFilterVariant}
+        >
+        </ha-icon-button>
 
-            <ha-select
-              label="Category filter"
-              @selected=${this._handleCategoryFilterChange}
-              @closed=${stopPropagation}
-              naturalMenuWidth
-              .value=${this.activeFilters?.find((filter) =>
-                filter.startsWith(`${this.hacs.localize(`dialog_custom_repositories.category`)}: `)
-              ) || ""}
-            >
-              ${this.hacs.info.categories.map(
-                (category) =>
-                  html`
-                    <mwc-list-item
-                      .value="${this.hacs.localize(
-                        `dialog_custom_repositories.category`
-                      )}: ${this.hacs.localize(`common.${category}`)}"
-                    >
-                      ${this.hacs.localize(`common.${category}`)}
-                    </mwc-list-item>
-                  `
-              )}
-            </ha-select>
-            <div class="divider"></div>
-            <p class="menu_header">Columns</p>
-            ${Object.keys(tableColumnDefaults[this.section]).map(
-              (entry) => html`
-                <ha-check-list-item
-                  @request-selected=${this._handleColumnChange}
-                  graphic="control"
-                  .column=${entry}
-                  .selected=${this._tableColumns[this.section][entry] ||
-                  tableColumnDefaults[this.section][entry]}
-                  left
+        ${!this.narrow ? html`<p class="menu_header">Filters</p>` : ""}
+        <ha-check-list-item
+          @request-selected=${this._handleDownloadFilterChange}
+          graphic="control"
+          .selected=${this.activeFilters?.includes(this.hacs.localize("common.downloaded")) ??
+          false}
+          left
+        >
+          ${this.hacs.localize("common.downloaded")}
+        </ha-check-list-item>
+        ${repositoriesContainsNew
+          ? html`
+              <ha-check-list-item
+                @request-selected=${this._handleNewFilterChange}
+                graphic="control"
+                .selected=${this.activeFilters?.includes(this.hacs.localize("common.new")) ?? false}
+                left
+              >
+                ${this.hacs.localize("common.new")}
+              </ha-check-list-item>
+            `
+          : ""}
+
+        <ha-select
+          label="Category filter"
+          @selected=${this._handleCategoryFilterChange}
+          @closed=${stopPropagation}
+          naturalMenuWidth
+          .value=${this.activeFilters?.find((filter) =>
+            filter.startsWith(`${this.hacs.localize(`dialog_custom_repositories.category`)}: `)
+          ) || ""}
+        >
+          ${this.hacs.info.categories.map(
+            (category) =>
+              html`
+                <mwc-list-item
+                  .value="${this.hacs.localize(
+                    `dialog_custom_repositories.category`
+                  )}: ${this.hacs.localize(`common.${category}`)}"
                 >
-                  ${this.hacs.localize(`column.${entry}`)}
-                </ha-check-list-item>
+                  ${this.hacs.localize(`common.${category}`)}
+                </mwc-list-item>
               `
-            )}
-          </ha-button-menu>`
-        : " "}
-      ${this.section === "entry"
+          )}
+        </ha-select>
+        ${!this.narrow
+          ? html`
+              <div class="divider"></div>
+              <p class="menu_header">Columns</p>
+              ${Object.keys(tableColumnDefaults).map(
+                (entry) => html`
+                  <ha-check-list-item
+                    @request-selected=${this._handleColumnChange}
+                    graphic="control"
+                    .column=${entry}
+                    .selected=${this._tableColumns[entry] ?? tableColumnDefaults[entry]}
+                    left
+                  >
+                    ${this.hacs.localize(`column.${entry}`)}
+                  </ha-check-list-item>
+                `
+              )}
+            `
+          : ""}
+      </ha-button-menu>
+      ${this.activeFilters?.includes(this.hacs.localize("common.downloaded"))
         ? html`
-            <a href="/hacs/explore" slot="fab">
-              <ha-fab .label=${this.hacs.localize("common.explore")} .extended=${!this.narrow}>
-                <ha-svg-icon slot="icon" .path=${mdiPlus}></ha-svg-icon> </ha-fab
-            ></a>
+            <ha-fab
+              slot="fab"
+              .label=${this.hacs.localize("common.explore")}
+              .extended=${!this.narrow}
+              @click=${this._exploreFabClicked}
+            >
+              <ha-svg-icon slot="icon" .path=${mdiPlus}></ha-svg-icon>
+            </ha-fab>
           `
         : ""}
     </hacs-tabs-subpage-data-table>`;
   };
 
+  private _exploreFabClicked = () => {
+    const newFilters = this.activeFilters?.filter(
+      (filter) => filter !== this.hacs.localize("common.downloaded")
+    );
+    this.activeFilters = newFilters?.length ? newFilters : undefined;
+  };
+
   private _filterRepositories = memoize(
-    (
-      repositories: RepositoryBase[],
-      downloaded: boolean,
-      activeFilters?: string[]
-    ): RepositoryBase[] =>
+    (repositories: RepositoryBase[], activeFilters?: string[]): RepositoryBase[] =>
       repositories
         .filter((reposiotry) => {
           if (
-            activeFilters &&
+            this.activeFilters?.includes(this.hacs.localize("common.downloaded")) &&
+            !reposiotry.installed
+          ) {
+            return false;
+          }
+          if (this.activeFilters?.includes(this.hacs.localize("common.new")) && !reposiotry.new) {
+            return false;
+          }
+          if (
+            activeFilters?.filter((filter) =>
+              filter.startsWith(this.hacs.localize(`dialog_custom_repositories.category`))
+            ).length &&
             !activeFilters.includes(
               `${this.hacs.localize(`dialog_custom_repositories.category`)}: ${this.hacs.localize(
                 `common.${reposiotry.category}`
@@ -264,21 +310,23 @@ export class HacsExperimentalPanel extends LitElement {
           ) {
             return false;
           }
-          return (!downloaded && !reposiotry.installed) || (downloaded && reposiotry.installed);
+          return true;
         })
+        .sort((a, b) => b.name.localeCompare(a.name))
         .sort((a, b) => (a.stars < b.stars ? 1 : -1))
+        .sort((a, b) => (a.installed && !b.installed ? 1 : -1))
+        .sort((a, b) => (!a.new && b.new ? 1 : -1))
   );
 
   private _columns = memoize(
     (
       narrow: boolean,
-      hasNew: boolean,
-      tableColumnsOptions: TableColumnsOptions
+      tableColumnsOptions: { [key: string]: boolean }
     ): DataTableColumnContainer<RepositoryBase> => ({
       icon: {
         title: "",
         label: this.hass.localize("ui.panel.config.lovelace.dashboards.picker.headers.icon"),
-        hidden: this.narrow || this.section !== "entry",
+        hidden: this.narrow,
         type: "icon",
         template: (_, repository: RepositoryBase) =>
           html`
@@ -300,17 +348,26 @@ export class HacsExperimentalPanel extends LitElement {
         title: this.hacs.localize("column.name"),
         main: true,
         sortable: true,
-        direction: this.section === "explore" || hasNew ? undefined : "asc",
-        hidden: !tableColumnsOptions[this.section].name,
+        hidden: !tableColumnsOptions.name,
         grows: true,
         template: (name, repository: RepositoryBase) =>
           html`
             ${repository.new
               ? html`<ha-svg-icon
+                  label="New"
                   style="color: var(--primary-color); margin-right: 4px;"
                   .path=${mdiNewBox}
                 ></ha-svg-icon>`
-              : ""}${name}<br />
+              : ""}
+            ${!this.activeFilters?.includes(this.hacs.localize("common.downloaded")) &&
+            repository.installed
+              ? html`<ha-svg-icon
+                  label="Downloaded"
+                  style="color: var(--primary-color); margin-right: 4px;"
+                  .path=${mdiDownload}
+                ></ha-svg-icon>`
+              : ""}
+            ${name}
             <div class="secondary">
               ${narrow
                 ? this.hacs.localize(`common.${repository.category}`)
@@ -321,7 +378,7 @@ export class HacsExperimentalPanel extends LitElement {
       downloads: {
         ...defaultKeyData,
         title: this.hacs.localize("column.downloads"),
-        hidden: narrow || !tableColumnsOptions[this.section].downloads,
+        hidden: narrow || !tableColumnsOptions.downloads,
         sortable: true,
         width: "10%",
         template: (downloads: number) => html`${downloads || "-"}`,
@@ -329,23 +386,23 @@ export class HacsExperimentalPanel extends LitElement {
       stars: {
         ...defaultKeyData,
         title: this.hacs.localize("column.stars"),
-        hidden: narrow || !tableColumnsOptions[this.section].stars,
-        direction: this.section === "entry" || hasNew ? undefined : "desc",
+        hidden: narrow || !tableColumnsOptions.stars,
         sortable: true,
         width: "10%",
       },
       last_updated: {
         ...defaultKeyData,
         title: this.hacs.localize("column.last_updated"),
-        hidden: narrow || !tableColumnsOptions[this.section].last_updated,
+        hidden: narrow || !tableColumnsOptions.last_updated,
         sortable: true,
         width: "15%",
-        template: (last_updated: string) => relativeTime(new Date(last_updated), this.hass.locale),
+        template: (last_updated: string, repository: RepositoryBase) =>
+          repository.new ? "-" : relativeTime(new Date(last_updated), this.hass.locale),
       },
       category: {
         ...defaultKeyData,
         title: this.hacs.localize("column.category"),
-        hidden: narrow || !tableColumnsOptions[this.section].category,
+        hidden: narrow || !tableColumnsOptions.category,
         sortable: true,
         width: "10%",
         template: (category: string) => this.hacs.localize(`common.${category}`),
@@ -359,17 +416,18 @@ export class HacsExperimentalPanel extends LitElement {
       actions: {
         title: "",
         width: this.narrow ? undefined : "10%",
-        hidden: this.section !== "entry",
         type: "overflow-menu",
         template: (_, repository: RepositoryBase) =>
-          html`
-            <ha-icon-overflow-menu
-              .hass=${this.hass}
-              .items=${repositoryMenuItems(this, repository) as IconOverflowMenuItem[]}
-              narrow
-            >
-            </ha-icon-overflow-menu>
-          `,
+          repository.installed
+            ? html`
+                <ha-icon-overflow-menu
+                  .hass=${this.hass}
+                  .items=${repositoryMenuItems(this, repository) as IconOverflowMenuItem[]}
+                  narrow
+                >
+                </ha-icon-overflow-menu>
+              `
+            : "",
       },
     })
   );
@@ -382,27 +440,56 @@ export class HacsExperimentalPanel extends LitElement {
     ev.stopPropagation();
     const categoryFilter = (ev.target as any).value;
     if (categoryFilter) {
-      this.activeFilters = [categoryFilter];
+      this.activeFilters = [
+        ...(this.activeFilters?.filter(
+          (filter) =>
+            !filter.startsWith(this.hacs.localize(`dialog_custom_repositories.category`)) &&
+            filter !== categoryFilter
+        ) || []),
+        categoryFilter,
+      ];
     }
+  }
+
+  private _handleSearchFilterChanged(ev: CustomEvent) {
+    this._activeSearch = ev.detail.value;
   }
 
   private _handleColumnChange(ev: CustomEvent) {
     ev.stopPropagation();
     const update = {
-      ...this._tableColumns[this.section],
+      ...this._tableColumns,
       [(ev.currentTarget as any).column]: ev.detail.selected,
     };
+    this._tableColumns = Object.keys(tableColumnDefaults).reduce(
+      (entries, key) => ({
+        ...entries,
+        [key]: update[key] ?? tableColumnDefaults[key],
+      }),
+      {}
+    );
+  }
 
-    this._tableColumns = {
-      ...this._tableColumns,
-      [this.section]: Object.keys(tableColumnDefaults[this.section]).reduce(
-        (entries, key) => ({
-          ...entries,
-          [key]: update[key] || tableColumnDefaults[this.section][key],
-        }),
-        {}
-      ),
-    };
+  private _handleDownloadFilterChange(ev: CustomEvent) {
+    const updatedFilters =
+      this.activeFilters?.filter(
+        (filter) => !filter.startsWith(this.hacs.localize("common.downloaded"))
+      ) || [];
+    if (ev.detail.selected) {
+      updatedFilters.push(this.hacs.localize("common.downloaded"));
+    }
+    this.activeFilters = updatedFilters.length ? updatedFilters : undefined;
+  }
+
+  private _handleNewFilterChange(ev: CustomEvent) {
+    const updatedFilters =
+      this.activeFilters?.filter(
+        (filter) => !filter.startsWith(this.hacs.localize("common.new"))
+      ) || [];
+    if (ev.detail.selected) {
+      updatedFilters.push(this.hacs.localize("common.new"));
+    }
+    this.activeFilters = updatedFilters.length ? updatedFilters : undefined;
   }
 
   private _handleClearFilter() {
@@ -429,7 +516,7 @@ export class HacsExperimentalPanel extends LitElement {
           background-color: var(--divider-color);
         }
         ha-select {
-          margin: 0 8px;
+          margin: 8px;
         }
       `,
     ];
