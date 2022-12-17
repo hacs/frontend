@@ -21,7 +21,10 @@ import { LocalStorage } from "../../homeassistant-frontend/src/common/decorators
 import { mainWindow } from "../../homeassistant-frontend/src/common/dom/get_main_window";
 import { stopPropagation } from "../../homeassistant-frontend/src/common/dom/stop_propagation";
 import { navigate } from "../../homeassistant-frontend/src/common/navigate";
-import type { DataTableColumnContainer } from "../../homeassistant-frontend/src/components/data-table/ha-data-table";
+import type {
+  DataTableColumnContainer,
+  SortingDirection,
+} from "../../homeassistant-frontend/src/components/data-table/ha-data-table";
 
 import "../../homeassistant-frontend/src/components/ha-button-menu";
 import "../../homeassistant-frontend/src/components/ha-check-list-item";
@@ -71,6 +74,9 @@ export class HacsExperimentalPanel extends LitElement {
 
   @LocalStorage("hacs-table-filters", true, false)
   private activeFilters?: string[] = [];
+
+  @LocalStorage("hacs-table-sort", true, false)
+  private activeSort?: { column: string; direction: SortingDirection };
 
   @LocalStorage("hacs-active-search", true, false)
   private _activeSearch?: string;
@@ -131,6 +137,7 @@ export class HacsExperimentalPanel extends LitElement {
       @row-click=${this._handleRowClicked}
       @clear-filter=${this._handleClearFilter}
       @value-changed=${this._handleSearchFilterChanged}
+      @sorting-changed=${this._handleSortingChanged}
     >
       <ha-icon-overflow-menu
         narrow
@@ -343,6 +350,7 @@ export class HacsExperimentalPanel extends LitElement {
         title: this.hacs.localize("column.name"),
         main: true,
         sortable: true,
+        direction: this.activeSort?.column === "name" ? this.activeSort.direction : null,
         hidden: !tableColumnsOptions.name,
         grows: true,
         template: (name, repository: RepositoryBase) =>
@@ -375,6 +383,7 @@ export class HacsExperimentalPanel extends LitElement {
         title: this.hacs.localize("column.downloads"),
         hidden: narrow || !tableColumnsOptions.downloads,
         sortable: true,
+        direction: this.activeSort?.column === "downloads" ? this.activeSort.direction : null,
         width: "10%",
         template: (downloads: number) => html`${downloads || "-"}`,
       },
@@ -383,6 +392,7 @@ export class HacsExperimentalPanel extends LitElement {
         title: this.hacs.localize("column.stars"),
         hidden: narrow || !tableColumnsOptions.stars,
         sortable: true,
+        direction: this.activeSort?.column === "stars" ? this.activeSort.direction : null,
         width: "10%",
       },
       last_updated: {
@@ -390,6 +400,7 @@ export class HacsExperimentalPanel extends LitElement {
         title: this.hacs.localize("column.last_updated"),
         hidden: narrow || !tableColumnsOptions.last_updated,
         sortable: true,
+        direction: this.activeSort?.column === "last_updated" ? this.activeSort.direction : null,
         width: "15%",
         template: (last_updated: string, repository: RepositoryBase) =>
           repository.new ? "-" : relativeTime(new Date(last_updated), this.hass.locale),
@@ -399,6 +410,7 @@ export class HacsExperimentalPanel extends LitElement {
         title: this.hacs.localize("column.category"),
         hidden: narrow || !tableColumnsOptions.category,
         sortable: true,
+        direction: this.activeSort?.column === "category" ? this.activeSort.direction : null,
         width: "10%",
         template: (category: string) => this.hacs.localize(`common.${category}`),
       },
@@ -463,6 +475,10 @@ export class HacsExperimentalPanel extends LitElement {
       }),
       {}
     );
+  }
+
+  private _handleSortingChanged(ev: CustomEvent) {
+    this.activeSort = ev.detail;
   }
 
   private _handleDownloadFilterChange(ev: CustomEvent) {
