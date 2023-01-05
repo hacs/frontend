@@ -28,6 +28,9 @@
     "name": "Repository Name",
     "downloads": "Downloads",
     "stars": "Stars",
+    "installed_version": "Installed version",
+    "available_version": "Available version",
+    "status": "Status",
     "category": "Category",
     "last_updated": "Updated"
   },
@@ -106,6 +109,10 @@
     "redownload": "Redownload",
     "report": "Request for removal",
     "update_information": "Update information"
+  },
+  "repository_status": {
+    "pending-restart": "Pending restart",
+    "pending-upgrade": "Pending update"
   },
   "menu": {
     "about": "About HACS",

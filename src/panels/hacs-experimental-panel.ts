@@ -50,6 +50,9 @@ const tableColumnDefaults = {
   downloads: true,
   stars: true,
   last_updated: true,
+  installed_version: false,
+  available_version: false,
+  status: false,
   category: true,
 };
 
@@ -404,6 +407,40 @@ export class HacsExperimentalPanel extends LitElement {
         width: "15%",
         template: (last_updated: string, repository: RepositoryBase) =>
           repository.new ? "-" : relativeTime(new Date(last_updated), this.hass.locale),
+      },
+      installed_version: {
+        ...defaultKeyData,
+        title: this.hacs.localize("column.installed_version"),
+        hidden: narrow || !tableColumnsOptions.installed_version,
+        sortable: true,
+        direction:
+          this.activeSort?.column === "installed_version" ? this.activeSort.direction : null,
+        width: "10%",
+        template: (installed_version: string, repository: RepositoryBase) =>
+          repository.installed ? installed_version : "-",
+      },
+      available_version: {
+        ...defaultKeyData,
+        title: this.hacs.localize("column.available_version"),
+        hidden: narrow || !tableColumnsOptions.available_version,
+        sortable: true,
+        direction:
+          this.activeSort?.column === "available_version" ? this.activeSort.direction : null,
+        width: "10%",
+        template: (available_version: string, repository: RepositoryBase) =>
+          repository.installed ? available_version : "-",
+      },
+      status: {
+        ...defaultKeyData,
+        title: this.hacs.localize("column.status"),
+        hidden: narrow || !tableColumnsOptions.status,
+        sortable: true,
+        direction: this.activeSort?.column === "status" ? this.activeSort.direction : null,
+        width: "10%",
+        template: (status: string) =>
+          ["pending-restart", "pending-upgrade"].includes(status)
+            ? this.hacs.localize(`repository_status.${status}`)
+            : "-",
       },
       category: {
         ...defaultKeyData,
