@@ -405,8 +405,13 @@ export class HacsExperimentalPanel extends LitElement {
         sortable: true,
         direction: this.activeSort?.column === "last_updated" ? this.activeSort.direction : null,
         width: "15%",
-        template: (last_updated: string, repository: RepositoryBase) =>
-          repository.new ? "-" : relativeTime(new Date(last_updated), this.hass.locale),
+        template: (last_updated: string, _: RepositoryBase) => {
+          try {
+            return relativeTime(new Date(last_updated), this.hass.locale);
+          } catch (e) {
+            return "-";
+          }
+        },
       },
       installed_version: {
         ...defaultKeyData,
