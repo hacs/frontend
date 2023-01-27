@@ -29,6 +29,9 @@ import type {
 import "../../homeassistant-frontend/src/components/ha-button-menu";
 import "../../homeassistant-frontend/src/components/ha-check-list-item";
 import "../../homeassistant-frontend/src/components/ha-select";
+import "../../homeassistant-frontend/src/components/ha-radio";
+import "../../homeassistant-frontend/src/components/ha-formfield";
+
 import { IconOverflowMenuItem } from "../../homeassistant-frontend/src/components/ha-icon-overflow-menu";
 import "../../homeassistant-frontend/src/components/ha-menu-button";
 import "../../homeassistant-frontend/src/components/ha-svg-icon";
@@ -229,31 +232,32 @@ export class HacsExperimentalPanel extends LitElement {
               </ha-check-list-item>
             `
           : ""}
-
-        <ha-select
-          label="Category filter"
-          @selected=${this._handleCategoryFilterChange}
-          @closed=${stopPropagation}
-          naturalMenuWidth
-          .value=${this.activeFilters?.find((filter) =>
-            filter.startsWith(`${this.hacs.localize(`dialog_custom_repositories.category`)}: `)
-          ) || ""}
-        >
-          ${this.hacs.info.categories.map(
-            (category) =>
-              html`
-                <mwc-list-item
-                  .value="${this.hacs.localize(
-                    `dialog_custom_repositories.category`
-                  )}: ${this.hacs.localize(`common.${category}`)}"
-                >
-                  ${this.hacs.localize(`common.${category}`)}
-                </mwc-list-item>
-              `
-          )}
-        </ha-select>
         ${!this.narrow
           ? html`
+              <ha-select
+                label="Category filter"
+                @selected=${this._handleCategoryFilterChange}
+                @closed=${stopPropagation}
+                naturalMenuWidth
+                .value=${this.activeFilters?.find((filter) =>
+                  filter.startsWith(
+                    `${this.hacs.localize(`dialog_custom_repositories.category`)}: `
+                  )
+                ) || ""}
+              >
+                ${this.hacs.info.categories.map(
+                  (category) =>
+                    html`
+                      <mwc-list-item
+                        .value="${this.hacs.localize(
+                          `dialog_custom_repositories.category`
+                        )}: ${this.hacs.localize(`common.${category}`)}"
+                      >
+                        ${this.hacs.localize(`common.${category}`)}
+                      </mwc-list-item>
+                    `
+                )}
+              </ha-select>
               <div class="divider"></div>
               <p class="menu_header">Columns</p>
               ${Object.keys(tableColumnDefaults).map(
@@ -270,7 +274,27 @@ export class HacsExperimentalPanel extends LitElement {
                 `
               )}
             `
-          : ""}
+          : this.hacs.info.categories.map(
+              (category) => html`
+                <ha-formfield .label=${this.hacs.localize(`common.${category}`)}>
+                  <ha-radio
+                    @change=${this._handleCategoryFilterChange}
+                    value="${this.hacs.localize(
+                      `dialog_custom_repositories.category`
+                    )}: ${this.hacs.localize(`common.${category}`)}"
+                    name="category"
+                    .checked=${this.activeFilters?.some(
+                      (filter) =>
+                        filter ===
+                        `${this.hacs.localize(
+                          `dialog_custom_repositories.category`
+                        )}: ${this.hacs.localize(`common.${category}`)}`
+                    ) ?? false}
+                  >
+                  </ha-radio>
+                </ha-formfield>
+              `
+            )}
       </ha-button-menu>
     </hacs-tabs-subpage-data-table>`;
   };
@@ -489,14 +513,24 @@ export class HacsExperimentalPanel extends LitElement {
     ev.stopPropagation();
     const categoryFilter = (ev.target as any).value;
     if (categoryFilter) {
-      this.activeFilters = [
-        ...(this.activeFilters?.filter(
-          (filter) =>
-            !filter.startsWith(this.hacs.localize(`dialog_custom_repositories.category`)) &&
-            filter !== categoryFilter
-        ) || []),
-        categoryFilter,
-      ];
+      if ((ev.target as any).nodeName === "HA-RADIO" && (ev.target as any).checked === false) {
+        this.activeFilters = [
+          ...(this.activeFilters?.filter(
+            (filter) =>
+              !filter.startsWith(this.hacs.localize(`dialog_custom_repositories.category`)) &&
+              filter !== categoryFilter
+          ) || []),
+        ];
+      } else {
+        this.activeFilters = [
+          ...(this.activeFilters?.filter(
+            (filter) =>
+              !filter.startsWith(this.hacs.localize(`dialog_custom_repositories.category`)) &&
+              filter !== categoryFilter
+          ) || []),
+          categoryFilter,
+        ];
+      }
     }
   }
 
@@ -570,6 +604,9 @@ export class HacsExperimentalPanel extends LitElement {
         }
         ha-select {
           margin: 8px;
+        }
+        ha-formfield {
+          padding: 0 4px 0 16px;
         }
       `,
     ];
