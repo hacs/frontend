@@ -220,18 +220,14 @@ export class HacsExperimentalPanel extends LitElement {
         >
           ${this.hacs.localize("common.downloaded")}
         </ha-check-list-item>
-        ${repositoriesContainsNew
-          ? html`
-              <ha-check-list-item
-                @request-selected=${this._handleNewFilterChange}
-                graphic="control"
-                .selected=${this.activeFilters?.includes(this.hacs.localize("common.new")) ?? false}
-                left
-              >
-                ${this.hacs.localize("common.new")}
-              </ha-check-list-item>
-            `
-          : ""}
+        <ha-check-list-item
+          @request-selected=${this._handleNewFilterChange}
+          graphic="control"
+          .selected=${this.activeFilters?.includes(this.hacs.localize("common.new")) ?? false}
+          left
+        >
+          ${this.hacs.localize("common.new")}
+        </ha-check-list-item>
         ${!this.narrow
           ? html`
               <ha-select
