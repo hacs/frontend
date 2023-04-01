@@ -10,4 +10,7 @@ setup(
     packages=find_packages(include=["hacs_frontend", "hacs_frontend.*"]),
     include_package_data=True,
     zip_safe=False,
+    classifiers=[
+        "License :: OSI Approved :: MIT",
+    ],
 )
