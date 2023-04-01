@@ -12,6 +12,7 @@ start: ## Start the frontend
 
 bootstrap: ## Run yarn
 	yarn;
+	git submodule update --init
 
 build: ## Build the frontend
 	yarn build;

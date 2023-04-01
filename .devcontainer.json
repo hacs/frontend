@@ -1,32 +1,41 @@
 {
 	"name": "HACS Frontend",
 	"image": "mcr.microsoft.com/vscode/devcontainers/typescript-node:16-bullseye",
-	"context": ".",
 	"remoteUser": "node",
-	"appPort": [
-		"5000:5000"
-	],
 	"postCreateCommand": "make init",
-	"extensions": [
-		"github.vscode-pull-request-github",
-		"dbaeumer.vscode-eslint",
-		"ms-vscode.vscode-typescript-tslint-plugin",
-		"esbenp.prettier-vscode",
-		"bierner.lit-html",
-		"runem.lit-plugin"
+	"forwardPorts": [
+		5000
 	],
-	"settings": {
-		"files.eol": "\n",
-		"editor.tabSize": 2,
-		"editor.formatOnPaste": false,
-		"editor.formatOnSave": true,
-		"editor.formatOnType": true,
-		"[typescript]": {
-			"editor.defaultFormatter": "esbenp.prettier-vscode"
-		},
-		"[javascript]": {
-			"editor.defaultFormatter": "esbenp.prettier-vscode"
-		},
-		"files.trimTrailingWhitespace": true
+	"portsAttributes": {
+		"5000": {
+			"label": "Frontend server port",
+			"onAutoForward": "ignore"
+		}
+	},
+	"customizations": {
+		"vscode": {
+			"extensions": [
+				"github.vscode-pull-request-github",
+				"dbaeumer.vscode-eslint",
+				"ms-vscode.vscode-typescript-tslint-plugin",
+				"esbenp.prettier-vscode",
+				"bierner.lit-html",
+				"runem.lit-plugin"
+			],
+			"settings": {
+				"files.eol": "\n",
+				"editor.tabSize": 2,
+				"editor.formatOnPaste": false,
+				"editor.formatOnSave": true,
+				"editor.formatOnType": true,
+				"[typescript]": {
+					"editor.defaultFormatter": "esbenp.prettier-vscode"
+				},
+				"[javascript]": {
+					"editor.defaultFormatter": "esbenp.prettier-vscode"
+				},
+				"files.trimTrailingWhitespace": true
+			}
+		}
 	}
 }
