@@ -61,7 +61,7 @@ export class HacsDonwloadDialog extends HacsDialogBase {
 
   private _getInstallPath = memoizeOne((repository: RepositoryBase) => {
     let path: string = repository.local_path;
-    if (repository.category === "theme") {
+    if (["template", "theme"].includes(repository.category)) {
       path = `${path}/${repository.file_name}`;
     }
     return path;
