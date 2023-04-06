@@ -6,6 +6,7 @@ export type RepositoryCategory =
   | "netdaemon"
   | "plugin"
   | "python_script"
+  | "template"
   | "theme";
 
 export interface RepositoryBase {

@@ -1,4 +1,5 @@
 import {
+  mdiCodeBraces,
   mdiDotNet,
   mdiLanguagePython,
   mdiPackageVariant,
@@ -14,6 +15,7 @@ const _IconMap = {
   netdaemon: mdiDotNet,
   plugin: mdiViewDashboard,
   python_script: mdiLanguagePython,
+  template: mdiCodeBraces,
   theme: mdiPalette,
 };
 
