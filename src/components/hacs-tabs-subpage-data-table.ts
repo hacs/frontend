@@ -3,7 +3,7 @@ import { customElement } from "lit/decorators";
 import { computeRTLDirection } from "../../homeassistant-frontend/src/common/util/compute_rtl";
 import { HaTabsSubpageDataTable } from "../../homeassistant-frontend/src/layouts/hass-tabs-subpage-data-table";
 
-import "./hacs-data-table";
+import "../../homeassistant-frontend/src/components/data-table/ha-data-table";
 
 @customElement("hacs-tabs-subpage-data-table")
 export class HacsTabsSubpageDataTable extends HaTabsSubpageDataTable {
@@ -23,15 +23,30 @@ export class HacsTabsSubpageDataTable extends HaTabsSubpageDataTable {
       .hass=${this.hass}
       .filter=${this.filter}
       .suffix=${!this.narrow}
-      @value-changed=${this._handleSearchChange}
+      @value-changed=${
+        // @ts-expect-error accesing private property
+        this._handleSearchChange
+      }
       .label=${this.searchLabel || this.hass.localize("ui.components.data-table.search")}
     >
       ${!this.narrow
-        ? html`<div class="filters" slot="suffix" @click=${this._preventDefault}>
+        ? html`<div
+            class="filters"
+            slot="suffix"
+            @click=${
+              // @ts-expect-error accesing private property
+              this._preventDefault
+            }
+          >
             ${filterInfo
               ? html`<div class="active-filters">
                   ${filterInfo}
-                  <mwc-button @click=${this._clearFilter}>
+                  <mwc-button
+                    @click=${
+                      // @ts-expect-error accesing private property
+                      this._clearFilter
+                    }
+                  >
                     ${this.hass.localize("ui.components.data-table.clear")}
                   </mwc-button>
                 </div>`
@@ -79,7 +94,7 @@ export class HacsTabsSubpageDataTable extends HaTabsSubpageDataTable {
               </div>
             `
           : ""}
-        <hacs-data-table
+        <ha-data-table
           .hass=${this.hass}
           .columns=${this.columns}
           .data=${this.data}
@@ -101,7 +116,7 @@ export class HacsTabsSubpageDataTable extends HaTabsSubpageDataTable {
                 </div>
               `
             : html` <div slot="header"></div> `}
-        </hacs-data-table>
+        </ha-data-table>
         <div slot="fab"><slot name="fab"></slot></div>
       </hass-tabs-subpage>
     `;
@@ -111,12 +126,12 @@ export class HacsTabsSubpageDataTable extends HaTabsSubpageDataTable {
     return [
       super.styles,
       css`
-        hacs-data-table {
+        ha-data-table {
           width: 100%;
           height: 100%;
           --data-table-border-width: 0;
         }
-        :host(:not([narrow])) hacs-data-table {
+        :host(:not([narrow])) ha-data-table {
           height: calc(100vh - 1px - var(--header-height));
           display: block;
         }
