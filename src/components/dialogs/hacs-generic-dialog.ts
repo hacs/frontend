@@ -1,11 +1,11 @@
 import { html, TemplateResult } from "lit";
 import { customElement, property } from "lit/decorators";
 import memoizeOne from "memoize-one";
-import { markdown } from "../../tools/markdown/markdown";
 import "./hacs-dialog";
 import "../hacs-link";
 import { HacsDialogBase } from "./hacs-dialog-base";
 import { RepositoryBase } from "../../data/repository";
+import { markdownWithRepositoryContext } from "../../tools/markdown";
 
 @customElement("hacs-generic-dialog")
 export class HacsGenericDialog extends HacsDialogBase {
@@ -28,9 +28,13 @@ export class HacsGenericDialog extends HacsDialogBase {
       <hacs-dialog .active=${this.active} .narrow=${this.narrow} .hass=${this.hass}>
         <div slot="header">${this.header || ""}</div>
         ${this.markdown
-          ? this.repository
-            ? markdown.html(this.content || "", repository)
-            : markdown.html(this.content || "")
+          ? html`<ha-markdown
+              .content=${markdownWithRepositoryContext(
+                this.content || "",
+                // @ts-ignore
+                repository
+              )}
+            ></ha-markdown>`
           : this.content || ""}
       </hacs-dialog>
     `;

@@ -19,6 +19,12 @@ export const hacsCommonClasses = css`
     opacity: var(--dark-primary-opacity);
     padding: 8px 0 4px 16px;
   }
+
+  code,
+  pre {
+    background-color: var(--markdown-code-background-color, none);
+    border-radius: 3px;
+  }
 `;
 
 export const HacsStyles: CSSResultGroup = [

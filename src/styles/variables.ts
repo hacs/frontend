@@ -8,8 +8,6 @@ export const hacsStyleVariables = css`
     --hcv-color-new: var(--hacs-new-color, var(--success-color));
     --hcv-color-icon: var(--hacs-default-icon-color, var(--primary-text-color));
 
-    --hcv-color-markdown-background: var(--markdown-code-background-color, #f6f8fa);
-
     --hcv-text-color-primary: var(--primary-text-color);
     --hcv-text-color-on-background: var(--text-primary-color);
     --hcv-text-color-secondary: var(--secondary-text-color);
