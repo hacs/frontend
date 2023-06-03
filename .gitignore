@@ -7,5 +7,6 @@ src/localize/languages/translationMetadata.json
 hacs_frontend
 
 yarn-error.log
-.yarn
-.yarnrc.yml
+.yarn/*
+!.yarn/releases
+!.yarn/releases/yarn-*.cjs

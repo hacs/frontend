@@ -1,5 +1,4 @@
 const path = require("path");
-const env = require("./env.cjs");
 const paths = require("./paths.cjs");
 
 const haBundle = require("../../homeassistant-frontend/build-scripts/bundle.cjs");
