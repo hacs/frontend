@@ -2,7 +2,6 @@
   "name": "hacs-frontend",
   "description": "Frontend of HACS",
   "scripts": {
-    "postinstall": "patch-package",
     "start": "./script/develop",
     "build": "./script/build"
   },
