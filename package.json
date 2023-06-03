@@ -2,7 +2,6 @@
   "name": "hacs-frontend",
   "description": "Frontend of HACS",
   "scripts": {
-    "postinstall": "patch-package",
     "start": "./script/develop",
     "build": "./script/build"
   },
@@ -56,7 +55,6 @@
     "babel-plugin-template-html-minifier": "4.1.0",
     "chai": "4.3.7",
     "del": "7.0.0",
-    "dompurify": "^2.2.6",
     "eslint": "8.41.0",
     "eslint-config-airbnb-base": "15.0.0",
     "eslint-config-airbnb-typescript": "17.0.0",
@@ -91,11 +89,9 @@
     "mocha": "10.2.0",
     "object-hash": "3.0.0",
     "open": "9.1.0",
-    "patch-package": "^6.2.0",
     "pinst": "3.0.0",
     "prettier": "2.8.8",
     "rollup": "2.79.1",
-    "rollup-plugin-entrypoint-hashmanifest": "^0.1.2",
     "rollup-plugin-string": "3.0.0",
     "rollup-plugin-terser": "7.0.2",
     "rollup-plugin-visualizer": "5.9.0",
@@ -203,7 +199,6 @@
     "deep-freeze": "0.0.1",
     "fuse.js": "6.6.2",
     "google-timezones-json": "1.1.0",
-    "highlight.js": "^11.5.1",
     "hls.js": "1.4.4",
     "home-assistant-js-websocket": "8.0.1",
     "idb-keyval": "6.2.1",
@@ -214,7 +209,6 @@
     "lit": "2.7.4",
     "marked": "4.3.0",
     "memoize-one": "6.0.0",
-    "node-emoji": "1.10.0",
     "node-vibrant": "3.2.1-alpha.1",
     "proxy-polyfill": "0.3.2",
     "punycode": "2.3.0",
@@ -246,15 +240,9 @@
     "@polymer/polymer": "patch:@polymer/polymer@3.5.1#./homeassistant-frontend/.yarn/patches/@polymer/polymer/pr-5569.patch"
   },
   "dependenciesOverride": {
-    "app-datepicker": "5.0.1",
-    "node-emoji": "1.10.0",
-    "highlight.js": "^11.5.1"
+    "app-datepicker": "5.0.1"
   },
-  "devDependenciesOverride": {
-    "patch-package": "^6.2.0",
-    "dompurify": "^2.2.6",
-    "rollup-plugin-entrypoint-hashmanifest": "^0.1.2"
-  },
+  "devDependenciesOverride": {},
   "packageManager": "yarn@3.5.1",
   "resolutions": {
     "@polymer/polymer": "patch:@polymer/polymer@3.5.1#./homeassistant-frontend/.yarn/patches/@polymer/polymer/pr-5569.patch"

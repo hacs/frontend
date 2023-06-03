@@ -11,8 +11,10 @@ import { customElement, property, state } from "lit/decorators";
 import memoizeOne from "memoize-one";
 import { mainWindow } from "../../homeassistant-frontend/src/common/dom/get_main_window";
 import { extractSearchParamsObject } from "../../homeassistant-frontend/src/common/url/search-params";
+import "../../homeassistant-frontend/src/components/ha-card";
 import "../../homeassistant-frontend/src/components/ha-chip";
 import "../../homeassistant-frontend/src/components/ha-fab";
+import "../../homeassistant-frontend/src/components/ha-markdown";
 import { showConfirmationDialog } from "../../homeassistant-frontend/src/dialogs/generic/show-dialog-box";
 import "../../homeassistant-frontend/src/layouts/hass-error-screen";
 import "../../homeassistant-frontend/src/layouts/hass-loading-screen";
@@ -24,7 +26,7 @@ import { Hacs } from "../data/hacs";
 import { fetchRepositoryInformation, RepositoryBase, RepositoryInfo } from "../data/repository";
 import { getRepositories, repositoryAdd } from "../data/websocket";
 import { HacsStyles } from "../styles/hacs-common-style";
-import { markdown } from "../tools/markdown/markdown";
+import { markdownWithRepositoryContext } from "../tools/markdown";
 
 @customElement("hacs-repository-panel")
 export class HacsRepositoryPanel extends LitElement {
@@ -189,47 +191,53 @@ export class HacsRepositoryPanel extends LitElement {
         >
         </ha-icon-overflow-menu>
         <div class="content">
-          <div class="chips">
-            ${this._repository.installed
-              ? html`
-                  <ha-chip title="${this.hacs.localize("dialog_info.version_installed")}" hasIcon>
-                    <ha-svg-icon slot="icon" .path=${mdiCube}></ha-svg-icon>
-                    ${this._repository.installed_version}
-                  </ha-chip>
-                `
-              : ""}
-            ${authors
-              ? authors.map(
-                  (author) => html`<hacs-link .url="https://github.com/${author}">
-                    <ha-chip title="${this.hacs.localize("dialog_info.author")}" hasIcon>
-                      <ha-svg-icon slot="icon" .path=${mdiAccount}></ha-svg-icon>
-                      @${author}
+          <ha-card>
+            <div class="chips">
+              ${this._repository.installed
+                ? html`
+                    <ha-chip title="${this.hacs.localize("dialog_info.version_installed")}" hasIcon>
+                      <ha-svg-icon slot="icon" .path=${mdiCube}></ha-svg-icon>
+                      ${this._repository.installed_version}
                     </ha-chip>
-                  </hacs-link>`
-                )
-              : ""}
-            ${this._repository.downloads
-              ? html` <ha-chip hasIcon title="${this.hacs.localize("dialog_info.downloads")}">
-                  <ha-svg-icon slot="icon" .path=${mdiArrowDownBold}></ha-svg-icon>
-                  ${this._repository.downloads}
-                </ha-chip>`
-              : ""}
-            <ha-chip title="${this.hacs.localize("dialog_info.stars")}" hasIcon>
-              <ha-svg-icon slot="icon" .path=${mdiStar}></ha-svg-icon>
-              ${this._repository.stars}
-            </ha-chip>
-            <hacs-link .url="https://github.com/${this._repository.full_name}/issues">
-              <ha-chip title="${this.hacs.localize("dialog_info.open_issues")}" hasIcon>
-                <ha-svg-icon slot="icon" .path=${mdiExclamationThick}></ha-svg-icon>
-                ${this._repository.issues}
+                  `
+                : ""}
+              ${authors
+                ? authors.map(
+                    (author) => html`<hacs-link .url="https://github.com/${author}">
+                      <ha-chip title="${this.hacs.localize("dialog_info.author")}" hasIcon>
+                        <ha-svg-icon slot="icon" .path=${mdiAccount}></ha-svg-icon>
+                        @${author}
+                      </ha-chip>
+                    </hacs-link>`
+                  )
+                : ""}
+              ${this._repository.downloads
+                ? html` <ha-chip hasIcon title="${this.hacs.localize("dialog_info.downloads")}">
+                    <ha-svg-icon slot="icon" .path=${mdiArrowDownBold}></ha-svg-icon>
+                    ${this._repository.downloads}
+                  </ha-chip>`
+                : ""}
+              <ha-chip title="${this.hacs.localize("dialog_info.stars")}" hasIcon>
+                <ha-svg-icon slot="icon" .path=${mdiStar}></ha-svg-icon>
+                ${this._repository.stars}
               </ha-chip>
-            </hacs-link>
-          </div>
-          ${markdown.html(
-            this._repository.additional_info || this.hacs.localize("dialog_info.no_info"),
-            this._repository
-          )}
+              <hacs-link .url="https://github.com/${this._repository.full_name}/issues">
+                <ha-chip title="${this.hacs.localize("dialog_info.open_issues")}" hasIcon>
+                  <ha-svg-icon slot="icon" .path=${mdiExclamationThick}></ha-svg-icon>
+                  ${this._repository.issues}
+                </ha-chip>
+              </hacs-link>
+            </div>
+            <ha-markdown
+              breaks
+              .content=${markdownWithRepositoryContext(
+                this._repository.additional_info,
+                this._repository
+              ) || this.hacs.localize("dialog_info.no_info")}
+            ></ha-markdown>
+          </ha-card>
         </div>
+
         ${!this._repository.installed_version
           ? html`<ha-fab
               .label=${this.hacs.localize("common.download")}
@@ -289,9 +297,14 @@ export class HacsRepositoryPanel extends LitElement {
           left: calc(18px + env(safe-area-inset-left));
         }
 
+        ha-card {
+          display: block;
+          padding: 16px;
+        }
         .content {
-          padding: 12px;
-          margin-bottom: 64px;
+          margin: auto;
+          padding: 8px;
+          max-width: 1536px;
         }
 
         .chips {
@@ -304,6 +317,7 @@ export class HacsRepositoryPanel extends LitElement {
         @media all and (max-width: 500px) {
           .content {
             margin: 8px 4px 64px;
+            max-width: none;
           }
         }
       `,
