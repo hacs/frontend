@@ -1,16 +1,17 @@
 import { css, html, PropertyValues, TemplateResult } from "lit";
 import { customElement, property, query } from "lit/decorators";
 import { applyThemesOnElement } from "../homeassistant-frontend/src/common/dom/apply_themes_on_element";
-import { mainWindow } from "../homeassistant-frontend/src/common/dom/get_main_window";
 import { fireEvent } from "../homeassistant-frontend/src/common/dom/fire_event";
-import "../homeassistant-frontend/src/layouts/hass-loading-screen";
+import { mainWindow } from "../homeassistant-frontend/src/common/dom/get_main_window";
 import { isNavigationClick } from "../homeassistant-frontend/src/common/dom/is-navigation-click";
 import { navigate } from "../homeassistant-frontend/src/common/navigate";
 import { makeDialogManager } from "../homeassistant-frontend/src/dialogs/make-dialog-manager";
+import "../homeassistant-frontend/src/layouts/hass-loading-screen";
 import "../homeassistant-frontend/src/resources/ha-style";
 import { HomeAssistant, Route } from "../homeassistant-frontend/src/types";
 import "./components/dialogs/hacs-event-dialog";
 import { HacsDialogEvent, HacsDispatchEvent, LocationChangedEvent } from "./data/common";
+import { Hacs } from "./data/hacs";
 import { fetchHacsInfo, getRepositories, websocketSubscription } from "./data/websocket";
 import { HacsElement } from "./hacs";
 import "./hacs-router";
@@ -20,6 +21,8 @@ import { hacsStyleVariables } from "./styles/variables";
 @customElement("hacs-frontend")
 class HacsFrontend extends HacsElement {
   @property({ attribute: false }) public hass!: HomeAssistant;
+
+  @property({ attribute: false }) public hacs!: Hacs;
 
   @property({ attribute: false }) public narrow!: boolean;
 
@@ -156,7 +159,7 @@ class HacsFrontend extends HacsElement {
   }
 
   protected render(): TemplateResult | void {
-    if (!this.hass || !this.hacs?.info.categories?.length) {
+    if (!this.hass || !this.hacs?.info.categories?.length || this.hacs?.localize === undefined) {
       return html`<hass-loading-screen no-toolbar></hass-loading-screen>`;
     }
 

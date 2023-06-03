@@ -9,7 +9,7 @@ on:
       - main
 
 env:
-  NODE_VERSION: 16
+  NODE_VERSION: 18
 
 jobs:
   build_frontend:
@@ -31,3 +31,5 @@ jobs:
         run: script/bootstrap
       - name: Build
         run: script/build
+        env:
+          IS_TEST: "true"
