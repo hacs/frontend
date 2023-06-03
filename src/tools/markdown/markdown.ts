@@ -4,7 +4,7 @@ import javascript from "highlight.js/lib/languages/javascript";
 import json from "highlight.js/lib/languages/json";
 import yaml from "highlight.js/lib/languages/yaml";
 import { html, TemplateResult } from "lit";
-import marked_ from "marked";
+import { marked } from "marked";
 import emoji from "node-emoji";
 import "../../components/hacs-link";
 import { RepositoryInfo } from "../../data/repository";
@@ -13,8 +13,6 @@ import { GFM, HLJS } from "./styles";
 hljs.registerLanguage("yaml", yaml);
 hljs.registerLanguage("javascript", javascript);
 hljs.registerLanguage("json", json);
-
-const marked = marked_;
 
 marked.setOptions({
   highlight: function (code, lang) {
@@ -25,7 +23,6 @@ marked.setOptions({
   },
   breaks: true,
   gfm: true,
-  tables: true,
   langPrefix: "",
 });
 

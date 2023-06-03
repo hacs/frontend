@@ -1,9 +1,18 @@
-const gulp = require("gulp");
-const fs = require("fs-extra");
-const del = require("del");
-const log = require("fancy-log");
+import gulp from "gulp";
+import fs from "fs-extra";
+import env from "./env.cjs";
+import paths from "./paths.cjs";
+import { createHash } from "crypto";
+import path from "path";
 
 const changeLang = { et_EE: "et", "zh-Hans": "zh_Hans", "pt-BR": "pt_BR" };
+const ignoredLanguages = new Set(["es-419", "en-GB", "translationMetadata"]);
+const fingerprints = {};
+
+const translationMetadata = fs.readJSONSync(
+  `${paths.translations_src}/translationMetadata.json`,
+  "utf-8"
+);
 
 function recursiveFlatten(prefix, data) {
   let output = {};
@@ -21,33 +30,73 @@ function recursiveFlatten(prefix, data) {
 }
 
 gulp.task("generate-translations", async function (task) {
-  del.sync("./src/localize/generated.ts");
-  const files = await fs.readdir("./src/localize/languages");
-  const languages = {};
-  files.forEach((file) => {
-    let lang = file.split(".")[0];
-    if (changeLang[lang]) {
-      log(`Language code '${lang}' is wrong, using '${changeLang[lang]}'`);
-      lang = changeLang[lang];
-    }
-    languages[lang] = recursiveFlatten(
-      "",
-      fs.readJSONSync(`./src/localize/languages/${file}`, "utf-8")
-    );
-    log(`Generating transtions for '${lang}'`);
-  });
-
-  await fs.mkdirs("./homeassistant-frontend/build/translations");
-
-  await fs.writeFile(
-    "./homeassistant-frontend/build/translations/translationMetadata.json",
-    "{}",
-    "utf-8"
+  await fs.mkdir(`${paths.build_dir}/translations`, { recursive: true });
+  const defaultTranslation = recursiveFlatten(
+    "",
+    fs.readJSONSync(`${paths.translations_src}/en.json`, "utf-8")
   );
 
+  for (const language of fs.readdirSync(paths.translations_src)) {
+    if (ignoredLanguages.has(language)) continue;
+    const lang = language.split(".")[0];
+    const fileName = lang in changeLang ? changeLang[lang] : lang;
+    const translation = { ...defaultTranslation };
+    if (language !== "en" && fs.existsSync(`${paths.translations_src}/${fileName}`)) {
+      const fileTranslations = recursiveFlatten(
+        "",
+        fs.readJSONSync(`${paths.translations_src}/${fileName}`, "utf-8")
+      );
+      for (const key of Object.keys(fileTranslations)) {
+        translation[key] = fileTranslations[key];
+      }
+    }
+    await fs.writeFile(
+      `${paths.build_dir}/translations/${language}`,
+      JSON.stringify(translation, null),
+      "utf-8"
+    );
+  }
+  task();
+});
+
+gulp.task("build-translation-fingerprints", async (task) => {
+  // Fingerprint full file of each language
+  const fullDir = `${paths.build_dir}/translations`;
+
+  for (const fileName of fs.readdirSync(fullDir)) {
+    fingerprints[fileName.split(".")[0]] = {
+      // In dev we create fake hashes
+      hash: env.isProdBuild()
+        ? createHash("md5")
+            .update(fs.readFileSync(path.join(fullDir, fileName), "utf-8"))
+            .digest("hex")
+        : "dev",
+    };
+  }
+
+  await fs.mkdir(`${paths.app_output_static}/translations/`, { recursive: true });
+  await fs.mkdir(`${paths.home_assistant_frontend_root}/build/translations/`, { recursive: true });
+
+  for (const fileName of fs.readdirSync(fullDir)) {
+    if (fileName === "translationMetadata.json") continue;
+    const parsed = path.parse(fileName);
+    fs.copyFileSync(
+      path.resolve(fullDir, fileName),
+      `${paths.app_output_static}/translations/${parsed.name}-${fingerprints[parsed.name].hash}${
+        parsed.ext
+      }`
+    );
+  }
+
+  const combined = {};
+
+  for (const entry of Object.keys(fingerprints)) {
+    combined[entry] = { ...translationMetadata[entry], ...fingerprints[entry] };
+  }
+
   await fs.writeFile(
-    "./src/localize/generated.ts",
-    "export const languages = " + JSON.stringify(languages, null, 2),
+    `${paths.home_assistant_frontend_root}/build/translations/translationMetadata.json`,
+    JSON.stringify({ translations: combined }, null),
     "utf-8"
   );
   task();

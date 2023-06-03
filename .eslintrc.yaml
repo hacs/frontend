@@ -8,6 +8,13 @@
       "prettier",
     ],
   "parser": "@typescript-eslint/parser",
+    "settings": {
+    "import/resolver": {
+      "webpack": {
+        "config": "./webpack.config.cjs"
+      }
+    }
+  },
   "parserOptions":
     {
       "ecmaVersion": 2020,

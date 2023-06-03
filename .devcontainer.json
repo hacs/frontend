@@ -1,6 +1,6 @@
 {
 	"name": "HACS Frontend",
-	"image": "mcr.microsoft.com/vscode/devcontainers/typescript-node:16-bullseye",
+	"image": "mcr.microsoft.com/vscode/devcontainers/typescript-node:18",
 	"remoteUser": "node",
 	"postCreateCommand": "make init",
 	"forwardPorts": [

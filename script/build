@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 # Run the frontend development server
 
 # Stop on errors
@@ -12,4 +12,4 @@ if [ ! -d "./node_modules" ]; then
     yarn install
 fi
 
-./node_modules/.bin/gulp build
+./node_modules/.bin/gulp build-hacs

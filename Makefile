@@ -11,8 +11,8 @@ start: ## Start the frontend
 	yarn start;
 
 bootstrap: ## Run yarn
+	git submodule update --init;
 	yarn;
-	git submodule update --init
 
 build: ## Build the frontend
 	yarn build;
@@ -21,8 +21,7 @@ update: ## Pull main from hacs/frontend
 	git pull upstream main;
 
 update-submodule: ## Udpate submodules
-	rm -R homeassistant-frontend;
-	git submodule update --init --recursive --remote;
+	git submodule update --recursive --remote;
 	script/bootstrap
 
 tag-name: ## Create a tag name
