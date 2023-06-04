@@ -1,9 +1,12 @@
-import { RepositoryInfo } from "../data/repository";
+import type { RepositoryInfo } from "../data/repository";
+
+const showGitHubWeb = (text: string) =>
+  text.toLowerCase().includes(".md") || text.toLowerCase().includes(".markdown");
 
 export const markdownWithRepositoryContext = (input: string, repository?: RepositoryInfo) => {
   // Handle convertion to raw GitHub URL
   input = input.replace(/(https:\/\/github\.com\/.*.\/blob*.[^\s]+)/g, function (x) {
-    if (x.includes(".md")) {
+    if (showGitHubWeb(x)) {
       return x;
     }
     return x
@@ -13,16 +16,22 @@ export const markdownWithRepositoryContext = (input: string, repository?: Reposi
 
   // Handle relative links
   if (repository) {
-    input = input.replace(/!\[*.*\]\((?!.*:\/\/).*\/*.*\.\w*\)/g, function (x) {
+    input = input.replace(/(!)?\[*.*\]\((?!.*:\/\/).*\/*.*\.\w*\)/g, function (x) {
       return x
         .replace("(/", "(")
         .replace(
           "(",
-          `(https://raw.githubusercontent.com/${repository.full_name}/${
+          `(${showGitHubWeb(x) ? `https://github.com` : `https://raw.githubusercontent.com`}/${
+            repository.full_name
+          }${showGitHubWeb(x) ? "/blob" : ""}/${
             repository.available_version || repository.default_branch
           }/`
-        )
-        .replace("/blob/", "/");
+        );
+    });
+
+    // Handle anchor refrences
+    input = input.replace(/\[*.*\]\(\#.*\)/g, function (x) {
+      return x.replace("(#", `(/hacs/repository/${repository.id}#`);
     });
 
     // Add references to issues and PRs
@@ -37,8 +46,7 @@ export const markdownWithRepositoryContext = (input: string, repository?: Reposi
   input = input.replace(
     /[^(]https:\/\/github\.com\/\S*\/commit\/([0-9a-f]{40})/g,
     (url, commit) => {
-      const hash = commit.substr(0, 7);
-      return `[\`${hash}\`](${url})`;
+      return `[\`${commit.substr(0, 7)}\`](${url})`;
     }
   );
   return input;
