@@ -1,9 +1,9 @@
-import { LocalizeFunc } from "../../homeassistant-frontend/src/common/translations/localize";
-import { HacsLocalizeKeys } from "../data/localize";
-import { RepositoryBase } from "./repository";
+import type { LocalizeFunc } from "../../homeassistant-frontend/src/common/translations/localize";
+import type { HacsLocalizeKeys } from "../data/localize";
+import type { RepositoryBase, RepositoryCategory } from "./repository";
 
 export interface HacsInfo {
-  categories: string[];
+  categories: RepositoryCategory[];
   country: string;
   debug: boolean;
   dev: boolean;
@@ -20,6 +20,5 @@ export interface Hacs {
   repositories: RepositoryBase[];
   info: HacsInfo;
   localize: LocalizeFunc<HacsLocalizeKeys>;
-  addedToLovelace?(hacs: Hacs, repository: RepositoryBase): boolean;
   log: any;
 }

@@ -4,9 +4,9 @@ import {
   HassRouterPage,
   RouterOptions,
 } from "../homeassistant-frontend/src/layouts/hass-router-page";
-import { HomeAssistant, Route } from "../homeassistant-frontend/src/types";
+import type { HomeAssistant, Route } from "../homeassistant-frontend/src/types";
 
-import { Hacs } from "./data/hacs";
+import type { Hacs } from "./data/hacs";
 
 @customElement("hacs-router")
 class HacsRouter extends HassRouterPage {

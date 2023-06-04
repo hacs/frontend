@@ -1,7 +1,7 @@
-import { HomeAssistant } from "../../homeassistant-frontend/src/types";
-import { Hacs, HacsInfo } from "./hacs";
-import { HacsDispatchEvent } from "./common";
-import { RepositoryBase } from "./repository";
+import type { HomeAssistant } from "../../homeassistant-frontend/src/types";
+import type { Hacs, HacsInfo } from "./hacs";
+import type { HacsDispatchEvent } from "./common";
+import type { RepositoryBase } from "./repository";
 
 export const fetchHacsInfo = async (hass: HomeAssistant) =>
   hass.connection.sendMessagePromise<HacsInfo>({

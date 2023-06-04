@@ -43,7 +43,7 @@ import { hacsIcon } from "../components/hacs-icon";
 import { repositoryMenuItems } from "../components/hacs-repository-owerflow-menu";
 import "../components/hacs-tabs-subpage-data-table";
 import type { Hacs } from "../data/hacs";
-import type { RepositoryBase } from "../data/repository";
+import type { RepositoryBase, RepositoryCategory } from "../data/repository";
 import { repositoriesClearNew } from "../data/websocket";
 import { HacsStyles } from "../styles/hacs-common-style";
 import { categoryIcon } from "../tools/category-icon";
@@ -58,6 +58,8 @@ const tableColumnDefaults = {
   status: false,
   category: true,
 };
+
+type tableColumnDefaultsType = keyof typeof tableColumnDefaults;
 
 const defaultKeyData = {
   title: "",
@@ -88,7 +90,7 @@ export class HacsExperimentalPanel extends LitElement {
   private _activeSearch?: string;
 
   @LocalStorage("hacs-table-active-columns", true, false)
-  private _tableColumns: { [key: string]: boolean } = tableColumnDefaults;
+  private _tableColumns: Record<tableColumnDefaultsType, boolean> = tableColumnDefaults;
 
   protected async firstUpdated(changedProperties: PropertyValues): Promise<void> {
     super.firstUpdated(changedProperties);
@@ -136,7 +138,6 @@ export class HacsExperimentalPanel extends LitElement {
       clickable
       .filter=${this._activeSearch}
       .activeFilters=${this.activeFilters}
-      .hasFab=${this.activeFilters?.includes(this.hacs.localize("common.downloaded"))}
       .noDataText=${this.activeFilters?.includes(this.hacs.localize("common.downloaded"))
         ? "No downloaded repositories"
         : "No repositories matching search"}
@@ -265,7 +266,7 @@ export class HacsExperimentalPanel extends LitElement {
                     .selected=${this._tableColumns[entry] ?? tableColumnDefaults[entry]}
                     left
                   >
-                    ${this.hacs.localize(`column.${entry}`)}
+                    ${this.hacs.localize(`column.${entry as tableColumnDefaultsType}`)}
                   </ha-check-list-item>
                 `
               )}
@@ -293,13 +294,6 @@ export class HacsExperimentalPanel extends LitElement {
             )}
       </ha-button-menu>
     </hacs-tabs-subpage-data-table>`;
-  };
-
-  private _exploreFabClicked = () => {
-    const newFilters = this.activeFilters?.filter(
-      (filter) => filter !== this.hacs.localize("common.downloaded")
-    );
-    this.activeFilters = newFilters?.length ? newFilters : undefined;
   };
 
   private _filterRepositories = memoize(
@@ -462,9 +456,11 @@ export class HacsExperimentalPanel extends LitElement {
         sortable: true,
         direction: this.activeSort?.column === "status" ? this.activeSort.direction : null,
         width: "10%",
-        template: (status: string) =>
+        template: (status: RepositoryBase["status"]) =>
           ["pending-restart", "pending-upgrade"].includes(status)
-            ? this.hacs.localize(`repository_status.${status}`)
+            ? this.hacs.localize(
+                `repository_status.${status as "pending-restart" | "pending-upgrade"}`
+              )
             : "-",
       },
       category: {
@@ -474,7 +470,7 @@ export class HacsExperimentalPanel extends LitElement {
         sortable: true,
         direction: this.activeSort?.column === "category" ? this.activeSort.direction : null,
         width: "10%",
-        template: (category: string) => this.hacs.localize(`common.${category}`),
+        template: (category: RepositoryCategory) => this.hacs.localize(`common.${category}`),
       },
       authors: defaultKeyData,
       description: defaultKeyData,
@@ -546,7 +542,7 @@ export class HacsExperimentalPanel extends LitElement {
         [key]: update[key] ?? tableColumnDefaults[key],
       }),
       {}
-    );
+    ) as Record<tableColumnDefaultsType, boolean>;
   }
 
   private _handleSortingChanged(ev: CustomEvent) {
