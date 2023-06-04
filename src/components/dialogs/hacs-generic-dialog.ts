@@ -2,7 +2,6 @@ import { html, TemplateResult } from "lit";
 import { customElement, property } from "lit/decorators";
 import memoizeOne from "memoize-one";
 import "./hacs-dialog";
-import "../hacs-link";
 import { HacsDialogBase } from "./hacs-dialog-base";
 import { RepositoryBase } from "../../data/repository";
 import { markdownWithRepositoryContext } from "../../tools/markdown";

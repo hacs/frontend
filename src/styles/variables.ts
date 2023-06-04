@@ -15,8 +15,5 @@ export const hacsStyleVariables = css`
 
     --mdc-dialog-heading-ink-color: var(--hcv-text-color-primary);
     --mdc-dialog-content-ink-color: var(--hcv-text-color-primary);
-
-    /*hacs-link*/
-    --hcv-text-decoration-link: var(--hacs-link-text-decoration, none);
   }
 `;

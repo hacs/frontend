@@ -20,7 +20,6 @@ import "../../homeassistant-frontend/src/layouts/hass-error-screen";
 import "../../homeassistant-frontend/src/layouts/hass-loading-screen";
 import "../../homeassistant-frontend/src/layouts/hass-subpage";
 import { HomeAssistant, Route } from "../../homeassistant-frontend/src/types";
-import "../components/hacs-link";
 import { repositoryMenuItems } from "../components/hacs-repository-owerflow-menu";
 import { Hacs } from "../data/hacs";
 import { fetchRepositoryInformation, RepositoryBase, RepositoryInfo } from "../data/repository";
@@ -203,12 +202,16 @@ export class HacsRepositoryPanel extends LitElement {
                 : ""}
               ${authors
                 ? authors.map(
-                    (author) => html`<hacs-link .url="https://github.com/${author}">
+                    (author) => html`<a
+                      href="https://github.com/${author}"
+                      target="_blank"
+                      rel="noreferrer noopener"
+                    >
                       <ha-chip title="${this.hacs.localize("dialog_info.author")}" hasIcon>
                         <ha-svg-icon slot="icon" .path=${mdiAccount}></ha-svg-icon>
                         @${author}
                       </ha-chip>
-                    </hacs-link>`
+                    </a>`
                   )
                 : ""}
               ${this._repository.downloads
@@ -221,12 +224,16 @@ export class HacsRepositoryPanel extends LitElement {
                 <ha-svg-icon slot="icon" .path=${mdiStar}></ha-svg-icon>
                 ${this._repository.stars}
               </ha-chip>
-              <hacs-link .url="https://github.com/${this._repository.full_name}/issues">
+              <a
+                href="https://github.com/${this._repository.full_name}/issues"
+                target="_blank"
+                rel="noreferrer noopener"
+              >
                 <ha-chip title="${this.hacs.localize("dialog_info.open_issues")}" hasIcon>
                   <ha-svg-icon slot="icon" .path=${mdiExclamationThick}></ha-svg-icon>
                   ${this._repository.issues}
                 </ha-chip>
-              </hacs-link>
+              </a>
             </div>
             <ha-markdown
               breaks
