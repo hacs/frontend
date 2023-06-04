@@ -236,7 +236,6 @@ export class HacsRepositoryPanel extends LitElement {
               </a>
             </div>
             <ha-markdown
-              breaks
               .content=${markdownWithRepositoryContext(
                 this._repository.additional_info,
                 this._repository
