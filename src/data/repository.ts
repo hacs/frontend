@@ -1,4 +1,4 @@
-import { HomeAssistant } from "../../homeassistant-frontend/src/types";
+import type { HomeAssistant } from "../../homeassistant-frontend/src/types";
 
 export type RepositoryCategory =
   | "appdaemon"
@@ -34,7 +34,7 @@ export interface RepositoryBase {
   pending_upgrade: boolean;
   stars: number;
   state: string;
-  status: string;
+  status: "pending-restart" | "pending-upgrade" | "new" | "installed" | "default";
   topics: string[];
 }
 

@@ -1,11 +1,10 @@
 import { LitElement, PropertyValues } from "lit";
 import { property, state } from "lit/decorators";
-import { Hacs } from "./data/hacs";
-import { addedToLovelace } from "./tools/added-to-lovelace";
+import type { Hacs } from "./data/hacs";
 import { HacsLogger } from "./tools/hacs-logger";
-import { HacsLocalizeKeys } from "./data/localize";
+import type { HacsLocalizeKeys } from "./data/localize";
 import { ProvideHassLitMixin } from "../homeassistant-frontend/src/mixins/provide-hass-lit-mixin";
-import { HomeAssistant } from "../homeassistant-frontend/src/types";
+import type { HomeAssistant } from "../homeassistant-frontend/src/types";
 import { computeLocalize } from "../homeassistant-frontend/src/common/translations/localize";
 import { getTranslation } from "../homeassistant-frontend/src/util/common-translation";
 
@@ -16,7 +15,6 @@ export class HacsElement extends ProvideHassLitMixin(LitElement) {
     language: "en",
     repositories: [],
     info: {} as any,
-    addedToLovelace,
     log: new HacsLogger(),
   };
 

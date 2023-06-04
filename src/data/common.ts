@@ -1,4 +1,4 @@
-import { RepositoryBase } from "./repository";
+import type { RepositoryBase } from "./repository";
 
 export interface Route {
   path: string;

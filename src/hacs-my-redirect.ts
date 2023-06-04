@@ -6,13 +6,13 @@ import {
   extractSearchParamsObject,
 } from "../homeassistant-frontend/src/common/url/search-params";
 import "../homeassistant-frontend/src/layouts/hass-error-screen";
-import {
+import type {
   ParamType,
   Redirect,
   Redirects,
 } from "../homeassistant-frontend/src/panels/my/ha-panel-my";
-import { HomeAssistant, Route } from "../homeassistant-frontend/src/types";
-import { Hacs } from "./data/hacs";
+import type { HomeAssistant, Route } from "../homeassistant-frontend/src/types";
+import type { Hacs } from "./data/hacs";
 
 export const REDIRECTS: Redirects = {
   hacs_repository: {
