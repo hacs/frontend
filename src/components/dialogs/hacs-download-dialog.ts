@@ -20,7 +20,6 @@ import { getRepositories, repositoryBeta, websocketSubscription } from "../../da
 import { HacsStyles } from "../../styles/hacs-common-style";
 import { generateLovelaceURL } from "../../tools/added-to-lovelace";
 import { updateLovelaceResources } from "../../tools/update-lovelace-resources";
-import "../hacs-link";
 import "./hacs-dialog";
 import { HacsDialogBase } from "./hacs-dialog-base";
 
