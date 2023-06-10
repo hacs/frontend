@@ -18,8 +18,8 @@ import {
 } from "../../data/repository";
 import { getRepositories, repositoryBeta, websocketSubscription } from "../../data/websocket";
 import { HacsStyles } from "../../styles/hacs-common-style";
-import { generateLovelaceURL } from "../../tools/added-to-lovelace";
-import { updateLovelaceResources } from "../../tools/update-lovelace-resources";
+import { generateFrontendResourceURL } from "../../tools/frontend-resource";
+import { updateFrontendResource } from "../../tools/frontend-resource";
 import "./hacs-dialog";
 import { HacsDialogBase } from "./hacs-dialog-base";
 
@@ -147,7 +147,7 @@ export class HacsDonwloadDialog extends HacsDialogBase {
               ? html`
                   <p>${this.hacs.localize(`dialog_download.lovelace_instruction`)}</p>
                   <pre>
-                url: ${generateLovelaceURL({ repository: this._repository, skipTag: true })}
+                url: ${generateFrontendResourceURL({ repository: this._repository, skipTag: true })}
                 type: module
                 </pre
                   >
@@ -227,7 +227,7 @@ export class HacsDonwloadDialog extends HacsDialogBase {
     this.hacs.log.debug(this._repository.category, "_installRepository");
     this.hacs.log.debug(this.hacs.info.lovelace_mode, "_installRepository");
     if (this._repository.category === "plugin" && this.hacs.info.lovelace_mode === "storage") {
-      await updateLovelaceResources(this.hass, this._repository, selectedVersion);
+      await updateFrontendResource(this.hass, this._repository, selectedVersion);
     }
     this._installing = false;
 
