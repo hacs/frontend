@@ -1,10 +1,7 @@
-import { html } from "lit";
-import { version } from "../../version";
-import { Hacs } from "../../data/hacs";
-import { showAlertDialog } from "../../../homeassistant-frontend/src/dialogs/generic/show-dialog-box";
-import "../../../homeassistant-frontend/src/components/ha-markdown";
+import type { Hacs } from "./hacs";
+import { version } from "../version";
 
-const markdownContent = (hacs: Hacs) => `
+export const aboutHacsmarkdownContent = (hacs: Hacs) => `
 **${hacs.localize("dialog_about.integration_version")}:** | ${hacs.info.version}
 :--|--
 **${hacs.localize("dialog_about.frontend_version")}:** | ${version}
@@ -27,10 +24,3 @@ const markdownContent = (hacs: Hacs) => `
 
 _Everything you find in HACS is **not** tested by Home Assistant, that includes HACS itself.
 The HACS and Home Assistant teams do not support **anything** you find here._`;
-
-export const showDialogAbout = async (element: any, hacs: Hacs) =>
-  showAlertDialog(element, {
-    title: "Home Assistant Community Store",
-    confirmText: hacs.localize("common.close"),
-    text: html`<ha-markdown .content=${markdownContent(hacs)}></ha-markdown>`,
-  });

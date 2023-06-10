@@ -1,13 +1,14 @@
 import { CSSResultGroup, LitElement, css, html, nothing } from "lit";
-import type { HomeAssistant } from "../../../homeassistant-frontend/src/types";
-import "../../../homeassistant-frontend/src/components/ha-dialog";
-import "../../../homeassistant-frontend/src/components/ha-form/ha-form";
-import type { HacsFormDialogParams } from "./show-hacs-form-dialog";
 import { customElement, property, state } from "lit/decorators";
+import "../../../homeassistant-frontend/src/components/ha-dialog";
+import { createCloseHeading } from "../../../homeassistant-frontend/src/components/ha-dialog";
+import "../../../homeassistant-frontend/src/components/ha-form/ha-form";
 import type {
   HaFormDataContainer,
   HaFormSchema,
 } from "../../../homeassistant-frontend/src/components/ha-form/types";
+import type { HomeAssistant } from "../../../homeassistant-frontend/src/types";
+import type { HacsFormDialogParams } from "./show-hacs-form-dialog";
 
 @customElement("hacs-form-dialog")
 class HacsFromDialog extends LitElement {
@@ -38,13 +39,16 @@ class HacsFromDialog extends LitElement {
         open
         .scrimClickAction=${this._dialogParams.saveAction !== undefined}
         .escapeKeyAction=${this._dialogParams.saveAction !== undefined}
-        .heading=${this._dialogParams.title}
+        .heading=${this._dialogParams.saveAction === undefined
+          ? createCloseHeading(this.hass, this._dialogParams.title)
+          : this._dialogParams.title}
         @closed=${this.closeDialog}
       >
+        ${this._dialogParams.description || nothing}
         <ha-form
           .hass=${this.hass}
-          .data=${this._dialogParams.data}
-          .schema=${this._dialogParams.schema}
+          .data=${this._dialogParams.data || {}}
+          .schema=${this._dialogParams.schema || []}
           .error=${this._errors}
           .computeLabel=${this._computeLabel}
           .computeHelper=${this._computeHelper}
@@ -52,17 +56,17 @@ class HacsFromDialog extends LitElement {
           @value-changed=${this._valueChanged}
           dialogInitialFocus
         ></ha-form>
-        <mwc-button slot="secondaryAction" @click=${this.closeDialog} dialogInitialFocus>
-          ${this._dialogParams.hacs.localize("common.cancel")}
-        </mwc-button>
         ${this._dialogParams.saveAction
-          ? html`<mwc-button
-              .disabled=${this._waiting || !this._dialogParams.data}
-              slot="primaryAction"
-              @click=${this._saveClicked}
-            >
-              ${this._dialogParams.saveLabel || this._dialogParams.hacs.localize("common.save")}
-            </mwc-button>`
+          ? html`<mwc-button slot="secondaryAction" @click=${this.closeDialog} dialogInitialFocus>
+                ${this._dialogParams.hacs.localize("common.cancel")}
+              </mwc-button>
+              <mwc-button
+                .disabled=${this._waiting || !this._dialogParams.data}
+                slot="primaryAction"
+                @click=${this._saveClicked}
+              >
+                ${this._dialogParams.saveLabel || this._dialogParams.hacs.localize("common.save")}
+              </mwc-button>`
           : nothing}
       </ha-dialog>
     `;

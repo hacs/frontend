@@ -2,6 +2,8 @@ import type { LocalizeFunc } from "../../homeassistant-frontend/src/common/trans
 import type { HacsLocalizeKeys } from "../data/localize";
 import type { RepositoryBase, RepositoryCategory } from "./repository";
 
+export const APP_FULL_NAME = "Home Assistant Community Store";
+
 export interface HacsInfo {
   categories: RepositoryCategory[];
   country: string;
