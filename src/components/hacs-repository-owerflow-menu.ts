@@ -16,12 +16,12 @@ import { deleteResource, fetchResources } from "../../homeassistant-frontend/src
 import { showConfirmationDialog } from "../../homeassistant-frontend/src/dialogs/generic/show-dialog-box";
 import type { RepositoryBase } from "../data/repository";
 import { repositoryUninstall, repositoryUpdate } from "../data/websocket";
-import type { HacsExperimentalPanel } from "../panels/hacs-experimental-panel";
-import type { HacsRepositoryPanel } from "../panels/hacs-repository-panel";
+import type { HacsDashboard } from "../dashboards/hacs-dashboard";
+import type { HacsRepositoryDashboard } from "../dashboards/hacs-repository-dashboard";
 import { showHacsDownloadDialog, showHacsFormDialog } from "./dialogs/show-hacs-dialog";
 
 export const repositoryMenuItems = memoizeOne(
-  (element: HacsRepositoryPanel | HacsExperimentalPanel, repository: RepositoryBase) => [
+  (element: HacsRepositoryDashboard | HacsDashboard, repository: RepositoryBase) => [
     ...(element.nodeName === "HACS-EXPERIMENTAL-PANEL"
       ? [
           {
@@ -140,7 +140,7 @@ export const repositoryMenuItems = memoizeOne(
 );
 
 const _repositoryRemove = async (
-  element: HacsRepositoryPanel | HacsExperimentalPanel,
+  element: HacsRepositoryDashboard | HacsDashboard,
   repository: RepositoryBase
 ) => {
   if (repository.category === "plugin" && element.hacs.info?.lovelace_mode !== "yaml") {

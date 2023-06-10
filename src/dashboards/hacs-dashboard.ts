@@ -73,8 +73,8 @@ const defaultKeyData = {
   filterable: true,
 };
 
-@customElement("hacs-experimental-panel")
-export class HacsExperimentalPanel extends LitElement {
+@customElement("hacs-dashboard")
+export class HacsDashboard extends LitElement {
   @property({ attribute: false }) public hacs!: Hacs;
 
   @property({ attribute: false }) public hass!: HomeAssistant;
