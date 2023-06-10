@@ -6,7 +6,7 @@ import {
   mdiExclamationThick,
   mdiStar,
 } from "@mdi/js";
-import { css, html, LitElement, PropertyValues, TemplateResult } from "lit";
+import { LitElement, PropertyValues, TemplateResult, css, html } from "lit";
 import { customElement, property, state } from "lit/decorators";
 import memoizeOne from "memoize-one";
 import { mainWindow } from "../../homeassistant-frontend/src/common/dom/get_main_window";
@@ -20,9 +20,10 @@ import "../../homeassistant-frontend/src/layouts/hass-error-screen";
 import "../../homeassistant-frontend/src/layouts/hass-loading-screen";
 import "../../homeassistant-frontend/src/layouts/hass-subpage";
 import { HomeAssistant, Route } from "../../homeassistant-frontend/src/types";
+import { showHacsDownloadDialog } from "../components/dialogs/show-hacs-download-dialog";
 import { repositoryMenuItems } from "../components/hacs-repository-owerflow-menu";
 import { Hacs } from "../data/hacs";
-import { fetchRepositoryInformation, RepositoryBase, RepositoryInfo } from "../data/repository";
+import { RepositoryBase, RepositoryInfo, fetchRepositoryInformation } from "../data/repository";
 import { getRepositories, repositoryAdd } from "../data/websocket";
 import { HacsStyles } from "../styles/hacs-common-style";
 import { markdownWithRepositoryContext } from "../tools/markdown";
@@ -258,16 +259,11 @@ export class HacsRepositoryPanel extends LitElement {
   }
 
   private _downloadRepositoryDialog() {
-    this.dispatchEvent(
-      new CustomEvent("hacs-dialog", {
-        detail: {
-          type: "download",
-          repository: this._repository!.id,
-        },
-        bubbles: true,
-        composed: true,
-      })
-    );
+    showHacsDownloadDialog(this, {
+      hacs: this.hacs,
+      repositoryId: this._repository!.id,
+      repository: this._repository!,
+    });
   }
 
   static get styles() {

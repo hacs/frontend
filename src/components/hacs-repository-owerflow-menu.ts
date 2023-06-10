@@ -13,12 +13,13 @@ import { mainWindow } from "../../homeassistant-frontend/src/common/dom/get_main
 import { navigate } from "../../homeassistant-frontend/src/common/navigate";
 import "../../homeassistant-frontend/src/components/ha-icon-overflow-menu";
 import { getConfigEntries } from "../../homeassistant-frontend/src/data/config_entries";
+import { deleteResource, fetchResources } from "../../homeassistant-frontend/src/data/lovelace";
 import { showConfirmationDialog } from "../../homeassistant-frontend/src/dialogs/generic/show-dialog-box";
 import type { RepositoryBase } from "../data/repository";
 import { repositoryUninstall, repositoryUpdate } from "../data/websocket";
 import type { HacsExperimentalPanel } from "../panels/hacs-experimental-panel";
 import type { HacsRepositoryPanel } from "../panels/hacs-repository-panel";
-import { deleteResource, fetchResources } from "../../homeassistant-frontend/src/data/lovelace";
+import { showHacsDownloadDialog } from "./dialogs/show-hacs-download-dialog";
 
 export const repositoryMenuItems = memoizeOne(
   (element: HacsRepositoryPanel | HacsExperimentalPanel, repository: RepositoryBase) => [
@@ -50,7 +51,8 @@ export const repositoryMenuItems = memoizeOne(
           {
             path: mdiReload,
             label: element.hacs.localize("repository_card.redownload"),
-            action: () => _downloadRepositoryDialog(element, repository.id),
+            action: () =>
+              showHacsDownloadDialog(element, { hacs: element.hacs, repositoryId: repository.id }),
             hideForUninstalled: true,
           },
         ]
@@ -142,22 +144,6 @@ export const repositoryMenuItems = memoizeOne(
       : []),
   ]
 );
-
-const _downloadRepositoryDialog = (
-  element: HacsRepositoryPanel | HacsExperimentalPanel,
-  repositoryId: string
-) => {
-  element.dispatchEvent(
-    new CustomEvent("hacs-dialog", {
-      detail: {
-        type: "download",
-        repository: repositoryId,
-      },
-      bubbles: true,
-      composed: true,
-    })
-  );
-};
 
 const _repositoryRemove = async (
   element: HacsRepositoryPanel | HacsExperimentalPanel,
