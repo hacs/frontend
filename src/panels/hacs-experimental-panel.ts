@@ -25,6 +25,7 @@ import type {
   DataTableColumnContainer,
   SortingDirection,
 } from "../../homeassistant-frontend/src/components/data-table/ha-data-table";
+import "../../homeassistant-frontend/src/layouts/hass-tabs-subpage-data-table";
 
 import "../../homeassistant-frontend/src/components/ha-button-menu";
 import "../../homeassistant-frontend/src/components/ha-check-list-item";
@@ -41,7 +42,6 @@ import { brandsUrl } from "../../homeassistant-frontend/src/util/brands-url";
 import { showDialogAbout } from "../components/dialogs/hacs-about-dialog";
 import { hacsIcon } from "../components/hacs-icon";
 import { repositoryMenuItems } from "../components/hacs-repository-owerflow-menu";
-import "../components/hacs-tabs-subpage-data-table";
 import type { Hacs } from "../data/hacs";
 import type { RepositoryBase, RepositoryCategory } from "../data/repository";
 import { repositoriesClearNew } from "../data/websocket";
@@ -119,7 +119,7 @@ export class HacsExperimentalPanel extends LitElement {
     const repositoriesContainsNew =
       repositories.filter((repository) => repository.new).length !== 0;
 
-    return html`<hacs-tabs-subpage-data-table
+    return html`<hass-tabs-subpage-data-table
       .tabs=${[
         {
           name: "Home Assistant Community Store",
@@ -293,7 +293,7 @@ export class HacsExperimentalPanel extends LitElement {
               `
             )}
       </ha-button-menu>
-    </hacs-tabs-subpage-data-table>`;
+    </hass-tabs-subpage-data-table>`;
   };
 
   private _filterRepositories = memoize(
