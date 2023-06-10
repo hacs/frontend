@@ -63,23 +63,13 @@ class HacsRouter extends HassRouterPage {
     defaultPage: "dashboard",
     showLoading: true,
     beforeRender: (page: string) =>
-      !["_my_redirect", "dashboard", "entry", "explore", "repository"].includes(page)
-        ? "dashboard"
-        : undefined,
+      !["_my_redirect", "repository"].includes(page) ? "dashboard" : undefined,
     routes: {
       _my_redirect: {
         tag: "hacs-my-redirect",
         load: () => import("./hacs-my-redirect"),
       },
       dashboard: {
-        tag: "hacs-experimental-panel",
-        load: () => import("./panels/hacs-experimental-panel"),
-      },
-      entry: {
-        tag: "hacs-experimental-panel",
-        load: () => import("./panels/hacs-experimental-panel"),
-      },
-      explore: {
         tag: "hacs-experimental-panel",
         load: () => import("./panels/hacs-experimental-panel"),
       },

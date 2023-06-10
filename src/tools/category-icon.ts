@@ -1,3 +1,4 @@
+import memoizeOne from "memoize-one";
 import {
   mdiCodeBraces,
   mdiDotNet,
@@ -7,7 +8,7 @@ import {
   mdiRobot,
   mdiViewDashboard,
 } from "@mdi/js";
-import { RepositoryCategory } from "../data/repository";
+import type { RepositoryCategory } from "../data/repository";
 
 const _IconMap = {
   appdaemon: mdiRobot,
@@ -19,4 +20,6 @@ const _IconMap = {
   theme: mdiPalette,
 };
 
-export const categoryIcon = (category: RepositoryCategory): string => _IconMap[category];
+export const categoryIcon = memoizeOne(
+  (category: RepositoryCategory): string => _IconMap[category]
+);

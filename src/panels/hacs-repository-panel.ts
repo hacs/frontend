@@ -6,7 +6,8 @@ import {
   mdiExclamationThick,
   mdiStar,
 } from "@mdi/js";
-import { LitElement, PropertyValues, TemplateResult, css, html } from "lit";
+import type { PropertyValues, TemplateResult } from "lit";
+import { LitElement, css, html } from "lit";
 import { customElement, property, state } from "lit/decorators";
 import memoizeOne from "memoize-one";
 import { mainWindow } from "../../homeassistant-frontend/src/common/dom/get_main_window";
@@ -14,16 +15,18 @@ import { extractSearchParamsObject } from "../../homeassistant-frontend/src/comm
 import "../../homeassistant-frontend/src/components/ha-card";
 import "../../homeassistant-frontend/src/components/ha-chip";
 import "../../homeassistant-frontend/src/components/ha-fab";
+import "../../homeassistant-frontend/src/components/ha-icon-overflow-menu";
 import "../../homeassistant-frontend/src/components/ha-markdown";
 import { showConfirmationDialog } from "../../homeassistant-frontend/src/dialogs/generic/show-dialog-box";
 import "../../homeassistant-frontend/src/layouts/hass-error-screen";
 import "../../homeassistant-frontend/src/layouts/hass-loading-screen";
 import "../../homeassistant-frontend/src/layouts/hass-subpage";
-import { HomeAssistant, Route } from "../../homeassistant-frontend/src/types";
-import { showHacsDownloadDialog } from "../components/dialogs/show-hacs-download-dialog";
+import type { HomeAssistant, Route } from "../../homeassistant-frontend/src/types";
+import { showHacsDownloadDialog } from "../components/dialogs/show-hacs-dialog";
 import { repositoryMenuItems } from "../components/hacs-repository-owerflow-menu";
-import { Hacs } from "../data/hacs";
-import { RepositoryBase, RepositoryInfo, fetchRepositoryInformation } from "../data/repository";
+import type { Hacs } from "../data/hacs";
+import type { RepositoryBase, RepositoryInfo } from "../data/repository";
+import { fetchRepositoryInformation } from "../data/repository";
 import { getRepositories, repositoryAdd } from "../data/websocket";
 import { HacsStyles } from "../styles/hacs-common-style";
 import { markdownWithRepositoryContext } from "../tools/markdown";

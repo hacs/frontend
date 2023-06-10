@@ -5,9 +5,13 @@ import type {
   HaFormSchema,
 } from "../../../homeassistant-frontend/src/components/ha-form/types";
 import type { Hacs } from "../../data/hacs";
+import type { RepositoryInfo } from "../../data/repository";
 
-export interface HacsFormDialogParams {
+interface BaseHacsDialogParams {
   hacs: Hacs;
+}
+
+export interface HacsFormDialogParams extends BaseHacsDialogParams {
   title: string;
   schema?: readonly HaFormSchema[];
   data?: HaFormDataContainer;
@@ -20,6 +24,13 @@ export interface HacsFormDialogParams {
   saveAction?: (data: any) => Promise<void>;
 }
 
+export interface HacsDownloadDialogParams extends BaseHacsDialogParams {
+  repositoryId: string;
+  repository?: RepositoryInfo;
+}
+
+export interface HacsCustomRepositoriesDialogParams extends BaseHacsDialogParams {}
+
 export const showHacsFormDialog = (
   element: HTMLElement,
   dialogParams: HacsFormDialogParams
@@ -27,6 +38,28 @@ export const showHacsFormDialog = (
   fireEvent(element, "show-dialog", {
     dialogTag: "hacs-form-dialog",
     dialogImport: () => import("./hacs-form-dialog"),
+    dialogParams,
+  });
+};
+
+export const showHacsDownloadDialog = (
+  element: HTMLElement,
+  dialogParams: HacsDownloadDialogParams
+): void => {
+  fireEvent(element, "show-dialog", {
+    dialogTag: "hacs-download-dialog",
+    dialogImport: () => import("./hacs-download-dialog"),
+    dialogParams,
+  });
+};
+
+export const showHacsCustomRepositoriesDialog = (
+  element: HTMLElement,
+  dialogParams: HacsCustomRepositoriesDialogParams
+): void => {
+  fireEvent(element, "show-dialog", {
+    dialogTag: "hacs-custom-repositories-dialog",
+    dialogImport: () => import("./hacs-custom-repositories-dialog"),
     dialogParams,
   });
 };

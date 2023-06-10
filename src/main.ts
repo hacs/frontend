@@ -1,4 +1,5 @@
-import { css, html, PropertyValues, TemplateResult } from "lit";
+import type { PropertyValues } from "lit";
+import { css, html, nothing } from "lit";
 import { customElement, property } from "lit/decorators";
 import { applyThemesOnElement } from "../homeassistant-frontend/src/common/dom/apply_themes_on_element";
 import { fireEvent } from "../homeassistant-frontend/src/common/dom/fire_event";
@@ -6,8 +7,6 @@ import { mainWindow } from "../homeassistant-frontend/src/common/dom/get_main_wi
 import { isNavigationClick } from "../homeassistant-frontend/src/common/dom/is-navigation-click";
 import { navigate } from "../homeassistant-frontend/src/common/navigate";
 import { makeDialogManager } from "../homeassistant-frontend/src/dialogs/make-dialog-manager";
-import "../homeassistant-frontend/src/layouts/hass-loading-screen";
-import "../homeassistant-frontend/src/resources/ha-style";
 import type { HomeAssistant, Route } from "../homeassistant-frontend/src/types";
 import { HacsDispatchEvent, LocationChangedEvent } from "./data/common";
 import type { Hacs } from "./data/hacs";
@@ -148,9 +147,9 @@ class HacsFrontend extends HacsElement {
     }
   }
 
-  protected render(): TemplateResult | void {
+  protected render() {
     if (!this.hass || !this.hacs?.info.categories?.length || this.hacs?.localize === undefined) {
-      return html`<hass-loading-screen no-toolbar></hass-loading-screen>`;
+      return nothing;
     }
 
     return html`

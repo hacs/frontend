@@ -6,12 +6,11 @@ const showGitHubWeb = (text: string) =>
 export const markdownWithRepositoryContext = (input: string, repository?: RepositoryInfo) => {
   // Handle convertion to raw GitHub URL
   input = input.replace(/(https:\/\/github\.com\/.*.\/blob*.[^\s]+)/g, function (x) {
-    if (showGitHubWeb(x)) {
-      return x;
-    }
-    return x
-      .replace("https://github.com/", "https://raw.githubusercontent.com/")
-      .replace("/blob/", "/");
+    return showGitHubWeb(x)
+      ? x
+      : x
+          .replace("https://github.com/", "https://raw.githubusercontent.com/")
+          .replace("/blob/", "/");
   });
 
   // Handle relative links

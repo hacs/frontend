@@ -1,5 +1,3 @@
-import type { RepositoryBase } from "./repository";
-
 export interface Route {
   path: string;
   prefix: string;
