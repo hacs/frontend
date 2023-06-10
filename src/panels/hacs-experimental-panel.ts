@@ -40,7 +40,6 @@ import { haStyle } from "../../homeassistant-frontend/src/resources/styles";
 import type { HomeAssistant, Route } from "../../homeassistant-frontend/src/types";
 import { brandsUrl } from "../../homeassistant-frontend/src/util/brands-url";
 import { showDialogAbout } from "../components/dialogs/hacs-about-dialog";
-import { hacsIcon } from "../components/hacs-icon";
 import { repositoryMenuItems } from "../components/hacs-repository-owerflow-menu";
 import type { Hacs } from "../data/hacs";
 import type { RepositoryBase, RepositoryCategory } from "../data/repository";
@@ -123,8 +122,6 @@ export class HacsExperimentalPanel extends LitElement {
       .tabs=${[
         {
           name: "Home Assistant Community Store",
-          path: `/hacs/dashboard`,
-          iconPath: hacsIcon,
         },
       ]}
       .columns=${this._columns(this.narrow, this._tableColumns)}
