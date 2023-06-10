@@ -5,7 +5,6 @@ import { HacsDialogBase } from "./hacs-dialog-base";
 const DIALOG = {
   "custom-repositories": () => import("./hacs-custom-repositories-dialog"),
   generic: () => import("./hacs-generic-dialog"),
-  progress: () => import("./hacs-progress-dialog"),
 };
 
 @customElement("hacs-event-dialog")

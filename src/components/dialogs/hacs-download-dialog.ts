@@ -162,10 +162,10 @@ export class HacsDonwloadDialog extends LitElement {
                 ${this._error.message}
               </ha-alert>`
             : nothing}
+          ${this._installing
+            ? html`<mwc-linear-progress indeterminate></mwc-linear-progress>`
+            : nothing}
         </div>
-        ${this._installing
-          ? html`<mwc-linear-progress indeterminate></mwc-linear-progress>`
-          : nothing}
         <mwc-button slot="secondaryAction" @click=${this.closeDialog} dialogInitialFocus>
           ${this._dialogParams.hacs.localize("common.cancel")}
         </mwc-button>
@@ -261,6 +261,10 @@ export class HacsDonwloadDialog extends LitElement {
         pre {
           white-space: pre-line;
           user-select: all;
+        }
+        mwc-linear-progress {
+          margin-bottom: -8px;
+          margin-top: 4px;
         }
       `,
     ];

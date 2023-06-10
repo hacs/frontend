@@ -12,7 +12,8 @@ export interface HacsFormDialogParams {
   schema?: readonly HaFormSchema[];
   data?: HaFormDataContainer;
   saveLabel?: string;
-  description?: HTMLTemplateResult;
+  destructive?: boolean;
+  description?: HTMLTemplateResult | string;
   computeLabelCallback?: (schema: any, data: HaFormDataContainer) => string;
   computeHelper?: (schema: any) => string | undefined;
   computeError?: (schema: any, error) => string;

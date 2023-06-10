@@ -1,3 +1,5 @@
+import "@material/mwc-button/mwc-button";
+import "@material/mwc-linear-progress/mwc-linear-progress";
 import { CSSResultGroup, LitElement, css, html, nothing } from "lit";
 import { customElement, property, state } from "lit/decorators";
 import "../../../homeassistant-frontend/src/components/ha-dialog";
@@ -44,24 +46,34 @@ class HacsFromDialog extends LitElement {
           : this._dialogParams.title}
         @closed=${this.closeDialog}
       >
-        ${this._dialogParams.description || nothing}
-        <ha-form
-          .hass=${this.hass}
-          .data=${this._dialogParams.data || {}}
-          .schema=${this._dialogParams.schema || []}
-          .error=${this._errors}
-          .computeLabel=${this._computeLabel}
-          .computeHelper=${this._computeHelper}
-          .computeError=${this._computeError}
-          @value-changed=${this._valueChanged}
-          dialogInitialFocus
-        ></ha-form>
+        <div>
+          ${this._dialogParams.description || nothing}
+          ${this._dialogParams.schema && this._dialogParams.saveAction
+            ? html`<ha-form
+                .hass=${this.hass}
+                .data=${this._dialogParams.data || {}}
+                .schema=${this._dialogParams.schema || []}
+                .error=${this._errors}
+                .computeLabel=${this._computeLabel}
+                .computeHelper=${this._computeHelper}
+                .computeError=${this._computeError}
+                @value-changed=${this._valueChanged}
+                dialogInitialFocus
+              ></ha-form>`
+            : nothing}
+          ${this._waiting
+            ? html`<mwc-linear-progress indeterminate></mwc-linear-progress>`
+            : nothing}
+        </div>
         ${this._dialogParams.saveAction
           ? html`<mwc-button slot="secondaryAction" @click=${this.closeDialog} dialogInitialFocus>
                 ${this._dialogParams.hacs.localize("common.cancel")}
               </mwc-button>
               <mwc-button
-                .disabled=${this._waiting || !this._dialogParams.data}
+                class="${this._dialogParams.destructive ? "destructive" : ""}"
+                .disabled=${this._waiting ||
+                (this._dialogParams.schema?.some((entry) => entry.required) &&
+                  !this._dialogParams.data)}
                 slot="primaryAction"
                 @click=${this._saveClicked}
               >
@@ -112,6 +124,13 @@ class HacsFromDialog extends LitElement {
       }
       .root > *:not([own-margin]):not(:last-child) {
         margin-bottom: 24px;
+      }
+      .destructive {
+        --mdc-theme-primary: var(--hcv-color-error);
+      }
+      mwc-linear-progress {
+        margin-bottom: -8px;
+        margin-top: 4px;
       }
     `;
   }

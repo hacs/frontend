@@ -31,7 +31,6 @@ export class HacsDialogBase extends LitElement {
       changedProperties.has("active") ||
       changedProperties.has("params") ||
       changedProperties.has("_error") ||
-      changedProperties.has("_progress") ||
       changedProperties.has("_repository") ||
       changedProperties.has("_releaseNotes") ||
       changedProperties.has("_updating")
