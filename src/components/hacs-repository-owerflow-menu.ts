@@ -20,6 +20,7 @@ import { repositoryUninstall, repositoryUpdate } from "../data/websocket";
 import type { HacsExperimentalPanel } from "../panels/hacs-experimental-panel";
 import type { HacsRepositoryPanel } from "../panels/hacs-repository-panel";
 import { showHacsDownloadDialog } from "./dialogs/show-hacs-download-dialog";
+import { showHacsFormDialog } from "./dialogs/show-hacs-form-dialog";
 
 export const repositoryMenuItems = memoizeOne(
   (element: HacsRepositoryPanel | HacsExperimentalPanel, repository: RepositoryBase) => [
@@ -120,23 +121,18 @@ export const repositoryMenuItems = memoizeOne(
                   }
                 }
               }
-              element.dispatchEvent(
-                new CustomEvent("hacs-dialog", {
-                  detail: {
-                    type: "progress",
-                    title: element.hacs.localize("dialog.remove.title"),
-                    confirmText: element.hacs.localize("dialog.remove.title"),
-                    content: element.hacs.localize("dialog.remove.message", {
-                      name: repository.name,
-                    }),
-                    confirm: async () => {
-                      await _repositoryRemove(element, repository);
-                    },
-                  },
-                  bubbles: true,
-                  composed: true,
-                })
-              );
+              showHacsFormDialog(element, {
+                hacs: element.hacs,
+                title: element.hacs.localize("dialog.remove.title"),
+                saveLabel: element.hacs.localize("dialog.remove.title"),
+                description: element.hacs.localize("dialog.remove.message", {
+                  name: repository.name,
+                }),
+                saveAction: async () => {
+                  await _repositoryRemove(element, repository);
+                },
+                destructive: true,
+              });
             },
             warning: true,
           },
