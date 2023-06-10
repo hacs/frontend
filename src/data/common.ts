@@ -15,17 +15,6 @@ export interface LocationChangedEvent {
   detail?: { route: Route; force?: boolean };
 }
 
-export interface HacsDialogEvent {
-  detail?: {
-    type: string;
-    header?: string;
-    content?: string;
-    markdown?: boolean;
-    frosen?: boolean;
-    repository?: RepositoryBase;
-  };
-}
-
 export enum HacsDispatchEvent {
   CONFIG = "hacs_dispatch_config",
   ERROR = "hacs_dispatch_error",

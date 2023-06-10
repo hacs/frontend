@@ -1,5 +1,5 @@
 import { css, html, PropertyValues, TemplateResult } from "lit";
-import { customElement, property, query } from "lit/decorators";
+import { customElement, property } from "lit/decorators";
 import { applyThemesOnElement } from "../homeassistant-frontend/src/common/dom/apply_themes_on_element";
 import { fireEvent } from "../homeassistant-frontend/src/common/dom/fire_event";
 import { mainWindow } from "../homeassistant-frontend/src/common/dom/get_main_window";
@@ -9,8 +9,7 @@ import { makeDialogManager } from "../homeassistant-frontend/src/dialogs/make-di
 import "../homeassistant-frontend/src/layouts/hass-loading-screen";
 import "../homeassistant-frontend/src/resources/ha-style";
 import type { HomeAssistant, Route } from "../homeassistant-frontend/src/types";
-import "./components/dialogs/hacs-event-dialog";
-import { HacsDialogEvent, HacsDispatchEvent, LocationChangedEvent } from "./data/common";
+import { HacsDispatchEvent, LocationChangedEvent } from "./data/common";
 import type { Hacs } from "./data/hacs";
 import { fetchHacsInfo, getRepositories, websocketSubscription } from "./data/websocket";
 import { HacsElement } from "./hacs";
@@ -28,8 +27,6 @@ class HacsFrontend extends HacsElement {
 
   @property({ attribute: false }) public route!: Route;
 
-  @query("#hacs-dialog") private _hacsDialog?: any;
-
   protected firstUpdated(changedProps) {
     super.firstUpdated(changedProps);
 
@@ -39,8 +36,6 @@ class HacsFrontend extends HacsElement {
     this.addEventListener("hacs-location-changed", (e) =>
       this._setRoute(e as LocationChangedEvent)
     );
-
-    this.addEventListener("hacs-dialog", (e) => this._showDialog(e as HacsDialogEvent));
 
     websocketSubscription(
       this.hass,
@@ -165,13 +160,6 @@ class HacsFrontend extends HacsElement {
         .route=${this.route}
         .narrow=${this.narrow}
       ></hacs-router>
-      <hacs-event-dialog
-        .hass=${this.hass}
-        .hacs=${this.hacs}
-        .route=${this.route}
-        .narrow=${this.narrow}
-        id="hacs-dialog"
-      ></hacs-event-dialog>
     `;
   }
 
@@ -185,13 +173,6 @@ class HacsFrontend extends HacsElement {
         }
       `,
     ];
-  }
-
-  private _showDialog(ev: HacsDialogEvent): void {
-    const dialogParams = ev.detail;
-    this._hacsDialog.active = true;
-    this._hacsDialog.params = dialogParams;
-    this.addEventListener("hacs-dialog-closed", () => (this._hacsDialog.active = false));
   }
 
   private _setRoute(ev: LocationChangedEvent): void {
