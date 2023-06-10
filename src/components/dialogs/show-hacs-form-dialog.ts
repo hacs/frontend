@@ -17,7 +17,7 @@ export interface HacsFormDialogParams {
   computeLabelCallback?: (schema: any, data: HaFormDataContainer) => string;
   computeHelper?: (schema: any) => string | undefined;
   computeError?: (schema: any, error) => string;
-  saveAction?: <T>(data: T) => Promise<void>;
+  saveAction?: (data: any) => Promise<void>;
 }
 
 export const showHacsFormDialog = (

@@ -3,6 +3,7 @@ import "@material/mwc-linear-progress/mwc-linear-progress";
 import { css, CSSResultGroup, html, LitElement, nothing } from "lit";
 import { customElement, property, state } from "lit/decorators";
 import memoizeOne from "memoize-one";
+import { fireEvent } from "../../../homeassistant-frontend/src/common/dom/fire_event";
 import { mainWindow } from "../../../homeassistant-frontend/src/common/dom/get_main_window";
 import { computeRTL } from "../../../homeassistant-frontend/src/common/util/compute_rtl";
 import "../../../homeassistant-frontend/src/components/ha-alert";
@@ -10,6 +11,7 @@ import "../../../homeassistant-frontend/src/components/ha-dialog";
 import "../../../homeassistant-frontend/src/components/ha-form/ha-form";
 import { HaFormSchema } from "../../../homeassistant-frontend/src/components/ha-form/types";
 import { showConfirmationDialog } from "../../../homeassistant-frontend/src/dialogs/generic/show-dialog-box";
+import type { HomeAssistant } from "../../../homeassistant-frontend/src/types";
 import { HacsDispatchEvent } from "../../data/common";
 import {
   fetchRepositoryInformation,
@@ -20,10 +22,8 @@ import {
 } from "../../data/repository";
 import { repositoryBeta, websocketSubscription } from "../../data/websocket";
 import { HacsStyles } from "../../styles/hacs-common-style";
-import { generateFrontendResourceURL } from "../../tools/frontend-resource";
-import { updateFrontendResource } from "../../tools/frontend-resource";
+import { generateFrontendResourceURL, updateFrontendResource } from "../../tools/frontend-resource";
 import type { HacsDownloadDialogParams } from "./show-hacs-download-dialog";
-import type { HomeAssistant } from "../../../homeassistant-frontend/src/types";
 
 @customElement("hacs-download-dialog")
 export class HacsDonwloadDialog extends LitElement {
@@ -58,6 +58,7 @@ export class HacsDonwloadDialog extends LitElement {
     this._error = undefined;
     this._installing = false;
     this._waiting = false;
+    fireEvent(this, "dialog-closed", { dialog: this.localName });
   }
 
   private _getInstallPath = memoizeOne((repository: RepositoryBase) => {
