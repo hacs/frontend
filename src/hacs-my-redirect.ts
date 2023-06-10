@@ -1,4 +1,5 @@
-import { html, LitElement, TemplateResult } from "lit";
+import type { TemplateResult } from "lit";
+import { html, LitElement, nothing } from "lit";
 import { customElement, property, state } from "lit/decorators";
 import { navigate } from "../homeassistant-frontend/src/common/navigate";
 import {
@@ -64,11 +65,11 @@ class HacsMyRedirect extends LitElement {
     navigate(url, { replace: true });
   }
 
-  protected render(): TemplateResult {
+  protected render() {
     if (this._error) {
       return html`<hass-error-screen .error=${this._error}></hass-error-screen>`;
     }
-    return html``;
+    return nothing;
   }
 
   private _createRedirectUrl(redirect: Redirect): string {

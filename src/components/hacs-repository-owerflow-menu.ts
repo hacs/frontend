@@ -11,7 +11,6 @@ import {
 import memoizeOne from "memoize-one";
 import { mainWindow } from "../../homeassistant-frontend/src/common/dom/get_main_window";
 import { navigate } from "../../homeassistant-frontend/src/common/navigate";
-import "../../homeassistant-frontend/src/components/ha-icon-overflow-menu";
 import { getConfigEntries } from "../../homeassistant-frontend/src/data/config_entries";
 import { deleteResource, fetchResources } from "../../homeassistant-frontend/src/data/lovelace";
 import { showConfirmationDialog } from "../../homeassistant-frontend/src/dialogs/generic/show-dialog-box";
@@ -19,8 +18,7 @@ import type { RepositoryBase } from "../data/repository";
 import { repositoryUninstall, repositoryUpdate } from "../data/websocket";
 import type { HacsExperimentalPanel } from "../panels/hacs-experimental-panel";
 import type { HacsRepositoryPanel } from "../panels/hacs-repository-panel";
-import { showHacsDownloadDialog } from "./dialogs/show-hacs-download-dialog";
-import { showHacsFormDialog } from "./dialogs/show-hacs-form-dialog";
+import { showHacsDownloadDialog, showHacsFormDialog } from "./dialogs/show-hacs-dialog";
 
 export const repositoryMenuItems = memoizeOne(
   (element: HacsRepositoryPanel | HacsExperimentalPanel, repository: RepositoryBase) => [

@@ -3,9 +3,13 @@ import "@material/mwc-linear-progress/mwc-linear-progress";
 import { mdiDelete } from "@mdi/js";
 import { css, html, LitElement, nothing } from "lit";
 import { customElement, property, state } from "lit/decorators";
+import { fireEvent } from "../../../homeassistant-frontend/src/common/dom/fire_event";
+import { createCloseHeading } from "../../../homeassistant-frontend/src/components/ha-dialog";
 import "../../../homeassistant-frontend/src/components/ha-form/ha-form";
+import type { HaFormSchema } from "../../../homeassistant-frontend/src/components/ha-form/types";
 import "../../../homeassistant-frontend/src/components/ha-settings-row";
 import "../../../homeassistant-frontend/src/components/ha-svg-icon";
+import type { HomeAssistant } from "../../../homeassistant-frontend/src/types";
 import { HacsDispatchEvent } from "../../data/common";
 import {
   getRepositories,
@@ -13,11 +17,7 @@ import {
   repositoryDelete,
   websocketSubscription,
 } from "../../data/websocket";
-import type { HacsCustomRepositoriesDialogParams } from "./show-hacs-custom-repositories-dialog";
-import { fireEvent } from "../../../homeassistant-frontend/src/common/dom/fire_event";
-import type { HomeAssistant } from "../../../homeassistant-frontend/src/types";
-import { createCloseHeading } from "../../../homeassistant-frontend/src/components/ha-dialog";
-import type { HaFormSchema } from "../../../homeassistant-frontend/src/components/ha-form/types";
+import type { HacsCustomRepositoriesDialogParams } from "./show-hacs-dialog";
 
 @customElement("hacs-custom-repositories-dialog")
 export class HacsCustomRepositoriesDialog extends LitElement {

@@ -23,7 +23,7 @@ import {
 import { repositoryBeta, websocketSubscription } from "../../data/websocket";
 import { HacsStyles } from "../../styles/hacs-common-style";
 import { generateFrontendResourceURL, updateFrontendResource } from "../../tools/frontend-resource";
-import type { HacsDownloadDialogParams } from "./show-hacs-download-dialog";
+import type { HacsDownloadDialogParams } from "./show-hacs-dialog";
 
 @customElement("hacs-download-dialog")
 export class HacsDonwloadDialog extends LitElement {

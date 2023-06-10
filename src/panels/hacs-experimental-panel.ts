@@ -13,7 +13,8 @@ import {
 } from "@mdi/js";
 import "@polymer/app-layout/app-header/app-header";
 import "@polymer/app-layout/app-toolbar/app-toolbar";
-import { CSSResultGroup, LitElement, PropertyValues, TemplateResult, css, html } from "lit";
+import type { CSSResultGroup, PropertyValues, TemplateResult } from "lit";
+import { LitElement, css, html } from "lit";
 import { customElement, property } from "lit/decorators";
 import memoize from "memoize-one";
 import { relativeTime } from "../../homeassistant-frontend/src/common/datetime/relative_time";
@@ -34,17 +35,20 @@ import "../../homeassistant-frontend/src/components/ha-markdown";
 import "../../homeassistant-frontend/src/components/ha-radio";
 import "../../homeassistant-frontend/src/components/ha-select";
 
+import "../../homeassistant-frontend/src/components/ha-icon-overflow-menu";
 import { IconOverflowMenuItem } from "../../homeassistant-frontend/src/components/ha-icon-overflow-menu";
-import "../../homeassistant-frontend/src/components/ha-menu-button";
 import "../../homeassistant-frontend/src/components/ha-svg-icon";
 import { haStyle } from "../../homeassistant-frontend/src/resources/styles";
 import type { HomeAssistant, Route } from "../../homeassistant-frontend/src/types";
 import { brandsUrl } from "../../homeassistant-frontend/src/util/brands-url";
-import { showHacsCustomRepositoriesDialog } from "../components/dialogs/show-hacs-custom-repositories-dialog";
-import { showHacsFormDialog } from "../components/dialogs/show-hacs-form-dialog";
+import {
+  showHacsCustomRepositoriesDialog,
+  showHacsFormDialog,
+} from "../components/dialogs/show-hacs-dialog";
 import { repositoryMenuItems } from "../components/hacs-repository-owerflow-menu";
 import { aboutHacsmarkdownContent } from "../data/about";
-import { APP_FULL_NAME, Hacs } from "../data/hacs";
+import type { Hacs } from "../data/hacs";
+import { APP_FULL_NAME } from "../data/hacs";
 import type { RepositoryBase, RepositoryCategory } from "../data/repository";
 import { repositoriesClearNew } from "../data/websocket";
 import { HacsStyles } from "../styles/hacs-common-style";
