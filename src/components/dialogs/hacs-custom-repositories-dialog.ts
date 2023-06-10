@@ -1,178 +1,186 @@
 import "@material/mwc-button/mwc-button";
+import "@material/mwc-linear-progress/mwc-linear-progress";
 import { mdiDelete } from "@mdi/js";
-import { css, html, PropertyValues, TemplateResult } from "lit";
+import { css, html, LitElement, nothing } from "lit";
 import { customElement, property, state } from "lit/decorators";
-import { computeRTL } from "../../../homeassistant-frontend/src/common/util/compute_rtl";
-import "../../../homeassistant-frontend/src/components/ha-alert";
-import "../../../homeassistant-frontend/src/components/ha-circular-progress";
 import "../../../homeassistant-frontend/src/components/ha-form/ha-form";
-import type { HaFormSchema } from "../../../homeassistant-frontend/src/components/ha-form/types";
 import "../../../homeassistant-frontend/src/components/ha-settings-row";
 import "../../../homeassistant-frontend/src/components/ha-svg-icon";
 import { HacsDispatchEvent } from "../../data/common";
-import { RepositoryBase } from "../../data/repository";
 import {
   getRepositories,
   repositoryAdd,
   repositoryDelete,
   websocketSubscription,
 } from "../../data/websocket";
-import { scrollBarStyle } from "../../styles/element-styles";
-import { HacsStyles } from "../../styles/hacs-common-style";
-import "./hacs-dialog";
-import { HacsDialogBase } from "./hacs-dialog-base";
+import type { HacsCustomRepositoriesDialogParams } from "./show-hacs-custom-repositories-dialog";
+import { fireEvent } from "../../../homeassistant-frontend/src/common/dom/fire_event";
+import type { HomeAssistant } from "../../../homeassistant-frontend/src/types";
+import { createCloseHeading } from "../../../homeassistant-frontend/src/components/ha-dialog";
+import type { HaFormSchema } from "../../../homeassistant-frontend/src/components/ha-form/types";
 
 @customElement("hacs-custom-repositories-dialog")
-export class HacsCustomRepositoriesDialog extends HacsDialogBase {
-  @property() private _error: any;
+export class HacsCustomRepositoriesDialog extends LitElement {
+  @property({ attribute: false }) public hass!: HomeAssistant;
 
-  @state() private _progress = false;
+  @state() _dialogParams?: HacsCustomRepositoriesDialogParams;
 
-  @state() private _addRepositoryData = { category: undefined, repository: undefined };
+  @state() _waiting?: boolean;
 
-  @state() private _customRepositories?: RepositoryBase[];
+  @state() _errors?: Record<string, string>;
 
-  shouldUpdate(changedProperties: PropertyValues) {
-    return (
-      changedProperties.has("narrow") ||
-      changedProperties.has("active") ||
-      changedProperties.has("_error") ||
-      changedProperties.has("_addRepositoryData") ||
-      changedProperties.has("_customRepositories") ||
-      changedProperties.has("_progress")
+  @state() _data?: { repository: string; category: string };
+
+  _errorSubscription: any;
+
+  public async showDialog(dialogParams: HacsCustomRepositoriesDialogParams): Promise<void> {
+    this._dialogParams = dialogParams;
+    this._errorSubscription = await websocketSubscription(
+      this.hass,
+      (data) => {
+        console.log(data);
+        this._errors = { base: data?.message || data };
+      },
+      HacsDispatchEvent.ERROR
     );
+    await this.updateComplete;
   }
 
-  protected render(): TemplateResult | void {
-    if (!this.active) return html``;
-    const addRepositorySchema: HaFormSchema[] = [
-      {
-        name: "repository",
-        selector: { text: {} },
-      },
-      {
-        name: "category",
-        selector: {
-          select: {
-            mode: "dropdown",
-            options: this.hacs.info.categories.map((category) => ({
-              value: category,
-              label: this.hacs.localize(`common.${category}`),
-            })),
-          },
-        },
-      },
-    ];
+  public closeDialog(): void {
+    this._dialogParams = undefined;
+    this._waiting = undefined;
+    this._errors = undefined;
+    if (this._errorSubscription) {
+      this._errorSubscription();
+    }
+    fireEvent(this, "dialog-closed", { dialog: this.localName });
+  }
+
+  protected render() {
+    if (!this._dialogParams) {
+      return nothing;
+    }
     return html`
-      <hacs-dialog
-        .active=${this.active}
-        .hass=${this.hass}
-        .title=${this.hacs.localize("dialog_custom_repositories.title")}
+      <ha-dialog
+        open
         scrimClickAction
         escapeKeyAction
-        maxWidth
+        .heading=${createCloseHeading(
+          this.hass,
+          this._dialogParams.hacs.localize("dialog_custom_repositories.title")
+        )}
+        @closed=${this.closeDialog}
       >
-        <div class="content">
-          <div class="list" ?narrow=${this.narrow}>
-            ${this._error?.message
-              ? html`<ha-alert alert-type="error" .rtl=${computeRTL(this.hass)}>
-                  ${this._error.message}
-                </ha-alert>`
-              : ""}
-            ${this._customRepositories
-              ?.filter((repo) => this.hacs.info.categories.includes(repo.category))
+        <div>
+          <div class="list">
+            ${this._dialogParams.hacs.repositories
+              .filter((repository) => repository.custom)
+              ?.filter((repository) =>
+                this._dialogParams!.hacs.info.categories.includes(repository.category)
+              )
               .map(
-                (repo) => html`<a
-                  href="/hacs/repository/${repo.id}"
-                  @click=${() => (this.active = false)}
-                >
-                  <ha-settings-row>
-                    <span slot="heading">${repo.name}</span>
-                    <span slot="description">${repo.full_name} (${repo.category})</span>
+                (repository) => html` <ha-settings-row>
+                  <span slot="heading">${repository.name}</span>
+                  <span slot="description">${repository.full_name} (${repository.category})</span>
 
-                    <mwc-icon-button
-                      @click=${(ev: Event) => {
-                        ev.preventDefault();
-                        this._removeRepository(String(repo.id));
-                      }}
-                    >
-                      <ha-svg-icon class="delete" .path=${mdiDelete}></ha-svg-icon>
-                    </mwc-icon-button>
-                  </ha-settings-row>
-                </a>`
+                  <mwc-icon-button
+                    @click=${(ev: Event) => {
+                      ev.preventDefault();
+                      this._removeRepository(String(repository.id));
+                      this.dispatchEvent(
+                        new CustomEvent("closed", {
+                          bubbles: true,
+                          composed: true,
+                        })
+                      );
+                    }}
+                  >
+                    <ha-svg-icon class="delete" .path=${mdiDelete}></ha-svg-icon>
+                  </mwc-icon-button>
+                </ha-settings-row>`
               )}
           </div>
           <ha-form
-            ?narrow=${this.narrow}
-            .data=${this._addRepositoryData}
-            .schema=${addRepositorySchema}
+            .hass=${this.hass}
+            .data=${this._data}
+            .schema=${[
+              {
+                name: "repository",
+                selector: { text: {} },
+              },
+              {
+                name: "category",
+                selector: {
+                  select: {
+                    mode: "dropdown",
+                    options: this._dialogParams.hacs.info.categories.map((category) => ({
+                      value: category,
+                      label: this._dialogParams!.hacs.localize(`common.${category}`),
+                    })),
+                  },
+                },
+              },
+            ]}
+            .error=${this._errors}
             .computeLabel=${(schema: HaFormSchema) =>
               schema.name === "category"
-                ? this.hacs.localize("dialog_custom_repositories.category")
-                : this.hacs.localize("common.repository")}
+                ? this._dialogParams!.hacs.localize("dialog_custom_repositories.category")
+                : this._dialogParams!.hacs.localize("common.repository")}
             @value-changed=${this._valueChanged}
-          >
-          </ha-form>
+            dialogInitialFocus
+          ></ha-form>
+          ${this._waiting
+            ? html`<mwc-linear-progress indeterminate></mwc-linear-progress>`
+            : nothing}
         </div>
+        <mwc-button slot="secondaryAction" @click=${this.closeDialog} dialogInitialFocus>
+          ${this._dialogParams.hacs.localize("common.cancel")}
+        </mwc-button>
         <mwc-button
-          slot="primaryaction"
-          raised
-          .disabled=${this._addRepositoryData.category === undefined ||
-          this._addRepositoryData.repository === undefined}
+          .disabled=${this._waiting ||
+          !this._data ||
+          !this._data.repository ||
+          !this._data.category}
+          slot="primaryAction"
           @click=${this._addRepository}
         >
-          ${this._progress
-            ? html`<ha-circular-progress active size="small"></ha-circular-progress>`
-            : this.hacs.localize("common.add")}
+          ${this._dialogParams.hacs.localize("common.add")}
         </mwc-button>
-      </hacs-dialog>
+      </ha-dialog>
     `;
   }
 
-  protected firstUpdated() {
-    websocketSubscription(this.hass, (data) => (this._error = data), HacsDispatchEvent.ERROR);
-    this._customRepositories = this.hacs.repositories?.filter((repo) => repo.custom);
-  }
-
-  private _valueChanged(ev) {
-    this._addRepositoryData = ev.detail.value;
+  private _valueChanged(ev: CustomEvent) {
+    this._data = { ...this._data, ...ev.detail.value };
   }
 
   private async _addRepository() {
-    this._error = undefined;
-    this._progress = true;
-    if (!this._addRepositoryData.category) {
-      this._error = {
-        message: this.hacs.localize("dialog_custom_repositories.no_category"),
+    this._errors = {};
+
+    if (!this._data?.category) {
+      this._errors = {
+        base: this._dialogParams!.hacs.localize("dialog_custom_repositories.no_category"),
       };
       return;
     }
-    if (!this._addRepositoryData.repository) {
-      this._error = {
-        message: this.hacs.localize("dialog_custom_repositories.no_repository"),
+    if (!this._data?.repository) {
+      this._errors = {
+        base: this._dialogParams!.hacs.localize("dialog_custom_repositories.no_repository"),
       };
       return;
     }
-    await repositoryAdd(
-      this.hass,
-      this._addRepositoryData.repository,
-      this._addRepositoryData.category
-    );
-    const repositories = await getRepositories(this.hass);
-    this.dispatchEvent(
-      new CustomEvent("update-hacs", {
-        detail: { repositories },
-        bubbles: true,
-        composed: true,
-      })
-    );
-    this._customRepositories = repositories.filter((repo) => repo.custom);
-    this._progress = false;
+    this._waiting = false;
+    await repositoryAdd(this.hass, this._data.repository, this._data.category);
+    await this._updateRepositories();
   }
 
   private async _removeRepository(repository: string) {
-    this._error = undefined;
+    this._waiting = true;
     await repositoryDelete(this.hass, repository);
+    await this._updateRepositories();
+    this._waiting = false;
+  }
+  private async _updateRepositories() {
     const repositories = await getRepositories(this.hass);
     this.dispatchEvent(
       new CustomEvent("update-hacs", {
@@ -181,13 +189,14 @@ export class HacsCustomRepositoriesDialog extends HacsDialogBase {
         composed: true,
       })
     );
-    this._customRepositories = repositories.filter((repo) => repo.custom);
+    this._dialogParams = {
+      ...this._dialogParams,
+      hacs: { ...this._dialogParams!.hacs, repositories },
+    };
   }
 
   static get styles() {
     return [
-      scrollBarStyle,
-      HacsStyles,
       css`
         .list {
           position: relative;
@@ -197,15 +206,9 @@ export class HacsCustomRepositoriesDialog extends HacsDialogBase {
         a {
           all: unset;
         }
-        ha-form {
-          display: block;
-          padding: 25px 0;
-        }
-        ha-form[narrow] {
-          background-color: var(--card-background-color);
-          bottom: 0;
-          position: absolute;
-          width: calc(100% - 48px);
+        mwc-linear-progress {
+          margin-bottom: -8px;
+          margin-top: 4px;
         }
         ha-svg-icon {
           --mdc-icon-size: 36px;
@@ -216,9 +219,6 @@ export class HacsCustomRepositoriesDialog extends HacsDialogBase {
         ha-settings-row {
           cursor: pointer;
           padding: 0;
-        }
-        .list[narrow] > ha-settings-row:last-of-type {
-          margin-bottom: 162px;
         }
         .delete {
           color: var(--hcv-color-error);
@@ -231,5 +231,11 @@ export class HacsCustomRepositoriesDialog extends HacsDialogBase {
         }
       `,
     ];
+  }
+}
+
+declare global {
+  interface HTMLElementTagNameMap {
+    "hacs-custom-repositories-dialog": HacsCustomRepositoriesDialog;
   }
 }

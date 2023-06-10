@@ -13,7 +13,7 @@ import {
 } from "@mdi/js";
 import "@polymer/app-layout/app-header/app-header";
 import "@polymer/app-layout/app-toolbar/app-toolbar";
-import { css, CSSResultGroup, html, LitElement, PropertyValues, TemplateResult } from "lit";
+import { CSSResultGroup, LitElement, PropertyValues, TemplateResult, css, html } from "lit";
 import { customElement, property } from "lit/decorators";
 import memoize from "memoize-one";
 import { relativeTime } from "../../homeassistant-frontend/src/common/datetime/relative_time";
@@ -29,10 +29,10 @@ import "../../homeassistant-frontend/src/layouts/hass-tabs-subpage-data-table";
 
 import "../../homeassistant-frontend/src/components/ha-button-menu";
 import "../../homeassistant-frontend/src/components/ha-check-list-item";
-import "../../homeassistant-frontend/src/components/ha-select";
-import "../../homeassistant-frontend/src/components/ha-radio";
 import "../../homeassistant-frontend/src/components/ha-formfield";
 import "../../homeassistant-frontend/src/components/ha-markdown";
+import "../../homeassistant-frontend/src/components/ha-radio";
+import "../../homeassistant-frontend/src/components/ha-select";
 
 import { IconOverflowMenuItem } from "../../homeassistant-frontend/src/components/ha-icon-overflow-menu";
 import "../../homeassistant-frontend/src/components/ha-menu-button";
@@ -40,14 +40,15 @@ import "../../homeassistant-frontend/src/components/ha-svg-icon";
 import { haStyle } from "../../homeassistant-frontend/src/resources/styles";
 import type { HomeAssistant, Route } from "../../homeassistant-frontend/src/types";
 import { brandsUrl } from "../../homeassistant-frontend/src/util/brands-url";
+import { showHacsCustomRepositoriesDialog } from "../components/dialogs/show-hacs-custom-repositories-dialog";
+import { showHacsFormDialog } from "../components/dialogs/show-hacs-form-dialog";
 import { repositoryMenuItems } from "../components/hacs-repository-owerflow-menu";
+import { aboutHacsmarkdownContent } from "../data/about";
 import { APP_FULL_NAME, Hacs } from "../data/hacs";
 import type { RepositoryBase, RepositoryCategory } from "../data/repository";
 import { repositoriesClearNew } from "../data/websocket";
 import { HacsStyles } from "../styles/hacs-common-style";
 import { categoryIcon } from "../tools/category-icon";
-import { showHacsFormDialog } from "../components/dialogs/show-hacs-form-dialog";
-import { aboutHacsmarkdownContent } from "../data/about";
 
 const tableColumnDefaults = {
   name: true,
@@ -171,16 +172,9 @@ export class HacsExperimentalPanel extends LitElement {
             disabled: Boolean(this.hacs.info.disabled_reason),
             label: this.hacs.localize("menu.custom_repositories"),
             action: () => {
-              this.dispatchEvent(
-                new CustomEvent("hacs-dialog", {
-                  detail: {
-                    type: "custom-repositories",
-                    repositories: this.hacs.repositories,
-                  },
-                  bubbles: true,
-                  composed: true,
-                })
-              );
+              showHacsCustomRepositoriesDialog(this, {
+                hacs: this.hacs,
+              });
             },
           },
           repositoriesContainsNew

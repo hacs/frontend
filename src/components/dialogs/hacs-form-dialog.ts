@@ -2,6 +2,7 @@ import "@material/mwc-button/mwc-button";
 import "@material/mwc-linear-progress/mwc-linear-progress";
 import { CSSResultGroup, LitElement, css, html, nothing } from "lit";
 import { customElement, property, state } from "lit/decorators";
+import { fireEvent } from "../../../homeassistant-frontend/src/common/dom/fire_event";
 import "../../../homeassistant-frontend/src/components/ha-dialog";
 import { createCloseHeading } from "../../../homeassistant-frontend/src/components/ha-dialog";
 import "../../../homeassistant-frontend/src/components/ha-form/ha-form";
@@ -9,7 +10,10 @@ import type {
   HaFormDataContainer,
   HaFormSchema,
 } from "../../../homeassistant-frontend/src/components/ha-form/types";
+import "../../../homeassistant-frontend/src/components/ha-settings-row";
 import type { HomeAssistant } from "../../../homeassistant-frontend/src/types";
+import { HacsDispatchEvent } from "../../data/common";
+import { websocketSubscription } from "../../data/websocket";
 import type { HacsFormDialogParams } from "./show-hacs-form-dialog";
 
 @customElement("hacs-form-dialog")
@@ -22,14 +26,29 @@ class HacsFromDialog extends LitElement {
 
   @state() _errors?: Record<string, string>;
 
+  _errorSubscription: any;
+
   public async showDialog(dialogParams: HacsFormDialogParams): Promise<void> {
     this._dialogParams = dialogParams;
+    this._errorSubscription = await websocketSubscription(
+      this.hass,
+      (data) => {
+        console.log(data);
+        this._errors = { base: data?.message || data };
+      },
+      HacsDispatchEvent.ERROR
+    );
     await this.updateComplete;
   }
 
   public closeDialog(): void {
     this._dialogParams = undefined;
     this._waiting = undefined;
+    this._errors = undefined;
+    if (this._errorSubscription) {
+      this._errorSubscription();
+    }
+    fireEvent(this, "dialog-closed", { dialog: this.localName });
   }
 
   protected render() {
@@ -85,21 +104,25 @@ class HacsFromDialog extends LitElement {
   }
 
   private _valueChanged(ev: CustomEvent) {
-    this._dialogParams!.data = ev.detail.value;
+    this._dialogParams!.data = { ...this._dialogParams!.data, ...ev.detail.value };
   }
 
   public async _saveClicked(): Promise<void> {
-    if (!this._dialogParams?.saveAction) {
+    if (!this._dialogParams?.saveAction || !this._dialogParams!.data) {
       return;
     }
+    this._errors = {};
     this._waiting = true;
     try {
       await this._dialogParams.saveAction(this._dialogParams!.data);
     } catch (err: any) {
       this._errors = { base: err?.message || "Unkown error, check Home Assistant logs" };
-      return;
     }
-    this.closeDialog();
+    this._waiting = false;
+
+    if (!Object.keys(this._errors).length) {
+      this.closeDialog();
+    }
   }
 
   private _computeLabel = (schema: HaFormSchema, data: HaFormDataContainer) =>
@@ -108,9 +131,7 @@ class HacsFromDialog extends LitElement {
       : schema.name || "";
 
   private _computeHelper = (schema: HaFormSchema) =>
-    this._dialogParams!.computeHelper
-      ? this._dialogParams!.computeHelper(schema)
-      : schema.name || "";
+    this._dialogParams!.computeHelper ? this._dialogParams!.computeHelper(schema) : "";
 
   private _computeError = (error, schema: HaFormSchema | readonly HaFormSchema[]) =>
     this._dialogParams!.computeError

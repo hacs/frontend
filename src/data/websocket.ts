@@ -20,7 +20,7 @@ export const repositoryUninstall = async (hass: HomeAssistant, repository: strin
   });
 
 export const repositoryAdd = async (hass: HomeAssistant, repository: string, category: string) =>
-  hass.connection.sendMessagePromise<void>({
+  hass.connection.sendMessagePromise<null | Record<string, string>>({
     type: "hacs/repositories/add",
     repository: repository,
     category,
