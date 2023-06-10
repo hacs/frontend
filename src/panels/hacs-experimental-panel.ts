@@ -32,6 +32,7 @@ import "../../homeassistant-frontend/src/components/ha-check-list-item";
 import "../../homeassistant-frontend/src/components/ha-select";
 import "../../homeassistant-frontend/src/components/ha-radio";
 import "../../homeassistant-frontend/src/components/ha-formfield";
+import "../../homeassistant-frontend/src/components/ha-markdown";
 
 import { IconOverflowMenuItem } from "../../homeassistant-frontend/src/components/ha-icon-overflow-menu";
 import "../../homeassistant-frontend/src/components/ha-menu-button";
@@ -39,13 +40,14 @@ import "../../homeassistant-frontend/src/components/ha-svg-icon";
 import { haStyle } from "../../homeassistant-frontend/src/resources/styles";
 import type { HomeAssistant, Route } from "../../homeassistant-frontend/src/types";
 import { brandsUrl } from "../../homeassistant-frontend/src/util/brands-url";
-import { showDialogAbout } from "../components/dialogs/hacs-about-dialog";
 import { repositoryMenuItems } from "../components/hacs-repository-owerflow-menu";
-import type { Hacs } from "../data/hacs";
+import { APP_FULL_NAME, Hacs } from "../data/hacs";
 import type { RepositoryBase, RepositoryCategory } from "../data/repository";
 import { repositoriesClearNew } from "../data/websocket";
 import { HacsStyles } from "../styles/hacs-common-style";
 import { categoryIcon } from "../tools/category-icon";
+import { showHacsFormDialog } from "../components/dialogs/show-hacs-form-dialog";
+import { aboutHacsmarkdownContent } from "../data/about";
 
 const tableColumnDefaults = {
   name: true,
@@ -121,7 +123,7 @@ export class HacsExperimentalPanel extends LitElement {
     return html`<hass-tabs-subpage-data-table
       .tabs=${[
         {
-          name: "Home Assistant Community Store",
+          name: APP_FULL_NAME,
         },
       ]}
       .columns=${this._columns(this.narrow, this._tableColumns)}
@@ -194,7 +196,13 @@ export class HacsExperimentalPanel extends LitElement {
             path: mdiInformation,
             label: this.hacs.localize("menu.about"),
             action: () => {
-              showDialogAbout(this, this.hacs);
+              showHacsFormDialog(this, {
+                hacs: this.hacs,
+                title: APP_FULL_NAME,
+                description: html`<ha-markdown
+                  .content=${aboutHacsmarkdownContent(this.hacs)}
+                ></ha-markdown>`,
+              });
             },
           },
         ].filter((item) => item !== undefined) as IconOverflowMenuItem[]}
