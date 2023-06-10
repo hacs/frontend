@@ -22,7 +22,6 @@ export class HacsEventDialog extends HacsDialogBase {
     el.hass = this.hass;
     el.hacs = this.hacs;
     el.narrow = this.narrow;
-    el.secondary = this.secondary;
     el.route = this.route;
 
     if (this.params) {

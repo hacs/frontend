@@ -13,8 +13,6 @@ export class HacsDialogBase extends LitElement {
 
   @property({ type: Boolean }) public active = false;
 
-  @property({ type: Boolean }) public secondary = false;
-
   @property({ type: Boolean }) public loading = true;
 
   @property({ type: Boolean }) public narrow!: boolean;

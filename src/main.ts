@@ -30,8 +30,6 @@ class HacsFrontend extends HacsElement {
 
   @query("#hacs-dialog") private _hacsDialog?: any;
 
-  @query("#hacs-dialog-secondary") private _hacsDialogSecondary?: any;
-
   protected firstUpdated(changedProps) {
     super.firstUpdated(changedProps);
 
@@ -43,9 +41,6 @@ class HacsFrontend extends HacsElement {
     );
 
     this.addEventListener("hacs-dialog", (e) => this._showDialog(e as HacsDialogEvent));
-    this.addEventListener("hacs-dialog-secondary", (e) =>
-      this._showDialogSecondary(e as HacsDialogEvent)
-    );
 
     websocketSubscription(
       this.hass,
@@ -177,13 +172,6 @@ class HacsFrontend extends HacsElement {
         .narrow=${this.narrow}
         id="hacs-dialog"
       ></hacs-event-dialog>
-      <hacs-event-dialog
-        .hass=${this.hass}
-        .hacs=${this.hacs}
-        .route=${this.route}
-        .narrow=${this.narrow}
-        id="hacs-dialog-secondary"
-      ></hacs-event-dialog>
     `;
   }
 
@@ -204,17 +192,6 @@ class HacsFrontend extends HacsElement {
     this._hacsDialog.active = true;
     this._hacsDialog.params = dialogParams;
     this.addEventListener("hacs-dialog-closed", () => (this._hacsDialog.active = false));
-  }
-
-  private _showDialogSecondary(ev: HacsDialogEvent): void {
-    const dialogParams = ev.detail;
-    this._hacsDialogSecondary.active = true;
-    this._hacsDialogSecondary.secondary = true;
-    this._hacsDialogSecondary.params = dialogParams;
-    this.addEventListener(
-      "hacs-secondary-dialog-closed",
-      () => (this._hacsDialogSecondary.active = false)
-    );
   }
 
   private _setRoute(ev: LocationChangedEvent): void {
