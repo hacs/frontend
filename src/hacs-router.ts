@@ -70,12 +70,12 @@ class HacsRouter extends HassRouterPage {
         load: () => import("./hacs-my-redirect"),
       },
       dashboard: {
-        tag: "hacs-experimental-panel",
-        load: () => import("./panels/hacs-experimental-panel"),
+        tag: "hacs-dashboard",
+        load: () => import("./dashboards/hacs-dashboard"),
       },
       repository: {
-        tag: "hacs-repository-panel",
-        load: () => import("./panels/hacs-repository-panel"),
+        tag: "hacs-repository-dashboard",
+        load: () => import("./dashboards/hacs-repository-dashboard"),
       },
     },
   };

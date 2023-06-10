@@ -31,8 +31,8 @@ import { getRepositories, repositoryAdd } from "../data/websocket";
 import { HacsStyles } from "../styles/hacs-common-style";
 import { markdownWithRepositoryContext } from "../tools/markdown";
 
-@customElement("hacs-repository-panel")
-export class HacsRepositoryPanel extends LitElement {
+@customElement("hacs-repository-dashboard")
+export class HacsRepositoryDashboard extends LitElement {
   @property({ attribute: false }) public hacs!: Hacs;
 
   @property({ attribute: false }) public hass!: HomeAssistant;
