@@ -23,6 +23,11 @@ yarnPath: .yarn/releases/yarn-${core.packageManager.split("@")[1]}.cjs
 );
 
 fs.copyFileSync(
+  `./homeassistant-frontend/.browserslistrc`,
+  `.browserslistrc`
+);
+
+fs.copyFileSync(
   `./homeassistant-frontend/src/translations/translationMetadata.json`,
   `./src/localize/languages/translationMetadata.json`
 );

@@ -1,9 +1,9 @@
 {
   "compilerOptions": {
     // Language Options
-    "target": "ES2017",
+    "target": "ES2021",
     "lib": [
-      "ES2017",
+      "ES2021",
       "DOM",
       "DOM.Iterable",
       "WebWorker"

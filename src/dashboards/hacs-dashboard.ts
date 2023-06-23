@@ -18,7 +18,7 @@ import { LitElement, css, html } from "lit";
 import { customElement, property } from "lit/decorators";
 import memoize from "memoize-one";
 import { relativeTime } from "../../homeassistant-frontend/src/common/datetime/relative_time";
-import { LocalStorage } from "../../homeassistant-frontend/src/common/decorators/local-storage";
+import { storage } from "../../homeassistant-frontend/src/common/decorators/storage";
 import { mainWindow } from "../../homeassistant-frontend/src/common/dom/get_main_window";
 import { stopPropagation } from "../../homeassistant-frontend/src/common/dom/stop_propagation";
 import { navigate } from "../../homeassistant-frontend/src/common/navigate";
@@ -86,16 +86,16 @@ export class HacsDashboard extends LitElement {
 
   @property({ type: Boolean }) public isWide!: boolean;
 
-  @LocalStorage("hacs-table-filters", true, false)
+  @storage({key: "hacs-table-filters", state: true, subscribe: false})
   private activeFilters?: string[] = [];
 
-  @LocalStorage("hacs-table-sort", true, false)
+  @storage({key: "hacs-table-sort", state: true, subscribe: false})
   private activeSort?: { column: string; direction: SortingDirection };
 
-  @LocalStorage("hacs-active-search", true, false)
+  @storage({key: "hacs-active-search", state: true, subscribe: false})
   private _activeSearch?: string;
 
-  @LocalStorage("hacs-table-active-columns", true, false)
+  @storage({key: "hacs-table-active-columns", state: true, subscribe: false})
   private _tableColumns: Record<tableColumnDefaultsType, boolean> = tableColumnDefaults;
 
   protected async firstUpdated(changedProperties: PropertyValues): Promise<void> {
