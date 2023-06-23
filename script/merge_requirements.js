@@ -6,11 +6,6 @@ let rawhacs = fs.readFileSync("./package.json");
 const core = JSON.parse(rawcore);
 const hacs = JSON.parse(rawhacs);
 
-fs.mkdirSync(".yarn/releases", { recursive: true });
-fs.readdirSync("./homeassistant-frontend/.yarn/releases").forEach((file) => {
-  fs.copyFileSync(`./homeassistant-frontend/.yarn/releases/${file}`, `./.yarn/releases/${file}`);
-});
-
 fs.writeFileSync(
   ".yarnrc.yml",
   `
@@ -18,7 +13,7 @@ defaultSemverRangePrefix: ""
 
 nodeLinker: node-modules
 
-yarnPath: .yarn/releases/yarn-${core.packageManager.split("@")[1]}.cjs
+yarnPath: ./homeassistant-frontend/.yarn/releases/yarn-${core.packageManager.split("@")[1]}.cjs
 `
 );
 
@@ -37,7 +32,9 @@ fs.writeFileSync(
   JSON.stringify(
     {
       ...hacs,
-      resolutions: { ...hacs.resolutionsOverride },
+      resolutions: { ...Object.fromEntries(
+        Object.entries(core.resolutions).map(([key, val]) => [key, val.replace("#.yarn/patches/", "#./homeassistant-frontend/.yarn/patches/").replace("#./.yarn/patches/", "#./homeassistant-frontend/.yarn/patches/")]),
+      ), ...hacs.resolutionsOverride },
       dependencies: { ...core.dependencies, ...hacs.dependenciesOverride },
       devDependencies: { ...core.devDependencies, ...hacs.devDependenciesOverride },
       packageManager: core.packageManager,
