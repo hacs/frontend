@@ -23,7 +23,7 @@ function recursiveFlatten(prefix, data) {
         ...recursiveFlatten(prefix + key + ".", data[key]),
       };
     } else {
-      output[prefix + key] = data[key].replace(/'{/g, "''{").replace(/}'/g, "}''");
+      output[prefix + key] = String(data[key]).replace(/'{/g, "''{").replace(/}'/g, "}''");
     }
   });
   return Object.fromEntries(Object.entries(output).sort());
@@ -37,14 +37,14 @@ gulp.task("generate-translations", async function (task) {
   );
 
   for (const language of fs.readdirSync(paths.translations_src)) {
-    if (ignoredLanguages.has(language)) continue;
     const lang = language.split(".")[0];
+    if (ignoredLanguages.has(language)) continue;
     const fileName = lang in changeLang ? changeLang[lang] : lang;
     const translation = { ...defaultTranslation };
-    if (language !== "en" && fs.existsSync(`${paths.translations_src}/${fileName}`)) {
+    if (language !== "en" && fs.existsSync(`${paths.translations_src}/${fileName}.json`)) {
       const fileTranslations = recursiveFlatten(
         "",
-        fs.readJSONSync(`${paths.translations_src}/${fileName}`, "utf-8")
+        fs.readJSONSync(`${paths.translations_src}/${fileName}.json`, "utf-8")
       );
       for (const key of Object.keys(fileTranslations)) {
         translation[key] = fileTranslations[key];
