@@ -86,37 +86,33 @@ export class HacsDashboard extends LitElement {
 
   @property({ type: Boolean }) public isWide!: boolean;
 
-  @storage({key: "hacs-table-filters", state: true, subscribe: false})
+  @storage({ key: "hacs-table-filter", state: true, subscribe: false })
   private activeFilters?: string[] = [];
 
-  @storage({key: "hacs-table-sort", state: true, subscribe: false})
+  @storage({ key: "hacs-table-sort", state: true, subscribe: false })
   private activeSort?: { column: string; direction: SortingDirection };
 
-  @storage({key: "hacs-active-search", state: true, subscribe: false})
+  @storage({ key: "hacs-active-search", state: true, subscribe: false })
   private _activeSearch?: string;
 
-  @storage({key: "hacs-table-active-columns", state: true, subscribe: false})
+  @storage({ key: "hacs-table-active-columns", state: true, subscribe: false })
   private _tableColumns: Record<tableColumnDefaultsType, boolean> = tableColumnDefaults;
 
   protected async firstUpdated(changedProperties: PropertyValues): Promise<void> {
     super.firstUpdated(changedProperties);
     const baseFilters =
-      this.activeFilters && this.activeFilters.length === 0
-        ? [this.hacs.localize("common.downloaded")]
-        : this.activeFilters;
+      this.activeFilters && this.activeFilters.length === 0 ? ["downloaded"] : this.activeFilters;
 
     const filters = !this._activeSearch?.length
       ? baseFilters
-      : baseFilters?.filter((filter) => filter !== this.hacs.localize("common.downloaded"));
+      : baseFilters?.filter((filter) => filter !== "downloaded");
     this.activeFilters = filters?.length ? filters : undefined;
   }
 
   protected updated(changedProperties: PropertyValues): void {
     super.updated(changedProperties);
     if (changedProperties.has("_activeSearch") && this._activeSearch?.length) {
-      this.activeFilters = this.activeFilters?.filter(
-        (filter) => filter !== this.hacs.localize("common.downloaded")
-      );
+      this.activeFilters = this.activeFilters?.filter((filter) => filter !== "downloaded");
     }
   }
 
@@ -141,8 +137,14 @@ export class HacsDashboard extends LitElement {
       .route=${this.route}
       clickable
       .filter=${this._activeSearch}
-      .activeFilters=${this.activeFilters}
-      .noDataText=${this.activeFilters?.includes(this.hacs.localize("common.downloaded"))
+      .activeFilters=${this.activeFilters?.map(
+        (filter) =>
+          this.hacs.localize(
+            // @ts-ignore
+            `common.${filter.startsWith("category_") ? filter.replace("category_", "") : filter}`
+          ) || filter
+      )}
+      .noDataText=${this.activeFilters?.includes("downloaded")
         ? "No downloaded repositories"
         : "No repositories matching search"}
       @row-click=${this._handleRowClicked}
@@ -218,8 +220,7 @@ export class HacsDashboard extends LitElement {
         <ha-check-list-item
           @request-selected=${this._handleDownloadFilterChange}
           graphic="control"
-          .selected=${this.activeFilters?.includes(this.hacs.localize("common.downloaded")) ??
-          false}
+          .selected=${this.activeFilters?.includes("downloaded") ?? false}
           left
         >
           ${this.hacs.localize("common.downloaded")}
@@ -227,7 +228,7 @@ export class HacsDashboard extends LitElement {
         <ha-check-list-item
           @request-selected=${this._handleNewFilterChange}
           graphic="control"
-          .selected=${this.activeFilters?.includes(this.hacs.localize("common.new")) ?? false}
+          .selected=${this.activeFilters?.includes("new") ?? false}
           left
         >
           ${this.hacs.localize("common.new")}
@@ -239,20 +240,12 @@ export class HacsDashboard extends LitElement {
                 @selected=${this._handleCategoryFilterChange}
                 @closed=${stopPropagation}
                 naturalMenuWidth
-                .value=${this.activeFilters?.find((filter) =>
-                  filter.startsWith(
-                    `${this.hacs.localize(`dialog_custom_repositories.category`)}: `
-                  )
-                ) || ""}
+                .value=${this.activeFilters?.find((filter) => filter.startsWith("category_")) || ""}
               >
                 ${this.hacs.info.categories.map(
                   (category) =>
                     html`
-                      <mwc-list-item
-                        .value="${this.hacs.localize(
-                          `dialog_custom_repositories.category`
-                        )}: ${this.hacs.localize(`common.${category}`)}"
-                      >
+                      <mwc-list-item .value="${`category_${category}`}">
                         ${this.hacs.localize(`common.${category}`)}
                       </mwc-list-item>
                     `
@@ -279,16 +272,10 @@ export class HacsDashboard extends LitElement {
                 <ha-formfield .label=${this.hacs.localize(`common.${category}`)}>
                   <ha-radio
                     @change=${this._handleCategoryFilterChange}
-                    value="${this.hacs.localize(
-                      `dialog_custom_repositories.category`
-                    )}: ${this.hacs.localize(`common.${category}`)}"
+                    .value=${`category_${category}`}
                     name="category"
                     .checked=${this.activeFilters?.some(
-                      (filter) =>
-                        filter ===
-                        `${this.hacs.localize(
-                          `dialog_custom_repositories.category`
-                        )}: ${this.hacs.localize(`common.${category}`)}`
+                      (filter) => filter === `category_${category}`
                     ) ?? false}
                   >
                   </ha-radio>
@@ -302,25 +289,16 @@ export class HacsDashboard extends LitElement {
   private _filterRepositories = memoize(
     (repositories: RepositoryBase[], activeFilters?: string[]): RepositoryBase[] =>
       repositories
-        .filter((reposiotry) => {
-          if (
-            this.activeFilters?.includes(this.hacs.localize("common.downloaded")) &&
-            !reposiotry.installed
-          ) {
+        .filter((repository) => {
+          if (this.activeFilters?.includes("downloaded") && !repository.installed) {
             return false;
           }
-          if (this.activeFilters?.includes(this.hacs.localize("common.new")) && !reposiotry.new) {
+          if (this.activeFilters?.includes("new") && !repository.new) {
             return false;
           }
           if (
-            activeFilters?.filter((filter) =>
-              filter.startsWith(this.hacs.localize(`dialog_custom_repositories.category`))
-            ).length &&
-            !activeFilters.includes(
-              `${this.hacs.localize(`dialog_custom_repositories.category`)}: ${this.hacs.localize(
-                `common.${reposiotry.category}`
-              )}`
-            )
+            activeFilters?.filter((filter) => filter.startsWith("category_")).length &&
+            !activeFilters.includes(`category_${repository.category}`)
           ) {
             return false;
           }
@@ -511,17 +489,13 @@ export class HacsDashboard extends LitElement {
       if ((ev.target as any).nodeName === "HA-RADIO" && (ev.target as any).checked === false) {
         this.activeFilters = [
           ...(this.activeFilters?.filter(
-            (filter) =>
-              !filter.startsWith(this.hacs.localize(`dialog_custom_repositories.category`)) &&
-              filter !== categoryFilter
+            (filter) => !filter.startsWith("category_") && filter !== categoryFilter
           ) || []),
         ];
       } else {
         this.activeFilters = [
           ...(this.activeFilters?.filter(
-            (filter) =>
-              !filter.startsWith(this.hacs.localize(`dialog_custom_repositories.category`)) &&
-              filter !== categoryFilter
+            (filter) => !filter.startsWith("category_") && filter !== categoryFilter
           ) || []),
           categoryFilter,
         ];
@@ -553,23 +527,17 @@ export class HacsDashboard extends LitElement {
   }
 
   private _handleDownloadFilterChange(ev: CustomEvent) {
-    const updatedFilters =
-      this.activeFilters?.filter(
-        (filter) => !filter.startsWith(this.hacs.localize("common.downloaded"))
-      ) || [];
+    const updatedFilters = this.activeFilters?.filter((filter) => filter !== "downloaded") || [];
     if (ev.detail.selected) {
-      updatedFilters.push(this.hacs.localize("common.downloaded"));
+      updatedFilters.push("downloaded");
     }
     this.activeFilters = updatedFilters.length ? updatedFilters : undefined;
   }
 
   private _handleNewFilterChange(ev: CustomEvent) {
-    const updatedFilters =
-      this.activeFilters?.filter(
-        (filter) => !filter.startsWith(this.hacs.localize("common.new"))
-      ) || [];
+    const updatedFilters = this.activeFilters?.filter((filter) => filter !== "new") || [];
     if (ev.detail.selected) {
-      updatedFilters.push(this.hacs.localize("common.new"));
+      updatedFilters.push("new");
     }
     this.activeFilters = updatedFilters.length ? updatedFilters : undefined;
   }
