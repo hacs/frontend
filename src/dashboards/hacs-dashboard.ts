@@ -35,6 +35,7 @@ import "../../homeassistant-frontend/src/components/ha-markdown";
 import "../../homeassistant-frontend/src/components/ha-radio";
 import "../../homeassistant-frontend/src/components/ha-select";
 
+import { LocalizeFunc } from "../../homeassistant-frontend/src/common/translations/localize";
 import "../../homeassistant-frontend/src/components/ha-icon-overflow-menu";
 import { IconOverflowMenuItem } from "../../homeassistant-frontend/src/components/ha-icon-overflow-menu";
 import "../../homeassistant-frontend/src/components/ha-svg-icon";
@@ -49,6 +50,7 @@ import { repositoryMenuItems } from "../components/hacs-repository-owerflow-menu
 import { aboutHacsmarkdownContent } from "../data/about";
 import type { Hacs } from "../data/hacs";
 import { APP_FULL_NAME } from "../data/hacs";
+import { HacsLocalizeKeys } from "../data/localize";
 import type { RepositoryBase, RepositoryCategory } from "../data/repository";
 import { repositoriesClearNew } from "../data/websocket";
 import { HacsStyles } from "../styles/hacs-common-style";
@@ -127,7 +129,7 @@ export class HacsDashboard extends LitElement {
           name: APP_FULL_NAME,
         },
       ]}
-      .columns=${this._columns(this.narrow, this._tableColumns)}
+      .columns=${this._columns(this.narrow, this._tableColumns, this.hacs.localize)}
       .data=${repositories}
       .hass=${this.hass}
       isWide=${this.isWide}
@@ -313,7 +315,8 @@ export class HacsDashboard extends LitElement {
   private _columns = memoize(
     (
       narrow: boolean,
-      tableColumnsOptions: { [key: string]: boolean }
+      tableColumnsOptions: { [key: string]: boolean },
+      localizeFunc: LocalizeFunc<HacsLocalizeKeys>
     ): DataTableColumnContainer<RepositoryBase> => ({
       icon: {
         title: "",
@@ -345,7 +348,7 @@ export class HacsDashboard extends LitElement {
       },
       name: {
         ...defaultKeyData,
-        title: this.hacs.localize("column.name"),
+        title: localizeFunc("column.name"),
         main: true,
         sortable: true,
         direction: this.activeSort?.column === "name" ? this.activeSort.direction : null,
@@ -360,8 +363,7 @@ export class HacsDashboard extends LitElement {
                   .path=${mdiNewBox}
                 ></ha-svg-icon>`
               : ""}
-            ${!this.activeFilters?.includes(this.hacs.localize("common.downloaded")) &&
-            repository.installed
+            ${!this.activeFilters?.includes("downloaded") && repository.installed
               ? html`<ha-svg-icon
                   label="Downloaded"
                   style="color: var(--primary-color); margin-right: 4px;"
@@ -370,15 +372,13 @@ export class HacsDashboard extends LitElement {
               : ""}
             ${name}
             <div class="secondary">
-              ${narrow
-                ? this.hacs.localize(`common.${repository.category}`)
-                : repository.description}
+              ${narrow ? localizeFunc(`common.${repository.category}`) : repository.description}
             </div>
           `,
       },
       downloads: {
         ...defaultKeyData,
-        title: this.hacs.localize("column.downloads"),
+        title: localizeFunc("column.downloads"),
         hidden: narrow || !tableColumnsOptions.downloads,
         sortable: true,
         direction: this.activeSort?.column === "downloads" ? this.activeSort.direction : null,
@@ -387,7 +387,7 @@ export class HacsDashboard extends LitElement {
       },
       stars: {
         ...defaultKeyData,
-        title: this.hacs.localize("column.stars"),
+        title: localizeFunc("column.stars"),
         hidden: narrow || !tableColumnsOptions.stars,
         sortable: true,
         direction: this.activeSort?.column === "stars" ? this.activeSort.direction : null,
@@ -395,7 +395,7 @@ export class HacsDashboard extends LitElement {
       },
       last_updated: {
         ...defaultKeyData,
-        title: this.hacs.localize("column.last_updated"),
+        title: localizeFunc("column.last_updated"),
         hidden: narrow || !tableColumnsOptions.last_updated,
         sortable: true,
         direction: this.activeSort?.column === "last_updated" ? this.activeSort.direction : null,
@@ -410,7 +410,7 @@ export class HacsDashboard extends LitElement {
       },
       installed_version: {
         ...defaultKeyData,
-        title: this.hacs.localize("column.installed_version"),
+        title: localizeFunc("column.installed_version"),
         hidden: narrow || !tableColumnsOptions.installed_version,
         sortable: true,
         direction:
@@ -421,7 +421,7 @@ export class HacsDashboard extends LitElement {
       },
       available_version: {
         ...defaultKeyData,
-        title: this.hacs.localize("column.available_version"),
+        title: localizeFunc("column.available_version"),
         hidden: narrow || !tableColumnsOptions.available_version,
         sortable: true,
         direction:
@@ -432,26 +432,24 @@ export class HacsDashboard extends LitElement {
       },
       status: {
         ...defaultKeyData,
-        title: this.hacs.localize("column.status"),
+        title: localizeFunc("column.status"),
         hidden: narrow || !tableColumnsOptions.status,
         sortable: true,
         direction: this.activeSort?.column === "status" ? this.activeSort.direction : null,
         width: "10%",
         template: (status: RepositoryBase["status"]) =>
           ["pending-restart", "pending-upgrade"].includes(status)
-            ? this.hacs.localize(
-                `repository_status.${status as "pending-restart" | "pending-upgrade"}`
-              )
+            ? localizeFunc(`repository_status.${status as "pending-restart" | "pending-upgrade"}`)
             : "-",
       },
       category: {
         ...defaultKeyData,
-        title: this.hacs.localize("column.category"),
+        title: localizeFunc("column.category"),
         hidden: narrow || !tableColumnsOptions.category,
         sortable: true,
         direction: this.activeSort?.column === "category" ? this.activeSort.direction : null,
         width: "10%",
-        template: (category: RepositoryCategory) => this.hacs.localize(`common.${category}`),
+        template: (category: RepositoryCategory) => localizeFunc(`common.${category}`),
       },
       authors: defaultKeyData,
       description: defaultKeyData,
