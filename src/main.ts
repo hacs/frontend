@@ -8,9 +8,8 @@ import { isNavigationClick } from "../homeassistant-frontend/src/common/dom/is-n
 import { navigate } from "../homeassistant-frontend/src/common/navigate";
 import { makeDialogManager } from "../homeassistant-frontend/src/dialogs/make-dialog-manager";
 import type { HomeAssistant, Route } from "../homeassistant-frontend/src/types";
-import { HacsDispatchEvent, LocationChangedEvent } from "./data/common";
+import { LocationChangedEvent } from "./data/common";
 import type { Hacs } from "./data/hacs";
-import { fetchHacsInfo, getRepositories, websocketSubscription } from "./data/websocket";
 import { HacsElement } from "./hacs";
 import "./hacs-router";
 import { HacsStyles } from "./styles/hacs-common-style";
@@ -31,40 +30,10 @@ class HacsFrontend extends HacsElement {
 
     this._applyTheme();
 
-    this.hacs.language = this.hass.language;
     this.addEventListener("hacs-location-changed", (e) =>
       this._setRoute(e as LocationChangedEvent)
     );
 
-    websocketSubscription(
-      this.hass,
-      () => this._updateProperties("configuration"),
-      HacsDispatchEvent.CONFIG
-    );
-
-    websocketSubscription(
-      this.hass,
-      () => this._updateProperties("status"),
-      HacsDispatchEvent.STATUS
-    );
-
-    websocketSubscription(
-      this.hass,
-      () => this._updateProperties("status"),
-      HacsDispatchEvent.STAGE
-    );
-
-    websocketSubscription(
-      this.hass,
-      () => this._updateProperties("repositories"),
-      HacsDispatchEvent.REPOSITORY
-    );
-
-    this.hass.connection.subscribeEvents(
-      async () => this._updateProperties("lovelace"),
-      "lovelace_updated"
-    );
-    this._updateProperties();
     if (this.route.path === "") {
       navigate("/hacs/entry", { replace: true });
     }
@@ -121,34 +90,8 @@ class HacsFrontend extends HacsElement {
     }
   }
 
-  private async _updateProperties(prop = "all") {
-    const _updates: any = {};
-    const _fetch: any = {};
-
-    if (prop === "all") {
-      [_fetch.repositories, _fetch.info] = await Promise.all([
-        getRepositories(this.hass),
-        fetchHacsInfo(this.hass),
-      ]);
-    } else if (prop === "info") {
-      _fetch.info = await fetchHacsInfo(this.hass);
-    } else if (prop === "repositories") {
-      _fetch.repositories = await getRepositories(this.hass);
-    }
-
-    Object.keys(_fetch).forEach((update) => {
-      if (_fetch[update] !== undefined) {
-        _updates[update] = _fetch[update];
-      }
-    });
-    if (_updates) {
-      this._updateHacs(_updates);
-      this.requestUpdate();
-    }
-  }
-
   protected render() {
-    if (!this.hass || !this.hacs?.info.categories?.length || this.hacs?.localize === undefined) {
+    if (!this.hass || !this.hacs?.info?.categories?.length || this.hacs?.localize === undefined) {
       return nothing;
     }
 
