@@ -23,7 +23,7 @@ function recursiveFlatten(prefix, data) {
         ...recursiveFlatten(prefix + key + ".", data[key]),
       };
     } else {
-      output[prefix + key] = data[key].replace(/'{/g, "''{").replace(/}'/g, "}''");
+      output[prefix + key] = String(data[key]).replace(/'{/g, "''{").replace(/}'/g, "}''");
     }
   });
   return Object.fromEntries(Object.entries(output).sort());
@@ -37,21 +37,21 @@ gulp.task("generate-translations", async function (task) {
   );
 
   for (const language of fs.readdirSync(paths.translations_src)) {
-    if (ignoredLanguages.has(language)) continue;
     const lang = language.split(".")[0];
-    const fileName = lang in changeLang ? changeLang[lang] : lang;
+    if (ignoredLanguages.has(language)) continue;
+    const fileName = `${lang in changeLang ? changeLang[lang] : lang}.json`;
     const translation = { ...defaultTranslation };
-    if (language !== "en" && fs.existsSync(`${paths.translations_src}/${fileName}`)) {
+    if (lang !== "en" && fs.existsSync(`${paths.translations_src}/${language}`)) {
       const fileTranslations = recursiveFlatten(
         "",
-        fs.readJSONSync(`${paths.translations_src}/${fileName}`, "utf-8")
+        fs.readJSONSync(`${paths.translations_src}/${language}`, "utf-8")
       );
       for (const key of Object.keys(fileTranslations)) {
         translation[key] = fileTranslations[key];
       }
     }
     await fs.writeFile(
-      `${paths.build_dir}/translations/${language}`,
+      `${paths.build_dir}/translations/${fileName}`,
       JSON.stringify(translation, null),
       "utf-8"
     );
