@@ -4,8 +4,8 @@ import "./clean.js";
 import "../../homeassistant-frontend/build-scripts/gulp/compress.js";
 import "./entry-html.js";
 import "./gather-static.js";
-import "./gen-icons-json.js";
-import "./locale-data.js";
+import "../../homeassistant-frontend/build-scripts/gulp/gen-icons-json.js";
+import "../../homeassistant-frontend/build-scripts/gulp/locale-data.js";
 import "./paths.cjs";
 import "./webpack.cjs";
 
