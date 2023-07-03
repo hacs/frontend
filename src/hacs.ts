@@ -82,9 +82,6 @@ export class HacsElement extends ProvideHassLitMixin(LitElement) {
 
   private async _initializeLocalize() {
     const { language, data } = await getTranslation(null, this._language);
-
-    console.log({ language, data });
-
     this._updateHacs({
       localize: await computeLocalize<HacsLocalizeKeys>(this.constructor.prototype, language, {
         [language]: data,
