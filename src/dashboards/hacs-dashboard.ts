@@ -97,11 +97,14 @@ export class HacsDashboard extends LitElement {
   @storage({ key: "hacs-active-search", state: true, subscribe: false })
   private _activeSearch?: string;
 
+  @storage({ key: "hacs-table-scroll", state: true, subscribe: false })
+  private _tableScroll?: number;
+
   @storage({ key: "hacs-table-active-columns", state: true, subscribe: false })
   private _tableColumns: Record<tableColumnDefaultsType, boolean> = tableColumnDefaults;
 
-  protected async firstUpdated(changedProperties: PropertyValues): Promise<void> {
-    super.firstUpdated(changedProperties);
+  public connectedCallback(): void {
+    super.connectedCallback();
     const baseFilters =
       this.activeFilters && this.activeFilters.length === 0 ? ["downloaded"] : this.activeFilters;
 
@@ -109,6 +112,12 @@ export class HacsDashboard extends LitElement {
       ? baseFilters
       : baseFilters?.filter((filter) => filter !== "downloaded");
     this.activeFilters = filters?.length ? filters : undefined;
+
+    this.updateComplete.then(() => {
+      this.restoreScroller().catch(() => {
+        // Ignored
+      });
+    });
   }
 
   protected updated(changedProperties: PropertyValues): void {
@@ -476,7 +485,39 @@ export class HacsDashboard extends LitElement {
     })
   );
 
+  get _scrollerTarget() {
+    return (
+      this.shadowRoot
+        ?.querySelector("hass-tabs-subpage-data-table")
+        ?.shadowRoot?.querySelector("hass-tabs-subpage")
+        ?.shadowRoot?.querySelector(".content")
+        ?.querySelectorAll("SLOT")[0]
+        // @ts-ignore
+        ?.assignedNodes()
+        ?.find((node) => node.nodeName === "HA-DATA-TABLE")
+        ?.shadowRoot?.querySelector(".scroller")
+    );
+  }
+
+  private async restoreScroller() {
+    if ((this._tableScroll ?? 0) === 0) {
+      return;
+    }
+    await new Promise<void>((resolve, reject) => {
+      const timeout = setTimeout(reject, 1000);
+      const intervalCheck = setInterval(() => {
+        if (this._scrollerTarget) {
+          this._scrollerTarget.scrollTop = this._tableScroll;
+          clearTimeout(timeout);
+          clearInterval(intervalCheck);
+          resolve();
+        }
+      }, 50);
+    });
+  }
+
   private _handleRowClicked(ev: CustomEvent) {
+    this._tableScroll = this._scrollerTarget?.scrollTop || 0;
     navigate(`/hacs/repository/${ev.detail.id}`);
   }
 
