@@ -1,0 +1,10 @@
+{
+    "common": {
+        "appdaemon": "AppDaemon",
+        "integration": "Ενσωμάτωση",
+        "netdaemon": "NetDaemon",
+        "plugin": "Lovelace",
+        "repositories": "Αποθετήρια",
+        "theme": "Θέμα"
+    }
+}

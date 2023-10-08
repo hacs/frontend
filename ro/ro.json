@@ -1,0 +1,146 @@
+{
+    "column": {
+        "available_version": "Versiune disponibilă",
+        "category": "Categorie",
+        "downloads": "Descărcări",
+        "installed_version": "Versiune descărcată",
+        "last_updated": "Actualizat",
+        "name": "Nume repozitoriu",
+        "stars": "Stele",
+        "status": "Status"
+    },
+    "common": {
+        "add": "adaugă",
+        "appdaemon": "AppDaemon",
+        "cancel": "Anulare",
+        "close": "Închide",
+        "download": "Descarcă",
+        "downloaded": "Descărcat",
+        "explore": "Explorează și descarcă repozitorii",
+        "ignore": "Ignoră",
+        "integration": "Integrare",
+        "integration_plural": "Integrări",
+        "lovelace": "Lovelace",
+        "navigate": "Navighează",
+        "netdaemon": "NetDaemon",
+        "new": "Nou",
+        "plugin": "Lovelace",
+        "python_script": "Script Python",
+        "reload": "Reîncarcă",
+        "remove": "Șterge",
+        "repositories": "Repozitorii",
+        "repository": "Repozitoriu",
+        "save": "Salvează",
+        "show": "Arată",
+        "template": "Șablon",
+        "theme": "Temă",
+        "update": "Actualizare",
+        "updates": "Actualizări",
+        "yes": "Da"
+    },
+    "confirm": {
+        "home_assistant_version_not_correct": "Folosești Home Assistant versiunea '{haversion}', dar acest repozitoriu necesită cel puțin versiunea '{minversion}' pentru a fi instalat."
+    },
+    "dialog": {
+        "configured": {
+            "confirm": "Mergi la integrări",
+            "message": "Integrarea {name} este configurată sau ignorată, va trebui să ștergi configurația sa înainte de a o elimina din HACS",
+            "title": "Integrarea este configurată"
+        },
+        "reload": {
+            "confirm": "Vrei să faci asta acum?",
+            "description": "Trebuie să reîncarci pagina pentru a folosi resursele actualizate."
+        },
+        "remove": {
+            "message": "Chiar dorești să elimini {name}?",
+            "title": "Șterge"
+        }
+    },
+    "dialog_about": {
+        "downloaded_repositories": "Repozitorii descărcate",
+        "frontend_version": "Versiune de frontend",
+        "integration_version": "Versiune a integrării",
+        "useful_links": "Link-uri utile"
+    },
+    "dialog_add_repo": {
+        "no_match": "Nu s-au găsit repozitorii care să corespundă filtrului",
+        "sort_by": "Sortează după",
+        "sort_by_values": {
+            "last_updated": "Ultima actualizare",
+            "name": "Nume",
+            "stars": "Stele"
+        },
+        "title": "Adaugă repozitoriu"
+    },
+    "dialog_custom_repositories": {
+        "category": "Categorie",
+        "no_category": "Categorie lipsă",
+        "no_repository": "Repozitoriu lipsă",
+        "title": "Repozitorii non-standard",
+        "url_placeholder": "Adaugă URL repozitoriu non-standard"
+    },
+    "dialog_download": {
+        "lovelace_instruction": "După terminarea descărcării, întrucât nu folosești Lovelace in modul „stocare”, va trebui să adaugi manual resursa cu aceste setări:",
+        "note_downloaded": "După descărcare, se va găsi la {location}",
+        "restart": "Reține că trebuie repornit Home Assistant pentru a aplica modificările făcute asupra integrărilor (custom_components).",
+        "select_version": "Selectează versiunea",
+        "show_beta": "Afișează versiunile beta",
+        "type": "Tip",
+        "url": "URL"
+    },
+    "dialog_info": {
+        "author": "Autor",
+        "download": "Descarcă acest repozitoriu cu HACS",
+        "downloads": "Descărcări",
+        "loading": "Se încarcă informațiile...",
+        "no_info": "Dezvoltatorul nu a furnizat alte informații pentru acest repozitoriu",
+        "open_issues": "Probleme deschise",
+        "open_repo": "Deschide repozitoriu",
+        "stars": "Stele",
+        "version_installed": "Versiune descărcată"
+    },
+    "dialog_update": {
+        "available_version": "Versiune disponibilă",
+        "changelog": "Jurnal de schimbări",
+        "downloaded_version": "Versiunea descărcată",
+        "message": "O nouă versiune a {name} este disponibilă",
+        "no_info": "Autorul nu a furnizat informații privitoare la această versiune",
+        "releasenotes": "Note de lansare pentru {release}",
+        "title": "Actualizare în așteptare"
+    },
+    "menu": {
+        "about": "Despre HACS",
+        "clear": "Șterge toate noutățile",
+        "custom_repositories": "Repozitorii non-standard",
+        "dismiss": "Înlătură repozitoriile noi",
+        "documentation": "Documentație",
+        "open_issue": "Semnalează o problemă",
+        "reload": "Reîncarcă fereastra"
+    },
+    "my": {
+        "add_repository_description": "Aceasta opțiune va face repozitoriul '{repository}' să fie urmărit de către HACS. Dorești să-l adaugi?",
+        "add_repository_title": "Adaugă repozitoriu non-standard",
+        "documentation": "documentație",
+        "error": "O eroare necunoscută a apărut",
+        "faq_link": "Întrebări frecvente despre Home Assistant",
+        "not_supported": "Această redirecționare nu este acceptată. Consultă {link} pentru lista redirecționărilor acceptate și versiunea în care au fost introduse.",
+        "repository_not_found": "Repozitoriul {repository} nu a fost găsit"
+    },
+    "repository_card": {
+        "dismiss": "înlătură",
+        "information": "Informații",
+        "new_repository": "Repozitoriu nou",
+        "not_loaded": "Neîncărcat",
+        "open_issue": "Semnalează o problemă",
+        "open_source": "Open source",
+        "pending_restart": "Repornire în așteptare",
+        "pending_update": "Actualizare în așteptare",
+        "redownload": "Descarcă din nou",
+        "report": "Cerere de eliminare",
+        "update_information": "Actualizează informațiile"
+    },
+    "repository_status": {
+        "pending-restart": "Repornire în așteptare",
+        "pending-upgrade": "Actualizare în așteptare"
+    }
+}

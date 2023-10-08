@@ -1,0 +1,146 @@
+{
+    "column": {
+        "available_version": "Versão disponível",
+        "category": "Categoria",
+        "downloads": "Downloads",
+        "installed_version": "Versão baixada",
+        "last_updated": "Atualizado",
+        "name": "Nome do repositório",
+        "stars": "Estrelas",
+        "status": "Status"
+    },
+    "common": {
+        "add": "adicionar",
+        "appdaemon": "AppDaemon",
+        "cancel": "Cancelar",
+        "close": "Fechar",
+        "download": "Baixar",
+        "downloaded": "Baixado",
+        "explore": "Explorar & baixar repositórios",
+        "ignore": "Ignorar",
+        "integration": "Integração",
+        "integration_plural": "Integrações",
+        "lovelace": "Dashboard",
+        "navigate": "Navegar",
+        "netdaemon": "NetDaemon",
+        "new": "Novo",
+        "plugin": "Dashboard",
+        "python_script": "Script Python",
+        "reload": "Recarregar",
+        "remove": "Remover",
+        "repositories": "Repositórios",
+        "repository": "Repositório",
+        "save": "Salvar",
+        "show": "Mostrar",
+        "template": "Template",
+        "theme": "Tema",
+        "update": "Atualizar",
+        "updates": "Atualizações",
+        "yes": "Sim"
+    },
+    "confirm": {
+        "home_assistant_version_not_correct": "Você está executando a versão Home Assistant '{haversion}', mas este repositório requer que a versão mínima '{minversion}' esteja instalada."
+    },
+    "dialog": {
+        "configured": {
+            "confirm": "Vá para integrações",
+            "message": "A integração {name} está configurada ou ignorada, você precisa excluir a configuração dela antes de removê-la do HACS",
+            "title": "A integração está configurada"
+        },
+        "reload": {
+            "confirm": "Você quer fazer isso agora?",
+            "description": "Você precisa recarregar seu navegador para que os recursos atualizados sejam usados."
+        },
+        "remove": {
+            "message": "Você realmente quer remover o {name}?",
+            "title": "Remover"
+        }
+    },
+    "dialog_about": {
+        "downloaded_repositories": "Repositórios baixados",
+        "frontend_version": "Versão do frontend",
+        "integration_version": "Versão da integração",
+        "useful_links": "Links úteis"
+    },
+    "dialog_add_repo": {
+        "no_match": "Nenhum repositório encontrado correspondente ao seu filtro",
+        "sort_by": "Ordenar por",
+        "sort_by_values": {
+            "last_updated": "Ultima atualização",
+            "name": "Nome",
+            "stars": "Estrelas"
+        },
+        "title": "Novo repositório"
+    },
+    "dialog_custom_repositories": {
+        "category": "Categoria",
+        "no_category": "Categoria ausente",
+        "no_repository": "Repositório ausente",
+        "title": "Repositórios personalizados",
+        "url_placeholder": "Adicionar URL de repositório personalizado"
+    },
+    "dialog_download": {
+        "lovelace_instruction": "Após o download ser concluído, já que você não está usando a Dashboard no modo de armazenamento, você precisa adicionar manualmente o recurso com essas configurações:",
+        "note_downloaded": "Quando baixado, ele estará localizado em {location}",
+        "restart": "Lembre-se de que você precisa reiniciar o Home Assistant antes que as alterações nas integrações (custom_components) sejam aplicadas.",
+        "select_version": "Selecione a versão",
+        "show_beta": "Mostrar versões beta",
+        "type": "Tipo",
+        "url": "URL"
+    },
+    "dialog_info": {
+        "author": "Autor",
+        "download": "Baixe esse repositório no HACS",
+        "downloads": "Downloads",
+        "loading": "Carregando informações...",
+        "no_info": "O desenvolvedor não forneceu mais informações para este repositório",
+        "open_issues": "Problemas em aberto",
+        "open_repo": "Abrir repositório",
+        "stars": "Estrelas",
+        "version_installed": "Versão baixada"
+    },
+    "dialog_update": {
+        "available_version": "Versão disponível",
+        "changelog": "Registro de mudanças",
+        "downloaded_version": "Versão para download",
+        "message": "Uma nova versão do {name} está disponível",
+        "no_info": "O autor não forneceu nenhuma informação para esta versão",
+        "releasenotes": "Notas de lançamento para {release}",
+        "title": "Atualização pendente"
+    },
+    "menu": {
+        "about": "Sobre o HACS",
+        "clear": "Limpar todos os novos",
+        "custom_repositories": "Repositórios personalizados",
+        "dismiss": "Limpar todos os novos repositórios",
+        "documentation": "Documentação",
+        "open_issue": "Relatar problema",
+        "reload": "Recarregar janela"
+    },
+    "my": {
+        "add_repository_description": "Isso adicionará o repositório personalizado '{repository}' a ser rastreado pelo HACS, você deseja adicioná-lo?",
+        "add_repository_title": "Adicionar repositório personalizado",
+        "documentation": "documentação",
+        "error": "Ocorreu um erro desconhecido",
+        "faq_link": "Meu Home Assistant FAQ",
+        "not_supported": "Este redirecionamento não é suportado. Verifique o {link} para os redirecionamentos suportados e a versão em que foram introduzidos.",
+        "repository_not_found": "Repositório {repository} não encontrado"
+    },
+    "repository_card": {
+        "dismiss": "Dispensar",
+        "information": "Informações",
+        "new_repository": "Novo repositório",
+        "not_loaded": "Não carregado",
+        "open_issue": "Relatar problema",
+        "open_source": "Código aberto",
+        "pending_restart": "Reinicialização pendente",
+        "pending_update": "Atualização pendente",
+        "redownload": "Baixar novamente",
+        "report": "Denunciar para remoção",
+        "update_information": "Atualizar informações"
+    },
+    "repository_status": {
+        "pending-restart": "Reinicialização pendente",
+        "pending-upgrade": "Atualização pendente"
+    }
+}

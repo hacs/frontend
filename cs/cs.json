@@ -1,0 +1,145 @@
+{
+    "column": {
+        "available_version": "Dostupná verze",
+        "category": "Kategorie",
+        "downloads": "Staženo",
+        "installed_version": "Stažená verze",
+        "last_updated": "Aktualizováno",
+        "name": "Název repozitáře",
+        "stars": "Hodnocení",
+        "status": "Stav"
+    },
+    "common": {
+        "add": "přidat",
+        "cancel": "Zrušit",
+        "close": "Zavřít",
+        "download": "Stáhnout",
+        "downloaded": "Staženo",
+        "explore": "Prozkoumejte a stáhněte si repozitáře",
+        "ignore": "Ignorovat",
+        "integration": "Integrace",
+        "integration_plural": "Integrace",
+        "lovelace": "Lovelace",
+        "navigate": "Navigovat",
+        "netdaemon": "NetDaemon",
+        "new": "Nový",
+        "plugin": "Lovelace",
+        "python_script": "Python skript",
+        "reload": "Znovu načíst",
+        "remove": "Odstranit",
+        "repositories": "Repozitáře",
+        "repository": "Repozitář",
+        "save": "Uložit",
+        "show": "Zobrazit",
+        "template": "Šablona",
+        "theme": "Motiv",
+        "update": "Aktualizovat",
+        "updates": "Aktualizace",
+        "yes": "Ano"
+    },
+    "confirm": {
+        "home_assistant_version_not_correct": "Používáte Home Assistant ve verzi \"{haversion}\", ale tento repozitář vyžaduje instalaci minimálně verzi \"{minversion}\"."
+    },
+    "dialog": {
+        "configured": {
+            "confirm": "Přejít na integrace",
+            "message": "Integrace {name} je nakonfigurována nebo ignorována, před jejím odebráním z HACS je nutné její konfiguraci smazat",
+            "title": "Integrace je nakonfigurována"
+        },
+        "reload": {
+            "confirm": "Chcete to udělat hned teď?",
+            "description": "Při změně zdrojů Lovelace musíte vymazat mezipaměť prohlížeče."
+        },
+        "remove": {
+            "message": "Opravdu chcete odstranit {name} ?",
+            "title": "Odstranit"
+        }
+    },
+    "dialog_about": {
+        "downloaded_repositories": "Stažená úložiště",
+        "frontend_version": "Verze rozhraní",
+        "integration_version": "Verze integrace",
+        "useful_links": "Užitečné odkazy"
+    },
+    "dialog_add_repo": {
+        "no_match": "Vašemu filtru neodpovídají žádné repozitáře",
+        "sort_by": "Řadit dle",
+        "sort_by_values": {
+            "last_updated": "Naposledy aktualizováno",
+            "name": "Název",
+            "stars": "Hodnocení"
+        },
+        "title": "Přidat repozitář"
+    },
+    "dialog_custom_repositories": {
+        "category": "Kategorie",
+        "no_category": "Chybí kategorie",
+        "no_repository": "Chybí repozitář",
+        "title": "Vlastní repozitáře",
+        "url_placeholder": "Přidat URL adresu vlastního repozitáře"
+    },
+    "dialog_download": {
+        "lovelace_instruction": "Po dokončení stahování, protože Lovelace nepoužíváte v režimu úložiště, musíte ručně přidat zdroj s těmito nastaveními:",
+        "note_downloaded": "Po stažení se bude nacházet v {location}",
+        "restart": "Nezapomeňte, že změny integrace (custom_components) se projeví až po restartu Home Assistant.",
+        "select_version": "Zvolte verzi",
+        "show_beta": "Zobrazit beta verze",
+        "type": "Typ",
+        "url": "URL"
+    },
+    "dialog_info": {
+        "author": "Autor",
+        "download": "Stáhněte si toto úložiště pomocí HACS",
+        "downloads": "Staženo",
+        "loading": "Načítání informací...",
+        "no_info": "Vývojář neposkytl pro tento repozitář žádné další informace",
+        "open_issues": "Nahlásit problémy",
+        "open_repo": "Otevřít repozitář",
+        "stars": "Hvězdičky",
+        "version_installed": "Verze stažena"
+    },
+    "dialog_update": {
+        "available_version": "Dostupná verze",
+        "changelog": "Seznam změn",
+        "downloaded_version": "Stažená verze",
+        "message": "Je k dispozici nová verze {name}",
+        "no_info": "Autor neposkytl žádné informace pro toto vydání",
+        "releasenotes": "Poznámky k vydáno pro {release}",
+        "title": "Aktualizace čeká na vyřízení"
+    },
+    "menu": {
+        "about": "O HACS",
+        "clear": "Vymazat vše nové",
+        "custom_repositories": "Vlastní repozitáře",
+        "dismiss": "Odmítnout všechny nové repozitáře",
+        "documentation": "Dokumentace",
+        "open_issue": "Nahlásit problém",
+        "reload": "Znovu načíst okno"
+    },
+    "my": {
+        "add_repository_description": "Tím přidáte vlastní repozitář '{repository}', který bude sledován HACS, chcete ho přidat?",
+        "add_repository_title": "Přidat vlastní repozitář",
+        "documentation": "dokumentace",
+        "error": "Nastala neznámá chyba",
+        "faq_link": "Nejčastější dotazy k aplikaci My Home Assistant",
+        "not_supported": "Toto přesměrování není podporováno. Podívejte se na {link} , kde najdete podporovaná přesměrování a verzi, ve které byla zavedena.",
+        "repository_not_found": "Repozitář {repository} nenalezen"
+    },
+    "repository_card": {
+        "dismiss": "zamítnout",
+        "information": "Informace",
+        "new_repository": "Nový repozitář",
+        "not_loaded": "Nenačteno",
+        "open_issue": "Nahlásit problém",
+        "open_source": "Otevřít zdrojový kód",
+        "pending_restart": "Čeká se na restart",
+        "pending_update": "Čeká na aktualizaci",
+        "redownload": "Stáhnout znovu",
+        "report": "Zažádat o odstranění",
+        "update_information": "Informace o aktualizaci"
+    },
+    "repository_status": {
+        "pending-restart": "Čeká se na restart",
+        "pending-upgrade": "Čeká na aktualizaci"
+    }
+}

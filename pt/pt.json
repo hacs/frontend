@@ -1,0 +1,134 @@
+{
+    "column": {
+        "available_version": "Versão disponível",
+        "category": "Categoria",
+        "downloads": "Transferências",
+        "installed_version": "Versão descarregada",
+        "last_updated": "Atualizado",
+        "name": "Nome do repositório",
+        "stars": "Estrelas",
+        "status": "Estado"
+    },
+    "common": {
+        "add": "adicionar",
+        "cancel": "Cancelar",
+        "close": "Fechar",
+        "download": "Descarregar",
+        "downloaded": "Versão descarregada",
+        "explore": "Explorar e descarregar repositórios",
+        "ignore": "Ignorar",
+        "integration": "Integração",
+        "integration_plural": "Integrações",
+        "lovelace": "Lovelace",
+        "netdaemon": "NetDaemon",
+        "new": "Novo",
+        "plugin": "Lovelace",
+        "python_script": "Script Python",
+        "reload": "Recarregar",
+        "remove": "Remover",
+        "repositories": "Repositórios",
+        "repository": "Repositório",
+        "theme": "Tema",
+        "update": "Atualizar",
+        "yes": "Sim"
+    },
+    "confirm": {
+        "home_assistant_version_not_correct": "Está a executar a versão '{haversion}' do Home Assistant, mas este repositório requer a versão mínima '{minversion}' para ser instalado."
+    },
+    "dialog": {
+        "configured": {
+            "confirm": "Ir para integrações",
+            "message": "A integração {name} é configurada ou ignorada, é necessário apagar a configuração para a mesma antes de a remover do HACS",
+            "title": "A integração está configurada"
+        },
+        "reload": {
+            "confirm": "Quer fazer isso agora?",
+            "description": "É necessário recarregar o seu navegador para que os recursos actualizados possam ser utilizados."
+        },
+        "remove": {
+            "message": "Quer mesmo remover o {name}?",
+            "title": "Remover"
+        }
+    },
+    "dialog_about": {
+        "downloaded_repositories": "Repositórios descarregados",
+        "frontend_version": "Versão Frontend",
+        "integration_version": "Versão de integração",
+        "useful_links": "Links úteis"
+    },
+    "dialog_add_repo": {
+        "no_match": "Não foram encontrados repositórios que correspondam ao filtro",
+        "sort_by": "Ordenar por",
+        "sort_by_values": {
+            "last_updated": "Última actualização",
+            "name": "Nome",
+            "stars": "Estrelas"
+        },
+        "title": "Adicionar repositório"
+    },
+    "dialog_custom_repositories": {
+        "category": "Categoria",
+        "no_category": "Categoria em falta",
+        "no_repository": "Repositório em falta",
+        "title": "Repositórios personalizados",
+        "url_placeholder": "Adicionar URL do repositório personalizado"
+    },
+    "dialog_download": {
+        "restart": "Lembre-se de que precisa de reiniciar o Home Assistant antes de serem aplicadas alterações às integrações (custom_components).",
+        "select_version": "Seleccione a versão",
+        "show_beta": "Mostrar versões beta",
+        "type": "Tipo",
+        "url": "URL"
+    },
+    "dialog_info": {
+        "author": "Autor",
+        "download": "Descarregar este repositório com HACS",
+        "downloads": "Transferências",
+        "loading": "A carregar informações...",
+        "no_info": "O developer não forneceu mais informações sobre este repositório",
+        "open_issues": "Questões em aberto",
+        "open_repo": "Abrir Repositório",
+        "stars": "Estrelas",
+        "version_installed": "Versão descarregada"
+    },
+    "dialog_update": {
+        "available_version": "Versão disponível",
+        "changelog": "Changelog",
+        "downloaded_version": "Versão descarregada",
+        "message": "Está disponível uma nova versão do {name}.",
+        "no_info": "O autor não forneceu qualquer informação para este comunicado",
+        "releasenotes": "Notas de lançamento para {release}",
+        "title": "Atualização pendente"
+    },
+    "menu": {
+        "about": "Sobre o HACS",
+        "clear": "Limpar todos os recentes",
+        "custom_repositories": "Repositórios personalizados",
+        "dismiss": "Dispensar todos os novos repositórios.",
+        "documentation": "Documentação",
+        "open_issue": "Questão em aberto",
+        "reload": "Recarregar janela"
+    },
+    "my": {
+        "add_repository_description": "Isso adicionará o repositório personalizado '{repository}' a ser rastreado pelo HACS. Deseja adicioná-lo?",
+        "add_repository_title": "Adicionar repositório personalizado",
+        "repository_not_found": "Repositório {repository} não encontrado"
+    },
+    "repository_card": {
+        "dismiss": "dispensar",
+        "information": "Informações",
+        "new_repository": "Novo repositório",
+        "not_loaded": "Não carregado",
+        "open_issue": "Questão em aberto",
+        "open_source": "Código aberto",
+        "pending_restart": "Reinicialização pendente",
+        "pending_update": "Atualização pendente",
+        "redownload": "Redownload",
+        "report": "Motivo para remover",
+        "update_information": "Atualizar informações"
+    },
+    "repository_status": {
+        "pending-restart": "Reinício pendente",
+        "pending-upgrade": "Atualização pendente"
+    }
+}

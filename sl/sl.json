@@ -1,0 +1,146 @@
+{
+    "column": {
+        "available_version": "Razpoložljiva različica",
+        "category": "Kategorija",
+        "downloads": "Prenosi",
+        "installed_version": "Prenesena različica",
+        "last_updated": "Posodobljeno",
+        "name": "Naziv repozitorija",
+        "stars": "Zvezdice",
+        "status": "Status"
+    },
+    "common": {
+        "add": "dodaj",
+        "appdaemon": "AppDaemon",
+        "cancel": "Prekliči",
+        "close": "Zapri",
+        "download": "Prenesi",
+        "downloaded": "Preneseno",
+        "explore": "Raziščite in prenesite repozitorije",
+        "ignore": "Ignoriraj",
+        "integration": "Integracija",
+        "integration_plural": "Integracije",
+        "lovelace": "Lovelace",
+        "navigate": "Navigiraj",
+        "netdaemon": "NetDaemon",
+        "new": "Novo",
+        "plugin": "Lovelace",
+        "python_script": "Python skript",
+        "reload": "Ponovno naloži",
+        "remove": "Odstrani",
+        "repositories": "Repozitoriji",
+        "repository": "Repozitorij",
+        "save": "Shrani",
+        "show": "Pokaži",
+        "template": "Predloga",
+        "theme": "Tema",
+        "update": "Posodobitev",
+        "updates": "Posodobitve",
+        "yes": "Da"
+    },
+    "confirm": {
+        "home_assistant_version_not_correct": "Uporabljate Home Assistant verzije '{haversion}', vendar ta repozitorij zahteva nameščeno najmanj različico '{minversion}'."
+    },
+    "dialog": {
+        "configured": {
+            "confirm": "Pojdi na integracije",
+            "message": "Integracija {name} je konfigurirana ali ignorirana, morate izbrisati konfiguracijo preden jo lahko odstranite iz HACS-a",
+            "title": "Integracija je konfigurirana"
+        },
+        "reload": {
+            "confirm": "Želite to storiti zdaj?",
+            "description": "Osvežiti morate brskalnik, da bodo posodobljeni viri na voljo."
+        },
+        "remove": {
+            "message": "Res želite odstraniti {name}?",
+            "title": "Odstrani"
+        }
+    },
+    "dialog_about": {
+        "downloaded_repositories": "Prenešeni repozitoriji",
+        "frontend_version": "Verzija frontenda",
+        "integration_version": "Verzija integracije",
+        "useful_links": "Uporabne povezave"
+    },
+    "dialog_add_repo": {
+        "no_match": "Temu filtru ne ustreza noben repozitorij",
+        "sort_by": "Sortiraj po",
+        "sort_by_values": {
+            "last_updated": "Nazadnje posodobljeno",
+            "name": "Naziv",
+            "stars": "Zvezdic"
+        },
+        "title": "Dodaj repozitorij"
+    },
+    "dialog_custom_repositories": {
+        "category": "Kategorija",
+        "no_category": "Manjkajoča kategorija",
+        "no_repository": "Manjkajoč repozitorij",
+        "title": "Repozitoriji po meri",
+        "url_placeholder": "Dodaj URL repozitorija po meri"
+    },
+    "dialog_download": {
+        "lovelace_instruction": "Ker ne uporabljate Lovelace v načinu shranjevanja, morate po prenosu datotek ročno dodati vir z naslednjimi nastavitvami:",
+        "note_downloaded": "Po končanem prenosu se bodo datoteke nahajale v {location}",
+        "restart": "Home Assistant morate ponovno zagnati, da se bodo spremembe integracij (custom_components) uveljavile.",
+        "select_version": "Izberi verzijo",
+        "show_beta": "Pokaži beta verzije",
+        "type": "Tip",
+        "url": "URL"
+    },
+    "dialog_info": {
+        "author": "Avtor",
+        "download": "Prenesi ta repozitorij s HACS-om",
+        "downloads": "Prenosi",
+        "loading": "Nalaganje informacij...",
+        "no_info": "Razvijalec ni podal nobenih informacij o tem repozitoriju",
+        "open_issues": "Prijavljene težave",
+        "open_repo": "Odpri repozitorij",
+        "stars": "Zvezdice",
+        "version_installed": "Verzija prenešena"
+    },
+    "dialog_update": {
+        "available_version": "Verzija na voljo",
+        "changelog": "Dnevnik sprememb",
+        "downloaded_version": "Prenešena verzija",
+        "message": "Nova verzija {name} je na voljo",
+        "no_info": "Avtor ni podal nobenih informacij o tej izdaji",
+        "releasenotes": "Opombe ob izdaji za {release}",
+        "title": "Čakanje na posodobitev"
+    },
+    "menu": {
+        "about": "O HACS",
+        "clear": "Počisti nove",
+        "custom_repositories": "Repozitoriji po meri",
+        "dismiss": "Opusti nove repozitorije",
+        "documentation": "Dokumentacija",
+        "open_issue": "Prijavi težavo",
+        "reload": "Ponovno naloži okno"
+    },
+    "my": {
+        "add_repository_description": "To bo dodalo repozitorij po meri '{repository}', ki mu bo sledil HACS. Ali ga želite dodati?",
+        "add_repository_title": "Dodajanje repozitorija po meri",
+        "documentation": "dokumentacija",
+        "error": "Prišlo je do neznane napake",
+        "faq_link": "Moje Home Assistant FAQ",
+        "not_supported": "Ta preusmeritev ni podprta. Preverite {link} za podprte preusmeritve in različico v kateri so bile uvedene.",
+        "repository_not_found": "Repozitorij {repository} ni bil najden"
+    },
+    "repository_card": {
+        "dismiss": "opusti",
+        "information": "Informacije",
+        "new_repository": "Nov repozitorij",
+        "not_loaded": "Ni naloženo",
+        "open_issue": "Prijavi težavo",
+        "open_source": "Odpri vir",
+        "pending_restart": "Čakam na restart",
+        "pending_update": "Čakanje na posodobitev",
+        "redownload": "Ponovno prenesi",
+        "report": "Zahteva po odstranitvi",
+        "update_information": "Posodobi informacije"
+    },
+    "repository_status": {
+        "pending-restart": "Čakanje na ponovni zagon",
+        "pending-upgrade": "Čakajoča posodobitev"
+    }
+}

@@ -1,0 +1,146 @@
+{
+    "column": {
+        "available_version": "Versione disponibile",
+        "category": "Categoria",
+        "downloads": "Scaricamenti",
+        "installed_version": "Versione scaricata",
+        "last_updated": "Aggiornato",
+        "name": "Nome archivio digitale",
+        "stars": "Stelle",
+        "status": "Stato"
+    },
+    "common": {
+        "add": "aggiungi",
+        "appdaemon": "AppDaemon",
+        "cancel": "Annulla",
+        "close": "Chiudi",
+        "download": "Scarica",
+        "downloaded": "Scaricato",
+        "explore": "Esplora e scarica gli archivi digitali",
+        "ignore": "Ignora",
+        "integration": "Integrazione",
+        "integration_plural": "Integrazioni",
+        "lovelace": "Lovelace",
+        "navigate": "Naviga",
+        "netdaemon": "NetDaemon",
+        "new": "Nuovo",
+        "plugin": "Lovelace",
+        "python_script": "Script Python",
+        "reload": "Ricarica",
+        "remove": "Rimuovi",
+        "repositories": "Archivi digitali",
+        "repository": "Archivio digitale",
+        "save": "Salva",
+        "show": "Mostra",
+        "template": "Modello",
+        "theme": "Tema",
+        "update": "Aggiorna",
+        "updates": "Aggiornamenti",
+        "yes": "Sì"
+    },
+    "confirm": {
+        "home_assistant_version_not_correct": "Stai eseguendo la versione '{haversion}' di Home Assistant, ma questo archivio digitale richiede la versione minima '{minversion}' per essere installato."
+    },
+    "dialog": {
+        "configured": {
+            "confirm": "Vai alle integrazioni",
+            "message": "L'integrazione {name} è configurata o ignorata, è necessario eliminare la sua configurazione prima di rimuoverla da HACS",
+            "title": "L'integrazione è configurata"
+        },
+        "reload": {
+            "confirm": "Vuoi farlo adesso?",
+            "description": "È necessario ricaricare il browser per utilizzare le risorse aggiornate."
+        },
+        "remove": {
+            "message": "Vuoi davvero rimuovere {name}?",
+            "title": "Rimuovi"
+        }
+    },
+    "dialog_about": {
+        "downloaded_repositories": "Archivi digitali scaricati",
+        "frontend_version": "Versione frontend",
+        "integration_version": "Versione dell'integrazione",
+        "useful_links": "Collegamenti utili"
+    },
+    "dialog_add_repo": {
+        "no_match": "Non sono stati trovati archivi digitali corrispondenti al tuo filtro",
+        "sort_by": "Ordina per",
+        "sort_by_values": {
+            "last_updated": "Ultimo aggiornamento",
+            "name": "Nome",
+            "stars": "Stelle"
+        },
+        "title": "Aggiungi archivio digitale"
+    },
+    "dialog_custom_repositories": {
+        "category": "Categoria",
+        "no_category": "Categoria mancante",
+        "no_repository": "Archivio digitale mancante",
+        "title": "Archivi digitali personalizzati",
+        "url_placeholder": "Aggiungi l'URL dell'archivio digitale personalizzato"
+    },
+    "dialog_download": {
+        "lovelace_instruction": "Al termine dello scaricamento, poiché non stai utilizzando Lovelace in modalità di archiviazione, devi aggiungere manualmente la risorsa con queste impostazioni:",
+        "note_downloaded": "Una volta scaricato, si troverà in {location}",
+        "restart": "Ricorda che devi riavviare Home Assistant prima che vengano applicate le modifiche alle integrazioni (custom_components).",
+        "select_version": "Seleziona la versione",
+        "show_beta": "Mostra versioni beta",
+        "type": "Tipo",
+        "url": "URL"
+    },
+    "dialog_info": {
+        "author": "Autore",
+        "download": "Scarica questo archivio digitale con HACS",
+        "downloads": "Download",
+        "loading": "Caricamento informazioni...",
+        "no_info": "Lo sviluppatore non ha fornito ulteriori informazioni per questo archivio digitale",
+        "open_issues": "Problemi irrisolti",
+        "open_repo": "Apri l'archivio digitale",
+        "stars": "Stelle",
+        "version_installed": "Versione scaricata"
+    },
+    "dialog_update": {
+        "available_version": "Versione disponibile",
+        "changelog": "Registro delle modifiche",
+        "downloaded_version": "Versione scaricata",
+        "message": "È disponibile la nuova versione di {name}",
+        "no_info": "L'autore non ha fornito alcuna informazione per questa versione",
+        "releasenotes": "Note di rilascio per {release}",
+        "title": "Aggiornamento in sospeso"
+    },
+    "menu": {
+        "about": "Informazioni su HACS",
+        "clear": "Nascondi novità",
+        "custom_repositories": "Archivi digitali personalizzati",
+        "dismiss": "Nascondi nuovi archivi digitali",
+        "documentation": "Documentazione",
+        "open_issue": "Problemi irrisolti",
+        "reload": "Ricarica la finestra"
+    },
+    "my": {
+        "add_repository_description": "Questo aggiungerà l'archivio digitale personalizzato '{repository}' per essere monitorato da HACS, vuoi aggiungerlo?",
+        "add_repository_title": "Aggiungi archivio digitale personalizzato",
+        "documentation": "documentazione",
+        "error": "Si è verificato un errore sconosciuto",
+        "faq_link": "Domande frequenti su My Home Assistant",
+        "not_supported": "Questo reindirizzamento non è supportato. Controlla il {link} per i reindirizzamenti supportati e la versione in cui sono stati introdotti.",
+        "repository_not_found": "Archivio digitale {repository} non trovato"
+    },
+    "repository_card": {
+        "dismiss": "nascondi",
+        "information": "Informazioni",
+        "new_repository": "Nuovo archivio digitale",
+        "not_loaded": "Non caricato",
+        "open_issue": "Problemi irrisolti",
+        "open_source": "Open source",
+        "pending_restart": "In attesa di riavvio",
+        "pending_update": "Aggiornamento in sospeso",
+        "redownload": "Scarica di nuovo",
+        "report": "Richiesta di rimozione",
+        "update_information": "Aggiorna informazioni"
+    },
+    "repository_status": {
+        "pending-restart": "In attesa di riavvio",
+        "pending-upgrade": "In attesa di aggiornamento"
+    }
+}

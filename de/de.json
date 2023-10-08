@@ -1,0 +1,146 @@
+{
+    "column": {
+        "available_version": "Verfügbare Version",
+        "category": "Kategorie",
+        "downloads": "Downloads",
+        "installed_version": "Heruntergeladene Version",
+        "last_updated": "Aktualisiert",
+        "name": "Repository-Name",
+        "stars": "Sterne",
+        "status": "Status"
+    },
+    "common": {
+        "add": "hinzufügen",
+        "appdaemon": "AppDaemon",
+        "cancel": "Abbrechen",
+        "close": "Schließen",
+        "download": "Herunterladen",
+        "downloaded": "Heruntergeladen",
+        "explore": "Repositories durchsuchen und herunterladen",
+        "ignore": "Ignorieren",
+        "integration": "Integration",
+        "integration_plural": "Integrationen",
+        "lovelace": "Lovelace",
+        "navigate": "Navigiere",
+        "netdaemon": "NetDaemon",
+        "new": "Neu",
+        "plugin": "Lovelace",
+        "python_script": "Python-Skript",
+        "reload": "Neu laden",
+        "remove": "Entfernen",
+        "repositories": "Repositories",
+        "repository": "Repository",
+        "save": "Speichern",
+        "show": "Anzeigen",
+        "template": "Vorlage",
+        "theme": "Theme",
+        "update": "Aktualisieren",
+        "updates": "Aktualisierungen",
+        "yes": "Ja"
+    },
+    "confirm": {
+        "home_assistant_version_not_correct": "Du benutzt die Home Assistant-Version '{haversion}', für dieses Repository muss jedoch die Mindestversion '{minversion}' installiert sein."
+    },
+    "dialog": {
+        "configured": {
+            "confirm": "Gehe zu Integrationen",
+            "message": "Die {name} Integration ist bereits konfiguriert oder ignoriert, du musst die Konfiguration dafür löschen, bevor du sie aus HACS entfernst",
+            "title": "Integration ist konfiguriert"
+        },
+        "reload": {
+            "confirm": "Willst du das jetzt machen?",
+            "description": "Du musst deinen Browser-Cache leeren, wenn du Lovelace-Ressourcen änderst."
+        },
+        "remove": {
+            "message": "Möchtest du {name} wirklich entfernen?",
+            "title": "Entfernen"
+        }
+    },
+    "dialog_about": {
+        "downloaded_repositories": "Heruntergeladene Repositories",
+        "frontend_version": "Frontend Version",
+        "integration_version": "Integrations Version",
+        "useful_links": "Nützliche Links"
+    },
+    "dialog_add_repo": {
+        "no_match": "Es wurden keine Repositories gefunden, die deinen Filter entsprechen",
+        "sort_by": "Sortiere nach",
+        "sort_by_values": {
+            "last_updated": "Zuletzt aktualisiert",
+            "name": "Name",
+            "stars": "Sterne"
+        },
+        "title": "Repository hinzufügen"
+    },
+    "dialog_custom_repositories": {
+        "category": "Kategorie",
+        "no_category": "Fehlende Kategorie",
+        "no_repository": "Fehlendes Repository",
+        "title": "Benutzerdefinierte Repositories",
+        "url_placeholder": "Füge eine benutzerdefinierte Repository-URL hinzu"
+    },
+    "dialog_download": {
+        "lovelace_instruction": "Nachdem der Download abgeschlossen ist, musst Du die Ressource mit diesen Einstellungen manuell hinzufügen, da Du Lovelace nicht im Speichermodus verwendest:",
+        "note_downloaded": "Nach dem Herunterladen befindet sich dies in {location}",
+        "restart": "Denke daran, dass du Home Assistant neu starten musst, bevor Änderungen an Integrationen (custom_components) angewendet werden.",
+        "select_version": "Version auswählen",
+        "show_beta": "Beta-Versionen anzeigen",
+        "type": "Typ",
+        "url": "URL"
+    },
+    "dialog_info": {
+        "author": "Autor",
+        "download": "Installiere dieses Repository mit HACS",
+        "downloads": "Downloads",
+        "loading": "Informationen laden...",
+        "no_info": "Der Entwickler hat keine weiteren Informationen für dieses Repository bereitgestellt",
+        "open_issues": "Probleme melden",
+        "open_repo": "Repository öffnen",
+        "stars": "Sterne",
+        "version_installed": "Version heruntergeladen"
+    },
+    "dialog_update": {
+        "available_version": "Verfügbare Version",
+        "changelog": "Änderungsprotokoll",
+        "downloaded_version": "Heruntergeladene Version",
+        "message": "Eine neue Version von {name} ist verfügbar",
+        "no_info": "Der Autor hat keine Informationen für dieses Release bereitgestellt",
+        "releasenotes": "Releasenotes für {release}",
+        "title": "Update ausstehend"
+    },
+    "menu": {
+        "about": "Über HACS",
+        "clear": "Alles neue als gesehen markieren",
+        "custom_repositories": "Benutzerdefinierte Repositories",
+        "dismiss": "Alle neuen Repositories ausblenden",
+        "documentation": "Dokumentation",
+        "open_issue": "Problem melden",
+        "reload": "Fenster neu laden"
+    },
+    "my": {
+        "add_repository_description": "Dies fügt das benutzerdefinierte Repository '{repository}' hinzu, das von HACS verwaltet werden soll. Möchtest Du es hinzufügen?",
+        "add_repository_title": "Benutzerdefiniertes Repository hinzufügen",
+        "documentation": "Dokumentation",
+        "error": "Unbekannter Fehler aufgetreten",
+        "faq_link": "Mein Heimassistent FAQ",
+        "not_supported": "Diese Weiterleitung wird nicht unterstützt. Überprüfen Sie den {link} auf die unterstützten Weiterleitungen und die Version, in der sie eingeführt wurden.",
+        "repository_not_found": "Repository {repository} nicht gefunden"
+    },
+    "repository_card": {
+        "dismiss": "Ausblenden",
+        "information": "Information",
+        "new_repository": "Neues Repository",
+        "not_loaded": "Nicht geladen",
+        "open_issue": "Problem melden",
+        "open_source": "Quelldateien öffnen",
+        "pending_restart": "Ausstehender Neustart",
+        "pending_update": "Ausstehende Aktualisierung",
+        "redownload": "Erneut herunterladen",
+        "report": "Melden zur Entfernung des Repositorys",
+        "update_information": "Informationen aktualisieren"
+    },
+    "repository_status": {
+        "pending-restart": "Ausstehender Neustart",
+        "pending-upgrade": "Ausstehende Aktualisierung"
+    }
+}

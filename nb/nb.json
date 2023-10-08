@@ -1,0 +1,143 @@
+{
+    "column": {
+        "available_version": "Tilgjengelig versjon",
+        "category": "Kategori",
+        "downloads": "Nedlastinger",
+        "installed_version": "Nedlastet versjon",
+        "last_updated": "Oppdatert",
+        "name": "Navn på repositorium",
+        "stars": "Stjerner",
+        "status": "Status"
+    },
+    "common": {
+        "add": "legg til",
+        "appdaemon": "AppDaemon",
+        "cancel": "Avbryt",
+        "close": "Lukk",
+        "download": "Laste ned",
+        "downloaded": "Nedlastet",
+        "explore": "Utforsk og last ned",
+        "ignore": "Ignorere",
+        "integration": "Integrasjon",
+        "integration_plural": "Integrasjoner",
+        "lovelace": "Lovelace",
+        "netdaemon": "NetDaemon",
+        "new": "Ny",
+        "plugin": "Lovelace",
+        "python_script": "Python-skript",
+        "reload": "Last inn på nytt",
+        "remove": "Fjern",
+        "repositories": "Pakkelagre",
+        "repository": "Pakkelager",
+        "show": "Vise",
+        "theme": "Tema",
+        "update": "Oppdater",
+        "updates": "Oppdateringer",
+        "yes": "Ja"
+    },
+    "confirm": {
+        "home_assistant_version_not_correct": "Du kjører Home Assistant '{haversion}', men dette pakkelageret krever minimum versjon '{minversion}' for å bli installert."
+    },
+    "dialog": {
+        "configured": {
+            "confirm": "Gå til integrasjoner",
+            "message": "{name} -integrasjonen er konfigurert eller ignorert, du må slette konfigurasjonen for den før du fjerner den fra HACS",
+            "title": "Integrasjon er konfigurert"
+        },
+        "reload": {
+            "confirm": "Vil du gjøre det nå?",
+            "description": "Du må laste inn nettleseren på nytt for at de oppdaterte ressursene skal kunne brukes."
+        },
+        "remove": {
+            "message": "Vil du virkelig fjerne {name} ?",
+            "title": "Fjern"
+        }
+    },
+    "dialog_about": {
+        "downloaded_repositories": "Nedlastede pakkelagre",
+        "frontend_version": "Frontend versjon",
+        "integration_version": "Integrasjonsversjon",
+        "useful_links": "Nyttige lenker"
+    },
+    "dialog_add_repo": {
+        "no_match": "Ingen pakkelagre funnet som samsvarer med filteret ditt",
+        "sort_by": "Sorter etter",
+        "sort_by_values": {
+            "last_updated": "Sist oppdatert",
+            "name": "Navn",
+            "stars": "Stjerner"
+        },
+        "title": "Legg til pakkelager"
+    },
+    "dialog_custom_repositories": {
+        "category": "Kategori",
+        "no_category": "Mangler kategori",
+        "no_repository": "Mangler pakkelager",
+        "title": "Tilpassede pakkelagre",
+        "url_placeholder": "Legg til tilpasset pakkelager URL"
+    },
+    "dialog_download": {
+        "lovelace_instruction": "Etter at nedlastingen er fullført, siden du ikke bruker Lovelace i lagringsmodus, må du manuelt legge til ressursen med disse innstillingene:",
+        "note_downloaded": "Når det er lastet ned, vil dette være plassert i {location}",
+        "restart": "Husk at du må starte Home Assistant på nytt før endringer i integrasjoner (custom_components) brukes.",
+        "select_version": "Velg versjon",
+        "show_beta": "Vis betaversjoner",
+        "type": "Type",
+        "url": "URL"
+    },
+    "dialog_info": {
+        "author": "Utgiver",
+        "download": "Last ned dette pakkelageret med HACS",
+        "downloads": "Nedlastinger",
+        "loading": "Laster inn informasjon ...",
+        "no_info": "Utvikleren har ikke gitt mer informasjon for dette pakkelageret",
+        "open_issues": "Åpne problemer",
+        "open_repo": "Åpne pakkelager nettsted",
+        "stars": "Stjerner",
+        "version_installed": "Nedlasted versjon"
+    },
+    "dialog_update": {
+        "available_version": "Tilgjengelig versjon",
+        "changelog": "Endringslogg",
+        "downloaded_version": "Nedlastet versjon",
+        "message": "En ny versjon av {name} er tilgjengelig",
+        "no_info": "Forfatteren har ikke gitt noen informasjon for denne utgivelsen",
+        "releasenotes": "Utgivelsesmerknader for {release}",
+        "title": "Oppdatering venter"
+    },
+    "menu": {
+        "about": "Om HACS",
+        "clear": "Fjern alt nytt",
+        "custom_repositories": "Tilpassede pakkelagre",
+        "dismiss": "Lukk nye repositorier",
+        "documentation": "Dokumentasjon",
+        "open_issue": "Meld et problem",
+        "reload": "Last inn vinduet på nytt"
+    },
+    "my": {
+        "add_repository_description": "Dette vil legge til det tilpassede depotet '{repository}' som skal spores av HACS, vil du legge det til?",
+        "add_repository_title": "Legg til tilpasset repositorium",
+        "documentation": "dokumentasjon",
+        "error": "En ukjent feil oppstod",
+        "faq_link": "Vanlige spørsmål om min hjemmeassistent",
+        "not_supported": "Denne viderekoblingen støttes ikke. Sjekk {link} for de støttede viderekoblingene og versjonen de ble introdusert.",
+        "repository_not_found": "Repository {repository} ikke funnet"
+    },
+    "repository_card": {
+        "dismiss": "Avvis",
+        "information": "Informasjon",
+        "new_repository": "Nytt pakkelager",
+        "not_loaded": "Ikke lastet inn",
+        "open_issue": "Meld et problem",
+        "open_source": "Åpne kilde",
+        "pending_restart": "Venter på omstart",
+        "pending_update": "Oppdatering venter",
+        "redownload": "Last ned på nytt",
+        "report": "Forespørsel om fjerning",
+        "update_information": "Oppdater informasjon"
+    },
+    "repository_status": {
+        "pending-restart": "Venter på omstart",
+        "pending-upgrade": "Venter på oppdatering"
+    }
+}

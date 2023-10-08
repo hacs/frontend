@@ -1,0 +1,143 @@
+{
+    "column": {
+        "available_version": "Saatavilla oleva versio",
+        "category": "Kategoria",
+        "downloads": "Lataukset",
+        "installed_version": "Ladattu versio",
+        "last_updated": "Päivitetty",
+        "name": "Repon nimi",
+        "stars": "Tähdet",
+        "status": "Tila"
+    },
+    "common": {
+        "add": "Lisää",
+        "cancel": "Peruuta",
+        "close": "Sulje",
+        "download": "Lataa",
+        "downloaded": "Ladattu",
+        "explore": "Selaa & lataa repoja",
+        "ignore": "Ohita",
+        "integration": "Integraatio",
+        "integration_plural": "Integraatiot",
+        "lovelace": "Lovelace",
+        "netdaemon": "NetDaemon",
+        "new": "Uusi",
+        "plugin": "Lovelace",
+        "python_script": "Python-skripti",
+        "reload": "Lataa uudelleen",
+        "remove": "Poista",
+        "repositories": "Repo",
+        "repository": "Repo",
+        "show": "Näytä",
+        "template": "Malli",
+        "theme": "Teema",
+        "update": "Päivitä",
+        "updates": "Päivitykset",
+        "yes": "Kyllä"
+    },
+    "confirm": {
+        "home_assistant_version_not_correct": "Käytät Home Assistantin versiota '{haversion}', mutta tämä repo vaatii vähintään version '{minversion}' asennettuna."
+    },
+    "dialog": {
+        "configured": {
+            "confirm": "Siirry integraatioihin",
+            "message": "Integrointi {name} on määritetty tai ohitettu, sinun on poistettava sen määritykset ennen sen poistamista HACS:sta",
+            "title": "Integraatio on määritetty"
+        },
+        "reload": {
+            "confirm": "Haluatko tehdä sen nyt?",
+            "description": "Sinun on ladattava selaimesi uudelleen, jotta päivitetyt resurssit voidaan käyttää."
+        },
+        "remove": {
+            "message": "Haluatko varmasti poistaa {name}?",
+            "title": "Poista"
+        }
+    },
+    "dialog_about": {
+        "downloaded_repositories": "Ladatut repot",
+        "frontend_version": "Frontend-versio",
+        "integration_version": "Integraation versio",
+        "useful_links": "Hyödyllisiä linkkejä"
+    },
+    "dialog_add_repo": {
+        "no_match": "Suodatintasi vastaavia repoja ei löytynyt",
+        "sort_by": "Järjestä",
+        "sort_by_values": {
+            "last_updated": "Päivitetty viimeksi",
+            "name": "Nimi",
+            "stars": "Tähdet"
+        },
+        "title": "Lisää repo"
+    },
+    "dialog_custom_repositories": {
+        "category": "Kategoria",
+        "no_category": "Puuttuva kategoria",
+        "no_repository": "Puuttuva repo",
+        "title": "Mukautetut repot",
+        "url_placeholder": "Lisää kustomoidun repon URL"
+    },
+    "dialog_download": {
+        "lovelace_instruction": "Kun lataus on valmis, sinun on lisättävä resurssi manuaalisesti seuraavilla asetuksilla:",
+        "note_downloaded": "Kun tämä on ladattu, se sijaitsee hakemistossa {location}.",
+        "restart": "Muista, että sinun on käynnistettävä Home Assistant uudelleen ennen kuin muutokset integraatioihin (custom_components) otetaan käyttöön.",
+        "select_version": "Valitse versio",
+        "show_beta": "Näytä betaversiot",
+        "type": "Tyyppi",
+        "url": "URL"
+    },
+    "dialog_info": {
+        "author": "Luoja",
+        "download": "Lataa tämä repo HACS:n avulla",
+        "downloads": "Lataukset",
+        "loading": "Tietoja ladataan...",
+        "no_info": "Kehittäjä ei ole toimittanut enempää tietoja tästä reposta",
+        "open_issues": "Avoimet ongelmat",
+        "open_repo": "Avaa repo",
+        "stars": "Tähdet",
+        "version_installed": "Versio ladattu"
+    },
+    "dialog_update": {
+        "available_version": "Saatavilla oleva versio",
+        "changelog": "Muutosloki",
+        "downloaded_version": "Ladattu versio",
+        "message": "Tuotteesta {name} on saatavilla uusi versio",
+        "no_info": "Kirjoittaja ei ole antanut mitään tietoja tästä julkaisusta.",
+        "releasenotes": "{release}:n julkaisutiedot",
+        "title": "Päivitys odottaa"
+    },
+    "menu": {
+        "about": "Tietoja HACS:stä",
+        "clear": "Tyhjennä kaikki uudet",
+        "custom_repositories": "Mukautetut repot",
+        "dismiss": "Hylkää uudet repot",
+        "documentation": "Dokumentointi",
+        "open_issue": "Avoin ongelma",
+        "reload": "Lataa ikkuna uudelleen"
+    },
+    "my": {
+        "add_repository_description": "Tämä lisää kustomoidun repon '{arkisto}' HACS:n seurattavaksi. Haluatko lisätä sen?",
+        "add_repository_title": "Lisää kustomoitu repo",
+        "documentation": "dokumentaatio",
+        "error": "Tuntematon virhe",
+        "faq_link": "Home Assistant UKK",
+        "not_supported": "Ohjaus ei ole tuettu. Tarkista {link} tuetut ohjaukset ja versio, jossa ne esiteltiin.",
+        "repository_not_found": "Repoa {repository} ei löytynyt"
+    },
+    "repository_card": {
+        "dismiss": "Hylkää",
+        "information": "Tiedot",
+        "new_repository": "Uusi repo",
+        "not_loaded": "Ei ladattu",
+        "open_issue": "Avoin ongelma",
+        "open_source": "Avoin lähdekoodi",
+        "pending_restart": "Odottaa uudelleenkäynnistystä",
+        "pending_update": "Odottaa päivittämistä",
+        "redownload": "Lataa uudelleen",
+        "report": "Raportoi poistettavaksi",
+        "update_information": "Päivitä tiedot"
+    },
+    "repository_status": {
+        "pending-restart": "Odottaa uudelleenkäynnistystä",
+        "pending-upgrade": "Odottaa päivittämistä"
+    }
+}

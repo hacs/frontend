@@ -1,0 +1,135 @@
+{
+    "column": {
+        "available_version": "Beschikbare versie",
+        "category": "Categorie",
+        "downloads": "Downloads",
+        "installed_version": "Gedownloade versie",
+        "last_updated": "Bijgewerkt",
+        "name": "Naam van repository",
+        "stars": "Sterren",
+        "status": "Status"
+    },
+    "common": {
+        "add": "toevoegen",
+        "appdaemon": "AppDaemon",
+        "cancel": "Annuleren",
+        "close": "Sluit",
+        "download": "Download",
+        "downloaded": "Gedownload",
+        "explore": "Verken & download repositories",
+        "ignore": "Negeer",
+        "integration": "Integratie",
+        "integration_plural": "Integraties",
+        "lovelace": "Lovelace",
+        "netdaemon": "NetDaemon",
+        "new": "Nieuw",
+        "plugin": "Lovelace",
+        "python_script": "Python Script",
+        "reload": "Herladen",
+        "remove": "Verwijder",
+        "repositories": "Repositories",
+        "repository": "Repository",
+        "show": "Toon",
+        "theme": "Thema",
+        "update": "Update",
+        "updates": "Updates",
+        "yes": "Ja"
+    },
+    "confirm": {
+        "home_assistant_version_not_correct": "U gebruikt Home Assistant versie '{haversion}', echter deze repository vereist dat minimaal versie '{minversion}' is geïnstalleerd."
+    },
+    "dialog": {
+        "configured": {
+            "confirm": "Ga naar integraties",
+            "message": "De {name} -integratie is geconfigureerd of genegeerd, u moet de configuratie er van verwijderen voordat u deze uit HACS verwijdert",
+            "title": "Integratie is geconfigureerd"
+        },
+        "reload": {
+            "confirm": "Wilt u dat nu doen?",
+            "description": "U moet de cache van uw browser leegmaken wanneer u Lovelace-bronnen wijzigt."
+        },
+        "remove": {
+            "message": "Wilt u {name} echt verwijderen?",
+            "title": "Verwijder"
+        }
+    },
+    "dialog_about": {
+        "downloaded_repositories": "Gedownloade repositories",
+        "frontend_version": "Frontend versie",
+        "integration_version": "Integratieversie",
+        "useful_links": "Nuttige links"
+    },
+    "dialog_add_repo": {
+        "no_match": "Er zijn geen repositories gevonden die overeenkomen met uw filter",
+        "sort_by": "Sorteren op",
+        "sort_by_values": {
+            "last_updated": "Laatst bijgewerkt",
+            "name": "Naam",
+            "stars": "Sterren"
+        },
+        "title": "Repository toevoegen"
+    },
+    "dialog_custom_repositories": {
+        "category": "Categorie",
+        "no_category": "Ontbrekende categorie",
+        "no_repository": "Ontbrekende repository",
+        "title": "Aangepaste repositories",
+        "url_placeholder": "Voeg een aangepaste repository-URL toevoegen"
+    },
+    "dialog_download": {
+        "lovelace_instruction": "Nadat de download is voltooid, moet u, aangezien u Lovelace niet in de opslagmodus gebruikt, de bron handmatig toevoegen met deze instellingen:",
+        "note_downloaded": "Wanneer gedownload zal deze zich bevinden in {location}",
+        "restart": "Vergeet niet dat u Home Assistant opnieuw moet opstarten voordat wijzigingen in integraties (custom_components) worden toegepast.",
+        "select_version": "Selecteer versie",
+        "show_beta": "Bètaversies weergeven",
+        "type": "Type",
+        "url": "URL"
+    },
+    "dialog_info": {
+        "author": "Auteur",
+        "download": "Download deze repository met HACS",
+        "downloads": "Downloads",
+        "loading": "Informatie laden ...",
+        "no_info": "De ontwikkelaar heeft geen verdere informatie verstrekt voor deze repository",
+        "open_issues": "Openstaande problemen",
+        "open_repo": "Open repository",
+        "stars": "Sterren",
+        "version_installed": "Versie gedownload"
+    },
+    "dialog_update": {
+        "available_version": "Beschikbare versie",
+        "changelog": "Changelog",
+        "downloaded_version": "Gedownloade versie",
+        "message": "Er is een nieuwe versie van {name} beschikbaar",
+        "no_info": "De ontwikkelaar heeft geen verdere informatie verstrekt voor deze repository",
+        "releasenotes": "Releasenotes voor {release}",
+        "title": "Update in behandeling"
+    },
+    "menu": {
+        "about": "Over HACS",
+        "clear": "Wis alle nieuwe",
+        "custom_repositories": "Aangepaste repositories",
+        "dismiss": "Verberg nieuwe repositories",
+        "documentation": "Documentatie",
+        "open_issue": "Meld probleem",
+        "reload": "Herlaad venster"
+    },
+    "my": {
+        "documentation": "documentatie",
+        "error": "Er is een onbekende fout opgetreden",
+        "repository_not_found": "Repository {repository} niet gevonden"
+    },
+    "repository_card": {
+        "dismiss": "verberg",
+        "information": "Informatie",
+        "new_repository": "Nieuwe repository",
+        "not_loaded": "Niet geladen",
+        "open_issue": "Meld probleem",
+        "open_source": "Open source",
+        "pending_restart": "In afwachting van herstart",
+        "pending_update": "In afwachting van update",
+        "redownload": "Opnieuw downloaden",
+        "report": "Rapport voor verwijdering",
+        "update_information": "Update informatie"
+    }
+}

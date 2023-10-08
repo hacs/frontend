@@ -1,0 +1,145 @@
+{
+    "column": {
+        "available_version": "גירסה זמינה",
+        "category": "קטגוריה",
+        "downloads": "הורדות",
+        "installed_version": "גרסה שהורדה",
+        "last_updated": "עודכן",
+        "name": "שם המאגר",
+        "stars": "כוכבים",
+        "status": "מצב"
+    },
+    "common": {
+        "add": "הוספה",
+        "cancel": "ביטול",
+        "close": "סגור",
+        "download": "הורדה",
+        "downloaded": "הורד",
+        "explore": "חקירה והורדת מאגרים",
+        "ignore": "להתעלם",
+        "integration": "שילוב",
+        "integration_plural": "אינטגרציה",
+        "lovelace": "Lovelace",
+        "navigate": "ניווט",
+        "netdaemon": "NetDaemon",
+        "new": "חדש",
+        "plugin": "Lovelace",
+        "python_script": "סקריפט פייתון",
+        "reload": "טעינה מחדש",
+        "remove": "הסרה",
+        "repositories": "מאגרים",
+        "repository": "מאגר",
+        "save": "שמירה",
+        "show": "הצגה",
+        "template": "תבנית",
+        "theme": "ערכת נושא",
+        "update": "עדכון",
+        "updates": "עדכונים",
+        "yes": "כן"
+    },
+    "confirm": {
+        "home_assistant_version_not_correct": "גירסת Home Assistant '{haversion}' רצה, אבל באסה מאגר זה דורש מינימום גירסת '{minversion}'."
+    },
+    "dialog": {
+        "configured": {
+            "confirm": "עבור לאינטגרציות",
+            "message": "תצורת השילוב {name} מוגדרת או שהמערכת מתעלמת ממנו, יש למחוק את התצורה עבורו לפני הסרתו מ-HACS",
+            "title": "תצורת השילוב מוגדרת"
+        },
+        "reload": {
+            "confirm": "לעשות את זה עכשיו?",
+            "description": "יש לטעון מחדש את הדפדפן כדי להשתמש במשאבים המעודכנים."
+        },
+        "remove": {
+            "message": "האם בוודאות ברצונך להסיר את {name}?",
+            "title": "הסרה"
+        }
+    },
+    "dialog_about": {
+        "downloaded_repositories": "מאגרים שהורדו",
+        "frontend_version": "גרסת החזותי",
+        "integration_version": "גרסת שילוב",
+        "useful_links": "קישורים שימושיים"
+    },
+    "dialog_add_repo": {
+        "no_match": "לא נמצאו מאגרים התואמים את המסנן שלך",
+        "sort_by": "מיון לפי",
+        "sort_by_values": {
+            "last_updated": "עודכן לאחרונה",
+            "name": "שם",
+            "stars": "כוכבים"
+        },
+        "title": "הוספת מאגר"
+    },
+    "dialog_custom_repositories": {
+        "category": "קטגוריה",
+        "no_category": "קטגוריה חסרה",
+        "no_repository": "מאגר חסר",
+        "title": "מאגרים מותאמים אישית",
+        "url_placeholder": "הוספת כתובת מאגר מותאמת אישית"
+    },
+    "dialog_download": {
+        "lovelace_instruction": "לאחר השלמת ההורדה, מכיוון שאינך משתמש ב-Lovelace במצב אחסון עליך להוסיף את המשאב באופן ידני עם הגדרות אלה:",
+        "note_downloaded": "בעת ההורדה, פעולה זו תמוקם ב-{location}",
+        "restart": "תזכורת, יש להפעיל מחדש את ה-Home Assistant לפני החלת שינויים בשילובים (custom_components).",
+        "select_version": "בחירת גירסה",
+        "show_beta": "הצגת גרסאות בטא",
+        "type": "סוג",
+        "url": "כתובת אתר"
+    },
+    "dialog_info": {
+        "author": "מחבר",
+        "download": "הורדת מאגר זה באמצעות HACS",
+        "downloads": "הורדות",
+        "loading": "טוען מידע...",
+        "no_info": "המפתח לא סיפק מידע נוסף עבור מאגר זה",
+        "open_issues": "סוגיות פתוחים",
+        "open_repo": "פתיחת מאגר",
+        "stars": "כוכבים",
+        "version_installed": "גירסה שהורדה"
+    },
+    "dialog_update": {
+        "available_version": "גירסה זמינה",
+        "changelog": "יומן שינויים",
+        "downloaded_version": "גרסה שהורדה",
+        "message": "גירסה חדשה של {name} זמינה",
+        "no_info": "המחבר לא סיפק כל מידע עבור שיחרור זו",
+        "releasenotes": "הערות שחרור עבור {release}",
+        "title": "עדכון ממתין"
+    },
+    "menu": {
+        "about": "אודות HACS",
+        "clear": "ניקוי כל החדשים",
+        "custom_repositories": "מאגרים מותאמים אישית",
+        "dismiss": "דחיית מאגרים חדשים",
+        "documentation": "תיעוד",
+        "open_issue": "פתיחת סוגיה",
+        "reload": "טעינת חלון מחדש"
+    },
+    "my": {
+        "add_repository_description": "זה יוסיף את המאגר המותאם אישית '{repository}' למעקב על ידי HACS, האם ברצונך רוצה להוסיף אותו?",
+        "add_repository_title": "הוספת מאגר מותאם אישית",
+        "documentation": "תיעוד",
+        "error": "אירעה שגיאה לא ידועה",
+        "faq_link": "שאלות נפוצות על Home Assistant שלי",
+        "not_supported": "ההפניה מחדש אינה נתמכת. יש לבדוק ב-{link} את ההפניות מחדש הנתמכות ואת הגרסה שבה הן הוצגו.",
+        "repository_not_found": "המאגר {repository} לא נמצא"
+    },
+    "repository_card": {
+        "dismiss": "דחייה",
+        "information": "מידע",
+        "new_repository": "מאגר חדש",
+        "not_loaded": "לא נטען",
+        "open_issue": "פתיחת נושא",
+        "open_source": "פתיחת מקור",
+        "pending_restart": "ממתין להפעלה מחדש",
+        "pending_update": "ממתין לעדכון",
+        "redownload": "הורדה מחדש",
+        "report": "בקשה להסרה",
+        "update_information": "עדכון מידע"
+    },
+    "repository_status": {
+        "pending-restart": "ממתין להפעלה מחדש",
+        "pending-upgrade": "ממתין לעדכון"
+    }
+}

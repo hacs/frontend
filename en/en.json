@@ -1,0 +1,146 @@
+{
+    "column": {
+        "available_version": "Available version",
+        "category": "Category",
+        "downloads": "Downloads",
+        "installed_version": "Downloaded version",
+        "last_updated": "Updated",
+        "name": "Repository Name",
+        "stars": "Stars",
+        "status": "Status"
+    },
+    "common": {
+        "add": "add",
+        "appdaemon": "AppDaemon",
+        "cancel": "Cancel",
+        "close": "Close",
+        "download": "Download",
+        "downloaded": "Downloaded",
+        "explore": "Explore & download repositories",
+        "ignore": "Ignore",
+        "integration": "Integration",
+        "integration_plural": "Integrations",
+        "lovelace": "Lovelace",
+        "navigate": "Navigate",
+        "netdaemon": "NetDaemon",
+        "new": "New",
+        "plugin": "Lovelace",
+        "python_script": "Python Script",
+        "reload": "Reload",
+        "remove": "Remove",
+        "repositories": "Repositories",
+        "repository": "Repository",
+        "save": "Save",
+        "show": "Show",
+        "template": "Template",
+        "theme": "Theme",
+        "update": "Update",
+        "updates": "Updates",
+        "yes": "Yes"
+    },
+    "confirm": {
+        "home_assistant_version_not_correct": "You are running Home Assistant version '{haversion}', but this repository requires minimum version '{minversion}' to be installed."
+    },
+    "dialog": {
+        "configured": {
+            "confirm": "Go to integrations",
+            "message": "The {name} integration is configured or ignored, you need to delete the configuration for it before removing it from HACS",
+            "title": "Integration is configured"
+        },
+        "reload": {
+            "confirm": "Do you want to do that now?",
+            "description": "You need to reload your browser for the updated resources to be used."
+        },
+        "remove": {
+            "message": "Do you really want to remove {name}?",
+            "title": "Remove"
+        }
+    },
+    "dialog_about": {
+        "downloaded_repositories": "Downloaded repositories",
+        "frontend_version": "Frontend version",
+        "integration_version": "Integration version",
+        "useful_links": "Useful links"
+    },
+    "dialog_add_repo": {
+        "no_match": "No repositories found matching your filter",
+        "sort_by": "Sort by",
+        "sort_by_values": {
+            "last_updated": "Last updated",
+            "name": "Name",
+            "stars": "Stars"
+        },
+        "title": "Add repository"
+    },
+    "dialog_custom_repositories": {
+        "category": "Category",
+        "no_category": "Missing category",
+        "no_repository": "Missing repository",
+        "title": "Custom repositories",
+        "url_placeholder": "Add custom repository URL"
+    },
+    "dialog_download": {
+        "lovelace_instruction": "After the download completes, since you are not using Lovelace in storage mode you need to manually add the resource with these settings:",
+        "note_downloaded": "When downloaded this will be located in {location}",
+        "restart": "Remember that you need to restart Home Assistant before changes to integrations (custom_components) are applied.",
+        "select_version": "Select version",
+        "show_beta": "Show beta versions",
+        "type": "Type",
+        "url": "URL"
+    },
+    "dialog_info": {
+        "author": "Author",
+        "download": "Download this repository with HACS",
+        "downloads": "Downloads",
+        "loading": "Loading information...",
+        "no_info": "The developer has not provided any more information for this repository",
+        "open_issues": "Open issues",
+        "open_repo": "Open repository",
+        "stars": "Stars",
+        "version_installed": "Version downloaded"
+    },
+    "dialog_update": {
+        "available_version": "Available version",
+        "changelog": "Changelog",
+        "downloaded_version": "Downloaded version",
+        "message": "A new version of the {name} is available",
+        "no_info": "The author has not provided any information for this release",
+        "releasenotes": "Release notes for {release}",
+        "title": "Update pending"
+    },
+    "menu": {
+        "about": "About HACS",
+        "clear": "Clear all new",
+        "custom_repositories": "Custom repositories",
+        "dismiss": "Dismiss new repositories",
+        "documentation": "Documentation",
+        "open_issue": "Open issue",
+        "reload": "Reload window"
+    },
+    "my": {
+        "add_repository_description": "This will add the custom repository '{repository}' to be tracked by HACS, do you want to add it?",
+        "add_repository_title": "Add custom repository",
+        "documentation": "documentation",
+        "error": "An unknown error occurred",
+        "faq_link": "My Home Assistant FAQ",
+        "not_supported": "This redirect is not supported. Check the {link} for the supported redirects and the version they where introduced.",
+        "repository_not_found": "Repository {repository} not found"
+    },
+    "repository_card": {
+        "dismiss": "dismiss",
+        "information": "Information",
+        "new_repository": "New repository",
+        "not_loaded": "Not loaded",
+        "open_issue": "Open issue",
+        "open_source": "Open source",
+        "pending_restart": "Pending restart",
+        "pending_update": "Pending update",
+        "redownload": "Redownload",
+        "report": "Request for removal",
+        "update_information": "Update information"
+    },
+    "repository_status": {
+        "pending-restart": "Pending restart",
+        "pending-upgrade": "Pending update"
+    }
+}

@@ -1,0 +1,14 @@
+{
+    "common": {
+        "appdaemon": "AppDaemon",
+        "integration": "Integrasjon",
+        "lovelace": "Lovelace",
+        "netdaemon": "NetDaemon",
+        "plugin": "Lovelace",
+        "repositories": "Repositories",
+        "theme": "Tema"
+    },
+    "confirm": {
+        "home_assistant_version_not_correct": "Du køyrer Home Assistant-versjonen '{haversion}', men dette kodedepoet krev minst versjon '{minversion}' for å bli installert."
+    }
+}

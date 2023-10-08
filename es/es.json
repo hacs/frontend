@@ -1,0 +1,136 @@
+{
+    "column": {
+        "category": "Categoría",
+        "downloads": "Descargas",
+        "last_updated": "Actualizado",
+        "name": "Nombre del Repositorio",
+        "stars": "Estrellas"
+    },
+    "common": {
+        "add": "añadir",
+        "appdaemon": "AppDaemon",
+        "cancel": "Cancelar",
+        "close": "Cerrar",
+        "download": "Descargar",
+        "downloaded": "Descargado",
+        "explore": "Explorar y descargar repositorios",
+        "ignore": "Ignorar",
+        "integration": "Integración",
+        "integration_plural": "Integraciones",
+        "lovelace": "Lovelace",
+        "netdaemon": "NetDaemon",
+        "new": "Nuevo",
+        "plugin": "Lovelace",
+        "python_script": "Script de Python",
+        "reload": "Recargar",
+        "remove": "Eliminar",
+        "repositories": "Repositorios",
+        "repository": "Repositorio",
+        "show": "Mostrar",
+        "theme": "Tema",
+        "update": "Actualizar",
+        "updates": "Actualizaciones",
+        "yes": "Sí"
+    },
+    "confirm": {
+        "home_assistant_version_not_correct": "Está ejecutando la versión '{haversion}' de Home Assistant, pero este repositorio requiere la instalación de la versión '{minversion}' mínima."
+    },
+    "dialog": {
+        "configured": {
+            "confirm": "Ir a integraciones",
+            "message": "La integración {name} está configurada o ignorada, es necesario eliminar la configuración para ella antes de eliminarla de HACS",
+            "title": "La integración está configurada"
+        },
+        "reload": {
+            "confirm": "¿Quieres hacer eso ahora?",
+            "description": "Necesitas limpiar el caché de tu navegador cuando cambies los recursos de Lovelace."
+        },
+        "remove": {
+            "message": "¿Realmente quieres eliminar a {name}?",
+            "title": "Eliminar"
+        }
+    },
+    "dialog_about": {
+        "downloaded_repositories": "Repositorios descargados",
+        "frontend_version": "Versión del frontend",
+        "integration_version": "Versión de la integración",
+        "useful_links": "Enlaces útiles"
+    },
+    "dialog_add_repo": {
+        "no_match": "No se han encontrado repositorios que coincidan con el filtro",
+        "sort_by": "Ordenar por",
+        "sort_by_values": {
+            "last_updated": "Última actualización",
+            "name": "Nombre",
+            "stars": "Estrellas"
+        },
+        "title": "Añadir repositorio"
+    },
+    "dialog_custom_repositories": {
+        "category": "Categoría",
+        "no_category": "Categoría que falta",
+        "no_repository": "Falta el repositorio",
+        "title": "Repositorios personalizados",
+        "url_placeholder": "Agrega la URL del repositorio personalizado que deseas añadir"
+    },
+    "dialog_download": {
+        "lovelace_instruction": "Una vez completada la descarga, dado que no está utilizando Lovelace en modo de almacenamiento, debe agregar manualmente el recurso con estas configuraciones:",
+        "note_downloaded": "Cuando se descargue, se guardará en {location}",
+        "restart": "Recuerde que debe reiniciar Home Assistant antes de aplicar los cambios en las integraciones (custom_components).",
+        "select_version": "Seleccionar versión",
+        "show_beta": "Mostrar versiones beta",
+        "type": "Tipo",
+        "url": "URL"
+    },
+    "dialog_info": {
+        "author": "Autor",
+        "download": "Descargar este repositorio con HACS",
+        "downloads": "Descargas",
+        "loading": "Cargando información ...",
+        "no_info": "El desarrollador no ha proporcionado más información para este repositorio",
+        "open_issues": "Abrir incidencias",
+        "open_repo": "Abrir repositorio",
+        "stars": "Estrellas",
+        "version_installed": "Versión descargada"
+    },
+    "dialog_update": {
+        "available_version": "Versión disponible",
+        "changelog": "Registro de cambios",
+        "downloaded_version": "Versión descargada",
+        "message": "Hay disponible una nueva versión de {name}",
+        "no_info": "El desarrollador no ha proporcionado más información para este repositorio",
+        "releasenotes": "Notas de lanzamiento para {release}",
+        "title": "Actualización pendiente"
+    },
+    "menu": {
+        "about": "Acerca de HACS",
+        "clear": "Borrar todo lo nuevo",
+        "custom_repositories": "Repositorios personalizados",
+        "dismiss": "Descartar todos los repositorios nuevos",
+        "documentation": "Documentación",
+        "open_issue": "Abrir incidencias",
+        "reload": "Recargar la ventana"
+    },
+    "my": {
+        "add_repository_description": "Esto agregará el repositorio personalizado '{repository}' y HACS comprobará sus novedades, ¿quieres agregarlo?",
+        "add_repository_title": "Añadir repositorio personalizado",
+        "documentation": "documentación",
+        "error": "Ha ocurrido un error desconocido",
+        "faq_link": "Preguntas frecuentes de Home Assistant",
+        "not_supported": "Esta redirección no es compatible. Consulta {link} para conocer los redireccionamientos admitidos y la versión en la que se introdujeron.",
+        "repository_not_found": "No se encuentra el repositorio {repository}"
+    },
+    "repository_card": {
+        "dismiss": "descartar",
+        "information": "Información",
+        "new_repository": "Nuevo repositorio",
+        "not_loaded": "Sin cargar",
+        "open_issue": "Abrir incidencias",
+        "open_source": "Código abierto",
+        "pending_restart": "Pendiente de reinicio",
+        "pending_update": "Actualización pendiente",
+        "redownload": "Volver a descargar",
+        "report": "Informe para la eliminación",
+        "update_information": "Actualizar información"
+    }
+}

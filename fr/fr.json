@@ -1,0 +1,146 @@
+{
+    "column": {
+        "available_version": "Version disponible",
+        "category": "Catégorie",
+        "downloads": "Téléchargements",
+        "installed_version": "Version téléchargée",
+        "last_updated": "Actualisé",
+        "name": "Nom du référentiel",
+        "stars": "Étoiles",
+        "status": "Statut"
+    },
+    "common": {
+        "add": "ajouter",
+        "appdaemon": "AppDaemon",
+        "cancel": "Annuler",
+        "close": "Fermer",
+        "download": "Télécharger",
+        "downloaded": "Téléchargé",
+        "explore": "Explorer et télécharger des référentiels",
+        "ignore": "Ignorer",
+        "integration": "Intégration",
+        "integration_plural": "Intégrations",
+        "lovelace": "Lovelace",
+        "navigate": "Naviguer",
+        "netdaemon": "NetDaemon",
+        "new": "Nouveau",
+        "plugin": "Lovelace",
+        "python_script": "Script Python",
+        "reload": "Recharger",
+        "remove": "Désinstaller",
+        "repositories": "Dépôts",
+        "repository": "Dépôt",
+        "save": "Enregistrer",
+        "show": "Afficher",
+        "template": "Modèle",
+        "theme": "Thème",
+        "update": "Mettre à jour",
+        "updates": "Mises à jour",
+        "yes": "Oui"
+    },
+    "confirm": {
+        "home_assistant_version_not_correct": "Vous exécutez la version '{haversion}' de Home Assistant, mais ce dépôt nécessite l'installation de la version '{minversion}' au minimum."
+    },
+    "dialog": {
+        "configured": {
+            "confirm": "Aller aux intégrations",
+            "message": "L'intégration {name} est actuellement configurée ou ignorée ; vous devez d'abord supprimer sa configuration avant de pouvoir la désinstaller depuis HACS",
+            "title": "L'intégration est configurée"
+        },
+        "reload": {
+            "confirm": "Voulez-vous faire cela maintenant ?",
+            "description": "Vous devez actualiser votre navigateur afin que les ressources mises à jour soient utilisées."
+        },
+        "remove": {
+            "message": "Voulez-vous vraiment désinstaller {name} ?",
+            "title": "Désinstaller"
+        }
+    },
+    "dialog_about": {
+        "downloaded_repositories": "Dépôts téléchargés",
+        "frontend_version": "Version de l'interface",
+        "integration_version": "Version de l'intégration",
+        "useful_links": "Liens utiles"
+    },
+    "dialog_add_repo": {
+        "no_match": "Aucun dépôt trouvé correspondant à votre filtre",
+        "sort_by": "Trier par",
+        "sort_by_values": {
+            "last_updated": "Dernière mise à jour",
+            "name": "Nom",
+            "stars": "Étoiles"
+        },
+        "title": "Ajouter un dépôt"
+    },
+    "dialog_custom_repositories": {
+        "category": "Catégorie",
+        "no_category": "Catégorie manquante",
+        "no_repository": "Dépôt manquant",
+        "title": "Dépôts personnalisés",
+        "url_placeholder": "Ajouter une URL de dépôt personnalisée"
+    },
+    "dialog_download": {
+        "lovelace_instruction": "Étant donné que vous n'utilisez pas Lovelace en mode « storage », une fois le téléchargement terminé, vous devrez ajouter manuellement la ressource grâce aux paramètres suivants :",
+        "note_downloaded": "Ce dépôt sera téléchargé dans {location}",
+        "restart": "N'oubliez pas que vous devez redémarrer Home Assistant afin que les modifications apportées aux intégrations (custom_components) soient appliquées.",
+        "select_version": "Sélectionner la version",
+        "show_beta": "Afficher les versions bêta",
+        "type": "Type",
+        "url": "URL"
+    },
+    "dialog_info": {
+        "author": "Auteur",
+        "download": "Télécharger ce dépôt avec HACS",
+        "downloads": "Téléchargements",
+        "loading": "Chargement des informations…",
+        "no_info": "Le développeur n'a pas fourni plus d'informations pour ce dépôt",
+        "open_issues": "Problèmes connus",
+        "open_repo": "Accéder au dépôt",
+        "stars": "Étoiles",
+        "version_installed": "Version téléchargée"
+    },
+    "dialog_update": {
+        "available_version": "Version disponible",
+        "changelog": "Journal des modifications",
+        "downloaded_version": "Version téléchargée",
+        "message": "Une nouvelle version de {name} est disponible",
+        "no_info": "L'auteur n'a fourni aucune information pour cette version",
+        "releasenotes": "Notes de version pour {release}",
+        "title": "Mise à jour en attente"
+    },
+    "menu": {
+        "about": "À propos de HACS",
+        "clear": "Effacer tous les nouveaux",
+        "custom_repositories": "Dépôts personnalisés",
+        "dismiss": "Rejeter tous les nouveaux dépôts",
+        "documentation": "Documentation",
+        "open_issue": "Signaler un problème",
+        "reload": "Recharger la fenêtre"
+    },
+    "my": {
+        "add_repository_description": "Cela ajoutera le référentiel personnalisé '{repository}' à suivre par HACS, voulez-vous l'ajouter ?",
+        "add_repository_title": "Ajouter un référentiel personnalisé",
+        "documentation": "documentation",
+        "error": "Une erreur inconnue est survenue",
+        "faq_link": "My Home Assistant FAQ",
+        "not_supported": "Cette redirection n'est pas prise en charge. Vérifiez-le {link} pour les redirections prises en charge et la version qu'ils ont introduite.",
+        "repository_not_found": "Référentiel {repository} introuvable"
+    },
+    "repository_card": {
+        "dismiss": "rejeter",
+        "information": "Informations",
+        "new_repository": "Nouveau dépôt",
+        "not_loaded": "Non chargé",
+        "open_issue": "Signaler un problème",
+        "open_source": "Afficher le code source",
+        "pending_restart": "En attente de redémarrage",
+        "pending_update": "Mise à jour en attente",
+        "redownload": "Retélécharger",
+        "report": "Faire une demande de suppression",
+        "update_information": "Actualiser les informations"
+    },
+    "repository_status": {
+        "pending-restart": "En attente de redémarrage",
+        "pending-upgrade": "En attente de mise à jour"
+    }
+}

@@ -1,0 +1,142 @@
+{
+    "column": {
+        "available_version": "Налична версия",
+        "category": "Категория",
+        "downloads": "Изтегляния",
+        "installed_version": "Свалена версия",
+        "last_updated": "Актуализиран",
+        "name": "Име на хранилището",
+        "stars": "Звезди",
+        "status": "Състояние"
+    },
+    "common": {
+        "add": "добавете",
+        "cancel": "Отказ",
+        "close": "Затвори",
+        "download": "Свали",
+        "downloaded": "Свалена",
+        "explore": "Проучване & изтегляне на хранилища",
+        "ignore": "Игнорирайте",
+        "integration": "Интеграция",
+        "integration_plural": "Интеграции",
+        "lovelace": "Lovelace",
+        "netdaemon": "NetDaemon",
+        "new": "Ново",
+        "plugin": "Lovelace",
+        "python_script": "Python скрипт",
+        "reload": "Презареждане",
+        "remove": "Премахване",
+        "repositories": "Хранилища",
+        "repository": "Хранилище",
+        "show": "Покажи",
+        "theme": "Тема",
+        "update": "Актуализация",
+        "updates": "Актуализации",
+        "yes": "Да"
+    },
+    "confirm": {
+        "home_assistant_version_not_correct": "Изпълнявате версия \"{haversion}\" на Home Assistant, но това хранилище изисква да бъде инсталирана минимална версия \"{minversion}\"."
+    },
+    "dialog": {
+        "configured": {
+            "confirm": "Отидете на интеграции",
+            "message": "Интеграцията {name} е конфигурирана, трябва да изтриете конфигурацията за нея, преди да я премахнете от HACS",
+            "title": "Интеграцията е конфигурирана"
+        },
+        "reload": {
+            "confirm": "Искате ли да направите това сега?",
+            "description": "Трябва да изчистите кеша на браузъра си, когато променяте ресурсите на Lovelace."
+        },
+        "remove": {
+            "message": "Наистина ли искате да премахнете {name} ?",
+            "title": "Премахване"
+        }
+    },
+    "dialog_about": {
+        "downloaded_repositories": "Изтеглени хранилища",
+        "frontend_version": "Версия на интерфейса",
+        "integration_version": "Версия на интеграцията",
+        "useful_links": "Полезни връзки"
+    },
+    "dialog_add_repo": {
+        "no_match": "Не са намерени хранилища, съответстващи на вашия филтър",
+        "sort_by": "Сортиране по",
+        "sort_by_values": {
+            "last_updated": "Последно обновен",
+            "name": "Име",
+            "stars": "Звезди"
+        },
+        "title": "Добавяне на хранилище"
+    },
+    "dialog_custom_repositories": {
+        "category": "Категория",
+        "no_category": "Липсваща категория",
+        "no_repository": "Липсващо хранилище",
+        "title": "Потребителски хранилища",
+        "url_placeholder": "Добавете URL адрес на потребителското хранилище"
+    },
+    "dialog_download": {
+        "lovelace_instruction": "След като изтеглянето завърши, тъй като не използвате Lovelace в режим на съхранение, трябва ръчно да добавите ресурса със следните настройки:",
+        "note_downloaded": "Когато бъде изтеглено, това ще се намира в {location}",
+        "restart": "Не забравяйте, че трябва да рестартирате Home Assistant, преди да бъдат приложени промените в интеграциите (custom_components).",
+        "select_version": "Избери версия",
+        "show_beta": "Показване на бета версии",
+        "type": "Вид",
+        "url": "Линк"
+    },
+    "dialog_info": {
+        "author": "Автор",
+        "download": "Изтеглете това хранилище с HACS",
+        "downloads": "Изтегляния",
+        "loading": "Зарежда се информация ...",
+        "no_info": "Разработчикът не е предоставил повече информация за това хранилище",
+        "open_issues": "Отворени въпроси",
+        "open_repo": "Отворете хранилището",
+        "stars": "Звезди",
+        "version_installed": "Изтеглена Версия"
+    },
+    "dialog_update": {
+        "available_version": "Налична версия",
+        "changelog": "Дневник на промените",
+        "downloaded_version": "Изтеглена версия",
+        "message": "Налична е нова версия на {name}",
+        "no_info": "Авторът не е предоставил никаква информация за това издание",
+        "releasenotes": "Бележки по изданието за {release}",
+        "title": "Чакаща актуализация"
+    },
+    "menu": {
+        "about": "Относно HACS",
+        "clear": "Изчистване на всичко ново",
+        "custom_repositories": "Потребителски хранилища",
+        "dismiss": "Отхвърляне на всички нови хранилища",
+        "documentation": "Документация",
+        "open_issue": "Задай въпрос",
+        "reload": "Презареждане на прозореца"
+    },
+    "my": {
+        "add_repository_description": "Това ще добави персонализираното хранилище '{repository}', което ще бъде проследявано от HACS, искате ли да го добавите?",
+        "add_repository_title": "Добавяне на персонализирано хранилище",
+        "documentation": "документация",
+        "error": "Възникна неизвестна грешка",
+        "faq_link": "Често задавани въпроси за моя домашен помощник",
+        "not_supported": "Това пренасочване не се поддържа. Проверете {link} за поддържаните пренасочвания и версията, която са въведени.",
+        "repository_not_found": "Хранилището {repository} не е намерено"
+    },
+    "repository_card": {
+        "dismiss": "отхвърляне",
+        "information": "Информация",
+        "new_repository": "Ново хранилище",
+        "not_loaded": "Не е зареден",
+        "open_issue": "Задай въпрос",
+        "open_source": "Отворен код",
+        "pending_restart": "Изчакващ рестартиране",
+        "pending_update": "Чакаща актуализация",
+        "redownload": "Свали отново",
+        "report": "Докладвайте за премахване",
+        "update_information": "Информация за актуализиране"
+    },
+    "repository_status": {
+        "pending-restart": "Чакащи рестартиране",
+        "pending-upgrade": "Чакащи актуализация"
+    }
+}

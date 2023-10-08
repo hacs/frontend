@@ -1,0 +1,144 @@
+{
+    "column": {
+        "available_version": "Доступная версия",
+        "category": "Категория",
+        "downloads": "Загрузки",
+        "installed_version": "Загруженная версия",
+        "last_updated": "Обновлено",
+        "name": "Название репозитория",
+        "stars": "Звёзды",
+        "status": "Статус"
+    },
+    "common": {
+        "add": "добавить",
+        "appdaemon": "AppDaemon",
+        "cancel": "Отмена",
+        "close": "Закрыть",
+        "download": "Скачать",
+        "downloaded": "Загруженное",
+        "explore": "Найти и загрузить репозитории",
+        "ignore": "Игнорировать",
+        "integration": "Интеграция",
+        "integration_plural": "Интеграции",
+        "lovelace": "Lovelace",
+        "netdaemon": "NetDaemon",
+        "new": "Новое",
+        "plugin": "Lovelace",
+        "python_script": "Скрипт Python",
+        "reload": "Перезагрузить",
+        "remove": "Удалить",
+        "repositories": "Репозитории",
+        "repository": "Репозиторий",
+        "show": "Показать",
+        "template": "Шаблон",
+        "theme": "Тема",
+        "update": "Обновить",
+        "updates": "Обновления",
+        "yes": "Да"
+    },
+    "confirm": {
+        "home_assistant_version_not_correct": "Вы используете Home Assistant версии '{haversion}', но данный репозиторий требует минимальную установленную версию '{minversion}'."
+    },
+    "dialog": {
+        "configured": {
+            "confirm": "Перейти к интеграциям",
+            "message": "Интеграция {name} настроена или игнорируется, необходимо удалить конфигурацию для нее, прежде чем удалять ее из HACS",
+            "title": "Интеграция настроена"
+        },
+        "reload": {
+            "confirm": "Вы хотите сделать это сейчас?",
+            "description": "Вам необходимо перезагрузить браузер, чтобы использовать обновленные ресурсы."
+        },
+        "remove": {
+            "message": "Вы уверены, что хотите удалить {name}?",
+            "title": "Удалить"
+        }
+    },
+    "dialog_about": {
+        "downloaded_repositories": "Загруженные репозитории",
+        "frontend_version": "Версия интерфейса",
+        "integration_version": "Версия интеграции",
+        "useful_links": "Полезные ссылки"
+    },
+    "dialog_add_repo": {
+        "no_match": "Не найдено репозиторий, соответствующих фильтру",
+        "sort_by": "Сортировать по",
+        "sort_by_values": {
+            "last_updated": "Последнее обновление",
+            "name": "Название",
+            "stars": "Звёзды"
+        },
+        "title": "Новый репозиторий"
+    },
+    "dialog_custom_repositories": {
+        "category": "Категория",
+        "no_category": "Категория не указана",
+        "no_repository": "Репозиторий не указан",
+        "title": "Пользовательские репозитории",
+        "url_placeholder": "Добавить пользовательский URL-адрес репозитория"
+    },
+    "dialog_download": {
+        "lovelace_instruction": "Так как вы не используете Lovelace в режиме сохранения, после загрузки вам нужно вручную добавить ресурс с этими настройками:",
+        "note_downloaded": "После скачивания файлы будут расположены в {location}",
+        "restart": "Помните, что вам нужно перезапустить Home Assistant, прежде чем будут применены изменения в интеграциях (custom_components).",
+        "select_version": "Выберите версию",
+        "show_beta": "Показывать бета-версии",
+        "type": "Тип",
+        "url": "URL"
+    },
+    "dialog_info": {
+        "author": "Автор",
+        "download": "Загрузите этот репозиторий с помощью HACS",
+        "downloads": "Загрузки",
+        "loading": "Загрузка информации...",
+        "no_info": "Разработчик не предоставил никакой дополнительной информации для этого репозитория",
+        "open_issues": "Открытые вопросы",
+        "open_repo": "Открыть репозиторий",
+        "stars": "Звёзды",
+        "version_installed": "Версия загружена"
+    },
+    "dialog_update": {
+        "available_version": "Доступная версия",
+        "changelog": "Изменения",
+        "downloaded_version": "Загруженная версия",
+        "message": "Доступна новая версия {name}",
+        "no_info": "Автор не предоставил никакой информации для этого выпуска",
+        "releasenotes": "Примечания к выпуску для {release}",
+        "title": "Обновление в ожидании"
+    },
+    "menu": {
+        "about": "О HACS",
+        "clear": "Очистить все новые репозитории",
+        "custom_repositories": "Пользовательские репозитории",
+        "dismiss": "Убрать все новые",
+        "documentation": "Документация",
+        "open_issue": "Сообщить о проблеме",
+        "reload": "Перезагрузить окно"
+    },
+    "my": {
+        "add_repository_description": "Это добавит пользовательский репозиторий '{repository}' в список, за которым будет следить HACS, согласны?",
+        "add_repository_title": "Добавить пользовательский репозиторий",
+        "documentation": "документация",
+        "error": "Произошла неизвестная ошибка",
+        "faq_link": "Мой ЧАВО Home Assistant",
+        "not_supported": "Это перенаправление не поддерживается. Посмотрите {link} чтобы найти список поддерживаемых перенаправлений и версию, в которой они были добавлены.",
+        "repository_not_found": "Репозиторий {repository} не найден"
+    },
+    "repository_card": {
+        "dismiss": "убрать",
+        "information": "Информация",
+        "new_repository": "Новый репозиторий",
+        "not_loaded": "Не загружено",
+        "open_issue": "Сообщить о проблеме",
+        "open_source": "Открыть источник",
+        "pending_restart": "В ожидании перезапуска",
+        "pending_update": "Ожидается обновление",
+        "redownload": "Скачать повторно",
+        "report": "Сообщить о нарушении",
+        "update_information": "Обновить информацию"
+    },
+    "repository_status": {
+        "pending-restart": "Нужен перезапуск",
+        "pending-upgrade": "Нужно обновление"
+    }
+}

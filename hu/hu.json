@@ -1,0 +1,146 @@
+{
+    "column": {
+        "available_version": "Elérhető verzió",
+        "category": "Kategória",
+        "downloads": "Letöltések",
+        "installed_version": "Letöltött verzió",
+        "last_updated": "Frissítve",
+        "name": "Repó neve",
+        "stars": "Csillag",
+        "status": "Állapot"
+    },
+    "common": {
+        "add": "hozzáadás",
+        "appdaemon": "AppDaemon",
+        "cancel": "Mégse",
+        "close": "Bezárás",
+        "download": "Letöltés",
+        "downloaded": "Letöltve",
+        "explore": "Repók keresése és hozzáadása",
+        "ignore": "Mellőzés",
+        "integration": "Integráció",
+        "integration_plural": "Integrációk",
+        "lovelace": "Felhasználói felület",
+        "navigate": "Navigálás",
+        "netdaemon": "NetDaemon",
+        "new": "Új",
+        "plugin": "Felhasználói felület",
+        "python_script": "Python szkript",
+        "reload": "Újratöltés",
+        "remove": "Eltávolítás",
+        "repositories": "Repók",
+        "repository": "Repó megnyitása",
+        "save": "Mentés",
+        "show": "Megjelenítés",
+        "template": "Sablon",
+        "theme": "Téma",
+        "update": "Frissítés",
+        "updates": "Frissítések",
+        "yes": "Igen"
+    },
+    "confirm": {
+        "home_assistant_version_not_correct": "Home Assistant '{haversion}' verziója fut, de ehhez a repóhoz legalább '{minversion}' verzióra van szükség."
+    },
+    "dialog": {
+        "configured": {
+            "confirm": "Ugrás az integrációkhoz",
+            "message": "{name} integráció be van konfigurálva, ezért előbb törölnie kell annak konfigurációját, mielőtt eltávolítaná a HACS-ból",
+            "title": "Az integráció be van konfigurálva"
+        },
+        "reload": {
+            "confirm": "Szeretné ezt most megtenni?",
+            "description": "Törölnie kell a böngésző gyorsítótárát a felhasználói felület erőforrásainak módosításakor."
+        },
+        "remove": {
+            "message": "Biztos benne, hogy el szeretné távolítani: {name}?",
+            "title": "Eltávolítás"
+        }
+    },
+    "dialog_about": {
+        "downloaded_repositories": "Letöltött repók",
+        "frontend_version": "Frontend verzió",
+        "integration_version": "Integráció verzió",
+        "useful_links": "Hasznos linkek"
+    },
+    "dialog_add_repo": {
+        "no_match": "Nincs a szűrésnek megfelelő repó",
+        "sort_by": "Rendezés",
+        "sort_by_values": {
+            "last_updated": "Utoljára frissítve",
+            "name": "Név",
+            "stars": "Csillag"
+        },
+        "title": "Repó hozzáadása"
+    },
+    "dialog_custom_repositories": {
+        "category": "Kategória",
+        "no_category": "Hiányzó kategória",
+        "no_repository": "Hiányzó repó",
+        "title": "Egyedi repók",
+        "url_placeholder": "Egyedi repó URL címének hozzáadása"
+    },
+    "dialog_download": {
+        "lovelace_instruction": "A letöltés befejezte után, mivel a felhasználói felületet nem tárolási módban használja, manuálisan kell hozzáadni az erőforrást ezekkel a beállításokkal:",
+        "note_downloaded": "Letöltéskor ez a következő helyen lesz: {location}",
+        "restart": "Ne feledje, hogy az egyedi integrációk (custom_components) módosításainak alkalmazásához újra kell indítani Home Assistantot.",
+        "select_version": "Verzió kiválasztása",
+        "show_beta": "Béta verziók megjelenítése",
+        "type": "Típus",
+        "url": "URL"
+    },
+    "dialog_info": {
+        "author": "Szerző",
+        "download": "Repó letöltése HACS-al",
+        "downloads": "Letöltések",
+        "loading": "Információ betöltése...",
+        "no_info": "A fejlesztő nem adott meg több információt ehhez a repóhoz",
+        "open_issues": "Jelentett problémák",
+        "open_repo": "Repó megnyitása",
+        "stars": "Csillagok",
+        "version_installed": "Letöltött verzió"
+    },
+    "dialog_update": {
+        "available_version": "Elérhető verzió",
+        "changelog": "Változási napló",
+        "downloaded_version": "Letöltött verzió",
+        "message": "{name} új verziója elérhető",
+        "no_info": "A szerző semmilyen információt nem adott meg ehhez a kiadáshoz",
+        "releasenotes": "{release} kiadási megjegyzései",
+        "title": "Frissítés folyamatban"
+    },
+    "menu": {
+        "about": "HACS névjegye",
+        "clear": "Új jelölések törlése",
+        "custom_repositories": "Egyedi repók",
+        "dismiss": "Minden új repó elvetése",
+        "documentation": "Dokumentáció",
+        "open_issue": "Probléma jelentése",
+        "reload": "Ablak újratöltése"
+    },
+    "my": {
+        "add_repository_description": "Biztos benne, hogy hozzáadja ezt az egyedi repót HACS-hoz nyomonkövetés céljából: '{repository}'?",
+        "add_repository_title": "Egyedi repó hozzáadása",
+        "documentation": "dokumentáció",
+        "error": "Ismeretlen hiba történt",
+        "faq_link": "My Home Assistant GYIK",
+        "not_supported": "Ez az átirányítás nem támogatott. Ellenőrizze a {link} oldalon a támogatott átirányításokat és a bevezetett verziót.",
+        "repository_not_found": "{repository} repó nem található"
+    },
+    "repository_card": {
+        "dismiss": "elvetés",
+        "information": "Információ",
+        "new_repository": "Új repó",
+        "not_loaded": "Nincs betöltve",
+        "open_issue": "Probléma jelentése",
+        "open_source": "Forrás megnyitása",
+        "pending_restart": "Várakozás újraindításra",
+        "pending_update": "Elérhető frissítés",
+        "redownload": "Újratelepítés",
+        "report": "Eltávolítási kérelem",
+        "update_information": "Információ frissítse"
+    },
+    "repository_status": {
+        "pending-restart": "Újraindítás függőben",
+        "pending-upgrade": "Frissítés függőben"
+    }
+}

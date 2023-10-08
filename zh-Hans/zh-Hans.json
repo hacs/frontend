@@ -1,0 +1,144 @@
+{
+    "column": {
+        "available_version": "可用版本",
+        "category": "类别",
+        "downloads": "下载量",
+        "installed_version": "已安装版本",
+        "last_updated": "已更新",
+        "name": "存储库名称",
+        "stars": "星标数",
+        "status": "状态"
+    },
+    "common": {
+        "add": "添加",
+        "appdaemon": "AppDaemon",
+        "cancel": "取消",
+        "close": "关闭",
+        "download": "下载",
+        "downloaded": "已下载",
+        "explore": "浏览并下载存储库",
+        "ignore": "忽略",
+        "integration": "集成",
+        "integration_plural": "集成",
+        "lovelace": "Lovelace",
+        "netdaemon": "NetDaemon 应用",
+        "new": "新的",
+        "plugin": "Lovelace",
+        "python_script": "Python 脚本",
+        "reload": "重新加载",
+        "remove": "删除",
+        "repositories": "存储库",
+        "repository": "存储库",
+        "show": "显示",
+        "template": "模板",
+        "theme": "主题",
+        "update": "更新",
+        "updates": "更新",
+        "yes": "是"
+    },
+    "confirm": {
+        "home_assistant_version_not_correct": "您正在运行 Home Assistant 版本 '{haversion}'，此存储库要求最低版本为 '{minversion}'。"
+    },
+    "dialog": {
+        "configured": {
+            "confirm": "转到集成",
+            "message": "集成 {name} 已完成配置或被忽略，如需将其从 HACS 中删除，需要先删除其配置。",
+            "title": "集成正在使用"
+        },
+        "reload": {
+            "confirm": "立即进行此操作吗？",
+            "description": "需要清除浏览器缓存才能使更新后的资源生效。"
+        },
+        "remove": {
+            "message": "您确定要删除 {name} 吗？",
+            "title": "删除"
+        }
+    },
+    "dialog_about": {
+        "downloaded_repositories": "已下载存储库",
+        "frontend_version": "前端版本",
+        "integration_version": "集成版本",
+        "useful_links": "有用的链接"
+    },
+    "dialog_add_repo": {
+        "no_match": "未找到符合条件的存储库",
+        "sort_by": "排序方式",
+        "sort_by_values": {
+            "last_updated": "上次更新",
+            "name": "名称",
+            "stars": "星标数"
+        },
+        "title": "添加存储库"
+    },
+    "dialog_custom_repositories": {
+        "category": "类别",
+        "no_category": "没有选择类别",
+        "no_repository": "存储库地址不能为空",
+        "title": "自定义存储库",
+        "url_placeholder": "添加自定义存储库 URL"
+    },
+    "dialog_download": {
+        "lovelace_instruction": "下载完成后，由于您没有通过WebUI管理Lovelace，您需要使用以下设置手动添加资源：",
+        "note_downloaded": "下载后，它将位于 {location}",
+        "restart": "请注意，只有在重新启动 Home Assistant 后，对集成 (custom_components) 所做的更改才会生效。",
+        "select_version": "选择版本",
+        "show_beta": "显示测试版",
+        "type": "类型",
+        "url": "URL"
+    },
+    "dialog_info": {
+        "author": "作者",
+        "download": "通过 HACS 下载此存储库",
+        "downloads": "下载量",
+        "loading": "正在加载详细信息...",
+        "no_info": "开发者未就此存储库提供更多信息",
+        "open_issues": "提交 Issue",
+        "open_repo": "打开存储库",
+        "stars": "星标数",
+        "version_installed": "当前版本"
+    },
+    "dialog_update": {
+        "available_version": "可用版本",
+        "changelog": "更新日志",
+        "downloaded_version": "已安装版本",
+        "message": "{name} 有新版本了",
+        "no_info": "作者未对此版本提供任何说明",
+        "releasenotes": "{release} 发行说明",
+        "title": "等待更新"
+    },
+    "menu": {
+        "about": "关于 HACS",
+        "clear": "清除所有 NEW 标记",
+        "custom_repositories": "自定义存储库",
+        "dismiss": "忽略新的存储库",
+        "documentation": "文档",
+        "open_issue": "提交 Issue",
+        "reload": "重新加载窗口"
+    },
+    "my": {
+        "add_repository_description": "这将添加要由 HACS 跟踪的自定义存储库'{repository}'，您要添加它吗？",
+        "add_repository_title": "添加自定义存储库",
+        "documentation": "文档",
+        "error": "未知错误",
+        "faq_link": "我的 Home Assistant 常见问题解答",
+        "not_supported": "不支持此重定向。检查{link}以了解支持的重定向及其引入的版本。",
+        "repository_not_found": "未找到存储库 {repository}"
+    },
+    "repository_card": {
+        "dismiss": "忽略",
+        "information": "详情",
+        "new_repository": "新存储库",
+        "not_loaded": "未加载",
+        "open_issue": "提交 Issue",
+        "open_source": "打开源码",
+        "pending_restart": "等待重启",
+        "pending_update": "等待更新",
+        "redownload": "重新下载",
+        "report": "举报",
+        "update_information": "更新信息"
+    },
+    "repository_status": {
+        "pending-restart": "等待重启",
+        "pending-upgrade": "待更新"
+    }
+}

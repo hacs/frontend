@@ -1,0 +1,145 @@
+{
+    "column": {
+        "available_version": "Saadaolev versioon",
+        "category": "Kategooria",
+        "downloads": "Allalaadimised",
+        "installed_version": "Allalaaditud versioon",
+        "last_updated": "Uuendatud",
+        "name": "Hoidla nimi",
+        "stars": "Hinnang",
+        "status": "Olek"
+    },
+    "common": {
+        "add": "lisa",
+        "cancel": "Loobu",
+        "close": "Sulge",
+        "download": "Lae alla",
+        "downloaded": "Allalaaditud",
+        "explore": "Avasta ja laadi alla hoidlaid",
+        "ignore": "Eira",
+        "integration": "sidumine",
+        "integration_plural": "sidumist",
+        "lovelace": "Lovelace",
+        "navigate": "Lehitse",
+        "netdaemon": "NetDaemon",
+        "new": "Uus",
+        "plugin": "Kasutajaliides",
+        "python_script": "Pythoni skript",
+        "reload": "Taaslae",
+        "remove": "Eemalda",
+        "repositories": "Teegid",
+        "repository": "Hoidla",
+        "save": "Salvesta",
+        "show": "Kuva",
+        "template": "Mall",
+        "theme": "Kuva teema",
+        "update": "Uuenda",
+        "updates": "Uuendused",
+        "yes": "Jah"
+    },
+    "confirm": {
+        "home_assistant_version_not_correct": "Kasutad Home Assistanti versiooni '{haversion}' kuid see hoidla nõuab vähemalt versiooni '{minversion}' installimist."
+    },
+    "dialog": {
+        "configured": {
+            "confirm": "Mine sidumiste juurde",
+            "message": "Sidumine {name} on seadistatud, pead selle sidumise enne HACS-ist eemaldamist kustutama",
+            "title": "Sidumine on seadistatud"
+        },
+        "reload": {
+            "confirm": "Kas teen seda kohe?",
+            "description": "Uuendatud ressursside kasutamiseks pead tühjendama brauseri vahemälu."
+        },
+        "remove": {
+            "message": "Kas soovid tõesti eemaldada üksuse {name}?",
+            "title": "Eemalda"
+        }
+    },
+    "dialog_about": {
+        "downloaded_repositories": "Allalaaditud hoidlad",
+        "frontend_version": "Kasutajaliidese versioon",
+        "integration_version": "Sidumise versioon",
+        "useful_links": "Kasulikud veebiviited"
+    },
+    "dialog_add_repo": {
+        "no_match": "Filtrile vastavaid hoidlaid ei leitud",
+        "sort_by": "Sortimisalus",
+        "sort_by_values": {
+            "last_updated": "Viimati uuendatud",
+            "name": "Nimi",
+            "stars": "Hinnang"
+        },
+        "title": "Lisa hoidla"
+    },
+    "dialog_custom_repositories": {
+        "category": "Kategooria",
+        "no_category": "Puuduv kategooria",
+        "no_repository": "Puuduv hoidla",
+        "title": "Kohandatud hoidlad",
+        "url_placeholder": "Lisa kohandatud hoidla URL"
+    },
+    "dialog_download": {
+        "lovelace_instruction": "Kuna ei kasutata Lovelace'i salvestusrežiimis siis pärast allalaadimise lõpetamist pead ressursi käsitsi lisama järgmiste sätetega:",
+        "note_downloaded": "Allalaadimisel asub see asukohas {location}",
+        "restart": "Pea meeles, et sidumiste (custom_components) muudatuste rakendamiseks pead Home Assistanti taaskäivitama.",
+        "select_version": "Vali versioon",
+        "show_beta": "Kuva beetaversioonid",
+        "type": "Liik",
+        "url": "URL"
+    },
+    "dialog_info": {
+        "author": "Autor",
+        "download": "Laadi see hoidla alla HACS-iga",
+        "downloads": "Allalaadimised",
+        "loading": "Teabe laadimine ...",
+        "no_info": "Arendaja ei ole selle hoidla kohta rohkem teavet avaldanud",
+        "open_issues": "Teadaolevad tõrketeatised",
+        "open_repo": "Ava hoidla",
+        "stars": "Hinnang",
+        "version_installed": "Allalaaditud versioon"
+    },
+    "dialog_update": {
+        "available_version": "Saadaolev versioon",
+        "changelog": "Muudatused",
+        "downloaded_version": "Allalaaditud versioon",
+        "message": "{name} uus versioon on saadaval",
+        "no_info": "Arendaja ei ole selle väljalaske kohta rohkem teavet avaldanud",
+        "releasenotes": "Versiooni {release} teave",
+        "title": "Uuendus on ootel"
+    },
+    "menu": {
+        "about": "HACS-i info",
+        "clear": "Tühjenda kõik uued",
+        "custom_repositories": "Kohandatud hoidlad",
+        "dismiss": "Peida kõik uued hoidlad",
+        "documentation": "Dokumentatsioon",
+        "open_issue": "Esita tõrketeade",
+        "reload": "Lae aken uuesti"
+    },
+    "my": {
+        "add_repository_description": "See lisab kohandatud hoidla '{repository}', mida HACS jälgib. Kas soovid selle lisada?",
+        "add_repository_title": "Lisa kohandatud hoidla",
+        "documentation": "dokumentatsioon",
+        "error": "Ilmnes tundmatu tõrge",
+        "faq_link": "Home Assistanti KKK",
+        "not_supported": "See ümbersuunamine ei ole toetatud. Kontrolli {link} toetatud ümbersuunamisi ja versiooni, kus need kasutusele võeti.",
+        "repository_not_found": "Hoidlat {repository} ei leitud"
+    },
+    "repository_card": {
+        "dismiss": "Peida",
+        "information": "Teave",
+        "new_repository": "Uus hoidla",
+        "not_loaded": "Pole laaditud",
+        "open_issue": "Esita tõrketeade",
+        "open_source": "Avatud lähtekoodiga",
+        "pending_restart": "Taaskäivitamise ootel",
+        "pending_update": "Värskendamise ootel",
+        "redownload": "Lae uuesti alla",
+        "report": "Eemaldamise taotlus",
+        "update_information": "Värskenda teavet"
+    },
+    "repository_status": {
+        "pending-restart": "Taaskäivitamise ootel",
+        "pending-upgrade": "Värskendamise ootel"
+    }
+}

@@ -1,0 +1,69 @@
+{
+    "common": {
+        "add": "thêm",
+        "integration": "Tích Hợp",
+        "lovelace": "Lovelace",
+        "netdaemon": "NetDaemon",
+        "plugin": "Bổ Sung",
+        "repositories": "Các kho ứng dụng",
+        "repository": "Kho lưu trữ",
+        "theme": "Chủ đề",
+        "update": "Cập nhật"
+    },
+    "confirm": {
+        "home_assistant_version_not_correct": "Bạn đang chạy phiên bản Home Assistant '{haversion}' nhưng kho ứng dụng này yêu cầu phiên bản thấp nhất '{minversion}' để cài đặt."
+    },
+    "dialog_about": {
+        "frontend_version": "Phiên bản Frontend",
+        "integration_version": "Phiên bản tích hợp",
+        "useful_links": "Liên kết hữu ích"
+    },
+    "dialog_add_repo": {
+        "no_match": "Không tìm thấy kho lưu trữ phù hợp với bộ lọc của bạn",
+        "sort_by": "Sắp xếp theo",
+        "title": "Thêm kho lưu trữ"
+    },
+    "dialog_custom_repositories": {
+        "category": "Danh mục",
+        "no_category": "Thiếu danh mục",
+        "no_repository": "Kho lưu trữ bị thiếu",
+        "title": "Các kho lưu trữ tuỳ chỉnh",
+        "url_placeholder": "Thêm URL của kho lưu trữ tùy chỉnh"
+    },
+    "dialog_info": {
+        "author": "Tác giả",
+        "downloads": "Tải xuống",
+        "loading": "Đang tải thông tin...",
+        "no_info": "Nhà phát triển đã không cung cấp thêm thông tin nào cho kho lưu trữ này",
+        "open_issues": "Báo cáo vấn đề",
+        "open_repo": "Mở Kho ứng dụng",
+        "stars": "Số sao"
+    },
+    "dialog_update": {
+        "available_version": "Phiên bản hiện có",
+        "changelog": "Thay đổi",
+        "releasenotes": "Thông tin phiên bản {Release}",
+        "title": "Cập nhật đang chờ"
+    },
+    "menu": {
+        "about": "Giới thiệu HACS",
+        "clear": "Ẩn thông báo mục mới",
+        "custom_repositories": "Các kho ứng dụng tuỳ chỉnh",
+        "dismiss": "Bỏ qua tất cả kho chứa mới",
+        "documentation": "Tài liệu",
+        "open_issue": "Báo cáo vấn đề",
+        "reload": "Tải lại cửa sổ"
+    },
+    "repository_card": {
+        "dismiss": "bỏ qua",
+        "information": "Thông tin",
+        "new_repository": "Kho lưu trữ mới",
+        "not_loaded": "Không được tải",
+        "open_issue": "Báo cáo vấn đề",
+        "open_source": "Mã nguồn mở",
+        "pending_restart": "Đang chờ khởi động lại",
+        "pending_update": "Cập nhật đang chờ",
+        "report": "Báo cáo để loại bỏ",
+        "update_information": "Cập nhật thông tin"
+    }
+}

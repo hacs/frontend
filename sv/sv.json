@@ -1,0 +1,146 @@
+{
+    "column": {
+        "available_version": "Tillgänglig version",
+        "category": "Kategori",
+        "downloads": "Nedladdningar",
+        "installed_version": "Nedladdad version",
+        "last_updated": "Uppdaterad",
+        "name": "Namn på repository",
+        "stars": "Stjärnor",
+        "status": "Status"
+    },
+    "common": {
+        "add": "lägg till",
+        "appdaemon": "AppDaemon",
+        "cancel": "Avbryt",
+        "close": "Stäng",
+        "download": "Ladda ner",
+        "downloaded": "Nedladdat",
+        "explore": "Utforska och ladda ner repositories",
+        "ignore": "Ignorera",
+        "integration": "Integration",
+        "integration_plural": "Integrationer",
+        "lovelace": "Lovelace",
+        "navigate": "Navigera",
+        "netdaemon": "NetDaemon",
+        "new": "Ny",
+        "plugin": "Lovelace",
+        "python_script": "Python skript",
+        "reload": "Ladda om",
+        "remove": "Ta bort",
+        "repositories": "Repositories",
+        "repository": "Arkiv",
+        "save": "Spara",
+        "show": "Visa",
+        "template": "Mall",
+        "theme": "Tema",
+        "update": "Uppdatering",
+        "updates": "Uppdateringar",
+        "yes": "Ja"
+    },
+    "confirm": {
+        "home_assistant_version_not_correct": "Du kör Home Assistant-versionen '{haversion}', men detta repository kräver att lägsta versionen '{minversion}' måste installeras."
+    },
+    "dialog": {
+        "configured": {
+            "confirm": "Gå till integrationer",
+            "message": "Integrationen {name} är konfigurerad eller ignorerad, du måste ta bort konfigurationen för den innan du tar bort den från HACS",
+            "title": "Integrationen är konfigurerad"
+        },
+        "reload": {
+            "confirm": "Vill du göra detta nu?",
+            "description": "Du måste ladda om din webbläsare för att de uppdaterade resurserna ska kunna användas."
+        },
+        "remove": {
+            "message": "Vill du verkligen ta bort {name}?",
+            "title": "Ta bort"
+        }
+    },
+    "dialog_about": {
+        "downloaded_repositories": "Nedladdade arkiv",
+        "frontend_version": "Frontend version",
+        "integration_version": "Version för integration",
+        "useful_links": "Användbara länkar"
+    },
+    "dialog_add_repo": {
+        "no_match": "Inga arkiv hittades som matchar ditt filter",
+        "sort_by": "Sortera efter",
+        "sort_by_values": {
+            "last_updated": "Senast uppdaterad",
+            "name": "Namn",
+            "stars": "Stjärnor"
+        },
+        "title": "Lägg till arkiv"
+    },
+    "dialog_custom_repositories": {
+        "category": "Kategori",
+        "no_category": "Kategori saknas",
+        "no_repository": "Arkiv saknas",
+        "title": "Anpassade arkiv",
+        "url_placeholder": "Lägg till URL för anpassat arkiv"
+    },
+    "dialog_download": {
+        "lovelace_instruction": "När nedladdningen är klar måste du, eftersom du inte använder Lovelace i lagringsläge, lägga till resursen manuellt med dessa inställningar:",
+        "note_downloaded": "När den har laddats ner kommer den att finnas i {location}",
+        "restart": "Kom ihåg att du måste starta om Home Assistant innan ändringar av integrationer (custom_components) tillämpas.",
+        "select_version": "Välj version",
+        "show_beta": "Visa betaversioner",
+        "type": "Typ",
+        "url": "URL"
+    },
+    "dialog_info": {
+        "author": "Författare",
+        "download": "Ladda ner det här arkivet med HACS",
+        "downloads": "Nedladdningar",
+        "loading": "Laddar information...",
+        "no_info": "Utvecklaren har inte tillhandahållit någon mer information för detta arkiv",
+        "open_issues": "Öppna ärenden",
+        "open_repo": "Öppna arkivet",
+        "stars": "Stjärnor",
+        "version_installed": "Version nedladdad"
+    },
+    "dialog_update": {
+        "available_version": "Tillgänglig version",
+        "changelog": "Ändringslogg",
+        "downloaded_version": "Nedladdad version",
+        "message": "En ny version av {name} är tillgänglig",
+        "no_info": "Författaren har inte lämnat någon information för denna utgåva",
+        "releasenotes": "Releaseinformation för {release}",
+        "title": "Väntande omstart"
+    },
+    "menu": {
+        "about": "Om HACS",
+        "clear": "Rensa allt nytt",
+        "custom_repositories": "Anpassade arkiv",
+        "dismiss": "Avvisa nya arkiv",
+        "documentation": "Dokumentation",
+        "open_issue": "Rapportera problem",
+        "reload": "Ladda om fönstret"
+    },
+    "my": {
+        "add_repository_description": "Detta kommer att lägga till det anpassade arkivet '{repository}' som ska spåras av HACS, vill du lägga till det?",
+        "add_repository_title": "Lägg till anpassat reposirory",
+        "documentation": "dokumentation",
+        "error": "Ett okänt fel uppstod",
+        "faq_link": "Min Home Assistant FAQ",
+        "not_supported": "Den här omdirigeringen stöds inte. Kontrollera {link} för de omdirigeringar som stöds och vilken version de introducerades.",
+        "repository_not_found": "Repository {repository} hittades inte"
+    },
+    "repository_card": {
+        "dismiss": "avfärda",
+        "information": "Information",
+        "new_repository": "Nytt arkiv",
+        "not_loaded": "Inte laddad",
+        "open_issue": "Rapportera problem",
+        "open_source": "Öppen källkod",
+        "pending_restart": "Väntande omstart",
+        "pending_update": "Väntande uppdatering",
+        "redownload": "Ladda ner igen",
+        "report": "Begäran om borttagning",
+        "update_information": "Uppdatera information"
+    },
+    "repository_status": {
+        "pending-restart": "Väntande omstart",
+        "pending-upgrade": "Väntande uppdatering"
+    }
+}
