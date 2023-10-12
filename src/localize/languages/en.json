@@ -47,7 +47,7 @@
     "error": "An unknown error occurred",
     "repository_not_found": "Repository {repository} not found",
     "add_repository_title": "Add custom repository",
-    "add_repository_description": "This will add the custom repository '{repository}' to be tracked by HACS, do you want to add it?"
+    "add_repository_description": "This will add the custom repository {repository} to be tracked by HACS. Do you want to add it?"
   },
   "dialog_about": {
     "integration_version": "Integration version",
