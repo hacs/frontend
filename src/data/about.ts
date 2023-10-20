@@ -1,5 +1,6 @@
 import type { Hacs } from "./hacs";
 import { version } from "../version";
+import { documentationUrl } from "../tools/documentation";
 
 export const aboutHacsmarkdownContent = (hacs: Hacs) => `
 **${hacs.localize("dialog_about.integration_version")}:** | ${hacs.info.version}
@@ -12,9 +13,12 @@ export const aboutHacsmarkdownContent = (hacs: Hacs) => `
 
 **${hacs.localize("dialog_about.useful_links")}:**
 
-- [General documentation](https://hacs.xyz/)
-- [Configuration](https://hacs.xyz/docs/configuration/start)
-- [FAQ](https://hacs.xyz/docs/faq/what)
+- [General documentation](${documentationUrl({ experimental: hacs.info.experimental })})
+- [Configuration](${documentationUrl({
+  experimental: hacs.info.experimental,
+  path: "/docs/configuration/start",
+})})
+- [FAQ](${documentationUrl({ experimental: hacs.info.experimental, path: "/docs/faq/what" })})
 - [GitHub](https://github.com/hacs)
 - [Discord](https://discord.gg/apgchf8)
 - [Become a GitHub sponsor? ❤️](https://github.com/sponsors/ludeeus)

@@ -41,13 +41,13 @@
     "home_assistant_version_not_correct": "You are running Home Assistant version '{haversion}', but this repository requires minimum version '{minversion}' to be installed."
   },
   "my": {
-    "not_supported": "This redirect is not supported. Check the {link} for the supported redirects and the version they where introduced.",
+    "not_supported": "This redirect is not supported. Check the {link} for the supported redirects and the version they were introduced.",
     "documentation": "documentation",
     "faq_link": "My Home Assistant FAQ",
     "error": "An unknown error occurred",
     "repository_not_found": "Repository {repository} not found",
     "add_repository_title": "Add custom repository",
-    "add_repository_description": "This will add the custom repository '{repository}' to be tracked by HACS, do you want to add it?"
+    "add_repository_description": "This will add the custom repository '{repository}' to be tracked by HACS. Do you want to add it?"
   },
   "dialog_about": {
     "integration_version": "Integration version",
@@ -78,8 +78,8 @@
     "select_version": "Select version",
     "show_beta": "Show beta versions",
     "restart": "Remember that you need to restart Home Assistant before changes to integrations (custom_components) are applied.",
-    "note_downloaded": "When downloaded this will be located in {location}",
-    "lovelace_instruction": "After the download completes, since you are not using Lovelace in storage mode you need to manually add the resource with these settings:"
+    "note_downloaded": "When downloaded, this will be located in {location}",
+    "lovelace_instruction": "After the download completes, since you are not using Lovelace in storage mode, you need to add the resource with these settings manually:"
   },
   "dialog_info": {
     "version_installed": "Version downloaded",
@@ -99,6 +99,11 @@
     "releasenotes": "Release notes for {release}",
     "message": "A new version of the {name} is available",
     "no_info": "The author has not provided any information for this release"
+  },
+  "dialog_browse": {
+    "btn": "Browse repositories",
+    "title": "Browse dialog removed",
+    "content": "The old dialog to browse repositories has been removed. Instead you just search for what you want in the search bar or use the filters also located on the search bar."
   },
   "repository_card": {
     "dismiss": "dismiss",
@@ -135,7 +140,7 @@
     },
     "configured": {
       "title": "Integration is configured",
-      "message": "The {name} integration is configured or ignored, you need to delete the configuration for it before removing it from HACS",
+      "message": "The {name} integration is configured or ignored. You need to delete the configuration for it before removing it from HACS",
       "confirm": "Go to integrations"
     }
   }
