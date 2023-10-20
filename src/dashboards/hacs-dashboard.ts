@@ -10,11 +10,12 @@ import {
   mdiGithub,
   mdiInformation,
   mdiNewBox,
+  mdiPlus,
 } from "@mdi/js";
 import "@polymer/app-layout/app-header/app-header";
 import "@polymer/app-layout/app-toolbar/app-toolbar";
 import type { CSSResultGroup, PropertyValues, TemplateResult } from "lit";
-import { LitElement, css, html } from "lit";
+import { LitElement, css, html, nothing } from "lit";
 import { customElement, property } from "lit/decorators";
 import memoize from "memoize-one";
 import { relativeTime } from "../../homeassistant-frontend/src/common/datetime/relative_time";
@@ -30,6 +31,7 @@ import "../../homeassistant-frontend/src/layouts/hass-tabs-subpage-data-table";
 
 import "../../homeassistant-frontend/src/components/ha-button-menu";
 import "../../homeassistant-frontend/src/components/ha-check-list-item";
+import "../../homeassistant-frontend/src/components/ha-fab";
 import "../../homeassistant-frontend/src/components/ha-formfield";
 import "../../homeassistant-frontend/src/components/ha-markdown";
 import "../../homeassistant-frontend/src/components/ha-radio";
@@ -39,6 +41,7 @@ import { LocalizeFunc } from "../../homeassistant-frontend/src/common/translatio
 import "../../homeassistant-frontend/src/components/ha-icon-overflow-menu";
 import { IconOverflowMenuItem } from "../../homeassistant-frontend/src/components/ha-icon-overflow-menu";
 import "../../homeassistant-frontend/src/components/ha-svg-icon";
+import { showConfirmationDialog } from "../../homeassistant-frontend/src/dialogs/generic/show-dialog-box";
 import { haStyle } from "../../homeassistant-frontend/src/resources/styles";
 import type { HomeAssistant, Route } from "../../homeassistant-frontend/src/types";
 import { brandsUrl } from "../../homeassistant-frontend/src/util/brands-url";
@@ -55,6 +58,7 @@ import type { RepositoryBase, RepositoryCategory } from "../data/repository";
 import { repositoriesClearNew } from "../data/websocket";
 import { HacsStyles } from "../styles/hacs-common-style";
 import { categoryIcon } from "../tools/category-icon";
+import { documentationUrl } from "../tools/documentation";
 
 const tableColumnDefaults = {
   name: true,
@@ -100,6 +104,9 @@ export class HacsDashboard extends LitElement {
   @storage({ key: "hacs-table-scroll", state: true, subscribe: false })
   private _tableScroll?: number;
 
+  @storage({ key: "hacs-hide-browse-fab", state: true, subscribe: false })
+  private _hide_browse_fab?: boolean;
+
   @storage({ key: "hacs-table-active-columns", state: true, subscribe: false })
   private _tableColumns: Record<tableColumnDefaultsType, boolean> = tableColumnDefaults;
 
@@ -128,6 +135,12 @@ export class HacsDashboard extends LitElement {
   }
 
   protected render = (): TemplateResult | void => {
+    const showFab =
+      !this._hide_browse_fab &&
+      !this._activeSearch?.length &&
+      this.activeFilters !== undefined &&
+      this.activeFilters.length === 1 &&
+      this.activeFilters[0] === "downloaded";
     const repositories = this._filterRepositories(this.hacs.repositories, this.activeFilters);
     const repositoriesContainsNew =
       repositories.filter((repository) => repository.new).length !== 0;
@@ -162,6 +175,7 @@ export class HacsDashboard extends LitElement {
       @clear-filter=${this._handleClearFilter}
       @value-changed=${this._handleSearchFilterChanged}
       @sorting-changed=${this._handleSortingChanged}
+      .hasFab=${showFab}
     >
       <ha-icon-overflow-menu
         narrow
@@ -171,7 +185,12 @@ export class HacsDashboard extends LitElement {
           {
             path: mdiFileDocument,
             label: this.hacs.localize("menu.documentation"),
-            action: () => mainWindow.open(`https://hacs.xyz/`, "_blank", "noreferrer=true"),
+            action: () =>
+              mainWindow.open(
+                documentationUrl({ experimental: this.hacs.info?.experimental }),
+                "_blank",
+                "noreferrer=true"
+              ),
           },
           {
             path: mdiGithub,
@@ -182,7 +201,14 @@ export class HacsDashboard extends LitElement {
             path: mdiAlertCircleOutline,
             label: this.hacs.localize("menu.open_issue"),
             action: () =>
-              mainWindow.open(`https://hacs.xyz/docs/issues`, "_blank", "noreferrer=true"),
+              mainWindow.open(
+                documentationUrl({
+                  experimental: this.hacs.info?.experimental,
+                  path: "/docs/issues",
+                }),
+                "_blank",
+                "noreferrer=true"
+              ),
           },
           {
             path: mdiGit,
@@ -294,7 +320,43 @@ export class HacsDashboard extends LitElement {
               `
             )}
       </ha-button-menu>
+      ${showFab
+        ? html`
+            <ha-fab
+              slot="fab"
+              @click=${this._show_browse_dialog}
+              .label=${this.hacs.localize("dialog_browse.btn")}
+              extended
+            >
+              <ha-svg-icon slot="icon" .path=${mdiPlus}></ha-svg-icon>
+            </ha-fab>
+          `
+        : nothing}
     </hass-tabs-subpage-data-table>`;
+  };
+
+  _show_browse_dialog = async () => {
+    showConfirmationDialog(this, {
+      title: this.hacs.localize("dialog_browse.title"),
+      text: this.hacs.localize("dialog_browse.content"),
+      confirmText: this.hacs.localize("common.close"),
+      confirm: () => {
+        this._hide_browse_fab = true;
+      },
+      dismissText: this.hacs.localize("menu.documentation"),
+      cancel: () => {
+        mainWindow.open(
+          documentationUrl({
+            experimental: this.hacs.info?.experimental,
+            path: "/docs/basic/dashboard",
+          }),
+          "_blank",
+          "noreferrer=true"
+        );
+
+        this._show_browse_dialog();
+      },
+    });
   };
 
   private _filterRepositories = memoize(
