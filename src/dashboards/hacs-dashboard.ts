@@ -137,6 +137,7 @@ export class HacsDashboard extends LitElement {
   protected render = (): TemplateResult | void => {
     const showFab =
       !this._hide_browse_fab &&
+      !this._activeSearch?.length &&
       this.activeFilters !== undefined &&
       this.activeFilters.length === 1 &&
       this.activeFilters[0] === "downloaded";
