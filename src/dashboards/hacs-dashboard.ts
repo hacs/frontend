@@ -186,7 +186,7 @@ export class HacsDashboard extends LitElement {
             label: this.hacs.localize("menu.documentation"),
             action: () =>
               mainWindow.open(
-                documentationUrl({ experimental: this.hacs.info.experimental }),
+                documentationUrl({ experimental: this.hacs.info?.experimental }),
                 "_blank",
                 "noreferrer=true"
               ),
@@ -202,7 +202,7 @@ export class HacsDashboard extends LitElement {
             action: () =>
               mainWindow.open(
                 documentationUrl({
-                  experimental: this.hacs.info.experimental,
+                  experimental: this.hacs.info?.experimental,
                   path: "/docs/issues",
                 }),
                 "_blank",
@@ -346,7 +346,7 @@ export class HacsDashboard extends LitElement {
       cancel: () => {
         mainWindow.open(
           documentationUrl({
-            experimental: this.hacs.info.experimental,
+            experimental: this.hacs.info?.experimental,
             path: "/docs/basic/dashboard",
           }),
           "_blank",
