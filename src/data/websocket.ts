@@ -26,13 +26,6 @@ export const repositoryAdd = async (hass: HomeAssistant, repository: string, cat
     category,
   });
 
-export const repositoryBeta = async (hass: HomeAssistant, repository: string, beta: boolean) =>
-  hass.connection.sendMessagePromise<void>({
-    type: "hacs/repository/beta",
-    repository,
-    show_beta: beta,
-  });
-
 export const repositoryUpdate = async (hass: HomeAssistant, repository: string) =>
   hass.connection.sendMessagePromise<void>({
     type: "hacs/repository/refresh",

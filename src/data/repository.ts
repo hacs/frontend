@@ -69,14 +69,3 @@ export const repositoryDownloadVersion = async (
     repository: repository,
     version,
   });
-
-export const repositorySetVersion = async (
-  hass: HomeAssistant,
-  repository: string,
-  version: string
-) =>
-  hass.connection.sendMessagePromise<void>({
-    type: "hacs/repository/version",
-    repository: repository,
-    version,
-  });
