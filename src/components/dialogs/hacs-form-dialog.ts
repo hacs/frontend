@@ -14,7 +14,7 @@ import "../../../homeassistant-frontend/src/components/ha-settings-row";
 import type { HomeAssistant } from "../../../homeassistant-frontend/src/types";
 import { HacsDispatchEvent } from "../../data/common";
 import { websocketSubscription } from "../../data/websocket";
-import type { HacsFormDialogParams } from "./show-hacs-form-dialog";
+import type { HacsFormDialogParams } from "./show-hacs-dialog";
 
 @customElement("hacs-form-dialog")
 class HacsFromDialog extends LitElement {
@@ -108,13 +108,13 @@ class HacsFromDialog extends LitElement {
   }
 
   public async _saveClicked(): Promise<void> {
-    if (!this._dialogParams?.saveAction || !this._dialogParams!.data) {
+    if (!this._dialogParams?.saveAction) {
       return;
     }
     this._errors = {};
     this._waiting = true;
     try {
-      await this._dialogParams.saveAction(this._dialogParams!.data);
+      await this._dialogParams.saveAction(this._dialogParams.data);
     } catch (err: any) {
       this._errors = { base: err?.message || "Unkown error, check Home Assistant logs" };
     }
