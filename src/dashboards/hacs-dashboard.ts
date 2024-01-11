@@ -12,8 +12,6 @@ import {
   mdiNewBox,
   mdiPlus,
 } from "@mdi/js";
-import "@polymer/app-layout/app-header/app-header";
-import "@polymer/app-layout/app-toolbar/app-toolbar";
 import type { CSSResultGroup, PropertyValues, TemplateResult } from "lit";
 import { LitElement, css, html, nothing } from "lit";
 import { customElement, property } from "lit/decorators";
@@ -154,19 +152,19 @@ export class HacsDashboard extends LitElement {
       .columns=${this._columns(this.narrow, this._tableColumns, this.hacs.localize)}
       .data=${repositories}
       .hass=${this.hass}
-      isWide=${this.isWide}
+      ?iswide=${this.isWide}
       .localizeFunc=${this.hass.localize}
       .mainPage=${true}
       .narrow=${this.narrow}
       .route=${this.route}
       clickable
-      .filter=${this._activeSearch}
+      .filter=${this._activeSearch || ""}
       .activeFilters=${this.activeFilters?.map(
         (filter) =>
           this.hacs.localize(
             // @ts-ignore
-            `common.${filter.startsWith("category_") ? filter.replace("category_", "") : filter}`
-          ) || filter
+            `common.${filter.startsWith("category_") ? filter.replace("category_", "") : filter}`,
+          ) || filter,
       )}
       .noDataText=${this.activeFilters?.includes("downloaded")
         ? "No downloaded repositories"
@@ -189,7 +187,7 @@ export class HacsDashboard extends LitElement {
               mainWindow.open(
                 documentationUrl({ experimental: this.hacs.info?.experimental }),
                 "_blank",
-                "noreferrer=true"
+                "noreferrer=true",
               ),
           },
           {
@@ -207,7 +205,7 @@ export class HacsDashboard extends LitElement {
                   path: "/docs/issues",
                 }),
                 "_blank",
-                "noreferrer=true"
+                "noreferrer=true",
               ),
           },
           {
@@ -280,12 +278,11 @@ export class HacsDashboard extends LitElement {
                 .value=${this.activeFilters?.find((filter) => filter.startsWith("category_")) || ""}
               >
                 ${this.hacs.info.categories.map(
-                  (category) =>
-                    html`
-                      <mwc-list-item .value="${`category_${category}`}">
-                        ${this.hacs.localize(`common.${category}`)}
-                      </mwc-list-item>
-                    `
+                  (category) => html`
+                    <mwc-list-item .value="${`category_${category}`}">
+                      ${this.hacs.localize(`common.${category}`)}
+                    </mwc-list-item>
+                  `,
                 )}
               </ha-select>
               <div class="divider"></div>
@@ -301,7 +298,7 @@ export class HacsDashboard extends LitElement {
                   >
                     ${this.hacs.localize(`column.${entry as tableColumnDefaultsType}`)}
                   </ha-check-list-item>
-                `
+                `,
               )}
             `
           : this.hacs.info.categories.map(
@@ -312,12 +309,12 @@ export class HacsDashboard extends LitElement {
                     .value=${`category_${category}`}
                     name="category"
                     .checked=${this.activeFilters?.some(
-                      (filter) => filter === `category_${category}`
+                      (filter) => filter === `category_${category}`,
                     ) ?? false}
                   >
                   </ha-radio>
                 </ha-formfield>
-              `
+              `,
             )}
       </ha-button-menu>
       ${showFab
@@ -351,7 +348,7 @@ export class HacsDashboard extends LitElement {
             path: "/docs/basic/dashboard",
           }),
           "_blank",
-          "noreferrer=true"
+          "noreferrer=true",
         );
 
         this._show_browse_dialog();
@@ -380,21 +377,21 @@ export class HacsDashboard extends LitElement {
         .sort((a, b) => b.name.localeCompare(a.name))
         .sort((a, b) => (a.stars < b.stars ? 1 : -1))
         .sort((a, b) => (a.installed && !b.installed ? 1 : -1))
-        .sort((a, b) => (!a.new && b.new ? 1 : -1))
+        .sort((a, b) => (!a.new && b.new ? 1 : -1)),
   );
 
   private _columns = memoize(
     (
       narrow: boolean,
       tableColumnsOptions: { [key: string]: boolean },
-      localizeFunc: LocalizeFunc<HacsLocalizeKeys>
+      localizeFunc: LocalizeFunc<HacsLocalizeKeys>,
     ): DataTableColumnContainer<RepositoryBase> => ({
       icon: {
         title: "",
         label: this.hass.localize("ui.panel.config.lovelace.dashboards.picker.headers.icon"),
         hidden: this.narrow,
         type: "icon",
-        template: (_, repository: RepositoryBase) =>
+        template: (repository: RepositoryBase) =>
           repository.category === "integration"
             ? html`
                 <img
@@ -425,27 +422,26 @@ export class HacsDashboard extends LitElement {
         direction: this.activeSort?.column === "name" ? this.activeSort.direction : null,
         hidden: !tableColumnsOptions.name,
         grows: true,
-        template: (name, repository: RepositoryBase) =>
-          html`
-            ${repository.new
-              ? html`<ha-svg-icon
-                  label="New"
-                  style="color: var(--primary-color); margin-right: 4px;"
-                  .path=${mdiNewBox}
-                ></ha-svg-icon>`
-              : ""}
-            ${!this.activeFilters?.includes("downloaded") && repository.installed
-              ? html`<ha-svg-icon
-                  label="Downloaded"
-                  style="color: var(--primary-color); margin-right: 4px;"
-                  .path=${mdiDownload}
-                ></ha-svg-icon>`
-              : ""}
-            ${name}
-            <div class="secondary">
-              ${narrow ? localizeFunc(`common.${repository.category}`) : repository.description}
-            </div>
-          `,
+        template: (repository: RepositoryBase) => html`
+          ${repository.new
+            ? html`<ha-svg-icon
+                label="New"
+                style="color: var(--primary-color); margin-right: 4px;"
+                .path=${mdiNewBox}
+              ></ha-svg-icon>`
+            : ""}
+          ${!this.activeFilters?.includes("downloaded") && repository.installed
+            ? html`<ha-svg-icon
+                label="Downloaded"
+                style="color: var(--primary-color); margin-right: 4px;"
+                .path=${mdiDownload}
+              ></ha-svg-icon>`
+            : ""}
+          ${repository.name}
+          <div class="secondary">
+            ${narrow ? localizeFunc(`common.${repository.category}`) : repository.description}
+          </div>
+        `,
       },
       downloads: {
         ...defaultKeyData,
@@ -454,7 +450,7 @@ export class HacsDashboard extends LitElement {
         sortable: true,
         direction: this.activeSort?.column === "downloads" ? this.activeSort.direction : null,
         width: "10%",
-        template: (downloads: number) => html`${downloads || "-"}`,
+        template: (repository: RepositoryBase) => html`${repository.downloads || "-"}`,
       },
       stars: {
         ...defaultKeyData,
@@ -471,9 +467,12 @@ export class HacsDashboard extends LitElement {
         sortable: true,
         direction: this.activeSort?.column === "last_updated" ? this.activeSort.direction : null,
         width: "15%",
-        template: (last_updated: string, _: RepositoryBase) => {
+        template: (repository: RepositoryBase) => {
+          if (!repository.last_updated) {
+            return "-";
+          }
           try {
-            return relativeTime(new Date(last_updated), this.hass.locale);
+            return relativeTime(new Date(repository.last_updated), this.hass.locale);
           } catch (e) {
             return "-";
           }
@@ -487,8 +486,8 @@ export class HacsDashboard extends LitElement {
         direction:
           this.activeSort?.column === "installed_version" ? this.activeSort.direction : null,
         width: "10%",
-        template: (installed_version: string, repository: RepositoryBase) =>
-          repository.installed ? installed_version : "-",
+        template: (repository: RepositoryBase) =>
+          repository.installed ? repository.installed_version : "-",
       },
       available_version: {
         ...defaultKeyData,
@@ -498,8 +497,8 @@ export class HacsDashboard extends LitElement {
         direction:
           this.activeSort?.column === "available_version" ? this.activeSort.direction : null,
         width: "10%",
-        template: (available_version: string, repository: RepositoryBase) =>
-          repository.installed ? available_version : "-",
+        template: (repository: RepositoryBase) =>
+          repository.installed ? repository.available_version : "-",
       },
       status: {
         ...defaultKeyData,
@@ -508,9 +507,11 @@ export class HacsDashboard extends LitElement {
         sortable: true,
         direction: this.activeSort?.column === "status" ? this.activeSort.direction : null,
         width: "10%",
-        template: (status: RepositoryBase["status"]) =>
-          ["pending-restart", "pending-upgrade"].includes(status)
-            ? localizeFunc(`repository_status.${status as "pending-restart" | "pending-upgrade"}`)
+        template: (repository: RepositoryBase) =>
+          ["pending-restart", "pending-upgrade"].includes(repository.status)
+            ? localizeFunc(
+                `repository_status.${repository.status as "pending-restart" | "pending-upgrade"}`,
+              )
             : "-",
       },
       category: {
@@ -520,7 +521,7 @@ export class HacsDashboard extends LitElement {
         sortable: true,
         direction: this.activeSort?.column === "category" ? this.activeSort.direction : null,
         width: "10%",
-        template: (category: RepositoryCategory) => localizeFunc(`common.${category}`),
+        template: (repository: RepositoryBase) => localizeFunc(`common.${repository.category}`),
       },
       authors: defaultKeyData,
       description: defaultKeyData,
@@ -532,7 +533,7 @@ export class HacsDashboard extends LitElement {
         title: "",
         width: this.narrow ? undefined : "10%",
         type: "overflow-menu",
-        template: (_, repository: RepositoryBase) =>
+        template: (repository: RepositoryBase) =>
           repository.installed
             ? html`
                 <ha-icon-overflow-menu
@@ -544,7 +545,7 @@ export class HacsDashboard extends LitElement {
               `
             : "",
       },
-    })
+    }),
   );
 
   get _scrollerTarget() {
@@ -590,13 +591,13 @@ export class HacsDashboard extends LitElement {
       if ((ev.target as any).nodeName === "HA-RADIO" && (ev.target as any).checked === false) {
         this.activeFilters = [
           ...(this.activeFilters?.filter(
-            (filter) => !filter.startsWith("category_") && filter !== categoryFilter
+            (filter) => !filter.startsWith("category_") && filter !== categoryFilter,
           ) || []),
         ];
       } else {
         this.activeFilters = [
           ...(this.activeFilters?.filter(
-            (filter) => !filter.startsWith("category_") && filter !== categoryFilter
+            (filter) => !filter.startsWith("category_") && filter !== categoryFilter,
           ) || []),
           categoryFilter,
         ];
@@ -619,7 +620,7 @@ export class HacsDashboard extends LitElement {
         ...entries,
         [key]: update[key] ?? tableColumnDefaults[key],
       }),
-      {}
+      {},
     ) as Record<tableColumnDefaultsType, boolean>;
   }
 

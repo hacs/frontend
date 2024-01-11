@@ -13,7 +13,7 @@ import memoizeOne from "memoize-one";
 import { mainWindow } from "../../homeassistant-frontend/src/common/dom/get_main_window";
 import { extractSearchParamsObject } from "../../homeassistant-frontend/src/common/url/search-params";
 import "../../homeassistant-frontend/src/components/ha-card";
-import "../../homeassistant-frontend/src/components/ha-chip";
+import "../../homeassistant-frontend/src/components/chips/ha-filter-chip";
 import "../../homeassistant-frontend/src/components/ha-fab";
 import "../../homeassistant-frontend/src/components/ha-icon-overflow-menu";
 import "../../homeassistant-frontend/src/components/ha-markdown";
@@ -85,7 +85,7 @@ export class HacsRepositoryDashboard extends LitElement {
       const requestedRepository = `${params.owner}/${params.repository}`;
       existing = this.hacs.repositories.find(
         (repository) =>
-          repository.full_name.toLocaleLowerCase() === requestedRepository.toLocaleLowerCase()
+          repository.full_name.toLocaleLowerCase() === requestedRepository.toLocaleLowerCase(),
       );
       if (!existing && params.category) {
         if (
@@ -108,7 +108,7 @@ export class HacsRepositoryDashboard extends LitElement {
           this.hacs.repositories = await getRepositories(this.hass);
           existing = this.hacs.repositories.find(
             (repository) =>
-              repository.full_name.toLocaleLowerCase() === requestedRepository.toLocaleLowerCase()
+              repository.full_name.toLocaleLowerCase() === requestedRepository.toLocaleLowerCase(),
           );
         } catch (err: any) {
           this._error = err;
@@ -144,7 +144,7 @@ export class HacsRepositoryDashboard extends LitElement {
     try {
       this._repository = await fetchRepositoryInformation(
         this.hass,
-        repositoryId || String(this._repository!.id)
+        repositoryId || String(this._repository!.id),
       );
     } catch (err: any) {
       this._error = err?.message;
@@ -198,51 +198,58 @@ export class HacsRepositoryDashboard extends LitElement {
             <div class="chips">
               ${this._repository.installed
                 ? html`
-                    <ha-chip title="${this.hacs.localize("dialog_info.version_installed")}" hasIcon>
+                    <ha-filter-chip
+                      title="${this.hacs.localize("dialog_info.version_installed")}"
+                      hasIcon
+                    >
                       <ha-svg-icon slot="icon" .path=${mdiCube}></ha-svg-icon>
                       ${this._repository.installed_version}
-                    </ha-chip>
+                    </ha-filter-chip>
                   `
                 : ""}
               ${authors
                 ? authors.map(
-                    (author) => html`<a
-                      href="https://github.com/${author}"
-                      target="_blank"
-                      rel="noreferrer noopener"
-                    >
-                      <ha-chip title="${this.hacs.localize("dialog_info.author")}" hasIcon>
-                        <ha-svg-icon slot="icon" .path=${mdiAccount}></ha-svg-icon>
-                        @${author}
-                      </ha-chip>
-                    </a>`
+                    (author) =>
+                      html`<a
+                        href="https://github.com/${author}"
+                        target="_blank"
+                        rel="noreferrer noopener"
+                      >
+                        <ha-filter-chip title="${this.hacs.localize("dialog_info.author")}" hasIcon>
+                          <ha-svg-icon slot="icon" .path=${mdiAccount}></ha-svg-icon>
+                          @${author}
+                        </ha-filter-chip>
+                      </a>`,
                   )
                 : ""}
               ${this._repository.downloads
-                ? html` <ha-chip hasIcon title="${this.hacs.localize("dialog_info.downloads")}">
+                ? html` <ha-filter-chip
+                    hasIcon
+                    title="${this.hacs.localize("dialog_info.downloads")}"
+                  >
                     <ha-svg-icon slot="icon" .path=${mdiArrowDownBold}></ha-svg-icon>
                     ${this._repository.downloads}
-                  </ha-chip>`
+                  </ha-filter-chip>`
                 : ""}
-              <ha-chip title="${this.hacs.localize("dialog_info.stars")}" hasIcon>
+              <ha-filter-chip title="${this.hacs.localize("dialog_info.stars")}" hasIcon>
                 <ha-svg-icon slot="icon" .path=${mdiStar}></ha-svg-icon>
                 ${this._repository.stars}
-              </ha-chip>
+              </ha-filter-chip>
               <a
                 href="https://github.com/${this._repository.full_name}/issues"
                 target="_blank"
                 rel="noreferrer noopener"
               >
-                <ha-chip title="${this.hacs.localize("dialog_info.open_issues")}" hasIcon>
+                <ha-filter-chip title="${this.hacs.localize("dialog_info.open_issues")}" hasIcon>
                   <ha-svg-icon slot="icon" .path=${mdiExclamationThick}></ha-svg-icon>
                   ${this._repository.issues}
-                </ha-chip>
+                </ha-filter-chip>
               </a>
             </div>
             <ha-markdown
               .content=${markdownWithRepositoryContext(
                 this._repository.additional_info,
-                this._repository
+                this._repository,
               ) || this.hacs.localize("dialog_info.no_info")}
             ></ha-markdown>
           </ha-card>
