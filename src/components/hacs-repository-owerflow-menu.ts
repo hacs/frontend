@@ -12,7 +12,10 @@ import memoizeOne from "memoize-one";
 import { mainWindow } from "../../homeassistant-frontend/src/common/dom/get_main_window";
 import { navigate } from "../../homeassistant-frontend/src/common/navigate";
 import { getConfigEntries } from "../../homeassistant-frontend/src/data/config_entries";
-import { deleteResource, fetchResources } from "../../homeassistant-frontend/src/data/lovelace";
+import {
+  deleteResource,
+  fetchResources,
+} from "../../homeassistant-frontend/src/data/lovelace/resource";
 import { showConfirmationDialog } from "../../homeassistant-frontend/src/dialogs/generic/show-dialog-box";
 import type { RepositoryBase } from "../data/repository";
 import { repositoryUninstall, repositoryUpdate } from "../data/websocket";
@@ -65,7 +68,7 @@ export const repositoryMenuItems = memoizeOne(
               mainWindow.open(
                 `/hacsfiles/${repository.local_path.split("/").pop()}/${repository.file_name}`,
                 "_blank",
-                "noreferrer=true"
+                "noreferrer=true",
               ),
           },
         ]
@@ -78,7 +81,7 @@ export const repositoryMenuItems = memoizeOne(
         mainWindow.open(
           `https://github.com/${repository.full_name}/issues`,
           "_blank",
-          "noreferrer=true"
+          "noreferrer=true",
         ),
     },
     ...(repository.id !== "172733314" && repository.installed_version
@@ -90,7 +93,7 @@ export const repositoryMenuItems = memoizeOne(
               mainWindow.open(
                 `https://github.com/hacs/integration/issues/new?assignees=ludeeus&labels=flag&template=removal.yml&repo=${repository.full_name}&title=Request for removal of ${repository.full_name}`,
                 "_blank",
-                "noreferrer=true"
+                "noreferrer=true",
               ),
             warning: true,
           },
@@ -100,7 +103,7 @@ export const repositoryMenuItems = memoizeOne(
             action: async () => {
               if (repository.category === "integration" && repository.config_flow) {
                 const configFlows = (await getConfigEntries(element.hass)).some(
-                  (entry) => entry.domain === repository.domain
+                  (entry) => entry.domain === repository.domain,
                 );
                 if (configFlows) {
                   const ignore = await showConfirmationDialog(element, {
@@ -136,20 +139,20 @@ export const repositoryMenuItems = memoizeOne(
           },
         ]
       : []),
-  ]
+  ],
 );
 
 const _repositoryRemove = async (
   element: HacsRepositoryDashboard | HacsDashboard,
-  repository: RepositoryBase
+  repository: RepositoryBase,
 ) => {
   if (repository.category === "plugin" && element.hacs.info?.lovelace_mode !== "yaml") {
     const resources = await fetchResources(element.hass.connection);
     resources
       .filter((resource) =>
         resource.url.startsWith(
-          `/hacsfiles/${repository.full_name.split("/")[1]}/${repository.file_name}`
-        )
+          `/hacsfiles/${repository.full_name.split("/")[1]}/${repository.file_name}`,
+        ),
       )
       .forEach(async (resource) => {
         await deleteResource(element.hass, String(resource.id));

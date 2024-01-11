@@ -2,7 +2,7 @@ import {
   createResource,
   fetchResources,
   updateResource,
-} from "../../homeassistant-frontend/src/data/lovelace";
+} from "../../homeassistant-frontend/src/data/lovelace/resource";
 import type { HomeAssistant } from "../../homeassistant-frontend/src/types";
 import type { RepositoryInfo } from "../data/repository";
 import { HacsLogger } from "./hacs-logger";
@@ -14,13 +14,13 @@ const generateUniqueTag = (repository: RepositoryInfo, version?: string): string
       repository.installed_version ||
       repository.selected_tag ||
       repository.available_version
-    ).replace(/\D+/g, "")}`
+    ).replace(/\D+/g, "")}`,
   );
 
 export async function updateFrontendResource(
   hass: HomeAssistant,
   repository: RepositoryInfo,
-  version?: string
+  version?: string,
 ): Promise<void> {
   const logger = new HacsLogger("updateLovelaceResources");
   const resources = await fetchResources(hass.connection);
