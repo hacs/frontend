@@ -68,8 +68,6 @@ const genPagesProdTask =
       const content = renderTemplate(path.resolve(inputRoot, inputSub, `${page}.template`), {
         latestEntryJS: entries.map((entry) => latestManifest[`${entry}.js`]),
         es5EntryJS: entries.map((entry) => es5Manifest[`${entry}.js`]),
-        latestCustomPanelJS: latestManifest["custom-panel.js"],
-        es5CustomPanelJS: es5Manifest["custom-panel.js"],
       });
       minifiedHTML.push(
         minifyHtml(content, path.extname(page)).then((minified) =>
@@ -81,7 +79,7 @@ const genPagesProdTask =
   };
 
 // Map HTML pages to their required entrypoints
-const APP_PAGE_ENTRIES = { "entrypoint.js": ["entrypoint"] };
+const APP_PAGE_ENTRIES = { "entrypoint.js": ["entrypoint"], "extra.js": ["extra"] };
 
 gulp.task(
   "gen-pages-app-dev",
