@@ -7,6 +7,7 @@ import { fireEvent } from "../../../homeassistant-frontend/src/common/dom/fire_e
 import { mainWindow } from "../../../homeassistant-frontend/src/common/dom/get_main_window";
 import { computeRTL } from "../../../homeassistant-frontend/src/common/util/compute_rtl";
 import "../../../homeassistant-frontend/src/components/ha-alert";
+import "../../../homeassistant-frontend/src/components/ha-button";
 import "../../../homeassistant-frontend/src/components/ha-dialog";
 import "../../../homeassistant-frontend/src/components/ha-form/ha-form";
 import { HaFormSchema } from "../../../homeassistant-frontend/src/components/ha-form/types";
@@ -24,6 +25,7 @@ import { repositoryBeta, websocketSubscription } from "../../data/websocket";
 import { HacsStyles } from "../../styles/hacs-common-style";
 import { generateFrontendResourceURL, updateFrontendResource } from "../../tools/frontend-resource";
 import type { HacsDownloadDialogParams } from "./show-hacs-dialog";
+import { documentationUrl } from "../../tools/documentation";
 
 @customElement("hacs-download-dialog")
 export class HacsDonwloadDialog extends LitElement {
@@ -72,7 +74,7 @@ export class HacsDonwloadDialog extends LitElement {
   private async _fetchRepository() {
     this._repository = await fetchRepositoryInformation(
       this.hass,
-      this._dialogParams!.repositoryId
+      this._dialogParams!.repositoryId,
     );
   }
 
@@ -95,7 +97,7 @@ export class HacsDonwloadDialog extends LitElement {
               this._repository.full_name === "hacs/integration" ||
                 this._repository.hide_default_branch
                 ? []
-                : [this._repository.default_branch]
+                : [this._repository.default_branch],
             ),
             mode: "dropdown",
           },
@@ -129,6 +131,21 @@ export class HacsDonwloadDialog extends LitElement {
                   @value-changed=${this._valueChanged}
                 >
                 </ha-form>
+                <ha-alert alert-type="info" .rtl=${computeRTL(this.hass)}>
+                  ${this._dialogParams!.hacs.localize("dialog_download.selector_note")}
+                  <a
+                    class="learn_more"
+                    href=${documentationUrl({
+                      path: "/docs/entities/update_entities#install-service",
+                      experimental: this._dialogParams!.hacs.info.experimental,
+                    })}
+                    slot="action"
+                    target="_blank"
+                    rel="noreferrer"
+                  >
+                    ${this._dialogParams!.hacs.localize("common.learn_more")}</a
+                  >
+                </ha-alert>
               `
             : nothing}
           ${!this._repository.can_download
@@ -195,7 +212,7 @@ export class HacsDonwloadDialog extends LitElement {
       await repositorySetVersion(
         this.hass,
         this._dialogParams!.repositoryId,
-        ev.detail.value.version
+        ev.detail.value.version,
       );
     }
     if (updateNeeded) {
@@ -218,13 +235,13 @@ export class HacsDonwloadDialog extends LitElement {
     await repositoryDownloadVersion(
       this.hass,
       String(this._repository.id),
-      this._repository?.version_or_commit !== "commit" ? selectedVersion : undefined
+      this._repository?.version_or_commit !== "commit" ? selectedVersion : undefined,
     );
 
     this._dialogParams!.hacs.log.debug(this._repository.category, "_installRepository");
     this._dialogParams!.hacs.log.debug(
       this._dialogParams!.hacs.info.lovelace_mode,
-      "_installRepository"
+      "_installRepository",
     );
     if (
       this._repository.category === "plugin" &&
@@ -258,6 +275,9 @@ export class HacsDonwloadDialog extends LitElement {
         }
         .lovelace {
           margin-top: 8px;
+        }
+        .learn_more {
+          color: var(--hcv-text-color-primary);
         }
         pre {
           white-space: pre-line;
