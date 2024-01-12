@@ -44,7 +44,7 @@ export class HacsRepositoryDashboard extends LitElement {
 
   @property({ attribute: false }) public route!: Route;
 
-  @property({ attribute: false }) public _repository?: RepositoryInfo;
+  @state() public _repository?: RepositoryInfo;
 
   @state() private _error?: string;
 

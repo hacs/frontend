@@ -52,7 +52,7 @@ import { aboutHacsmarkdownContent } from "../data/about";
 import type { Hacs } from "../data/hacs";
 import { APP_FULL_NAME } from "../data/hacs";
 import { HacsLocalizeKeys } from "../data/localize";
-import type { RepositoryBase, RepositoryCategory } from "../data/repository";
+import type { RepositoryBase } from "../data/repository";
 import { repositoriesClearNew } from "../data/websocket";
 import { HacsStyles } from "../styles/hacs-common-style";
 import { categoryIcon } from "../tools/category-icon";
@@ -168,7 +168,7 @@ export class HacsDashboard extends LitElement {
       )}
       .noDataText=${this.activeFilters?.includes("downloaded")
         ? "No downloaded repositories"
-        : "No repositories matching search"}
+        : "No repositories matching search and filters"}
       @row-click=${this._handleRowClicked}
       @clear-filter=${this._handleClearFilter}
       @value-changed=${this._handleSearchFilterChanged}
@@ -585,7 +585,6 @@ export class HacsDashboard extends LitElement {
   }
 
   private _handleCategoryFilterChange(ev: CustomEvent) {
-    ev.stopPropagation();
     const categoryFilter = (ev.target as any).value;
     if (categoryFilter) {
       if ((ev.target as any).nodeName === "HA-RADIO" && (ev.target as any).checked === false) {
@@ -629,6 +628,7 @@ export class HacsDashboard extends LitElement {
   }
 
   private _handleDownloadFilterChange(ev: CustomEvent) {
+    ev.stopPropagation();
     const updatedFilters = this.activeFilters?.filter((filter) => filter !== "downloaded") || [];
     if (ev.detail.selected) {
       updatedFilters.push("downloaded");
@@ -637,6 +637,7 @@ export class HacsDashboard extends LitElement {
   }
 
   private _handleNewFilterChange(ev: CustomEvent) {
+    ev.stopPropagation();
     const updatedFilters = this.activeFilters?.filter((filter) => filter !== "new") || [];
     if (ev.detail.selected) {
       updatedFilters.push("new");
