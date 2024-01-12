@@ -15,6 +15,7 @@ module.exports.config = {
       name: "hacs" + nameSuffix(latestBuild),
       entry: {
         entrypoint: path.resolve(paths.root_dir, "src/entrypoint.ts"),
+        extra: path.resolve(paths.root_dir, "src/extra.ts"),
       },
       outputPath: outputPath(paths.app_output_root, latestBuild),
       publicPath: publicPath(latestBuild, paths.app_publicPath),
