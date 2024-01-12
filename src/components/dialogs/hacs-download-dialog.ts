@@ -8,6 +8,8 @@ import { mainWindow } from "../../../homeassistant-frontend/src/common/dom/get_m
 import { computeRTL } from "../../../homeassistant-frontend/src/common/util/compute_rtl";
 import "../../../homeassistant-frontend/src/components/ha-alert";
 import "../../../homeassistant-frontend/src/components/ha-dialog";
+import "../../../homeassistant-frontend/src/components/ha-form/ha-form";
+import { HaFormSchema } from "../../../homeassistant-frontend/src/components/ha-form/types";
 import { showConfirmationDialog } from "../../../homeassistant-frontend/src/dialogs/generic/show-dialog-box";
 import type { HomeAssistant } from "../../../homeassistant-frontend/src/types";
 import { HacsDispatchEvent } from "../../data/common";
@@ -16,8 +18,9 @@ import {
   RepositoryBase,
   repositoryDownloadVersion,
   RepositoryInfo,
+  repositorySetVersion,
 } from "../../data/repository";
-import { websocketSubscription } from "../../data/websocket";
+import { repositoryBeta, websocketSubscription } from "../../data/websocket";
 import { HacsStyles } from "../../styles/hacs-common-style";
 import { generateFrontendResourceURL, updateFrontendResource } from "../../tools/frontend-resource";
 import type { HacsDownloadDialogParams } from "./show-hacs-dialog";
@@ -79,6 +82,26 @@ export class HacsDonwloadDialog extends LitElement {
     }
 
     const installPath = this._getInstallPath(this._repository);
+    const donwloadRepositorySchema: HaFormSchema[] = [
+      {
+        name: "beta",
+        selector: { boolean: {} },
+      },
+      {
+        name: "version",
+        selector: {
+          select: {
+            options: this._repository.releases.concat(
+              this._repository.full_name === "hacs/integration" ||
+                this._repository.hide_default_branch
+                ? []
+                : [this._repository.default_branch]
+            ),
+            mode: "dropdown",
+          },
+        },
+      },
+    ];
     return html`
       <ha-dialog
         open
@@ -88,6 +111,26 @@ export class HacsDonwloadDialog extends LitElement {
         @closed=${this.closeDialog}
       >
         <div class="content">
+          ${this._repository.version_or_commit === "version"
+            ? html`
+                <ha-form
+                  .disabled=${this._waiting}
+                  .data=${this._repository.version_or_commit === "version"
+                    ? {
+                        beta: this._repository.beta,
+                        version: this._repository.releases[0],
+                      }
+                    : {}}
+                  .schema=${donwloadRepositorySchema}
+                  .computeLabel=${(schema: HaFormSchema) =>
+                    schema.name === "beta"
+                      ? this._dialogParams!.hacs.localize("dialog_download.show_beta")
+                      : this._dialogParams!.hacs.localize("dialog_download.select_version")}
+                  @value-changed=${this._valueChanged}
+                >
+                </ha-form>
+              `
+            : nothing}
           ${!this._repository.can_download
             ? html`<ha-alert alert-type="error" .rtl=${computeRTL(this.hass)}>
                 ${this._dialogParams.hacs.localize("confirm.home_assistant_version_not_correct", {
@@ -136,6 +179,29 @@ export class HacsDonwloadDialog extends LitElement {
         </mwc-button>
       </ha-dialog>
     `;
+  }
+
+  private async _valueChanged(ev) {
+    let updateNeeded = false;
+    if (this._repository!.beta !== ev.detail.value.beta) {
+      updateNeeded = true;
+      this._waiting = true;
+      await repositoryBeta(this.hass, this._dialogParams!.repositoryId, ev.detail.value.beta);
+    }
+    if (ev.detail.value.version) {
+      updateNeeded = true;
+      this._waiting = true;
+
+      await repositorySetVersion(
+        this.hass,
+        this._dialogParams!.repositoryId,
+        ev.detail.value.version
+      );
+    }
+    if (updateNeeded) {
+      await this._fetchRepository();
+      this._waiting = false;
+    }
   }
 
   private async _installRepository(): Promise<void> {
