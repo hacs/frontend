@@ -56,6 +56,17 @@
     "downloaded_repositories": "Downloaded repositories",
     "useful_links": "Useful links"
   },
+  "dialog_overview": {
+    "title": "Manage overview table",
+    "description": "Change what is shown in the overview table to match your needs.",
+    "sections": {
+      "filters": "Change active filters",
+      "behaviour": "Change the behaviour of the overview"
+    },
+    "base": "Base filters",
+    "category": "Category",
+    "columns": "Columns"
+  },
   "dialog_add_repo": {
     "title": "Add repository",
     "no_match": "No repositories found matching your filter",
