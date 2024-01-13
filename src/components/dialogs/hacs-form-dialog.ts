@@ -36,7 +36,7 @@ class HacsFromDialog extends LitElement {
         console.log(data);
         this._errors = { base: data?.message || data };
       },
-      HacsDispatchEvent.ERROR
+      HacsDispatchEvent.ERROR,
     );
     await this.updateComplete;
   }
@@ -126,17 +126,15 @@ class HacsFromDialog extends LitElement {
   }
 
   private _computeLabel = (schema: HaFormSchema, data: HaFormDataContainer) =>
-    this._dialogParams!.computeLabelCallback
-      ? this._dialogParams!.computeLabelCallback(schema, data)
+    this._dialogParams?.computeLabelCallback
+      ? this._dialogParams.computeLabelCallback(schema, data)
       : schema.name || "";
 
   private _computeHelper = (schema: HaFormSchema) =>
-    this._dialogParams!.computeHelper ? this._dialogParams!.computeHelper(schema) : "";
+    this._dialogParams?.computeHelper ? this._dialogParams.computeHelper(schema) : "";
 
   private _computeError = (error, schema: HaFormSchema | readonly HaFormSchema[]) =>
-    this._dialogParams!.computeError
-      ? this._dialogParams!.computeError(error, schema)
-      : error || "";
+    this._dialogParams?.computeError ? this._dialogParams.computeError(error, schema) : error || "";
 
   static get styles(): CSSResultGroup {
     return css`

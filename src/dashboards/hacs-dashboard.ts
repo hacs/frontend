@@ -13,13 +13,12 @@ import {
   mdiPlus,
 } from "@mdi/js";
 import type { CSSResultGroup, PropertyValues, TemplateResult } from "lit";
-import { LitElement, css, html, nothing } from "lit";
+import { LitElement, html, nothing } from "lit";
 import { customElement, property } from "lit/decorators";
 import memoize from "memoize-one";
 import { relativeTime } from "../../homeassistant-frontend/src/common/datetime/relative_time";
 import { storage } from "../../homeassistant-frontend/src/common/decorators/storage";
 import { mainWindow } from "../../homeassistant-frontend/src/common/dom/get_main_window";
-import { stopPropagation } from "../../homeassistant-frontend/src/common/dom/stop_propagation";
 import { navigate } from "../../homeassistant-frontend/src/common/navigate";
 import type {
   DataTableColumnContainer,
@@ -28,14 +27,12 @@ import type {
 import "../../homeassistant-frontend/src/layouts/hass-tabs-subpage-data-table";
 
 import "../../homeassistant-frontend/src/components/ha-button-menu";
-import "../../homeassistant-frontend/src/components/ha-check-list-item";
 import "../../homeassistant-frontend/src/components/ha-fab";
-import "../../homeassistant-frontend/src/components/ha-formfield";
+import "../../homeassistant-frontend/src/components/ha-form/ha-form";
 import "../../homeassistant-frontend/src/components/ha-markdown";
-import "../../homeassistant-frontend/src/components/ha-radio";
-import "../../homeassistant-frontend/src/components/ha-select";
 
 import { LocalizeFunc } from "../../homeassistant-frontend/src/common/translations/localize";
+import { HaFormSchema } from "../../homeassistant-frontend/src/components/ha-form/types";
 import "../../homeassistant-frontend/src/components/ha-icon-overflow-menu";
 import { IconOverflowMenuItem } from "../../homeassistant-frontend/src/components/ha-icon-overflow-menu";
 import "../../homeassistant-frontend/src/components/ha-svg-icon";
@@ -76,6 +73,77 @@ const defaultKeyData = {
   hidden: true,
   filterable: true,
 };
+
+const BASE_FILTER_OPTIONS = ["downloaded", "new"];
+
+const FILTER_SCHEMA = memoize(
+  (localizeFunc: LocalizeFunc<HacsLocalizeKeys>, categories: string[], narrow: boolean) =>
+    [
+      {
+        name: "filters",
+        type: "constant",
+        value: "",
+      },
+      {
+        name: "base",
+        selector: {
+          select: {
+            options: BASE_FILTER_OPTIONS.map((filter) => ({
+              value: filter,
+              label: localizeFunc(
+                // @ts-ignore
+                `common.${filter}`,
+              ),
+            })),
+            mode: "dropdown",
+            sort: true,
+          },
+        },
+      },
+      {
+        name: "category",
+        selector: {
+          select: {
+            options: categories.map((category) => ({
+              label: localizeFunc(
+                // @ts-ignore
+                `common.${category}`,
+              ),
+              value: `category_${category}`,
+            })),
+            mode: "dropdown",
+            sort: true,
+          },
+        },
+      },
+      ...(narrow
+        ? []
+        : ([
+            {
+              name: "behaviour",
+              type: "constant",
+              value: "",
+            },
+            {
+              name: "columns",
+              selector: {
+                select: {
+                  options: Object.keys(tableColumnDefaults).map((column) => ({
+                    label: localizeFunc(
+                      // @ts-ignore
+                      `column.${column}`,
+                    ),
+                    value: column,
+                  })),
+                  multiple: true,
+                  mode: "dropdown",
+                  sort: true,
+                },
+              },
+            },
+          ] as const satisfies readonly HaFormSchema[])),
+    ] as const satisfies readonly HaFormSchema[],
+);
 
 @customElement("hacs-dashboard")
 export class HacsDashboard extends LitElement {
@@ -128,7 +196,8 @@ export class HacsDashboard extends LitElement {
   protected updated(changedProperties: PropertyValues): void {
     super.updated(changedProperties);
     if (changedProperties.has("_activeSearch") && this._activeSearch?.length) {
-      this.activeFilters = this.activeFilters?.filter((filter) => filter !== "downloaded");
+      const updatedFilters = this.activeFilters?.filter((filter) => filter !== "downloaded") || [];
+      this.activeFilters = updatedFilters.length ? updatedFilters : undefined;
     }
   }
 
@@ -243,79 +312,13 @@ export class HacsDashboard extends LitElement {
         ].filter((item) => item !== undefined) as IconOverflowMenuItem[]}
       >
       </ha-icon-overflow-menu>
-      <ha-button-menu slot="filter-menu" corner="BOTTOM_START" multi>
+      <ha-button-menu slot="filter-menu" @click=${this._handleIconOverflowMenuOpened}>
         <ha-icon-button
           slot="trigger"
           .label=${this.hass.localize("ui.panel.config.entities.picker.filter.filter")}
           .path=${mdiFilterVariant}
         >
         </ha-icon-button>
-
-        ${!this.narrow ? html`<p class="menu_header">Filters</p>` : ""}
-        <ha-check-list-item
-          @request-selected=${this._handleDownloadFilterChange}
-          graphic="control"
-          .selected=${this.activeFilters?.includes("downloaded") ?? false}
-          left
-        >
-          ${this.hacs.localize("common.downloaded")}
-        </ha-check-list-item>
-        <ha-check-list-item
-          @request-selected=${this._handleNewFilterChange}
-          graphic="control"
-          .selected=${this.activeFilters?.includes("new") ?? false}
-          left
-        >
-          ${this.hacs.localize("common.new")}
-        </ha-check-list-item>
-        ${!this.narrow
-          ? html`
-              <ha-select
-                label="Category filter"
-                @selected=${this._handleCategoryFilterChange}
-                @closed=${stopPropagation}
-                naturalMenuWidth
-                .value=${this.activeFilters?.find((filter) => filter.startsWith("category_")) || ""}
-              >
-                ${this.hacs.info.categories.map(
-                  (category) => html`
-                    <mwc-list-item .value="${`category_${category}`}">
-                      ${this.hacs.localize(`common.${category}`)}
-                    </mwc-list-item>
-                  `,
-                )}
-              </ha-select>
-              <div class="divider"></div>
-              <p class="menu_header">Columns</p>
-              ${Object.keys(tableColumnDefaults).map(
-                (entry) => html`
-                  <ha-check-list-item
-                    @request-selected=${this._handleColumnChange}
-                    graphic="control"
-                    .column=${entry}
-                    .selected=${this._tableColumns[entry] ?? tableColumnDefaults[entry]}
-                    left
-                  >
-                    ${this.hacs.localize(`column.${entry as tableColumnDefaultsType}`)}
-                  </ha-check-list-item>
-                `,
-              )}
-            `
-          : this.hacs.info.categories.map(
-              (category) => html`
-                <ha-formfield .label=${this.hacs.localize(`common.${category}`)}>
-                  <ha-radio
-                    @change=${this._handleCategoryFilterChange}
-                    .value=${`category_${category}`}
-                    name="category"
-                    .checked=${this.activeFilters?.some(
-                      (filter) => filter === `category_${category}`,
-                    ) ?? false}
-                  >
-                  </ha-radio>
-                </ha-formfield>
-              `,
-            )}
       </ha-button-menu>
       ${showFab
         ? html`
@@ -584,65 +587,55 @@ export class HacsDashboard extends LitElement {
     navigate(`/hacs/repository/${ev.detail.id}`);
   }
 
-  private _handleCategoryFilterChange(ev: CustomEvent) {
-    const categoryFilter = (ev.target as any).value;
-    if (categoryFilter) {
-      if ((ev.target as any).nodeName === "HA-RADIO" && (ev.target as any).checked === false) {
-        this.activeFilters = [
-          ...(this.activeFilters?.filter(
-            (filter) => !filter.startsWith("category_") && filter !== categoryFilter,
-          ) || []),
-        ];
-      } else {
-        this.activeFilters = [
-          ...(this.activeFilters?.filter(
-            (filter) => !filter.startsWith("category_") && filter !== categoryFilter,
-          ) || []),
-          categoryFilter,
-        ];
-      }
-    }
+  private _handleIconOverflowMenuOpened(ev: CustomEvent) {
+    ev.stopPropagation();
+    showHacsFormDialog(this, {
+      hacs: this.hacs,
+      title: this.hacs.localize("dialog_overview.title"),
+      description: html`<p>${this.hacs.localize("dialog_overview.description")}</p>`,
+      data: {
+        base: this.activeFilters?.find((filter) => BASE_FILTER_OPTIONS.includes(filter)) || "",
+        category: this.activeFilters?.find((filter) => filter.startsWith("category_")) || "",
+        columns: Object.entries(tableColumnDefaults)
+          .filter(([key, value]) => this._tableColumns[key] ?? value)
+          .map(([key, _]) => key),
+      },
+      schema: FILTER_SCHEMA(this.hacs.localize, this.hacs.info.categories, this.narrow),
+      computeLabelCallback: (schema, _) =>
+        this.hacs.localize(
+          // @ts-ignore
+          `dialog_overview.${schema.name}`,
+        ) ||
+        this.hacs.localize(
+          // @ts-ignore
+          `dialog_overview.sections.${schema.name}`,
+        ) ||
+        schema.name,
+      saveAction: async (data) => {
+        const updatedFilters: string[] = Object.entries<any>(data)
+          .filter(
+            ([key, value]) =>
+              ["base", "category"].includes(key) && ![undefined, null, ""].includes(value),
+          )
+          .map(([_, value]) => value);
+        this.activeFilters = updatedFilters.length ? updatedFilters : undefined;
+        this._tableColumns = Object.keys(tableColumnDefaults).reduce(
+          (entries, key) => ({
+            ...entries,
+            [key]: data.columns.includes(key) ?? tableColumnDefaults[key],
+          }),
+          {},
+        ) as Record<tableColumnDefaultsType, boolean>;
+      },
+    });
   }
 
   private _handleSearchFilterChanged(ev: CustomEvent) {
     this._activeSearch = ev.detail.value;
   }
 
-  private _handleColumnChange(ev: CustomEvent) {
-    ev.stopPropagation();
-    const update = {
-      ...this._tableColumns,
-      [(ev.currentTarget as any).column]: ev.detail.selected,
-    };
-    this._tableColumns = Object.keys(tableColumnDefaults).reduce(
-      (entries, key) => ({
-        ...entries,
-        [key]: update[key] ?? tableColumnDefaults[key],
-      }),
-      {},
-    ) as Record<tableColumnDefaultsType, boolean>;
-  }
-
   private _handleSortingChanged(ev: CustomEvent) {
     this.activeSort = ev.detail;
-  }
-
-  private _handleDownloadFilterChange(ev: CustomEvent) {
-    ev.stopPropagation();
-    const updatedFilters = this.activeFilters?.filter((filter) => filter !== "downloaded") || [];
-    if (ev.detail.selected) {
-      updatedFilters.push("downloaded");
-    }
-    this.activeFilters = updatedFilters.length ? updatedFilters : undefined;
-  }
-
-  private _handleNewFilterChange(ev: CustomEvent) {
-    ev.stopPropagation();
-    const updatedFilters = this.activeFilters?.filter((filter) => filter !== "new") || [];
-    if (ev.detail.selected) {
-      updatedFilters.push("new");
-    }
-    this.activeFilters = updatedFilters.length ? updatedFilters : undefined;
   }
 
   private _handleClearFilter() {
@@ -650,31 +643,6 @@ export class HacsDashboard extends LitElement {
   }
 
   static get styles(): CSSResultGroup {
-    return [
-      haStyle,
-      HacsStyles,
-      css`
-        .menu_header {
-          font-size: 14px;
-          margin: 8px;
-        }
-        .divider {
-          bottom: 112px;
-          padding: 10px 0px;
-        }
-        .divider::before {
-          content: " ";
-          display: block;
-          height: 1px;
-          background-color: var(--divider-color);
-        }
-        ha-select {
-          margin: 8px;
-        }
-        ha-formfield {
-          padding: 0 4px 0 16px;
-        }
-      `,
-    ];
+    return [haStyle, HacsStyles];
   }
 }
