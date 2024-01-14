@@ -50,7 +50,14 @@ export class HacsDonwloadDialog extends LitElement {
       await this._fetchRepository();
     }
 
-    websocketSubscription(this.hass, (data) => (this._error = data), HacsDispatchEvent.ERROR);
+    websocketSubscription(
+      this.hass,
+      (data) => {
+        this._error = data;
+        this._installing = false;
+      },
+      HacsDispatchEvent.ERROR,
+    );
     await this.updateComplete;
   }
 
@@ -65,7 +72,7 @@ export class HacsDonwloadDialog extends LitElement {
 
   private _getInstallPath = memoizeOne((repository: RepositoryBase) => {
     let path: string = repository.local_path;
-    if (["template", "theme"].includes(repository.category)) {
+    if (["template", "theme", "python_script"].includes(repository.category)) {
       path = `${path}/${repository.file_name}`;
     }
     return path;
@@ -223,6 +230,7 @@ export class HacsDonwloadDialog extends LitElement {
 
   private async _installRepository(): Promise<void> {
     this._installing = true;
+    this._error = undefined;
     if (!this._repository) {
       return;
     }
@@ -232,11 +240,19 @@ export class HacsDonwloadDialog extends LitElement {
       this._repository.available_version ||
       this._repository.default_branch;
 
-    await repositoryDownloadVersion(
-      this.hass,
-      String(this._repository.id),
-      this._repository?.version_or_commit !== "commit" ? selectedVersion : undefined,
-    );
+    try {
+      await repositoryDownloadVersion(
+        this.hass,
+        String(this._repository.id),
+        this._repository?.version_or_commit !== "commit" ? selectedVersion : undefined,
+      );
+    } catch (err: any) {
+      this._error = err || {
+        message: "Could not download repository, check core logs for more information.",
+      };
+      this._installing = false;
+      return;
+    }
 
     this._dialogParams!.hacs.log.debug(this._repository.category, "_installRepository");
     this._dialogParams!.hacs.log.debug(
@@ -263,6 +279,9 @@ export class HacsDonwloadDialog extends LitElement {
           mainWindow.location.href = mainWindow.location.href;
         },
       });
+    }
+    if (this._error === undefined) {
+      this.closeDialog();
     }
   }
 
