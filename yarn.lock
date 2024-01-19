@@ -2493,9 +2493,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@codemirror/autocomplete@npm:6.11.1":
-  version: 6.11.1
-  resolution: "@codemirror/autocomplete@npm:6.11.1"
+"@codemirror/autocomplete@npm:6.12.0":
+  version: 6.12.0
+  resolution: "@codemirror/autocomplete@npm:6.12.0"
   dependencies:
     "@codemirror/language": "npm:^6.0.0"
     "@codemirror/state": "npm:^6.0.0"
@@ -2506,7 +2506,7 @@ __metadata:
     "@codemirror/state": ^6.0.0
     "@codemirror/view": ^6.0.0
     "@lezer/common": ^1.0.0
-  checksum: 5281bec2b77d2cf916f8774e324afb862646050eab929f33780a2a67b9957d02d9abceec5f47b1b5163fedc4d07a62f1ec13fa0e2ad4b022fb75f010362e8f0e
+  checksum: d01fa7e5b965285e7c26116c716c2f85d8fc4810f69abb9432dd97d60bf3a05cac547fe9dc6eaf8c7723a8621c017ff41a0b5df0e635c5a7cc37b041c7676ce8
   languageName: node
   linkType: hard
 
@@ -2673,13 +2673,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@formatjs/ecma402-abstract@npm:1.18.0":
-  version: 1.18.0
-  resolution: "@formatjs/ecma402-abstract@npm:1.18.0"
+"@formatjs/ecma402-abstract@npm:1.18.1":
+  version: 1.18.1
+  resolution: "@formatjs/ecma402-abstract@npm:1.18.1"
   dependencies:
-    "@formatjs/intl-localematcher": "npm:0.5.2"
+    "@formatjs/intl-localematcher": "npm:0.5.3"
     tslib: "npm:^2.4.0"
-  checksum: 97968f3b6e3c7f6791c8431889b9e7c4e8ac3ea9a7b1dec1be9ec2aba80d27ef5ff11573dd5440022c16e5944f034027921b3cb10e8713f26da61d10a916df1e
+  checksum: 9d6e70c1c20ecd9b6c62be625daf78e9ed466d0c7ecc86238b45a4782dd5941855c7bb645f9eaa163fdf96c6265744a0c9d5132663aa0bc905dfaeb33f03aeb9
   languageName: node
   linkType: hard
 
@@ -2692,55 +2692,55 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@formatjs/icu-messageformat-parser@npm:2.7.3":
-  version: 2.7.3
-  resolution: "@formatjs/icu-messageformat-parser@npm:2.7.3"
+"@formatjs/icu-messageformat-parser@npm:2.7.4":
+  version: 2.7.4
+  resolution: "@formatjs/icu-messageformat-parser@npm:2.7.4"
   dependencies:
-    "@formatjs/ecma402-abstract": "npm:1.18.0"
-    "@formatjs/icu-skeleton-parser": "npm:1.7.0"
+    "@formatjs/ecma402-abstract": "npm:1.18.1"
+    "@formatjs/icu-skeleton-parser": "npm:1.7.1"
     tslib: "npm:^2.4.0"
-  checksum: dda2002a09855e06db2b1238c29ec01730af650af4899e9cd1e00dd6356f5bb797b7e11604adf077ba5648b25eb776a842a324d532d4e6ed354a4c88aa28cd49
+  checksum: 4b5eada3a5491d165eab7d65da79714f56e23e8bb29627370bc7dff3e8e594a5d91acb350458b5767ec0aa2645775338d989876d3f5eb9d8a79c1fe10326289a
   languageName: node
   linkType: hard
 
-"@formatjs/icu-skeleton-parser@npm:1.7.0":
-  version: 1.7.0
-  resolution: "@formatjs/icu-skeleton-parser@npm:1.7.0"
+"@formatjs/icu-skeleton-parser@npm:1.7.1":
+  version: 1.7.1
+  resolution: "@formatjs/icu-skeleton-parser@npm:1.7.1"
   dependencies:
-    "@formatjs/ecma402-abstract": "npm:1.18.0"
+    "@formatjs/ecma402-abstract": "npm:1.18.1"
     tslib: "npm:^2.4.0"
-  checksum: 5477f408034516aed862c0b5b72042be13850da31e09f8d56d88b0a88e1abbebbb7d23f352ad2ac7e697496b4a33ae076a0abb76e5908cb6bc35feb3b6bf0c78
+  checksum: caa4870f03d80a59bcf8c51c1aa8f7b7d0d22928ce608243afe42db3d6a9bfe3faf65d91638fb8fbafa224ab04ddc970e16d83f0d0ed14ccc5b457820e5a0062
   languageName: node
   linkType: hard
 
-"@formatjs/intl-datetimeformat@npm:6.12.0":
-  version: 6.12.0
-  resolution: "@formatjs/intl-datetimeformat@npm:6.12.0"
+"@formatjs/intl-datetimeformat@npm:6.12.1":
+  version: 6.12.1
+  resolution: "@formatjs/intl-datetimeformat@npm:6.12.1"
   dependencies:
-    "@formatjs/ecma402-abstract": "npm:1.18.0"
-    "@formatjs/intl-localematcher": "npm:0.5.2"
+    "@formatjs/ecma402-abstract": "npm:1.18.1"
+    "@formatjs/intl-localematcher": "npm:0.5.3"
     tslib: "npm:^2.4.0"
-  checksum: 083e6fef76115ac45c96d52fb0fac973fa80514e77fb819a08685fabd671c168c3361b82792fd5684ad8c696d9fb8e42bf7a78e7f8764c6ddc53a960c72bc614
+  checksum: 359da9933364ab8df438c1e991eda41057a52086b630fe1aeaa10e11ac556433abf5fb13446409c57fbb077f31e159a94f3e1bf01cfdfdc350ae06e497238c4d
   languageName: node
   linkType: hard
 
-"@formatjs/intl-displaynames@npm:6.6.4":
-  version: 6.6.4
-  resolution: "@formatjs/intl-displaynames@npm:6.6.4"
+"@formatjs/intl-displaynames@npm:6.6.5":
+  version: 6.6.5
+  resolution: "@formatjs/intl-displaynames@npm:6.6.5"
   dependencies:
-    "@formatjs/ecma402-abstract": "npm:1.18.0"
-    "@formatjs/intl-localematcher": "npm:0.5.2"
+    "@formatjs/ecma402-abstract": "npm:1.18.1"
+    "@formatjs/intl-localematcher": "npm:0.5.3"
     tslib: "npm:^2.4.0"
-  checksum: e563a97e4789b3bd05e8507701e2300fdde85e0625ce316e2c7bbcfaf0eee9a49f0afec0b786e4488a671d7a304b894bd0c3a837d79a1d6695592da0544ec3f0
+  checksum: 84bb3718799f807c04a70b06e38c408324ba60468c4bf26cafab2b9e82f406b289cf0bf692a1408b34c0f17738e3d0186042bb02749531f9c0b3923dee346825
   languageName: node
   linkType: hard
 
-"@formatjs/intl-enumerator@npm:1.4.3":
-  version: 1.4.3
-  resolution: "@formatjs/intl-enumerator@npm:1.4.3"
+"@formatjs/intl-enumerator@npm:1.4.4":
+  version: 1.4.4
+  resolution: "@formatjs/intl-enumerator@npm:1.4.4"
   dependencies:
     tslib: "npm:^2.4.0"
-  checksum: b9913cc51594701d1677ff4146f96fcc9b954d5400a09d6dbd252352fd3f08891a37bbaf93e6067983745f06a4e33a444ae4e955aacceaab7545bd7f09dab47b
+  checksum: 4114d221afe649e4272eb3413c9222c63d52d9fbd1594511cc4c52a00be5fb41250908817a8d6b99c6cf6d469dc4c6798a96e132740046e706c9bf244eaf6827
   languageName: node
   linkType: hard
 
@@ -2753,68 +2753,68 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@formatjs/intl-listformat@npm:7.5.3":
-  version: 7.5.3
-  resolution: "@formatjs/intl-listformat@npm:7.5.3"
+"@formatjs/intl-listformat@npm:7.5.4":
+  version: 7.5.4
+  resolution: "@formatjs/intl-listformat@npm:7.5.4"
   dependencies:
-    "@formatjs/ecma402-abstract": "npm:1.18.0"
-    "@formatjs/intl-localematcher": "npm:0.5.2"
+    "@formatjs/ecma402-abstract": "npm:1.18.1"
+    "@formatjs/intl-localematcher": "npm:0.5.3"
     tslib: "npm:^2.4.0"
-  checksum: e62b9994fafba44470a9c0e71a4528ab3ac45133271d0b5e96d337b928288587726f671ef1d50a485d431d9abb264628dddb1ee964714ede0093a3732f8654e8
+  checksum: c60737da5a3021d7a2579586e75e200bc16942fce634c9dd98abb737c90b8df6737cf377446ede1971d414f23cc27e0ca4252fd551f7280a6b713858341fa47b
   languageName: node
   linkType: hard
 
-"@formatjs/intl-locale@npm:3.4.3":
-  version: 3.4.3
-  resolution: "@formatjs/intl-locale@npm:3.4.3"
+"@formatjs/intl-locale@npm:3.4.4":
+  version: 3.4.4
+  resolution: "@formatjs/intl-locale@npm:3.4.4"
   dependencies:
-    "@formatjs/ecma402-abstract": "npm:1.18.0"
-    "@formatjs/intl-enumerator": "npm:1.4.3"
+    "@formatjs/ecma402-abstract": "npm:1.18.1"
+    "@formatjs/intl-enumerator": "npm:1.4.4"
     "@formatjs/intl-getcanonicallocales": "npm:2.3.0"
     tslib: "npm:^2.4.0"
-  checksum: ec739918a0dffe2ca38846148d9c2fe94a529560aedc71724f526dc367bc63cec47295deebf1dd8955012dfc4d40458948a0c87f345180c9e1f270005d0992bc
+  checksum: c3fe007f745660acc40e9fc30a7b64e40e1c84e81b39dafa85ac01efa1a37ef079ec0825562aa90b7719e48ce0e4275a25f5858fd4c9da15b89766b6d07ca499
   languageName: node
   linkType: hard
 
-"@formatjs/intl-localematcher@npm:0.5.2":
-  version: 0.5.2
-  resolution: "@formatjs/intl-localematcher@npm:0.5.2"
+"@formatjs/intl-localematcher@npm:0.5.3":
+  version: 0.5.3
+  resolution: "@formatjs/intl-localematcher@npm:0.5.3"
   dependencies:
     tslib: "npm:^2.4.0"
-  checksum: 89db79ae89d6050b62d0a0f9e9c8ad4f8973eac37656f1d075ac76b6c372007f7e32791ae666fc061f7f5d89ea84ea42cfaa74dad39df4b1cf9878053e18b5d4
+  checksum: 6e715600f6f8e27727eece5bd9dd993d9ccfaee92a0aa776327c20ac717cd4490f6658fac1cbe0b3b8ffa849485655f1fea22f5ab4ae24c7134fbe2375be3c1d
   languageName: node
   linkType: hard
 
-"@formatjs/intl-numberformat@npm:8.9.0":
-  version: 8.9.0
-  resolution: "@formatjs/intl-numberformat@npm:8.9.0"
+"@formatjs/intl-numberformat@npm:8.9.1":
+  version: 8.9.1
+  resolution: "@formatjs/intl-numberformat@npm:8.9.1"
   dependencies:
-    "@formatjs/ecma402-abstract": "npm:1.18.0"
-    "@formatjs/intl-localematcher": "npm:0.5.2"
+    "@formatjs/ecma402-abstract": "npm:1.18.1"
+    "@formatjs/intl-localematcher": "npm:0.5.3"
     tslib: "npm:^2.4.0"
-  checksum: e06179b08ab10b902db6e531e7fc5c1de7d5d7df00de0677310b3fa68cb20bea750021224aa1f0db8fbd60460c58473f04958fe52b166aad4d7a5e3a4c8071e4
+  checksum: dd5ed4c86c8beff01e70c3d85f86d9932fbf182fe1f1a4273a2cac2d99f52d66cd024d93676c87fe8f88b01b41d3a08e547b531e5c79d81cc98eae821e210881
   languageName: node
   linkType: hard
 
-"@formatjs/intl-pluralrules@npm:5.2.10":
-  version: 5.2.10
-  resolution: "@formatjs/intl-pluralrules@npm:5.2.10"
+"@formatjs/intl-pluralrules@npm:5.2.11":
+  version: 5.2.11
+  resolution: "@formatjs/intl-pluralrules@npm:5.2.11"
   dependencies:
-    "@formatjs/ecma402-abstract": "npm:1.18.0"
-    "@formatjs/intl-localematcher": "npm:0.5.2"
+    "@formatjs/ecma402-abstract": "npm:1.18.1"
+    "@formatjs/intl-localematcher": "npm:0.5.3"
     tslib: "npm:^2.4.0"
-  checksum: 69315ea80d237c701f56e9541b7d08931046e5e8965c6b57e47b8f1c7632011175c6081700c1bc09dff7d3baae8ef45cf164009f56076d4115788ec6b3589193
+  checksum: 277a0586190a2b34bb51ad9995a67d9eff36b5b4977781e2b2911bcb14b8766af415b6cf9dbb552bc6df253831e19f65525138d3c0a24346403a9d7ade21a8be
   languageName: node
   linkType: hard
 
-"@formatjs/intl-relativetimeformat@npm:11.2.10":
-  version: 11.2.10
-  resolution: "@formatjs/intl-relativetimeformat@npm:11.2.10"
+"@formatjs/intl-relativetimeformat@npm:11.2.11":
+  version: 11.2.11
+  resolution: "@formatjs/intl-relativetimeformat@npm:11.2.11"
   dependencies:
-    "@formatjs/ecma402-abstract": "npm:1.18.0"
-    "@formatjs/intl-localematcher": "npm:0.5.2"
+    "@formatjs/ecma402-abstract": "npm:1.18.1"
+    "@formatjs/intl-localematcher": "npm:0.5.3"
     tslib: "npm:^2.4.0"
-  checksum: f79fc60f9f6aa7a468af2a3d6bd62d360b9956a124f28359ef9f716890470cf7c5888463bda9aba22dfca8c3d079cca2df1569af1a50093c477f6f29f94e63ed
+  checksum: 38bd0dc5e381b7ca0ca7c77dab901283b3c4e8736397a9c0c7b32d8a2e00d2ccade71a927a3272b89ddbe9ccbad4776dd489934b2b7c6a44c704cd47645e44b6
   languageName: node
   linkType: hard
 
@@ -3241,13 +3241,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@lit-labs/virtualizer@npm:2.0.11":
-  version: 2.0.11
-  resolution: "@lit-labs/virtualizer@npm:2.0.11"
+"@lit-labs/virtualizer@npm:2.0.12":
+  version: 2.0.12
+  resolution: "@lit-labs/virtualizer@npm:2.0.12"
   dependencies:
     lit: "npm:^3.1.0"
     tslib: "npm:^2.0.3"
-  checksum: 9b44ef579c35f2063a67ec80db60813ffc9f84a3e66b4c7def46bdc6dad0507c4a8a867637233899d3671a34643bcf31f12801136946f62203e34de41810a53d
+  checksum: e3568ea6ef5d9362959ea2da873aaa2af27ef28c511189f38555aadbbf79919d5840f97926c62c56dd62aa8f1fd220eab88106802411cffce1121233c602cf73
   languageName: node
   linkType: hard
 
@@ -5396,10 +5396,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/luxon@npm:3.4.0":
-  version: 3.4.0
-  resolution: "@types/luxon@npm:3.4.0"
-  checksum: cafe745e81765e71230a42520caf77d69556e22d50a464dcebd3b7da3989ab9c137de54dbfef60639ea4274326a57b762120c0088d3fb093c25f1ca752146c64
+"@types/luxon@npm:3.4.1":
+  version: 3.4.1
+  resolution: "@types/luxon@npm:3.4.1"
+  checksum: dc133d28dee98fd7944e81fbde8df4fcdd7b602139259b5566b556a09da296a6c57e02899b0068470465d5b3798f551edafe0a6c8fb89fcd327d799ff7d37c92
   languageName: node
   linkType: hard
 
@@ -5638,15 +5638,15 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@typescript-eslint/eslint-plugin@npm:6.18.1":
-  version: 6.18.1
-  resolution: "@typescript-eslint/eslint-plugin@npm:6.18.1"
+"@typescript-eslint/eslint-plugin@npm:6.19.0":
+  version: 6.19.0
+  resolution: "@typescript-eslint/eslint-plugin@npm:6.19.0"
   dependencies:
     "@eslint-community/regexpp": "npm:^4.5.1"
-    "@typescript-eslint/scope-manager": "npm:6.18.1"
-    "@typescript-eslint/type-utils": "npm:6.18.1"
-    "@typescript-eslint/utils": "npm:6.18.1"
-    "@typescript-eslint/visitor-keys": "npm:6.18.1"
+    "@typescript-eslint/scope-manager": "npm:6.19.0"
+    "@typescript-eslint/type-utils": "npm:6.19.0"
+    "@typescript-eslint/utils": "npm:6.19.0"
+    "@typescript-eslint/visitor-keys": "npm:6.19.0"
     debug: "npm:^4.3.4"
     graphemer: "npm:^1.4.0"
     ignore: "npm:^5.2.4"
@@ -5659,44 +5659,44 @@ __metadata:
   peerDependenciesMeta:
     typescript:
       optional: true
-  checksum: 451abba1f784539ba38cbe40af26c461facd848e90cbf0c440a98ca2a770ff74a794bafe1df7240e52a97e7cd72bade97d5de751dffbac269643460ad65e3b19
+  checksum: 5ed8483d792c4bc6ed697159c84a47ba5c35cd124949883813f2053b972537de3900a7ae26d4d6f370194f2cc7929baa2d09268e0b90118f20ed961cf6c176b9
   languageName: node
   linkType: hard
 
-"@typescript-eslint/parser@npm:6.18.1":
-  version: 6.18.1
-  resolution: "@typescript-eslint/parser@npm:6.18.1"
+"@typescript-eslint/parser@npm:6.19.0":
+  version: 6.19.0
+  resolution: "@typescript-eslint/parser@npm:6.19.0"
   dependencies:
-    "@typescript-eslint/scope-manager": "npm:6.18.1"
-    "@typescript-eslint/types": "npm:6.18.1"
-    "@typescript-eslint/typescript-estree": "npm:6.18.1"
-    "@typescript-eslint/visitor-keys": "npm:6.18.1"
+    "@typescript-eslint/scope-manager": "npm:6.19.0"
+    "@typescript-eslint/types": "npm:6.19.0"
+    "@typescript-eslint/typescript-estree": "npm:6.19.0"
+    "@typescript-eslint/visitor-keys": "npm:6.19.0"
     debug: "npm:^4.3.4"
   peerDependencies:
     eslint: ^7.0.0 || ^8.0.0
   peerDependenciesMeta:
     typescript:
       optional: true
-  checksum: b853d39dcf886668f9aa9ea12094e722d35be20855dc7f01c80ee847bf4f7e27aa74693c3a33d4d813705214bda28be1d6c7ca29e590233f894f556203171d29
+  checksum: 0c6280a69127cf521b3403be9877775eecda2b2e4e44a67874b0d9cf82ed95a7971dac2db633e55ec22f8026da2681137110b2924313421a22b7c03eba8cda67
   languageName: node
   linkType: hard
 
-"@typescript-eslint/scope-manager@npm:6.18.1":
-  version: 6.18.1
-  resolution: "@typescript-eslint/scope-manager@npm:6.18.1"
+"@typescript-eslint/scope-manager@npm:6.19.0":
+  version: 6.19.0
+  resolution: "@typescript-eslint/scope-manager@npm:6.19.0"
   dependencies:
-    "@typescript-eslint/types": "npm:6.18.1"
-    "@typescript-eslint/visitor-keys": "npm:6.18.1"
-  checksum: ab75663cda67a2c95267f240f2e062a0aafab0df6d625043a134c8e1d61e193c0d3cfa49c802bd554b3fd80f4b7df5ea3f86ef2eb6994ba8b5e0790cc9868c84
+    "@typescript-eslint/types": "npm:6.19.0"
+    "@typescript-eslint/visitor-keys": "npm:6.19.0"
+  checksum: d36c51c05e14c51ce13181120eeea46d1edd59ed1ff16dc4ec1f5532a975b5faec5c10a373aaa90545f82a12330c6cba18ecedc734e18288f5874855c48ba808
   languageName: node
   linkType: hard
 
-"@typescript-eslint/type-utils@npm:6.18.1":
-  version: 6.18.1
-  resolution: "@typescript-eslint/type-utils@npm:6.18.1"
+"@typescript-eslint/type-utils@npm:6.19.0":
+  version: 6.19.0
+  resolution: "@typescript-eslint/type-utils@npm:6.19.0"
   dependencies:
-    "@typescript-eslint/typescript-estree": "npm:6.18.1"
-    "@typescript-eslint/utils": "npm:6.18.1"
+    "@typescript-eslint/typescript-estree": "npm:6.19.0"
+    "@typescript-eslint/utils": "npm:6.19.0"
     debug: "npm:^4.3.4"
     ts-api-utils: "npm:^1.0.1"
   peerDependencies:
@@ -5704,23 +5704,23 @@ __metadata:
   peerDependenciesMeta:
     typescript:
       optional: true
-  checksum: f775011c35aef10b11e7cffde698fca8b06b313785cd44422c60a40b6643d85a38cbd9a3cbdef011d963680d65383c40988d983e9dfd01258ae50a2f37f6d293
+  checksum: f1f20ac28c03dd18546050b63ec0b0fd8c67780265ccb9ef566f16441c3de5deb2607a6046fefdebe8a43ac11fecdf0b009f8e5f70a3d15916d855be74b0f3bb
   languageName: node
   linkType: hard
 
-"@typescript-eslint/types@npm:6.18.1":
-  version: 6.18.1
-  resolution: "@typescript-eslint/types@npm:6.18.1"
-  checksum: e304620953257a5af3b323697845d3fb41ffbb7944df2f84559675ef8ad71cc33011be30149efd8d34c5dedcbe92c6abee67cb1b95cb3dd56f15b9393b3435a6
+"@typescript-eslint/types@npm:6.19.0":
+  version: 6.19.0
+  resolution: "@typescript-eslint/types@npm:6.19.0"
+  checksum: 396ad2ad9f2d759dd87bc880a1ffc9d11fda04db8af9402abb4e8eccd58c01fa2d26e38b186526d0b457012f7c912e7afdab2a3798a73aa0ae34abaf50d617ae
   languageName: node
   linkType: hard
 
-"@typescript-eslint/typescript-estree@npm:6.18.1":
-  version: 6.18.1
-  resolution: "@typescript-eslint/typescript-estree@npm:6.18.1"
+"@typescript-eslint/typescript-estree@npm:6.19.0":
+  version: 6.19.0
+  resolution: "@typescript-eslint/typescript-estree@npm:6.19.0"
   dependencies:
-    "@typescript-eslint/types": "npm:6.18.1"
-    "@typescript-eslint/visitor-keys": "npm:6.18.1"
+    "@typescript-eslint/types": "npm:6.19.0"
+    "@typescript-eslint/visitor-keys": "npm:6.19.0"
     debug: "npm:^4.3.4"
     globby: "npm:^11.1.0"
     is-glob: "npm:^4.0.3"
@@ -5730,34 +5730,34 @@ __metadata:
   peerDependenciesMeta:
     typescript:
       optional: true
-  checksum: 33307bc87c3270f84f149545da79a15afaafacc5671e42f4aa827947f09c35ed114705f108ffa59d6ab175f8b838aa08cf10f9efe5b7793aca0792f879bbc7ca
+  checksum: 06e24bb145a302299a6cf86b36652bd4d7080c4e88517ebc24bdc137c57425a68db256ba628ce16b568bfec8020ae2a748ccee93e304efeded329cb3292b17bf
   languageName: node
   linkType: hard
 
-"@typescript-eslint/utils@npm:6.18.1":
-  version: 6.18.1
-  resolution: "@typescript-eslint/utils@npm:6.18.1"
+"@typescript-eslint/utils@npm:6.19.0":
+  version: 6.19.0
+  resolution: "@typescript-eslint/utils@npm:6.19.0"
   dependencies:
     "@eslint-community/eslint-utils": "npm:^4.4.0"
     "@types/json-schema": "npm:^7.0.12"
     "@types/semver": "npm:^7.5.0"
-    "@typescript-eslint/scope-manager": "npm:6.18.1"
-    "@typescript-eslint/types": "npm:6.18.1"
-    "@typescript-eslint/typescript-estree": "npm:6.18.1"
+    "@typescript-eslint/scope-manager": "npm:6.19.0"
+    "@typescript-eslint/types": "npm:6.19.0"
+    "@typescript-eslint/typescript-estree": "npm:6.19.0"
     semver: "npm:^7.5.4"
   peerDependencies:
     eslint: ^7.0.0 || ^8.0.0
-  checksum: 967728f062ec7ef434b9d05af6b45ae59e0f8f314e4aa7cefc8e2c30a277cf269b7913f3e9f8d26a86c3faf8b2c9385ba1221cfcd856e9b228421fc6508b41bc
+  checksum: 4080c36331204ffef9f218e29f43da767f17551fa4d3877c3d3b49194f7c7382dd9ae2124e7b5ebd47d5556946bb6ad195b47d7d215553efabacdebf81b9e74d
   languageName: node
   linkType: hard
 
-"@typescript-eslint/visitor-keys@npm:6.18.1":
-  version: 6.18.1
-  resolution: "@typescript-eslint/visitor-keys@npm:6.18.1"
+"@typescript-eslint/visitor-keys@npm:6.19.0":
+  version: 6.19.0
+  resolution: "@typescript-eslint/visitor-keys@npm:6.19.0"
   dependencies:
-    "@typescript-eslint/types": "npm:6.18.1"
+    "@typescript-eslint/types": "npm:6.19.0"
     eslint-visitor-keys: "npm:^3.4.1"
-  checksum: 2d6c5ffa52e89caec0b4958d7079fb4ca9f17c19b5f5d5b8446b4eef0079fd59cd9959f469cc13c4e7d72ef4c47849e561fe323f3cebafa01bc916d43082e57b
+  checksum: 8d51c0b8d94c5df044fde958f62741cef55be97c6a3a16c47e4df9af7b2ff13aa1ee03ca5240777481dca53f3b7a9b00b329e50aff5e3ad829d96bc5f63ca2c3
   languageName: node
   linkType: hard
 
@@ -5768,127 +5768,128 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@vaadin/a11y-base@npm:~24.3.2":
-  version: 24.3.2
-  resolution: "@vaadin/a11y-base@npm:24.3.2"
+"@vaadin/a11y-base@npm:~24.3.3, @vaadin/a11y-base@npm:~24.3.4":
+  version: 24.3.4
+  resolution: "@vaadin/a11y-base@npm:24.3.4"
   dependencies:
     "@open-wc/dedupe-mixin": "npm:^1.3.0"
     "@polymer/polymer": "npm:^3.0.0"
-    "@vaadin/component-base": "npm:~24.3.2"
+    "@vaadin/component-base": "npm:~24.3.4"
     lit: "npm:^3.0.0"
-  checksum: 8ddff8610cdf74816bcd9f24e6d7985c869cc5691de0a5928bf794d36e7e655a9d8e51c88c4918f5784dc35331a09bccf1de3233ed263a0854fa4bafc171a21e
+  checksum: ef74bdd1e20f6cb131f613ffabf3099170c9713fcc3d7bd54c5471dfa3c355adba84befff585981420bb4525943b30830bff8b3c32db864edd80f720dd8ca723
   languageName: node
   linkType: hard
 
-"@vaadin/combo-box@npm:24.3.2":
-  version: 24.3.2
-  resolution: "@vaadin/combo-box@npm:24.3.2"
+"@vaadin/combo-box@npm:24.3.3":
+  version: 24.3.3
+  resolution: "@vaadin/combo-box@npm:24.3.3"
   dependencies:
     "@open-wc/dedupe-mixin": "npm:^1.3.0"
     "@polymer/polymer": "npm:^3.0.0"
-    "@vaadin/a11y-base": "npm:~24.3.2"
-    "@vaadin/component-base": "npm:~24.3.2"
-    "@vaadin/field-base": "npm:~24.3.2"
-    "@vaadin/input-container": "npm:~24.3.2"
-    "@vaadin/item": "npm:~24.3.2"
-    "@vaadin/lit-renderer": "npm:~24.3.2"
-    "@vaadin/overlay": "npm:~24.3.2"
-    "@vaadin/vaadin-lumo-styles": "npm:~24.3.2"
-    "@vaadin/vaadin-material-styles": "npm:~24.3.2"
-    "@vaadin/vaadin-themable-mixin": "npm:~24.3.2"
-  checksum: 1b1a5b80977a782e74717030dc5007bb29668534b6a25dca592f2cc8d666479682c622501847bdf87e764fb688f5e23b0070e6089114e10aebdc7c1915c62f7b
+    "@vaadin/a11y-base": "npm:~24.3.3"
+    "@vaadin/component-base": "npm:~24.3.3"
+    "@vaadin/field-base": "npm:~24.3.3"
+    "@vaadin/input-container": "npm:~24.3.3"
+    "@vaadin/item": "npm:~24.3.3"
+    "@vaadin/lit-renderer": "npm:~24.3.3"
+    "@vaadin/overlay": "npm:~24.3.3"
+    "@vaadin/vaadin-lumo-styles": "npm:~24.3.3"
+    "@vaadin/vaadin-material-styles": "npm:~24.3.3"
+    "@vaadin/vaadin-themable-mixin": "npm:~24.3.3"
+  checksum: e7c4045585c0b08b5c3b6708f1c0a2664721126916926b0cfa05a6c0fa6e0ecac079616697ba08a21a9756ffdc83cb0db87cfb5892d3cfb8aecebc50c3f7c9e5
   languageName: node
   linkType: hard
 
-"@vaadin/component-base@npm:~24.3.2":
-  version: 24.3.2
-  resolution: "@vaadin/component-base@npm:24.3.2"
+"@vaadin/component-base@npm:~24.3.3, @vaadin/component-base@npm:~24.3.4":
+  version: 24.3.4
+  resolution: "@vaadin/component-base@npm:24.3.4"
   dependencies:
     "@open-wc/dedupe-mixin": "npm:^1.3.0"
     "@polymer/polymer": "npm:^3.0.0"
     "@vaadin/vaadin-development-mode-detector": "npm:^2.0.0"
     "@vaadin/vaadin-usage-statistics": "npm:^2.1.0"
     lit: "npm:^3.0.0"
-  checksum: b5fc7a7f8cb9ad26a1a4f4b554ac78f29c34ecaab74fd48516656d70347c7a3c9ae00a958b9a9a31f9861cf29bc640166567d0a8102b9dcf75e6ea08e184a102
+  checksum: 4411977be1e394fc03d84f026fc093393c8f511df588560b43fae4f8b360222473723a6d56b6a65cde90b1d9fba29f3e9640fa0e2a4816f1701c4a5a43a86fe3
   languageName: node
   linkType: hard
 
-"@vaadin/field-base@npm:~24.3.2":
-  version: 24.3.2
-  resolution: "@vaadin/field-base@npm:24.3.2"
+"@vaadin/field-base@npm:~24.3.3":
+  version: 24.3.4
+  resolution: "@vaadin/field-base@npm:24.3.4"
   dependencies:
     "@open-wc/dedupe-mixin": "npm:^1.3.0"
     "@polymer/polymer": "npm:^3.0.0"
-    "@vaadin/a11y-base": "npm:~24.3.2"
-    "@vaadin/component-base": "npm:~24.3.2"
+    "@vaadin/a11y-base": "npm:~24.3.4"
+    "@vaadin/component-base": "npm:~24.3.4"
     lit: "npm:^3.0.0"
-  checksum: 1be21ff4e6eabaa203ae1ab8f2f55033d1830359782bac7e001721c22d5e7c404436644c3d7e2bc9e5af1f743949f37f874c99495f3d3e2df47a51aed2b5f046
+  checksum: fda6584bb7f343665070f6db1c4c9a705e82e97d0c9e482b5dc615a07677f3bdcc7d10a182e6f8a97b16d3c698a165538feb69b3a9d317e1d6a86912a8db3179
   languageName: node
   linkType: hard
 
-"@vaadin/icon@npm:~24.3.2":
-  version: 24.3.2
-  resolution: "@vaadin/icon@npm:24.3.2"
-  dependencies:
-    "@polymer/polymer": "npm:^3.0.0"
-    "@vaadin/component-base": "npm:~24.3.2"
-    "@vaadin/vaadin-lumo-styles": "npm:~24.3.2"
-    "@vaadin/vaadin-themable-mixin": "npm:~24.3.2"
-    lit: "npm:^3.0.0"
-  checksum: 2a5f9eeed5aac093f38878f749c774ad20ecf2ca4105c606f6b1938a0f3e4181b79a8ac8c51f7b3d1990552cd6bcdc04984c1846b41f7ef4143fc96b2b276445
-  languageName: node
-  linkType: hard
-
-"@vaadin/input-container@npm:~24.3.2":
-  version: 24.3.2
-  resolution: "@vaadin/input-container@npm:24.3.2"
-  dependencies:
-    "@polymer/polymer": "npm:^3.0.0"
-    "@vaadin/component-base": "npm:~24.3.2"
-    "@vaadin/vaadin-lumo-styles": "npm:~24.3.2"
-    "@vaadin/vaadin-material-styles": "npm:~24.3.2"
-    "@vaadin/vaadin-themable-mixin": "npm:~24.3.2"
-    lit: "npm:^3.0.0"
-  checksum: b43926c876259e189d1910696f539fbb90b17478fca101bd3216a471afaf16d765c8d5952bddafe8282fcfe9babe7dfc819f84ca2adb108eba4616a32858ffde
-  languageName: node
-  linkType: hard
-
-"@vaadin/item@npm:~24.3.2":
-  version: 24.3.2
-  resolution: "@vaadin/item@npm:24.3.2"
+"@vaadin/icon@npm:~24.3.4":
+  version: 24.3.4
+  resolution: "@vaadin/icon@npm:24.3.4"
   dependencies:
     "@open-wc/dedupe-mixin": "npm:^1.3.0"
     "@polymer/polymer": "npm:^3.0.0"
-    "@vaadin/a11y-base": "npm:~24.3.2"
-    "@vaadin/component-base": "npm:~24.3.2"
-    "@vaadin/vaadin-lumo-styles": "npm:~24.3.2"
-    "@vaadin/vaadin-material-styles": "npm:~24.3.2"
-    "@vaadin/vaadin-themable-mixin": "npm:~24.3.2"
-  checksum: b56cbe033a6fbf591edd26780658d5cc89338d79ced469812be0f6f0f462a571bc1550f835681d6a6981119dd958810312abe31c6641317e8be5dbcc3cfd1f01
-  languageName: node
-  linkType: hard
-
-"@vaadin/lit-renderer@npm:~24.3.2":
-  version: 24.3.2
-  resolution: "@vaadin/lit-renderer@npm:24.3.2"
-  dependencies:
+    "@vaadin/component-base": "npm:~24.3.4"
+    "@vaadin/vaadin-lumo-styles": "npm:~24.3.4"
+    "@vaadin/vaadin-themable-mixin": "npm:~24.3.4"
     lit: "npm:^3.0.0"
-  checksum: 3736065a55f69c13f76d202c7a9a4f690f2c9e84a127e9558ff522b113698c5a6ea8bf8f4aefbf3d532bd5eb2798f427ab0e35459f270d3c458861fb1861c194
+  checksum: cb09713d42381a8a437c7485d2c71a84b91f0489e062c41abe5ae4aab9a40d0bedbb78020a8e1e847d71467a0011b2fd91944cd2eb8993d18efc98efb7dd0de1
   languageName: node
   linkType: hard
 
-"@vaadin/overlay@npm:~24.3.2":
-  version: 24.3.2
-  resolution: "@vaadin/overlay@npm:24.3.2"
+"@vaadin/input-container@npm:~24.3.3":
+  version: 24.3.4
+  resolution: "@vaadin/input-container@npm:24.3.4"
+  dependencies:
+    "@polymer/polymer": "npm:^3.0.0"
+    "@vaadin/component-base": "npm:~24.3.4"
+    "@vaadin/vaadin-lumo-styles": "npm:~24.3.4"
+    "@vaadin/vaadin-material-styles": "npm:~24.3.4"
+    "@vaadin/vaadin-themable-mixin": "npm:~24.3.4"
+    lit: "npm:^3.0.0"
+  checksum: a38155c598328f8d6ad9d41d8b36e3eef65ddb2f73cea09cd114284570b10f1564c7414f6dea4c6cc811f01f114dae8853e3188b883ea909bc23024bb7ada83c
+  languageName: node
+  linkType: hard
+
+"@vaadin/item@npm:~24.3.3":
+  version: 24.3.4
+  resolution: "@vaadin/item@npm:24.3.4"
   dependencies:
     "@open-wc/dedupe-mixin": "npm:^1.3.0"
     "@polymer/polymer": "npm:^3.0.0"
-    "@vaadin/a11y-base": "npm:~24.3.2"
-    "@vaadin/component-base": "npm:~24.3.2"
-    "@vaadin/vaadin-lumo-styles": "npm:~24.3.2"
-    "@vaadin/vaadin-material-styles": "npm:~24.3.2"
-    "@vaadin/vaadin-themable-mixin": "npm:~24.3.2"
-  checksum: e04aff31f8cf2475dfed3d7f29ab1c7e08d914c6c74fbd7abd92bdd89a2c9ace810436cb2b31840fa6e6a152f1b39596f4c6625611c9174d1fdff7a8c20acafa
+    "@vaadin/a11y-base": "npm:~24.3.4"
+    "@vaadin/component-base": "npm:~24.3.4"
+    "@vaadin/vaadin-lumo-styles": "npm:~24.3.4"
+    "@vaadin/vaadin-material-styles": "npm:~24.3.4"
+    "@vaadin/vaadin-themable-mixin": "npm:~24.3.4"
+  checksum: 9d4f1e57305febd387e476955a56c27bd55c524da60105532b39263644d2b246d578e9bf1d41d90a114919684121520007c9a881cc876ffcb79f80fcaf107374
+  languageName: node
+  linkType: hard
+
+"@vaadin/lit-renderer@npm:~24.3.3":
+  version: 24.3.4
+  resolution: "@vaadin/lit-renderer@npm:24.3.4"
+  dependencies:
+    lit: "npm:^3.0.0"
+  checksum: 31283f1e8a12661fb75cae7d73cabd4a29eeaa310ae998b206b3a8f5ef0203d7d8235c75f39d848b8c9122e0b0b03bb8c889dd2f39be89d7edc84af7769a3ae2
+  languageName: node
+  linkType: hard
+
+"@vaadin/overlay@npm:~24.3.3":
+  version: 24.3.4
+  resolution: "@vaadin/overlay@npm:24.3.4"
+  dependencies:
+    "@open-wc/dedupe-mixin": "npm:^1.3.0"
+    "@polymer/polymer": "npm:^3.0.0"
+    "@vaadin/a11y-base": "npm:~24.3.4"
+    "@vaadin/component-base": "npm:~24.3.4"
+    "@vaadin/vaadin-lumo-styles": "npm:~24.3.4"
+    "@vaadin/vaadin-material-styles": "npm:~24.3.4"
+    "@vaadin/vaadin-themable-mixin": "npm:~24.3.4"
+  checksum: 357a446e162deb377cac3c5b4004651f7e2a882e209cc8180ebd32ba560e974a3bbfb7294dc36092ba8f8ad6946b7b8f3f2ba5afbe120d9e7630871d0cdd03f8
   languageName: node
   linkType: hard
 
@@ -5899,36 +5900,46 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@vaadin/vaadin-lumo-styles@npm:~24.3.2":
-  version: 24.3.2
-  resolution: "@vaadin/vaadin-lumo-styles@npm:24.3.2"
+"@vaadin/vaadin-lumo-styles@npm:~24.3.3, @vaadin/vaadin-lumo-styles@npm:~24.3.4":
+  version: 24.3.4
+  resolution: "@vaadin/vaadin-lumo-styles@npm:24.3.4"
   dependencies:
     "@polymer/polymer": "npm:^3.0.0"
-    "@vaadin/component-base": "npm:~24.3.2"
-    "@vaadin/icon": "npm:~24.3.2"
-    "@vaadin/vaadin-themable-mixin": "npm:~24.3.2"
-  checksum: e37abd1d54d5045815f91efe8ef845fd2e5417bf7a8f1aaff8d98adf34c0cf0ec25990d0cb62f869d04777b9e7f2b64437e8d83cec05121e482d60b4bba61ff1
+    "@vaadin/component-base": "npm:~24.3.4"
+    "@vaadin/icon": "npm:~24.3.4"
+    "@vaadin/vaadin-themable-mixin": "npm:~24.3.4"
+  checksum: c04ae63de4d5ed01f8ee4a2786a47dc8cbf9b238fd2199115ac6cd63bbc110ed6c7bd3d50eb0a1d7fa2036343f63c5b475f0376b2c4c081be111a7c1b356290c
   languageName: node
   linkType: hard
 
-"@vaadin/vaadin-material-styles@npm:~24.3.2":
-  version: 24.3.2
-  resolution: "@vaadin/vaadin-material-styles@npm:24.3.2"
+"@vaadin/vaadin-material-styles@npm:~24.3.3, @vaadin/vaadin-material-styles@npm:~24.3.4":
+  version: 24.3.4
+  resolution: "@vaadin/vaadin-material-styles@npm:24.3.4"
   dependencies:
     "@polymer/polymer": "npm:^3.0.0"
-    "@vaadin/component-base": "npm:~24.3.2"
-    "@vaadin/vaadin-themable-mixin": "npm:~24.3.2"
-  checksum: 8de34251d755d0120d9b79be6c0fa481c928c3ad6044caae3b4f9217c404cadb032fa8c8ab4fcd0150f89e0f7a5ade4660964056e4470923353c2f234ca0673b
+    "@vaadin/component-base": "npm:~24.3.4"
+    "@vaadin/vaadin-themable-mixin": "npm:~24.3.4"
+  checksum: 60f3bd1598705e822428cde7698af93bd9b025f9229af2a489005e210dc7b1a3a9bcd9f960da9b44174c03dbdb2d16a5f43062b78ab3f34acc6a8d09d9c03919
   languageName: node
   linkType: hard
 
-"@vaadin/vaadin-themable-mixin@npm:24.3.2, @vaadin/vaadin-themable-mixin@npm:~24.3.2":
-  version: 24.3.2
-  resolution: "@vaadin/vaadin-themable-mixin@npm:24.3.2"
+"@vaadin/vaadin-themable-mixin@npm:24.3.3":
+  version: 24.3.3
+  resolution: "@vaadin/vaadin-themable-mixin@npm:24.3.3"
   dependencies:
     "@open-wc/dedupe-mixin": "npm:^1.3.0"
     lit: "npm:^3.0.0"
-  checksum: cb85790319b4f76eabf6dd9ff3455781773a3bfcd534fd2ab040c5a792e485bbbb60aa36f8f6c837c1d42ece069ea54e2cd67397053d0f64eacea009ddc5394b
+  checksum: 7a2cc59d2f77b559c50b9a7bd1b8447c49d01b68f11fa8d7fe539059dc9a1bfc56a091105ec668bdd72b769ded38253705556912853b72d3d168d146a761491d
+  languageName: node
+  linkType: hard
+
+"@vaadin/vaadin-themable-mixin@npm:~24.3.3, @vaadin/vaadin-themable-mixin@npm:~24.3.4":
+  version: 24.3.4
+  resolution: "@vaadin/vaadin-themable-mixin@npm:24.3.4"
+  dependencies:
+    "@open-wc/dedupe-mixin": "npm:^1.3.0"
+    lit: "npm:^3.0.0"
+  checksum: ad932481d1f80759e583c58926d0f8e1cf67b29f6cd2ddfe6f16af16848f6f15f91eb266c093746ddfc2b562e855972742df40ff065855a536f872738e1320e4
   languageName: node
   linkType: hard
 
@@ -10718,7 +10729,7 @@ __metadata:
     "@babel/runtime": "npm:7.23.8"
     "@braintree/sanitize-url": "npm:7.0.0"
     "@bundle-stats/plugin-webpack-filter": "npm:4.8.4"
-    "@codemirror/autocomplete": "npm:6.11.1"
+    "@codemirror/autocomplete": "npm:6.12.0"
     "@codemirror/commands": "npm:6.3.3"
     "@codemirror/language": "npm:6.10.0"
     "@codemirror/legacy-modes": "npm:6.3.3"
@@ -10726,14 +10737,14 @@ __metadata:
     "@codemirror/state": "npm:6.4.0"
     "@codemirror/view": "npm:6.23.0"
     "@egjs/hammerjs": "npm:2.0.17"
-    "@formatjs/intl-datetimeformat": "npm:6.12.0"
-    "@formatjs/intl-displaynames": "npm:6.6.4"
+    "@formatjs/intl-datetimeformat": "npm:6.12.1"
+    "@formatjs/intl-displaynames": "npm:6.6.5"
     "@formatjs/intl-getcanonicallocales": "npm:2.3.0"
-    "@formatjs/intl-listformat": "npm:7.5.3"
-    "@formatjs/intl-locale": "npm:3.4.3"
-    "@formatjs/intl-numberformat": "npm:8.9.0"
-    "@formatjs/intl-pluralrules": "npm:5.2.10"
-    "@formatjs/intl-relativetimeformat": "npm:11.2.10"
+    "@formatjs/intl-listformat": "npm:7.5.4"
+    "@formatjs/intl-locale": "npm:3.4.4"
+    "@formatjs/intl-numberformat": "npm:8.9.1"
+    "@formatjs/intl-pluralrules": "npm:5.2.11"
+    "@formatjs/intl-relativetimeformat": "npm:11.2.11"
     "@fullcalendar/core": "npm:6.1.10"
     "@fullcalendar/daygrid": "npm:6.1.10"
     "@fullcalendar/interaction": "npm:6.1.10"
@@ -10745,7 +10756,7 @@ __metadata:
     "@lit-labs/context": "npm:0.4.1"
     "@lit-labs/motion": "npm:1.0.6"
     "@lit-labs/observers": "npm:2.0.2"
-    "@lit-labs/virtualizer": "npm:2.0.11"
+    "@lit-labs/virtualizer": "npm:2.0.12"
     "@lokalise/node-api": "npm:12.1.0"
     "@lrnwebcomponents/simple-tooltip": "npm:7.0.18"
     "@material/chips": "npm:=14.0.0-canary.53b3cad2f.0"
@@ -10799,7 +10810,7 @@ __metadata:
     "@types/js-yaml": "npm:4.0.9"
     "@types/leaflet": "npm:1.9.8"
     "@types/leaflet-draw": "npm:1.0.11"
-    "@types/luxon": "npm:3.4.0"
+    "@types/luxon": "npm:3.4.1"
     "@types/mocha": "npm:10.0.6"
     "@types/qrcode": "npm:1.5.5"
     "@types/serve-handler": "npm:6.1.4"
@@ -10807,10 +10818,10 @@ __metadata:
     "@types/tar": "npm:6.1.10"
     "@types/ua-parser-js": "npm:0.7.39"
     "@types/webspeechapi": "npm:0.0.29"
-    "@typescript-eslint/eslint-plugin": "npm:6.18.1"
-    "@typescript-eslint/parser": "npm:6.18.1"
-    "@vaadin/combo-box": "npm:24.3.2"
-    "@vaadin/vaadin-themable-mixin": "npm:24.3.2"
+    "@typescript-eslint/eslint-plugin": "npm:6.19.0"
+    "@typescript-eslint/parser": "npm:6.19.0"
+    "@vaadin/combo-box": "npm:24.3.3"
+    "@vaadin/vaadin-themable-mixin": "npm:24.3.3"
     "@vibrant/color": "npm:3.2.1-alpha.1"
     "@vibrant/core": "npm:3.2.1-alpha.1"
     "@vibrant/quantizer-mmcq": "npm:3.2.1-alpha.1"
@@ -10855,13 +10866,13 @@ __metadata:
     gulp-merge-json: "npm:2.1.2"
     gulp-rename: "npm:2.0.0"
     gulp-zopfli-green: "npm:6.0.1"
-    hls.js: "npm:1.4.14"
+    hls.js: "npm:1.5.1"
     home-assistant-js-websocket: "npm:9.1.0"
     html-minifier-terser: "npm:7.2.0"
     husky: "npm:8.0.3"
     idb-keyval: "npm:6.2.1"
     instant-mocha: "npm:1.5.2"
-    intl-messageformat: "npm:10.5.8"
+    intl-messageformat: "npm:10.5.9"
     js-yaml: "npm:4.1.0"
     jszip: "npm:3.10.1"
     leaflet: "npm:1.9.4"
@@ -10880,7 +10891,7 @@ __metadata:
     object-hash: "npm:3.0.0"
     open: "npm:10.0.3"
     pinst: "npm:3.0.0"
-    prettier: "npm:3.1.1"
+    prettier: "npm:3.2.2"
     proxy-polyfill: "npm:0.3.2"
     punycode: "npm:2.3.1"
     qr-scanner: "npm:1.4.2"
@@ -10893,7 +10904,7 @@ __metadata:
     rrule: "npm:2.8.1"
     serve-handler: "npm:6.1.5"
     sinon: "npm:17.0.1"
-    sortablejs: "npm:1.15.1"
+    sortablejs: "npm:1.15.2"
     source-map-url: "npm:0.4.1"
     stacktrace-js: "npm:2.0.2"
     superstruct: "npm:1.0.3"
@@ -11065,10 +11076,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"hls.js@npm:1.4.14":
-  version: 1.4.14
-  resolution: "hls.js@npm:1.4.14"
-  checksum: 9b4bbb379022da6a0c923d351c4592aac3be271d7458804ee7beaf6fa61f58a2538f16b5b23e180c7d636aa033ba373a32829b803dd654627fac5b647fac9e67
+"hls.js@npm:1.5.1":
+  version: 1.5.1
+  resolution: "hls.js@npm:1.5.1"
+  checksum: 1e2452892ec62a370fecf5c8d643154fdb7f49c41693a9b757c3d9f62a1383402f1d4be78456a764956533621676a67bc584fec7b7c1ed50c1415951b125b02b
   languageName: node
   linkType: hard
 
@@ -11484,15 +11495,15 @@ __metadata:
   languageName: node
   linkType: hard
 
-"intl-messageformat@npm:10.5.8":
-  version: 10.5.8
-  resolution: "intl-messageformat@npm:10.5.8"
+"intl-messageformat@npm:10.5.9":
+  version: 10.5.9
+  resolution: "intl-messageformat@npm:10.5.9"
   dependencies:
-    "@formatjs/ecma402-abstract": "npm:1.18.0"
+    "@formatjs/ecma402-abstract": "npm:1.18.1"
     "@formatjs/fast-memoize": "npm:2.2.0"
-    "@formatjs/icu-messageformat-parser": "npm:2.7.3"
+    "@formatjs/icu-messageformat-parser": "npm:2.7.4"
     tslib: "npm:^2.4.0"
-  checksum: b2c420600d0b04929b6d401cab0669ec4815d63c3096d1a4a260d5851924dcd4c218771fc3adefc7fdfcc7418bb9353c344451fb98c72559be0a271eea602496
+  checksum: bbbca5dce5f2239530254dad9d7317dcb71c17023040331bb7b963ac3000c600404f8e70a3dd7e049b009f9e9ae407e0d14df888452a2f7572fd012a0390b237
   languageName: node
   linkType: hard
 
@@ -14596,12 +14607,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"prettier@npm:3.1.1":
-  version: 3.1.1
-  resolution: "prettier@npm:3.1.1"
+"prettier@npm:3.2.2":
+  version: 3.2.2
+  resolution: "prettier@npm:3.2.2"
   bin:
     prettier: bin/prettier.cjs
-  checksum: 26a249f321b97d26c04483f1bf2eeb22e082a76f4222a2c922bebdc60111691aad4ec3979610e83942e0b956058ec361d9e9c81c185172264eb6db9aa678082b
+  checksum: ab9470ff6cfd19f28bc424f22e58f2fc4a488d148b9384f6c3739235017c8350cae82b3697392c23d9b098b9d8dfaa1cc9ff4ef25fd45f54c97b95f9cc7a1f7d
   languageName: node
   linkType: hard
 
@@ -15886,10 +15897,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"sortablejs@npm:1.15.1":
-  version: 1.15.1
-  resolution: "sortablejs@npm:1.15.1"
-  checksum: c4ccbc60e7936321eee0e07448e04b1f4481fed727ed1ace86866f49f9929e3acda2b7b825894e7ece5b8bc41f3c135eb4d00d09a287de1ee896d8256a0a84df
+"sortablejs@npm:1.15.2":
+  version: 1.15.2
+  resolution: "sortablejs@npm:1.15.2"
+  checksum: d149dd04bb05904ea20ca477d97cdfbbbd46edf7ede8c80958f2ad881dd6d7b1633cce31665992b341e0ea01fc7ef9d7571ccb7eb995baf01f9418b44e935eac
   languageName: node
   linkType: hard
 
