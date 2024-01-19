@@ -120,7 +120,7 @@ export class HacsDonwloadDialog extends LitElement {
         @closed=${this.closeDialog}
       >
         <div class="content">
-          ${this._repository.version_or_commit === "version"
+          ${this._repository.version_or_commit === "version" && this._repository.installed
             ? html`
                 <ha-form
                   .disabled=${this._waiting}
