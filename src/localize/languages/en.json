@@ -120,6 +120,7 @@
   },
   "repository_card": {
     "dismiss": "dismiss",
+    "dismiss_new": "Dismiss new",
     "information": "Information",
     "new_repository": "New repository",
     "not_loaded": "Not loaded",
