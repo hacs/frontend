@@ -6,6 +6,7 @@ import {
   mdiGithub,
   mdiInformation,
   mdiLanguageJavascript,
+  mdiMoonNew,
   mdiReload,
 } from "@mdi/js";
 import memoizeOne from "memoize-one";
@@ -18,14 +19,18 @@ import {
 } from "../../homeassistant-frontend/src/data/lovelace/resource";
 import { showConfirmationDialog } from "../../homeassistant-frontend/src/dialogs/generic/show-dialog-box";
 import type { RepositoryBase } from "../data/repository";
-import { repositoryUninstall, repositoryUpdate } from "../data/websocket";
+import {
+  repositoriesClearNewRepository,
+  repositoryUninstall,
+  repositoryUpdate,
+} from "../data/websocket";
 import type { HacsDashboard } from "../dashboards/hacs-dashboard";
 import type { HacsRepositoryDashboard } from "../dashboards/hacs-repository-dashboard";
 import { showHacsDownloadDialog, showHacsFormDialog } from "./dialogs/show-hacs-dialog";
 
 export const repositoryMenuItems = memoizeOne(
   (element: HacsRepositoryDashboard | HacsDashboard, repository: RepositoryBase) => [
-    ...(element.nodeName === "HACS-EXPERIMENTAL-PANEL"
+    ...(element.nodeName === "HACS-DASHBOARD"
       ? [
           {
             path: mdiInformation,
@@ -58,7 +63,15 @@ export const repositoryMenuItems = memoizeOne(
             hideForUninstalled: true,
           },
         ]
-      : []),
+      : repository.new
+        ? [
+            {
+              path: mdiMoonNew,
+              label: element.hacs.localize("repository_card.dismiss_new"),
+              action: () => repositoriesClearNewRepository(element.hass, repository.id),
+            },
+          ]
+        : []),
     ...(repository.category === "plugin" && repository.installed_version
       ? [
           {

@@ -536,17 +536,14 @@ export class HacsDashboard extends LitElement {
         title: "",
         width: this.narrow ? undefined : "10%",
         type: "overflow-menu",
-        template: (repository: RepositoryBase) =>
-          repository.installed
-            ? html`
-                <ha-icon-overflow-menu
-                  .hass=${this.hass}
-                  .items=${repositoryMenuItems(this, repository) as IconOverflowMenuItem[]}
-                  narrow
-                >
-                </ha-icon-overflow-menu>
-              `
-            : "",
+        template: (repository: RepositoryBase) => html`
+          <ha-icon-overflow-menu
+            .hass=${this.hass}
+            .items=${repositoryMenuItems(this, repository) as IconOverflowMenuItem[]}
+            narrow
+          >
+          </ha-icon-overflow-menu>
+        `,
       },
     }),
   );

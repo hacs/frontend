@@ -51,10 +51,16 @@ export const repositoriesClearNew = async (hass: HomeAssistant, hacs: Hacs) =>
     categories: hacs.info.categories,
   });
 
+export const repositoriesClearNewRepository = async (hass: HomeAssistant, repository: string) =>
+  hass.connection.sendMessagePromise<void>({
+    type: "hacs/repositories/clear_new",
+    repository,
+  });
+
 export const websocketSubscription = (
   hass: HomeAssistant,
   onChange: (result: Record<any, any> | null) => void,
-  event: HacsDispatchEvent
+  event: HacsDispatchEvent,
 ) =>
   hass.connection.subscribeMessage(onChange, {
     type: "hacs/subscribe",
