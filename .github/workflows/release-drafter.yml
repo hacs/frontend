@@ -13,7 +13,7 @@ jobs:
           version=$(date --utc '+%Y%m%d%H%M%S')
           echo "::set-output name=version::$version"
 
-      - uses: release-drafter/release-drafter@v5
+      - uses: release-drafter/release-drafter@v6
         with:
           tag: ${{ steps.version.outputs.version }}
           name: ${{ steps.version.outputs.version }}
