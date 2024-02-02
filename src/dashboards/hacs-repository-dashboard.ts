@@ -12,6 +12,7 @@ import { customElement, property, state } from "lit/decorators";
 import memoizeOne from "memoize-one";
 import { mainWindow } from "../../homeassistant-frontend/src/common/dom/get_main_window";
 import { extractSearchParamsObject } from "../../homeassistant-frontend/src/common/url/search-params";
+import "../../homeassistant-frontend/src/components/ha-alert";
 import "../../homeassistant-frontend/src/components/ha-card";
 import "../../homeassistant-frontend/src/components/chips/ha-chip-set";
 import "../../homeassistant-frontend/src/components/chips/ha-assist-chip";
@@ -299,7 +300,7 @@ export class HacsRepositoryDashboard extends LitElement {
           width: 100vw;
         }
 
-        ha-svg-icon {
+        ha-fab ha-svg-icon {
           color: var(--hcv-text-color-on-background);
         }
 
