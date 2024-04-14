@@ -319,16 +319,7 @@ export class HacsDashboard extends LitElement {
             .map(([key, _]) => key),
         }}
         .schema=${FILTER_SCHEMA(this.hacs.localize, this.hacs.info.categories, this.narrow)}
-        .computeLabel=${(schema, _) =>
-          this.hacs.localize(
-            // @ts-ignore
-            `dialog_overview.${schema.name}`,
-          ) ||
-          this.hacs.localize(
-            // @ts-ignore
-            `dialog_overview.sections.${schema.name}`,
-          ) ||
-          schema.name}
+        .computeLabel=${this._computeFilterFormLabel}
         @value-changed=${this._handleFilterChanged}
       ></ha-form>
       ${showFab
@@ -589,6 +580,17 @@ export class HacsDashboard extends LitElement {
       }, 50);
     });
   }
+
+  private _computeFilterFormLabel = (schema, _) =>
+    this.hacs.localize(
+      // @ts-ignore
+      `dialog_overview.${schema.name}`,
+    ) ||
+    this.hacs.localize(
+      // @ts-ignore
+      `dialog_overview.sections.${schema.name}`,
+    ) ||
+    schema.name;
 
   private _handleRowClicked(ev: CustomEvent) {
     this._tableScroll = this._scrollerTarget?.scrollTop || 0;
