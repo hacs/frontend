@@ -19,6 +19,9 @@ export const hacsCommonClasses = css`
     opacity: var(--dark-primary-opacity);
     padding: 8px 0 4px 16px;
   }
+  .filters {
+    margin: 16px;
+  }
 
   code,
   pre {

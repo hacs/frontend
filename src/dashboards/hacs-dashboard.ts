@@ -228,13 +228,8 @@ export class HacsDashboard extends LitElement {
       .route=${this.route}
       clickable
       .filter=${this._activeSearch || ""}
-      .activeFilters=${this.activeFilters?.map(
-        (filter) =>
-          this.hacs.localize(
-            // @ts-ignore
-            `common.${filter.startsWith("category_") ? filter.replace("category_", "") : filter}`,
-          ) || filter,
-      )}
+      hasFilters
+      .filters=${this.activeFilters?.length}
       .noDataText=${this.activeFilters?.includes("downloaded")
         ? "No downloaded repositories"
         : "No repositories matching search and filters"}
@@ -312,14 +307,30 @@ export class HacsDashboard extends LitElement {
         ].filter((item) => item !== undefined) as IconOverflowMenuItem[]}
       >
       </ha-icon-overflow-menu>
-      <ha-button-menu slot="filter-menu" @click=${this._handleIconOverflowMenuOpened}>
-        <ha-icon-button
-          slot="trigger"
-          .label=${this.hass.localize("ui.panel.config.entities.picker.filter.filter")}
-          .path=${mdiFilterVariant}
-        >
-        </ha-icon-button>
-      </ha-button-menu>
+      <ha-form
+        slot="filter-pane"
+        class="filters"
+        .hass=${this.hass}
+        .data=${{
+          base: this.activeFilters?.find((filter) => BASE_FILTER_OPTIONS.includes(filter)) || "",
+          category: this.activeFilters?.find((filter) => filter.startsWith("category_")) || "",
+          columns: Object.entries(tableColumnDefaults)
+            .filter(([key, value]) => this._tableColumns[key] ?? value)
+            .map(([key, _]) => key),
+        }}
+        .schema=${FILTER_SCHEMA(this.hacs.localize, this.hacs.info.categories, this.narrow)}
+        .computeLabel=${(schema, _) =>
+          this.hacs.localize(
+            // @ts-ignore
+            `dialog_overview.${schema.name}`,
+          ) ||
+          this.hacs.localize(
+            // @ts-ignore
+            `dialog_overview.sections.${schema.name}`,
+          ) ||
+          schema.name}
+        @value-changed=${this._handleFilterChanged}
+      ></ha-form>
       ${showFab
         ? html`
             <ha-fab
@@ -584,47 +595,24 @@ export class HacsDashboard extends LitElement {
     navigate(`/hacs/repository/${ev.detail.id}`);
   }
 
-  private _handleIconOverflowMenuOpened(ev: CustomEvent) {
+  private _handleFilterChanged(ev: CustomEvent) {
     ev.stopPropagation();
-    showHacsFormDialog(this, {
-      hacs: this.hacs,
-      title: this.hacs.localize("dialog_overview.title"),
-      description: html`<p>${this.hacs.localize("dialog_overview.description")}</p>`,
-      data: {
-        base: this.activeFilters?.find((filter) => BASE_FILTER_OPTIONS.includes(filter)) || "",
-        category: this.activeFilters?.find((filter) => filter.startsWith("category_")) || "",
-        columns: Object.entries(tableColumnDefaults)
-          .filter(([key, value]) => this._tableColumns[key] ?? value)
-          .map(([key, _]) => key),
-      },
-      schema: FILTER_SCHEMA(this.hacs.localize, this.hacs.info.categories, this.narrow),
-      computeLabelCallback: (schema, _) =>
-        this.hacs.localize(
-          // @ts-ignore
-          `dialog_overview.${schema.name}`,
-        ) ||
-        this.hacs.localize(
-          // @ts-ignore
-          `dialog_overview.sections.${schema.name}`,
-        ) ||
-        schema.name,
-      saveAction: async (data) => {
-        const updatedFilters: string[] = Object.entries<any>(data)
-          .filter(
-            ([key, value]) =>
-              ["base", "category"].includes(key) && ![undefined, null, ""].includes(value),
-          )
-          .map(([_, value]) => value);
-        this.activeFilters = updatedFilters.length ? updatedFilters : undefined;
-        this._tableColumns = Object.keys(tableColumnDefaults).reduce(
-          (entries, key) => ({
-            ...entries,
-            [key]: data.columns.includes(key) ?? tableColumnDefaults[key],
-          }),
-          {},
-        ) as Record<tableColumnDefaultsType, boolean>;
-      },
-    });
+    const data = ev.detail.value;
+    console.log(data);
+    const updatedFilters: string[] = Object.entries<any>(data)
+      .filter(
+        ([key, value]) =>
+          ["base", "category"].includes(key) && ![undefined, null, ""].includes(value),
+      )
+      .map(([_, value]) => value);
+    this.activeFilters = updatedFilters.length ? updatedFilters : undefined;
+    this._tableColumns = Object.keys(tableColumnDefaults).reduce(
+      (entries, key) => ({
+        ...entries,
+        [key]: data.columns.includes(key) ?? tableColumnDefaults[key],
+      }),
+      {},
+    ) as Record<tableColumnDefaultsType, boolean>;
   }
 
   private _handleSearchFilterChanged(ev: CustomEvent) {
