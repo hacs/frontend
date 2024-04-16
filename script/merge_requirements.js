@@ -38,8 +38,8 @@ fs.writeFileSync(
           Object.entries(core.resolutions).map(([key, val]) => [
             key,
             val
-              .replace("#.yarn/patches/", "#./homeassistant-frontend/.yarn/patches/")
-              .replace("#./.yarn/patches/", "#./homeassistant-frontend/.yarn/patches/"),
+              .replaceAll("#.yarn/patches/", "#./homeassistant-frontend/.yarn/patches/")
+              .replaceAll("#./.yarn/patches/", "#./homeassistant-frontend/.yarn/patches/"),
           ]),
         ),
         ...hacs.resolutionsOverride,
