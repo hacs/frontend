@@ -28,12 +28,15 @@ fs.copyFileSync(
   `./src/localize/languages/translationMetadata.json`,
 );
 
-const replacePatches = ([key, val]) => [
-  key,
-  val
-    .replace("#.yarn/patches/", "#./homeassistant-frontend/.yarn/patches/")
-    .replace("#./.yarn/patches/", "#./homeassistant-frontend/.yarn/patches/"),
-];
+const replacePatches = (deps) =>
+  Object.fromEntries(
+    Object.entries(deps).map(([key, val]) => [
+      key,
+      val
+        .replace("#.yarn/patches/", "#./homeassistant-frontend/.yarn/patches/")
+        .replace("#./.yarn/patches/", "#./homeassistant-frontend/.yarn/patches/"),
+    ]),
+  );
 
 fs.writeFileSync(
   "./package.json",
@@ -41,15 +44,15 @@ fs.writeFileSync(
     {
       ...hacs,
       resolutions: {
-        ...Object.fromEntries(Object.entries(core.resolutions).map(replacePatches)),
+        ...replacePatches(core.resolutions),
         ...hacs.resolutionsOverride,
       },
       dependencies: {
-        ...Object.fromEntries(Object.entries(core.dependencies).map(replacePatches)),
+        ...replacePatches(core.dependencies),
         ...hacs.dependenciesOverride,
       },
       devDependencies: {
-        ...Object.fromEntries(Object.entries(core.devDependencies).map(replacePatches)),
+        ...replacePatches(core.devDependencies),
         ...hacs.devDependenciesOverride,
       },
       packageManager: core.packageManager,
