@@ -5,15 +5,13 @@ import {
   mdiAlertCircleOutline,
   mdiDownload,
   mdiFileDocument,
-  mdiFilterVariant,
   mdiGit,
   mdiGithub,
   mdiInformation,
   mdiNewBox,
-  mdiPlus,
 } from "@mdi/js";
-import type { CSSResultGroup, PropertyValues, TemplateResult } from "lit";
-import { LitElement, html, nothing } from "lit";
+import type { CSSResultGroup, TemplateResult } from "lit";
+import { LitElement, html } from "lit";
 import { customElement, property } from "lit/decorators";
 import memoize from "memoize-one";
 import { relativeTime } from "../../homeassistant-frontend/src/common/datetime/relative_time";
@@ -36,7 +34,6 @@ import { HaFormSchema } from "../../homeassistant-frontend/src/components/ha-for
 import "../../homeassistant-frontend/src/components/ha-icon-overflow-menu";
 import { IconOverflowMenuItem } from "../../homeassistant-frontend/src/components/ha-icon-overflow-menu";
 import "../../homeassistant-frontend/src/components/ha-svg-icon";
-import { showConfirmationDialog } from "../../homeassistant-frontend/src/dialogs/generic/show-dialog-box";
 import { haStyle } from "../../homeassistant-frontend/src/resources/styles";
 import type { HomeAssistant, Route } from "../../homeassistant-frontend/src/types";
 import { brandsUrl } from "../../homeassistant-frontend/src/util/brands-url";
@@ -74,7 +71,13 @@ const defaultKeyData = {
   filterable: true,
 };
 
-const BASE_FILTER_OPTIONS = ["downloaded", "new"];
+const STATUS_ORDER = {
+  "pending-restart": 0,
+  "pending-upgrade": 1,
+  installed: 2,
+  new: 3,
+  default: 4,
+};
 
 const FILTER_SCHEMA = memoize(
   (localizeFunc: LocalizeFunc<HacsLocalizeKeys>, categories: string[], narrow: boolean) =>
@@ -85,16 +88,18 @@ const FILTER_SCHEMA = memoize(
         value: "",
       },
       {
-        name: "base",
+        name: "status",
         selector: {
           select: {
-            options: BASE_FILTER_OPTIONS.map((filter) => ({
-              value: filter,
-              label: localizeFunc(
-                // @ts-ignore
-                `common.${filter}`,
-              ),
-            })),
+            options: ["pending-restart", "pending-upgrade", "installed", "new", "default"].map(
+              (filter) => ({
+                value: `status_${filter}`,
+                label: localizeFunc(
+                  // @ts-ignore
+                  `repository_status.${filter}`,
+                ),
+              }),
+            ),
             mode: "dropdown",
             sort: true,
           },
@@ -170,21 +175,11 @@ export class HacsDashboard extends LitElement {
   @storage({ key: "hacs-table-scroll", state: true, subscribe: false })
   private _tableScroll?: number;
 
-  @storage({ key: "hacs-hide-browse-fab", state: true, subscribe: false })
-  private _hide_browse_fab?: boolean;
-
   @storage({ key: "hacs-table-active-columns", state: true, subscribe: false })
   private _tableColumns: Record<tableColumnDefaultsType, boolean> = tableColumnDefaults;
 
   public connectedCallback(): void {
     super.connectedCallback();
-    const baseFilters =
-      this.activeFilters && this.activeFilters.length === 0 ? ["downloaded"] : this.activeFilters;
-
-    const filters = !this._activeSearch?.length
-      ? baseFilters
-      : baseFilters?.filter((filter) => filter !== "downloaded");
-    this.activeFilters = filters?.length ? filters : undefined;
 
     this.updateComplete.then(() => {
       this.restoreScroller().catch(() => {
@@ -193,22 +188,12 @@ export class HacsDashboard extends LitElement {
     });
   }
 
-  protected updated(changedProperties: PropertyValues): void {
-    super.updated(changedProperties);
-    if (changedProperties.has("_activeSearch") && this._activeSearch?.length) {
-      const updatedFilters = this.activeFilters?.filter((filter) => filter !== "downloaded") || [];
-      this.activeFilters = updatedFilters.length ? updatedFilters : undefined;
-    }
-  }
-
   protected render = (): TemplateResult | void => {
-    const showFab =
-      !this._hide_browse_fab &&
-      !this._activeSearch?.length &&
-      this.activeFilters !== undefined &&
-      this.activeFilters.length === 1 &&
-      this.activeFilters[0] === "downloaded";
-    const repositories = this._filterRepositories(this.hacs.repositories, this.activeFilters);
+    const repositories = this._filterRepositories(
+      this.hacs.repositories,
+      this.hacs.localize,
+      this.activeFilters,
+    );
     const repositoriesContainsNew =
       repositories.filter((repository) => repository.new).length !== 0;
 
@@ -230,14 +215,12 @@ export class HacsDashboard extends LitElement {
       .filter=${this._activeSearch || ""}
       hasFilters
       .filters=${this.activeFilters?.length}
-      .noDataText=${this.activeFilters?.includes("downloaded")
-        ? "No downloaded repositories"
-        : "No repositories matching search and filters"}
+      .noDataText=${"No repositories matching search and filters"}
+      initialGroupColumn="sort_status"
       @row-click=${this._handleRowClicked}
       @clear-filter=${this._handleClearFilter}
       @value-changed=${this._handleSearchFilterChanged}
       @sorting-changed=${this._handleSortingChanged}
-      .hasFab=${showFab}
     >
       <ha-icon-overflow-menu
         narrow
@@ -307,12 +290,13 @@ export class HacsDashboard extends LitElement {
         ].filter((item) => item !== undefined) as IconOverflowMenuItem[]}
       >
       </ha-icon-overflow-menu>
+
       <ha-form
         slot="filter-pane"
         class="filters"
         .hass=${this.hass}
         .data=${{
-          base: this.activeFilters?.find((filter) => BASE_FILTER_OPTIONS.includes(filter)) || "",
+          status: this.activeFilters?.find((filter) => filter.startsWith("status_")) || "",
           category: this.activeFilters?.find((filter) => filter.startsWith("category_")) || "",
           columns: Object.entries(tableColumnDefaults)
             .filter(([key, value]) => this._tableColumns[key] ?? value)
@@ -322,53 +306,21 @@ export class HacsDashboard extends LitElement {
         .computeLabel=${this._computeFilterFormLabel}
         @value-changed=${this._handleFilterChanged}
       ></ha-form>
-      ${showFab
-        ? html`
-            <ha-fab
-              slot="fab"
-              @click=${this._show_browse_dialog}
-              .label=${this.hacs.localize("dialog_browse.btn")}
-              extended
-            >
-              <ha-svg-icon slot="icon" .path=${mdiPlus}></ha-svg-icon>
-            </ha-fab>
-          `
-        : nothing}
     </hass-tabs-subpage-data-table>`;
   };
 
-  _show_browse_dialog = async () => {
-    showConfirmationDialog(this, {
-      title: this.hacs.localize("dialog_browse.title"),
-      text: this.hacs.localize("dialog_browse.content"),
-      confirmText: this.hacs.localize("common.close"),
-      confirm: () => {
-        this._hide_browse_fab = true;
-      },
-      dismissText: this.hacs.localize("menu.documentation"),
-      cancel: () => {
-        mainWindow.open(
-          documentationUrl({
-            experimental: this.hacs.info?.experimental,
-            path: "/docs/basic/dashboard",
-          }),
-          "_blank",
-          "noreferrer=true",
-        );
-
-        this._show_browse_dialog();
-      },
-    });
-  };
-
   private _filterRepositories = memoize(
-    (repositories: RepositoryBase[], activeFilters?: string[]): RepositoryBase[] =>
+    (
+      repositories: RepositoryBase[],
+      localizeFunc: LocalizeFunc<HacsLocalizeKeys>,
+      activeFilters?: string[],
+    ): RepositoryBase[] =>
       repositories
         .filter((repository) => {
-          if (this.activeFilters?.includes("downloaded") && !repository.installed) {
-            return false;
-          }
-          if (this.activeFilters?.includes("new") && !repository.new) {
+          if (
+            activeFilters?.filter((filter) => filter.startsWith("status_")).length &&
+            !activeFilters.includes(`status_${repository.status}`)
+          ) {
             return false;
           }
           if (
@@ -379,10 +331,25 @@ export class HacsDashboard extends LitElement {
           }
           return true;
         })
-        .sort((a, b) => b.name.localeCompare(a.name))
-        .sort((a, b) => (a.stars < b.stars ? 1 : -1))
-        .sort((a, b) => (a.installed && !b.installed ? 1 : -1))
-        .sort((a, b) => (!a.new && b.new ? 1 : -1)),
+        .sort((a, b) => {
+          if (a.installed !== b.installed) {
+            return a.installed ? -1 : 1;
+          }
+          if (a.new !== b.new) {
+            return a.new ? -1 : 1;
+          }
+          if (a.stars !== b.stars) {
+            return a.stars > b.stars ? -1 : 1;
+          }
+          return a.name.localeCompare(b.name);
+        })
+        .map((repository) => ({
+          ...repository,
+          translated_status:
+            localizeFunc(`repository_status.${repository.status}`) || repository.status,
+          sort_status: `${STATUS_ORDER[repository.status]} - ${localizeFunc(`repository_status.${repository.status}`) || repository.status}`,
+          translated_category: localizeFunc(`common.${repository.category}`),
+        })),
   );
 
   private _columns = memoize(
@@ -505,28 +472,25 @@ export class HacsDashboard extends LitElement {
         template: (repository: RepositoryBase) =>
           repository.installed ? repository.available_version : "-",
       },
-      status: {
+      sort_status: {
         ...defaultKeyData,
         title: localizeFunc("column.status"),
         hidden: narrow || !tableColumnsOptions.status,
         sortable: true,
-        direction: this.activeSort?.column === "status" ? this.activeSort.direction : null,
+        groupable: true,
+        direction: this.activeSort?.column === "sort_status" ? this.activeSort.direction : null,
         width: "10%",
-        template: (repository: RepositoryBase) =>
-          ["pending-restart", "pending-upgrade"].includes(repository.status)
-            ? localizeFunc(
-                `repository_status.${repository.status as "pending-restart" | "pending-upgrade"}`,
-              )
-            : "-",
+        template: (repository: RepositoryBase) => repository.translated_status,
       },
-      category: {
+      translated_category: {
         ...defaultKeyData,
         title: localizeFunc("column.category"),
         hidden: narrow || !tableColumnsOptions.category,
         sortable: true,
-        direction: this.activeSort?.column === "category" ? this.activeSort.direction : null,
+        groupable: true,
+        direction:
+          this.activeSort?.column === "translated_category" ? this.activeSort.direction : null,
         width: "10%",
-        template: (repository: RepositoryBase) => localizeFunc(`common.${repository.category}`),
       },
       authors: defaultKeyData,
       description: defaultKeyData,
@@ -604,7 +568,7 @@ export class HacsDashboard extends LitElement {
     const updatedFilters: string[] = Object.entries<any>(data)
       .filter(
         ([key, value]) =>
-          ["base", "category"].includes(key) && ![undefined, null, ""].includes(value),
+          ["status", "category"].includes(key) && ![undefined, null, ""].includes(value),
       )
       .map(([_, value]) => value);
     this.activeFilters = updatedFilters.length ? updatedFilters : undefined;

@@ -63,7 +63,7 @@
       "filters": "Change active filters",
       "behaviour": "Change the behaviour of the overview"
     },
-    "base": "Base filters",
+    "status": "Status",
     "category": "Category",
     "columns": "Columns"
   },
@@ -113,11 +113,6 @@
     "message": "A new version of the {name} is available",
     "no_info": "The author has not provided any information for this release"
   },
-  "dialog_browse": {
-    "btn": "Browse repositories",
-    "title": "Browse dialog removed",
-    "content": "The old dialog to browse repositories has been removed. Instead you just search for what you want in the search bar or use the filters also located on the search bar."
-  },
   "repository_card": {
     "dismiss": "dismiss",
     "dismiss_new": "Dismiss new",
@@ -134,7 +129,10 @@
   },
   "repository_status": {
     "pending-restart": "Pending restart",
-    "pending-upgrade": "Pending update"
+    "pending-upgrade": "Pending update",
+    "installed": "Installed",
+    "new": "New",
+    "default": "Not installed"
   },
   "menu": {
     "about": "About HACS",
