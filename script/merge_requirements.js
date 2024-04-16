@@ -34,7 +34,8 @@ const replacePatches = (deps) =>
       key,
       val
         .replace("#.yarn/patches/", "#./homeassistant-frontend/.yarn/patches/")
-        .replace("#./.yarn/patches/", "#./homeassistant-frontend/.yarn/patches/"),
+        .replace("#./.yarn/patches/", "#./homeassistant-frontend/.yarn/patches/")
+        .replace("#~/.yarn/patches/", "#~/homeassistant-frontend/.yarn/patches/"),
     ]),
   );
 
