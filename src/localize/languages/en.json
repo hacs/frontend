@@ -35,7 +35,7 @@
     "installed_version": "Downloaded version",
     "available_version": "Available version",
     "status": "Status",
-    "category": "Category",
+    "category": "Type",
     "last_updated": "Updated"
   },
   "confirm": {
@@ -64,7 +64,7 @@
       "behaviour": "Change the behaviour of the overview"
     },
     "status": "Status",
-    "category": "Category",
+    "category": "Type",
     "columns": "Columns"
   },
   "dialog_add_repo": {
@@ -80,9 +80,9 @@
   "dialog_custom_repositories": {
     "title": "Custom repositories",
     "url_placeholder": "Add custom repository URL",
-    "category": "Category",
+    "category": "Type",
     "no_repository": "Missing repository",
-    "no_category": "Missing category"
+    "no_category": "Missing type"
   },
   "dialog_download": {
     "type": "Type",
