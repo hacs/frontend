@@ -130,9 +130,9 @@
   "repository_status": {
     "pending-restart": "Pending restart",
     "pending-upgrade": "Pending update",
-    "installed": "Installed",
+    "installed": "Downloaded",
     "new": "New",
-    "default": "Not installed"
+    "default": "Available for download"
   },
   "menu": {
     "about": "About HACS",
