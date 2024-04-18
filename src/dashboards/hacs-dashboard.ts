@@ -91,7 +91,7 @@ const FILTER_SCHEMA = memoize(
         name: "status",
         selector: {
           select: {
-            options: ["pending-restart", "pending-upgrade", "installed", "new", "default"].map(
+            options: Object.keys(STATUS_ORDER).map(
               (filter) => ({
                 value: `status_${filter}`,
                 label: localizeFunc(
