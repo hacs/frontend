@@ -71,13 +71,7 @@ const defaultKeyData = {
   filterable: true,
 };
 
-const STATUS_ORDER = {
-  "pending-restart": 0,
-  "pending-upgrade": 1,
-  installed: 2,
-  new: 3,
-  default: 4,
-};
+const STATUS_ORDER = ["pending-restart", "pending-upgrade", "installed", "new", "default"];
 
 const FILTER_SCHEMA = memoize(
   (localizeFunc: LocalizeFunc<HacsLocalizeKeys>, categories: string[], narrow: boolean) =>
@@ -91,17 +85,15 @@ const FILTER_SCHEMA = memoize(
         name: "status",
         selector: {
           select: {
-            options: Object.keys(STATUS_ORDER).map(
-              (filter) => ({
-                value: `status_${filter}`,
-                label: localizeFunc(
-                  // @ts-ignore
-                  `repository_status.${filter}`,
-                ),
-              }),
-            ),
+            options: STATUS_ORDER.map((filter) => ({
+              value: `status_${filter}`,
+              label: localizeFunc(
+                // @ts-ignore
+                `repository_status.${filter}`,
+              ),
+            })),
             mode: "dropdown",
-            sort: true,
+            sort: false,
           },
         },
       },
@@ -164,10 +156,13 @@ export class HacsDashboard extends LitElement {
   @property({ type: Boolean }) public isWide!: boolean;
 
   @storage({ key: "hacs-table-filter", state: true, subscribe: false })
-  private activeFilters?: string[] = [];
+  private _activeFilters?: string[] = [];
 
   @storage({ key: "hacs-table-sort", state: true, subscribe: false })
-  private activeSort?: { column: string; direction: SortingDirection };
+  private _activeSorting?: { column: string; direction: SortingDirection };
+
+  @storage({ key: "hacs-table-grouping", state: true, subscribe: false })
+  private _activeGrouping?: string;
 
   @storage({ key: "hacs-active-search", state: true, subscribe: false })
   private _activeSearch?: string;
@@ -192,7 +187,7 @@ export class HacsDashboard extends LitElement {
     const repositories = this._filterRepositories(
       this.hacs.repositories,
       this.hacs.localize,
-      this.activeFilters,
+      this._activeFilters,
     );
     const repositoriesContainsNew =
       repositories.filter((repository) => repository.new).length !== 0;
@@ -214,13 +209,23 @@ export class HacsDashboard extends LitElement {
       clickable
       .filter=${this._activeSearch || ""}
       hasFilters
-      .filters=${this.activeFilters?.length}
+      .filters=${this._activeFilters?.length}
       .noDataText=${"No repositories matching search and filters"}
-      initialGroupColumn="sort_status"
+      .initialGroupColumn=${this._activeGrouping || "translated_status"}
+      .groupOrder=${this._activeGrouping === "translated_status"
+        ? STATUS_ORDER.map((filter) =>
+            this.hacs.localize(
+              // @ts-ignore
+              `repository_status.${filter}`,
+            ),
+          )
+        : undefined}
+      .initialSorting=${this._activeSorting}
       @row-click=${this._handleRowClicked}
       @clear-filter=${this._handleClearFilter}
       @value-changed=${this._handleSearchFilterChanged}
       @sorting-changed=${this._handleSortingChanged}
+      @grouping-changed=${this._handleGroupingChanged}
     >
       <ha-icon-overflow-menu
         narrow
@@ -296,8 +301,8 @@ export class HacsDashboard extends LitElement {
         class="filters"
         .hass=${this.hass}
         .data=${{
-          status: this.activeFilters?.find((filter) => filter.startsWith("status_")) || "",
-          category: this.activeFilters?.find((filter) => filter.startsWith("category_")) || "",
+          status: this._activeFilters?.find((filter) => filter.startsWith("status_")) || "",
+          category: this._activeFilters?.find((filter) => filter.startsWith("category_")) || "",
           columns: Object.entries(tableColumnDefaults)
             .filter(([key, value]) => this._tableColumns[key] ?? value)
             .map(([key, _]) => key),
@@ -347,7 +352,6 @@ export class HacsDashboard extends LitElement {
           ...repository,
           translated_status:
             localizeFunc(`repository_status.${repository.status}`) || repository.status,
-          sort_status: `${STATUS_ORDER[repository.status]} - ${localizeFunc(`repository_status.${repository.status}`) || repository.status}`,
           translated_category: localizeFunc(`common.${repository.category}`),
         })),
   );
@@ -391,7 +395,6 @@ export class HacsDashboard extends LitElement {
         title: localizeFunc("column.name"),
         main: true,
         sortable: true,
-        direction: this.activeSort?.column === "name" ? this.activeSort.direction : null,
         hidden: !tableColumnsOptions.name,
         grows: true,
         template: (repository: RepositoryBase) => html`
@@ -402,7 +405,7 @@ export class HacsDashboard extends LitElement {
                 .path=${mdiNewBox}
               ></ha-svg-icon>`
             : ""}
-          ${!this.activeFilters?.includes("downloaded") && repository.installed
+          ${!this._activeFilters?.includes("downloaded") && repository.installed
             ? html`<ha-svg-icon
                 label="Downloaded"
                 style="color: var(--primary-color); margin-right: 4px;"
@@ -420,7 +423,6 @@ export class HacsDashboard extends LitElement {
         title: localizeFunc("column.downloads"),
         hidden: narrow || !tableColumnsOptions.downloads,
         sortable: true,
-        direction: this.activeSort?.column === "downloads" ? this.activeSort.direction : null,
         width: "10%",
         template: (repository: RepositoryBase) => html`${repository.downloads || "-"}`,
       },
@@ -429,7 +431,6 @@ export class HacsDashboard extends LitElement {
         title: localizeFunc("column.stars"),
         hidden: narrow || !tableColumnsOptions.stars,
         sortable: true,
-        direction: this.activeSort?.column === "stars" ? this.activeSort.direction : null,
         width: "10%",
       },
       last_updated: {
@@ -437,7 +438,6 @@ export class HacsDashboard extends LitElement {
         title: localizeFunc("column.last_updated"),
         hidden: narrow || !tableColumnsOptions.last_updated,
         sortable: true,
-        direction: this.activeSort?.column === "last_updated" ? this.activeSort.direction : null,
         width: "15%",
         template: (repository: RepositoryBase) => {
           if (!repository.last_updated) {
@@ -455,8 +455,6 @@ export class HacsDashboard extends LitElement {
         title: localizeFunc("column.installed_version"),
         hidden: narrow || !tableColumnsOptions.installed_version,
         sortable: true,
-        direction:
-          this.activeSort?.column === "installed_version" ? this.activeSort.direction : null,
         width: "10%",
         template: (repository: RepositoryBase) =>
           repository.installed ? repository.installed_version : "-",
@@ -466,21 +464,17 @@ export class HacsDashboard extends LitElement {
         title: localizeFunc("column.available_version"),
         hidden: narrow || !tableColumnsOptions.available_version,
         sortable: true,
-        direction:
-          this.activeSort?.column === "available_version" ? this.activeSort.direction : null,
         width: "10%",
         template: (repository: RepositoryBase) =>
           repository.installed ? repository.available_version : "-",
       },
-      sort_status: {
+      translated_status: {
         ...defaultKeyData,
         title: localizeFunc("column.status"),
         hidden: narrow || !tableColumnsOptions.status,
         sortable: true,
         groupable: true,
-        direction: this.activeSort?.column === "sort_status" ? this.activeSort.direction : null,
         width: "10%",
-        template: (repository: RepositoryBase) => repository.translated_status,
       },
       translated_category: {
         ...defaultKeyData,
@@ -488,8 +482,6 @@ export class HacsDashboard extends LitElement {
         hidden: narrow || !tableColumnsOptions.category,
         sortable: true,
         groupable: true,
-        direction:
-          this.activeSort?.column === "translated_category" ? this.activeSort.direction : null,
         width: "10%",
       },
       authors: defaultKeyData,
@@ -571,7 +563,7 @@ export class HacsDashboard extends LitElement {
           ["status", "category"].includes(key) && ![undefined, null, ""].includes(value),
       )
       .map(([_, value]) => value);
-    this.activeFilters = updatedFilters.length ? updatedFilters : undefined;
+    this._activeFilters = updatedFilters.length ? updatedFilters : undefined;
     this._tableColumns = Object.keys(tableColumnDefaults).reduce(
       (entries, key) => ({
         ...entries,
@@ -585,12 +577,16 @@ export class HacsDashboard extends LitElement {
     this._activeSearch = ev.detail.value;
   }
 
+  private _handleGroupingChanged(ev: CustomEvent) {
+    this._activeGrouping = ev.detail.value;
+  }
+
   private _handleSortingChanged(ev: CustomEvent) {
-    this.activeSort = ev.detail;
+    this._activeSorting = ev.detail;
   }
 
   private _handleClearFilter() {
-    this.activeFilters = undefined;
+    this._activeFilters = undefined;
   }
 
   static get styles(): CSSResultGroup {
