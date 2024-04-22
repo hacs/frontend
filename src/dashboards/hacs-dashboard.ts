@@ -158,7 +158,7 @@ export class HacsDashboard extends LitElement {
   @storage({ key: "hacs-table-filter", state: true, subscribe: false })
   private _activeFilters?: string[] = [];
 
-  @storage({ key: "hacs-table-sort", state: true, subscribe: false })
+  @storage({ key: "hacs-table-sort", state: false, subscribe: false })
   private _activeSorting?: { column: string; direction: SortingDirection };
 
   @storage({ key: "hacs-table-grouping", state: true, subscribe: false })
