@@ -100,6 +100,9 @@ export class HacsDashboard extends LitElement {
   @storage({ key: "hacs-table-grouping", state: true, subscribe: false })
   private _activeGrouping?: string;
 
+  @storage({ key: "hacs-table-collapsed", state: false, subscribe: false })
+  private _activeCollapsed?: string;
+
   @storage({ key: "hacs-active-search", state: true, subscribe: false })
   private _activeSearch?: string;
 
@@ -130,6 +133,7 @@ export class HacsDashboard extends LitElement {
       .filters=${this._activeFilters?.length}
       .noDataText=${this.hacs.localize("dashboard.no_data")}
       .initialGroupColumn=${this._activeGrouping || "translated_status"}
+      .initialCollapsedGroups=${this._activeCollapsed}
       .groupOrder=${this._groupOrder(this.hacs.localize, this._activeGrouping)}
       .initialSorting=${this._activeSorting}
       @row-click=${this._handleRowClicked}
@@ -137,6 +141,7 @@ export class HacsDashboard extends LitElement {
       @value-changed=${this._handleSearchFilterChanged}
       @sorting-changed=${this._handleSortingChanged}
       @grouping-changed=${this._handleGroupingChanged}
+      @collapsed-changed=${this._handleCollapseChanged}
     >
       <ha-icon-overflow-menu
         narrow
@@ -553,6 +558,10 @@ export class HacsDashboard extends LitElement {
 
   private _handleGroupingChanged(ev: CustomEvent) {
     this._activeGrouping = ev.detail.value;
+  }
+
+  private _handleCollapseChanged(ev: CustomEvent) {
+    this._activeCollapsed = ev.detail.value;
   }
 
   private _handleSortingChanged(ev: CustomEvent) {
