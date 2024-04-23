@@ -29,12 +29,12 @@ class HacsRouter extends HassRouterPage {
     this._listeners.push(
       listenMediaQuery("(min-width: 1040px)", (matches) => {
         this._wide = matches;
-      })
+      }),
     );
     this._listeners.push(
       listenMediaQuery("(min-width: 1296px)", (matches) => {
         this._wideSidebar = matches;
-      })
+      }),
     );
 
     this.style.setProperty("--app-header-background-color", "var(--sidebar-background-color)");
@@ -72,6 +72,7 @@ class HacsRouter extends HassRouterPage {
       dashboard: {
         tag: "hacs-dashboard",
         load: () => import("./dashboards/hacs-dashboard"),
+        cache: true,
       },
       repository: {
         tag: "hacs-repository-dashboard",

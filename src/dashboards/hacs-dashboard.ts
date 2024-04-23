@@ -103,21 +103,8 @@ export class HacsDashboard extends LitElement {
   @storage({ key: "hacs-active-search", state: true, subscribe: false })
   private _activeSearch?: string;
 
-  @storage({ key: "hacs-table-scroll", state: true, subscribe: false })
-  private _tableScroll?: number;
-
   @storage({ key: "hacs-table-active-columns", state: true, subscribe: false })
   private _tableColumns: Record<tableColumnDefaultsType, boolean> = tableColumnDefaults;
-
-  public connectedCallback(): void {
-    super.connectedCallback();
-
-    this.updateComplete.then(() => {
-      this.restoreScroller().catch(() => {
-        // Ignored
-      });
-    });
-  }
 
   protected render = (): TemplateResult | void => {
     const repositories = this._filterRepositories(
@@ -525,23 +512,6 @@ export class HacsDashboard extends LitElement {
     );
   }
 
-  private async restoreScroller() {
-    if ((this._tableScroll ?? 0) === 0) {
-      return;
-    }
-    await new Promise<void>((resolve, reject) => {
-      const timeout = setTimeout(reject, 1000);
-      const intervalCheck = setInterval(() => {
-        if (this._scrollerTarget) {
-          this._scrollerTarget.scrollTop = this._tableScroll;
-          clearTimeout(timeout);
-          clearInterval(intervalCheck);
-          resolve();
-        }
-      }, 50);
-    });
-  }
-
   private _computeFilterFormLabel = (schema, _) =>
     this.hacs.localize(
       // @ts-ignore
@@ -554,7 +524,6 @@ export class HacsDashboard extends LitElement {
     schema.name;
 
   private _handleRowClicked(ev: CustomEvent) {
-    this._tableScroll = this._scrollerTarget?.scrollTop || 0;
     navigate(`/hacs/repository/${ev.detail.id}`);
   }
 
