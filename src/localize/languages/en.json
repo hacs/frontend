@@ -28,6 +28,9 @@
     "updates": "Updates",
     "yes": "Yes"
   },
+  "dashboard": {
+    "no_data": "No repositories matching search and filters"
+  },
   "column": {
     "name": "Repository Name",
     "downloads": "Downloads",

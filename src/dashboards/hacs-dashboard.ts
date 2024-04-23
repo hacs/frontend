@@ -73,74 +73,11 @@ const defaultKeyData = {
 
 const STATUS_ORDER = ["pending-restart", "pending-upgrade", "installed", "new", "default"];
 
-const FILTER_SCHEMA = memoize(
-  (localizeFunc: LocalizeFunc<HacsLocalizeKeys>, categories: string[], narrow: boolean) =>
-    [
-      {
-        name: "filters",
-        type: "constant",
-        value: "",
-      },
-      {
-        name: "status",
-        selector: {
-          select: {
-            options: STATUS_ORDER.map((filter) => ({
-              value: `status_${filter}`,
-              label: localizeFunc(
-                // @ts-ignore
-                `repository_status.${filter}`,
-              ),
-            })),
-            mode: "dropdown",
-            sort: false,
-          },
-        },
-      },
-      {
-        name: "category",
-        selector: {
-          select: {
-            options: categories.map((category) => ({
-              label: localizeFunc(
-                // @ts-ignore
-                `common.${category}`,
-              ),
-              value: `category_${category}`,
-            })),
-            mode: "dropdown",
-            sort: true,
-          },
-        },
-      },
-      ...(narrow
-        ? []
-        : ([
-            {
-              name: "behaviour",
-              type: "constant",
-              value: "",
-            },
-            {
-              name: "columns",
-              selector: {
-                select: {
-                  options: Object.keys(tableColumnDefaults).map((column) => ({
-                    label: localizeFunc(
-                      // @ts-ignore
-                      `column.${column}`,
-                    ),
-                    value: column,
-                  })),
-                  multiple: true,
-                  mode: "dropdown",
-                  sort: true,
-                },
-              },
-            },
-          ] as const satisfies readonly HaFormSchema[])),
-    ] as const satisfies readonly HaFormSchema[],
-);
+const TABS = [
+  {
+    name: APP_FULL_NAME,
+  },
+];
 
 @customElement("hacs-dashboard")
 export class HacsDashboard extends LitElement {
@@ -189,37 +126,25 @@ export class HacsDashboard extends LitElement {
       this.hacs.localize,
       this._activeFilters,
     );
-    const repositoriesContainsNew =
-      repositories.filter((repository) => repository.new).length !== 0;
+    const repositoriesContainsNew = repositories.some((repository) => repository.new);
 
     return html`<hass-tabs-subpage-data-table
-      .tabs=${[
-        {
-          name: APP_FULL_NAME,
-        },
-      ]}
+      .tabs=${TABS}
       .columns=${this._columns(this.narrow, this._tableColumns, this.hacs.localize)}
       .data=${repositories}
       .hass=${this.hass}
       ?iswide=${this.isWide}
       .localizeFunc=${this.hass.localize}
-      .mainPage=${true}
+      main-page
       .narrow=${this.narrow}
       .route=${this.route}
       clickable
       .filter=${this._activeSearch || ""}
       hasFilters
       .filters=${this._activeFilters?.length}
-      .noDataText=${"No repositories matching search and filters"}
+      .noDataText=${this.hacs.localize("dashboard.no_data")}
       .initialGroupColumn=${this._activeGrouping || "translated_status"}
-      .groupOrder=${this._activeGrouping === "translated_status"
-        ? STATUS_ORDER.map((filter) =>
-            this.hacs.localize(
-              // @ts-ignore
-              `repository_status.${filter}`,
-            ),
-          )
-        : undefined}
+      .groupOrder=${this._groupOrder(this.hacs.localize, this._activeGrouping)}
       .initialSorting=${this._activeSorting}
       @row-click=${this._handleRowClicked}
       @clear-filter=${this._handleClearFilter}
@@ -307,7 +232,7 @@ export class HacsDashboard extends LitElement {
             .filter(([key, value]) => this._tableColumns[key] ?? value)
             .map(([key, _]) => key),
         }}
-        .schema=${FILTER_SCHEMA(this.hacs.localize, this.hacs.info.categories, this.narrow)}
+        .schema=${this._filterSchema(this.hacs.localize, this.hacs.info.categories, this.narrow)}
         .computeLabel=${this._computeFilterFormLabel}
         @value-changed=${this._handleFilterChanged}
       ></ha-form>
@@ -504,6 +429,87 @@ export class HacsDashboard extends LitElement {
         `,
       },
     }),
+  );
+
+  private _groupOrder = memoize(
+    (localize: LocalizeFunc<HacsLocalizeKeys>, activeGrouping: string | undefined) =>
+      activeGrouping === "translated_status"
+        ? STATUS_ORDER.map((filter) =>
+            localize(
+              // @ts-ignore
+              `repository_status.${filter}`,
+            ),
+          )
+        : undefined,
+  );
+
+  private _filterSchema = memoize(
+    (localizeFunc: LocalizeFunc<HacsLocalizeKeys>, categories: string[], narrow: boolean) =>
+      [
+        {
+          name: "filters",
+          type: "constant",
+          value: "",
+        },
+        {
+          name: "status",
+          selector: {
+            select: {
+              options: STATUS_ORDER.map((filter) => ({
+                value: `status_${filter}`,
+                label: localizeFunc(
+                  // @ts-ignore
+                  `repository_status.${filter}`,
+                ),
+              })),
+              mode: "dropdown",
+              sort: false,
+            },
+          },
+        },
+        {
+          name: "category",
+          selector: {
+            select: {
+              options: categories.map((category) => ({
+                label: localizeFunc(
+                  // @ts-ignore
+                  `common.${category}`,
+                ),
+                value: `category_${category}`,
+              })),
+              mode: "dropdown",
+              sort: true,
+            },
+          },
+        },
+        ...(narrow
+          ? []
+          : ([
+              {
+                name: "behaviour",
+                type: "constant",
+                value: "",
+              },
+              {
+                name: "columns",
+                selector: {
+                  select: {
+                    options: Object.keys(tableColumnDefaults).map((column) => ({
+                      label: localizeFunc(
+                        // @ts-ignore
+                        `column.${column}`,
+                      ),
+                      value: column,
+                    })),
+                    multiple: true,
+                    mode: "dropdown",
+                    sort: true,
+                  },
+                },
+              },
+            ] as const satisfies readonly HaFormSchema[])),
+      ] as const satisfies readonly HaFormSchema[],
   );
 
   get _scrollerTarget() {
