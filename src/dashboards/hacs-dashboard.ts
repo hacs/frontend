@@ -53,7 +53,6 @@ import { categoryIcon } from "../tools/category-icon";
 import { documentationUrl } from "../tools/documentation";
 
 const tableColumnDefaults = {
-  name: true,
   downloads: true,
   stars: true,
   last_updated: true,
@@ -290,7 +289,7 @@ export class HacsDashboard extends LitElement {
       icon: {
         title: "",
         label: this.hass.localize("ui.panel.config.lovelace.dashboards.picker.headers.icon"),
-        hidden: this.narrow,
+        hidden: false,
         type: "icon",
         template: (repository: RepositoryBase) =>
           repository.category === "integration"
@@ -318,9 +317,9 @@ export class HacsDashboard extends LitElement {
       name: {
         ...defaultKeyData,
         title: localizeFunc("column.name"),
+        hidden: false,
         main: true,
         sortable: true,
-        hidden: !tableColumnsOptions.name,
         grows: true,
         template: (repository: RepositoryBase) => html`
           ${repository.new
