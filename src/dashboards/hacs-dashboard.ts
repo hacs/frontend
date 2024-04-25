@@ -535,7 +535,6 @@ export class HacsDashboard extends LitElement {
   private _handleFilterChanged(ev: CustomEvent) {
     ev.stopPropagation();
     const data = ev.detail.value;
-    console.log(data);
     const updatedFilters: string[] = Object.entries<any>(data)
       .filter(
         ([key, value]) =>
