@@ -49,8 +49,8 @@ import { HacsLocalizeKeys } from "../data/localize";
 import type { RepositoryBase } from "../data/repository";
 import { repositoriesClearNew } from "../data/websocket";
 import { HacsStyles } from "../styles/hacs-common-style";
-import { categoryIcon } from "../tools/category-icon";
 import { documentationUrl } from "../tools/documentation";
+import { typeIcon } from "../tools/type-icon";
 
 const tableColumnDefaults = {
   downloads: true,
@@ -59,7 +59,7 @@ const tableColumnDefaults = {
   installed_version: false,
   available_version: false,
   status: false,
-  category: true,
+  type: true,
 };
 
 type tableColumnDefaultsType = keyof typeof tableColumnDefaults;
@@ -218,7 +218,7 @@ export class HacsDashboard extends LitElement {
         .hass=${this.hass}
         .data=${{
           status: this._activeFilters?.find((filter) => filter.startsWith("status_")) || "",
-          category: this._activeFilters?.find((filter) => filter.startsWith("category_")) || "",
+          type: this._activeFilters?.find((filter) => filter.startsWith("type_")) || "",
           columns: Object.entries(tableColumnDefaults)
             .filter(([key, value]) => this._tableColumns[key] ?? value)
             .map(([key, _]) => key),
@@ -245,8 +245,8 @@ export class HacsDashboard extends LitElement {
             return false;
           }
           if (
-            activeFilters?.filter((filter) => filter.startsWith("category_")).length &&
-            !activeFilters.includes(`category_${repository.category}`)
+            activeFilters?.filter((filter) => filter.startsWith("type_")).length &&
+            !activeFilters.includes(`type_${repository.category}`)
           ) {
             return false;
           }
@@ -302,7 +302,7 @@ export class HacsDashboard extends LitElement {
                 <ha-svg-icon
                   style="height: 32px; width: 32px; fill: var(--secondary-text-color);"
                   slot="item-icon"
-                  .path=${categoryIcon(repository.category)}
+                  .path=${typeIcon(repository.category)}
                 ></ha-svg-icon>
               `,
       },
@@ -394,8 +394,8 @@ export class HacsDashboard extends LitElement {
       },
       translated_category: {
         ...defaultKeyData,
-        title: localizeFunc("column.category"),
-        hidden: narrow || !tableColumnsOptions.category,
+        title: localizeFunc("column.type"),
+        hidden: narrow || !tableColumnsOptions.type,
         sortable: true,
         groupable: true,
         width: "10%",
@@ -435,7 +435,7 @@ export class HacsDashboard extends LitElement {
   );
 
   private _filterSchema = memoize(
-    (localizeFunc: LocalizeFunc<HacsLocalizeKeys>, categories: string[], narrow: boolean) =>
+    (localizeFunc: LocalizeFunc<HacsLocalizeKeys>, types: string[], narrow: boolean) =>
       [
         {
           name: "filters",
@@ -459,15 +459,15 @@ export class HacsDashboard extends LitElement {
           },
         },
         {
-          name: "category",
+          name: "type",
           selector: {
             select: {
-              options: categories.map((category) => ({
+              options: types.map((type) => ({
                 label: localizeFunc(
                   // @ts-ignore
-                  `common.${category}`,
+                  `common.${type}`,
                 ),
-                value: `category_${category}`,
+                value: `type_${type}`,
               })),
               mode: "dropdown",
               sort: true,
@@ -538,7 +538,7 @@ export class HacsDashboard extends LitElement {
     const updatedFilters: string[] = Object.entries<any>(data)
       .filter(
         ([key, value]) =>
-          ["status", "category"].includes(key) && ![undefined, null, ""].includes(value),
+          ["status", "type"].includes(key) && ![undefined, null, ""].includes(value),
       )
       .map(([_, value]) => value);
     this._activeFilters = updatedFilters.length ? updatedFilters : undefined;
@@ -573,5 +573,11 @@ export class HacsDashboard extends LitElement {
 
   static get styles(): CSSResultGroup {
     return [haStyle, HacsStyles];
+  }
+}
+
+declare global {
+  interface HTMLElementTagNameMap {
+    "hacs-dashboard": HacsDashboard;
   }
 }

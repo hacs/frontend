@@ -81,3 +81,9 @@ class HacsRouter extends HassRouterPage {
     },
   };
 }
+
+declare global {
+  interface HTMLElementTagNameMap {
+    "hacs-router": HacsRouter;
+  }
+}
