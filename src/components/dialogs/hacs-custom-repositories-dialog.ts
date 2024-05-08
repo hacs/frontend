@@ -41,7 +41,7 @@ export class HacsCustomRepositoriesDialog extends LitElement {
         console.log(data);
         this._errors = { base: data?.message || data };
       },
-      HacsDispatchEvent.ERROR
+      HacsDispatchEvent.ERROR,
     );
     await this.updateComplete;
   }
@@ -67,7 +67,7 @@ export class HacsCustomRepositoriesDialog extends LitElement {
         escapeKeyAction
         .heading=${createCloseHeading(
           this.hass,
-          this._dialogParams.hacs.localize("dialog_custom_repositories.title")
+          this._dialogParams.hacs.localize("dialog_custom_repositories.title"),
         )}
         @closed=${this.closeDialog}
       >
@@ -76,28 +76,29 @@ export class HacsCustomRepositoriesDialog extends LitElement {
             ${this._dialogParams.hacs.repositories
               .filter((repository) => repository.custom)
               ?.filter((repository) =>
-                this._dialogParams!.hacs.info.categories.includes(repository.category)
+                this._dialogParams!.hacs.info.categories.includes(repository.category),
               )
               .map(
-                (repository) => html` <ha-settings-row>
-                  <span slot="heading">${repository.name}</span>
-                  <span slot="description">${repository.full_name} (${repository.category})</span>
+                (repository) =>
+                  html` <ha-settings-row>
+                    <span slot="heading">${repository.name}</span>
+                    <span slot="description">${repository.full_name} (${repository.category})</span>
 
-                  <mwc-icon-button
-                    @click=${(ev: Event) => {
-                      ev.preventDefault();
-                      this._removeRepository(String(repository.id));
-                      this.dispatchEvent(
-                        new CustomEvent("closed", {
-                          bubbles: true,
-                          composed: true,
-                        })
-                      );
-                    }}
-                  >
-                    <ha-svg-icon class="delete" .path=${mdiDelete}></ha-svg-icon>
-                  </mwc-icon-button>
-                </ha-settings-row>`
+                    <mwc-icon-button
+                      @click=${(ev: Event) => {
+                        ev.preventDefault();
+                        this._removeRepository(String(repository.id));
+                        this.dispatchEvent(
+                          new CustomEvent("closed", {
+                            bubbles: true,
+                            composed: true,
+                          }),
+                        );
+                      }}
+                    >
+                      <ha-svg-icon class="delete" .path=${mdiDelete}></ha-svg-icon>
+                    </mwc-icon-button>
+                  </ha-settings-row>`,
               )}
           </div>
           <ha-form
@@ -124,7 +125,7 @@ export class HacsCustomRepositoriesDialog extends LitElement {
             .error=${this._errors}
             .computeLabel=${(schema: HaFormSchema) =>
               schema.name === "category"
-                ? this._dialogParams!.hacs.localize("dialog_custom_repositories.category")
+                ? this._dialogParams!.hacs.localize("dialog_custom_repositories.type")
                 : this._dialogParams!.hacs.localize("common.repository")}
             @value-changed=${this._valueChanged}
             dialogInitialFocus
@@ -159,7 +160,7 @@ export class HacsCustomRepositoriesDialog extends LitElement {
 
     if (!this._data?.category) {
       this._errors = {
-        base: this._dialogParams!.hacs.localize("dialog_custom_repositories.no_category"),
+        base: this._dialogParams!.hacs.localize("dialog_custom_repositories.no_type"),
       };
       return;
     }
@@ -187,7 +188,7 @@ export class HacsCustomRepositoriesDialog extends LitElement {
         detail: { repositories },
         bubbles: true,
         composed: true,
-      })
+      }),
     );
     this._dialogParams = {
       ...this._dialogParams,

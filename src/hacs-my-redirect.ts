@@ -99,3 +99,9 @@ class HacsMyRedirect extends LitElement {
     return type === "string" || type === "string?";
   }
 }
+
+declare global {
+  interface HTMLElementTagNameMap {
+    "hacs-my-redirect": HacsMyRedirect;
+  }
+}
