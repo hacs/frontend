@@ -28,6 +28,9 @@
     "updates": "Updates",
     "yes": "Yes"
   },
+  "dashboard": {
+    "no_data": "No repositories matching search and filters"
+  },
   "column": {
     "name": "Repository Name",
     "downloads": "Downloads",
@@ -35,7 +38,7 @@
     "installed_version": "Downloaded version",
     "available_version": "Available version",
     "status": "Status",
-    "category": "Category",
+    "type": "Type",
     "last_updated": "Updated"
   },
   "confirm": {
@@ -63,8 +66,8 @@
       "filters": "Change active filters",
       "behaviour": "Change the behaviour of the overview"
     },
-    "base": "Base filters",
-    "category": "Category",
+    "status": "Status",
+    "type": "Type",
     "columns": "Columns"
   },
   "dialog_add_repo": {
@@ -80,9 +83,9 @@
   "dialog_custom_repositories": {
     "title": "Custom repositories",
     "url_placeholder": "Add custom repository URL",
-    "category": "Category",
+    "type": "Type",
     "no_repository": "Missing repository",
-    "no_category": "Missing category"
+    "no_type": "Missing type"
   },
   "dialog_download": {
     "type": "Type",
@@ -113,11 +116,6 @@
     "message": "A new version of the {name} is available",
     "no_info": "The author has not provided any information for this release"
   },
-  "dialog_browse": {
-    "btn": "Browse repositories",
-    "title": "Browse dialog removed",
-    "content": "The old dialog to browse repositories has been removed. Instead you just search for what you want in the search bar or use the filters also located on the search bar."
-  },
   "repository_card": {
     "dismiss": "dismiss",
     "dismiss_new": "Dismiss new",
@@ -134,7 +132,10 @@
   },
   "repository_status": {
     "pending-restart": "Pending restart",
-    "pending-upgrade": "Pending update"
+    "pending-upgrade": "Pending update",
+    "installed": "Downloaded",
+    "new": "New",
+    "default": "Available for download"
   },
   "menu": {
     "about": "About HACS",

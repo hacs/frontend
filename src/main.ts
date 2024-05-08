@@ -31,7 +31,7 @@ class HacsFrontend extends HacsElement {
     this._applyTheme();
 
     this.addEventListener("hacs-location-changed", (e) =>
-      this._setRoute(e as LocationChangedEvent)
+      this._setRoute(e as LocationChangedEvent),
     );
 
     if (this.route.path === "") {
@@ -56,7 +56,7 @@ class HacsFrontend extends HacsElement {
       // @ts-ignore
       fireEvent(this, ev.type, ev.detail, {
         bubbles: false,
-      })
+      }),
     );
 
     document.body.addEventListener("keydown", (ev: KeyboardEvent) => {
@@ -137,9 +137,15 @@ class HacsFrontend extends HacsElement {
       {
         ...this.hass.selectedTheme,
         dark: this.hass.themes.darkMode,
-      }
+      },
     );
     this.parentElement!.style.backgroundColor = "var(--primary-background-color)";
     this.parentElement!.style.color = "var(--primary-text-color)";
+  }
+}
+
+declare global {
+  interface HTMLElementTagNameMap {
+    "hacs-frontend": HacsFrontend;
   }
 }

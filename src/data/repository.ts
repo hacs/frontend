@@ -1,6 +1,6 @@
 import type { HomeAssistant } from "../../homeassistant-frontend/src/types";
 
-export type RepositoryCategory =
+export type RepositoryType =
   | "appdaemon"
   | "integration"
   | "netdaemon"
@@ -13,7 +13,7 @@ export interface RepositoryBase {
   authors: string[];
   available_version: string;
   can_download: boolean;
-  category: RepositoryCategory;
+  category: RepositoryType;
   config_flow: boolean;
   country: string[];
   custom: boolean;
@@ -52,7 +52,7 @@ export interface RepositoryInfo extends RepositoryBase {
 
 export const fetchRepositoryInformation = async (
   hass: HomeAssistant,
-  repositoryId: string
+  repositoryId: string,
 ): Promise<RepositoryInfo | undefined> =>
   hass.connection.sendMessagePromise({
     type: "hacs/repository/info",
@@ -62,7 +62,7 @@ export const fetchRepositoryInformation = async (
 export const repositoryDownloadVersion = async (
   hass: HomeAssistant,
   repository: string,
-  version?: string
+  version?: string,
 ) =>
   hass.connection.sendMessagePromise<void>({
     type: "hacs/repository/download",
@@ -73,7 +73,7 @@ export const repositoryDownloadVersion = async (
 export const repositorySetVersion = async (
   hass: HomeAssistant,
   repository: string,
-  version: string
+  version: string,
 ) =>
   hass.connection.sendMessagePromise<void>({
     type: "hacs/repository/version",

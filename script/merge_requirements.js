@@ -28,24 +28,34 @@ fs.copyFileSync(
   `./src/localize/languages/translationMetadata.json`,
 );
 
+const replacePatches = (deps) =>
+  Object.fromEntries(
+    Object.entries(deps).map(([key, val]) => [
+      key,
+      val
+        .replace("#.yarn/patches/", "#./homeassistant-frontend/.yarn/patches/")
+        .replace("#./.yarn/patches/", "#./homeassistant-frontend/.yarn/patches/")
+        .replace("#~/.yarn/patches/", "#~/homeassistant-frontend/.yarn/patches/"),
+    ]),
+  );
+
 fs.writeFileSync(
   "./package.json",
   JSON.stringify(
     {
       ...hacs,
       resolutions: {
-        ...Object.fromEntries(
-          Object.entries(core.resolutions).map(([key, val]) => [
-            key,
-            val
-              .replace("#.yarn/patches/", "#./homeassistant-frontend/.yarn/patches/")
-              .replace("#./.yarn/patches/", "#./homeassistant-frontend/.yarn/patches/"),
-          ]),
-        ),
+        ...replacePatches(core.resolutions),
         ...hacs.resolutionsOverride,
       },
-      dependencies: { ...core.dependencies, ...hacs.dependenciesOverride },
-      devDependencies: { ...core.devDependencies, ...hacs.devDependenciesOverride },
+      dependencies: {
+        ...replacePatches(core.dependencies),
+        ...hacs.dependenciesOverride,
+      },
+      devDependencies: {
+        ...replacePatches(core.devDependencies),
+        ...hacs.devDependenciesOverride,
+      },
       packageManager: core.packageManager,
     },
     null,
