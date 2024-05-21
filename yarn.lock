@@ -11172,7 +11172,7 @@ __metadata:
     stacktrace-js: "npm:2.0.2"
     superstruct: "npm:1.0.4"
     systemjs: "npm:6.14.3"
-    tar: "npm:7.0.1"
+    tar: "npm:7.1.0"
     terser-webpack-plugin: "npm:5.3.10"
     tinykeys: "npm:2.1.0"
     transform-async-modules-webpack-plugin: "npm:1.1.0"
@@ -13661,6 +13661,13 @@ __metadata:
   version: 7.0.4
   resolution: "minipass@npm:7.0.4"
   checksum: 10/e864bd02ceb5e0707696d58f7ce3a0b89233f0d686ef0d447a66db705c0846a8dc6f34865cd85256c1472ff623665f616b90b8ff58058b2ad996c5de747d2d18
+  languageName: node
+  linkType: hard
+
+"minipass@npm:^7.1.0":
+  version: 7.1.1
+  resolution: "minipass@npm:7.1.1"
+  checksum: 10/6f4f920f1b5ea585d08fa3739b9bd81726cd85a0c972fb371c0fa6c1544d468813fb1694c7bc64ad81f138fd8abf665e2af0f406de9ba5741d8e4a377ed346b1
   languageName: node
   linkType: hard
 
@@ -16869,17 +16876,17 @@ __metadata:
   languageName: node
   linkType: hard
 
-"tar@npm:7.0.1":
-  version: 7.0.1
-  resolution: "tar@npm:7.0.1"
+"tar@npm:7.1.0":
+  version: 7.1.0
+  resolution: "tar@npm:7.1.0"
   dependencies:
     "@isaacs/fs-minipass": "npm:^4.0.0"
     chownr: "npm:^3.0.0"
-    minipass: "npm:^5.0.0"
+    minipass: "npm:^7.1.0"
     minizlib: "npm:^3.0.1"
     mkdirp: "npm:^3.0.1"
     yallist: "npm:^5.0.0"
-  checksum: 10/6fd89ef8051d12975f66a2f3932a80479bdc6c9f3bcdf04b8b57784e942ed860708ccecf79bcbb30659b14ab52eef2095d2c3af377545ff9df30de28036671dc
+  checksum: 10/87c2caa631dcf212cc50cc7fc4402b429d9083cf76f21d9ec63eba7a703b78804b2185bbe072f4c6cac8263dc8e7df786dfdfd53ef5bfbf7b46b480535794ea5
   languageName: node
   linkType: hard
 
