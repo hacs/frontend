@@ -85,7 +85,7 @@ jobs:
           twine upload dist/*
 
       - name: Attest
-        uses: actions/attest-build-provenance@v1.1.2
+        uses: actions/attest-build-provenance@173725a1209d09b31f9d30a3890cf2757ebbff0d #v1.1.2
         with:
           subject-path: dist/*
 
