@@ -8,10 +8,16 @@ env:
   NODE_VERSION: 18
   PYTHON_VERSION: "3.x"
 
+permissions: {}
+
 jobs:
   deploy:
     runs-on: ubuntu-latest
     name: Deploy to PyPi
+    permissions:
+      id-token: write
+      contents: read
+      attestations: write
     steps:
       - uses: actions/checkout@v4.1.6
         with:
@@ -77,6 +83,11 @@ jobs:
         run: |
           python setup.py sdist bdist_wheel
           twine upload dist/*
+
+      - name: Attest
+        uses: actions/attest-build-provenance@173725a1209d09b31f9d30a3890cf2757ebbff0d #v1.1.2
+        with:
+          subject-path: dist/*
 
       - name: Discord notification
         env:
