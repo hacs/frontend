@@ -78,6 +78,11 @@ jobs:
           python setup.py sdist bdist_wheel
           twine upload dist/*
 
+      - name: Attest
+        uses: actions/attest-build-provenance@v1.1.2
+        with:
+          subject-path: dist/*
+
       - name: Discord notification
         env:
           DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
