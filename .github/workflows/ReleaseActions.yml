@@ -8,10 +8,16 @@ env:
   NODE_VERSION: 18
   PYTHON_VERSION: "3.x"
 
+permissions: {}
+
 jobs:
   deploy:
     runs-on: ubuntu-latest
     name: Deploy to PyPi
+    permissions:
+      id-token: write
+      contents: read
+      attestations: write
     steps:
       - uses: actions/checkout@v4.1.6
         with:
