@@ -91,6 +91,10 @@ export class HacsDonwloadDialog extends LitElement {
     }
 
     const installPath = this._getInstallPath(this._repository);
+    const selectedVersion =
+      this._repository.selected_tag ||
+      this._repository.available_version ||
+      this._repository.default_branch;
     const donwloadRepositorySchema: HaFormSchema[] = [
       {
         name: "beta",
@@ -127,7 +131,7 @@ export class HacsDonwloadDialog extends LitElement {
                   .data=${this._repository.version_or_commit === "version"
                     ? {
                         beta: this._repository.beta,
-                        version: this._repository.releases[0],
+                        version: selectedVersion,
                       }
                     : {}}
                   .schema=${donwloadRepositorySchema}
@@ -229,11 +233,27 @@ export class HacsDonwloadDialog extends LitElement {
   }
 
   private async _installRepository(): Promise<void> {
-    this._installing = true;
-    this._error = undefined;
     if (!this._repository) {
       return;
     }
+
+    if (this._waiting) {
+      this._error = "Waiting to update repository information, try later.";
+      return;
+    }
+
+    if (this._installing) {
+      this._error = "Already installing, please wait.";
+      return;
+    }
+
+    if (!this._repository.can_download) {
+      this._error = "Can not download this repository.";
+      return;
+    }
+
+    this._installing = true;
+    this._error = undefined;
 
     const selectedVersion =
       this._repository.selected_tag ||
