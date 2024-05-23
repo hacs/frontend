@@ -41,6 +41,8 @@ export class HacsDonwloadDialog extends LitElement {
 
   @state() _dialogParams?: HacsDownloadDialogParams;
 
+  @state() _selectedVersion?: string;
+
   public async showDialog(dialogParams: HacsDownloadDialogParams): Promise<void> {
     this._dialogParams = dialogParams;
     this._waiting = false;
@@ -48,6 +50,10 @@ export class HacsDonwloadDialog extends LitElement {
       this._repository = dialogParams.repository;
     } else {
       await this._fetchRepository();
+    }
+
+    if (this._repository && this._repository.version_or_commit !== "commit") {
+      this._selectedVersion = this._repository.available_version;
     }
 
     websocketSubscription(
@@ -91,10 +97,6 @@ export class HacsDonwloadDialog extends LitElement {
     }
 
     const installPath = this._getInstallPath(this._repository);
-    const selectedVersion =
-      this._repository.selected_tag ||
-      this._repository.available_version ||
-      this._repository.default_branch;
     const donwloadRepositorySchema: HaFormSchema[] = [
       {
         name: "beta",
@@ -131,7 +133,7 @@ export class HacsDonwloadDialog extends LitElement {
                   .data=${this._repository.version_or_commit === "version"
                     ? {
                         beta: this._repository.beta,
-                        version: selectedVersion,
+                        version: this._selectedVersion,
                       }
                     : {}}
                   .schema=${donwloadRepositorySchema}
@@ -225,6 +227,7 @@ export class HacsDonwloadDialog extends LitElement {
         this._dialogParams!.repositoryId,
         ev.detail.value.version,
       );
+      this._selectedVersion = ev.detail.value.version;
     }
     if (updateNeeded) {
       await this._fetchRepository();
@@ -264,7 +267,7 @@ export class HacsDonwloadDialog extends LitElement {
       await repositoryDownloadVersion(
         this.hass,
         String(this._repository.id),
-        this._repository?.version_or_commit !== "commit" ? selectedVersion : undefined,
+        this._repository?.version_or_commit !== "commit" ? this._selectedVersion : undefined,
       );
     } catch (err: any) {
       this._error = err || {
