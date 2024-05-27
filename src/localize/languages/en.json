@@ -2,22 +2,16 @@
   "common": {
     "add": "add",
     "cancel": "Cancel",
-    "close": "Close",
     "download": "Download",
-    "downloaded": "Downloaded",
     "ignore": "Ignore",
     "learn_more": "Learn more",
     "navigate": "Navigate",
-    "new": "New",
     "reload": "Reload",
     "remove": "Remove",
     "repositories": "Repositories",
     "repository": "Repository",
     "save": "Save",
     "show": "Show",
-    "update": "Update",
-    "updates": "Updates",
-    "yes": "Yes",
     "type": {
       "integration": "Integration",
       "plugin": "Dashboard",
@@ -46,7 +40,6 @@
   },
   "my": {
     "not_supported": "This redirect is not supported. Check the {link} for the supported redirects and the version they were introduced.",
-    "documentation": "documentation",
     "faq_link": "My Home Assistant FAQ",
     "error": "An unknown error occurred",
     "repository_not_found": "Repository {repository} not found",
@@ -69,16 +62,6 @@
     "status": "Status",
     "type": "Type",
     "columns": "Columns"
-  },
-  "dialog_add_repo": {
-    "title": "Add repository",
-    "no_match": "No repositories found matching your filter",
-    "sort_by": "Sort by",
-    "sort_by_values": {
-      "stars": "Stars",
-      "last_updated": "Last updated",
-      "name": "Name"
-    }
   },
   "dialog_custom_repositories": {
     "title": "Custom repositories",
@@ -106,15 +89,6 @@
     "no_info": "The developer has not provided any more information for this repository",
     "open_repo": "Open repository",
     "download": "Download this repository with HACS"
-  },
-  "dialog_update": {
-    "title": "Update pending",
-    "downloaded_version": "Downloaded version",
-    "available_version": "Available version",
-    "changelog": "Changelog",
-    "releasenotes": "Release notes for {release}",
-    "message": "A new version of the {name} is available",
-    "no_info": "The author has not provided any information for this release"
   },
   "repository_card": {
     "dismiss": "dismiss",
