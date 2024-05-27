@@ -268,7 +268,7 @@ export class HacsDashboard extends LitElement {
           ...repository,
           translated_status:
             localizeFunc(`repository_status.${repository.status}`) || repository.status,
-          translated_category: localizeFunc(`common.${repository.category}`),
+          translated_category: localizeFunc(`type.${repository.category}`),
         })),
   );
 
@@ -330,7 +330,7 @@ export class HacsDashboard extends LitElement {
             : ""}
           ${repository.name}
           <div class="secondary">
-            ${narrow ? localizeFunc(`common.${repository.category}`) : repository.description}
+            ${narrow ? localizeFunc(`type.${repository.category}`) : repository.description}
           </div>
         `,
       },
@@ -465,7 +465,7 @@ export class HacsDashboard extends LitElement {
               options: types.map((type) => ({
                 label: localizeFunc(
                   // @ts-ignore
-                  `common.${type}`,
+                  `type.${type}`,
                 ),
                 value: `type_${type}`,
               })),

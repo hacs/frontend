@@ -116,7 +116,7 @@ export class HacsCustomRepositoriesDialog extends LitElement {
                     mode: "dropdown",
                     options: this._dialogParams.hacs.info.categories.map((category) => ({
                       value: category,
-                      label: this._dialogParams!.hacs.localize(`common.${category}`),
+                      label: this._dialogParams!.hacs.localize(`type.${category}`),
                     })),
                   },
                 },
