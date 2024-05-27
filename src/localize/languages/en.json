@@ -17,7 +17,16 @@
     "show": "Show",
     "update": "Update",
     "updates": "Updates",
-    "yes": "Yes"
+    "yes": "Yes",
+    "type": {
+      "integration": "Integration",
+      "plugin": "Dashboard",
+      "theme": "Theme",
+      "python_script": "Python Script",
+      "appdaemon": "AppDaemon",
+      "netdaemon": "NetDaemon",
+      "template": "Template"
+    }
   },
   "dashboard": {
     "no_data": "No repositories matching search and filters"
@@ -134,15 +143,6 @@
     "open_issue": "Open issue",
     "dismiss": "Dismiss new repositories",
     "documentation": "Documentation"
-  },
-  "type": {
-    "integration": "Integration",
-    "plugin": "Dashboard",
-    "theme": "Theme",
-    "python_script": "Python Script",
-    "appdaemon": "AppDaemon",
-    "netdaemon": "NetDaemon",
-    "template": "Template"
   },
   "dialog": {
     "reload": {
