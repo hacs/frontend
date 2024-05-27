@@ -46,7 +46,7 @@ import { aboutHacsmarkdownContent } from "../data/about";
 import type { Hacs } from "../data/hacs";
 import { APP_FULL_NAME } from "../data/hacs";
 import { HacsLocalizeKeys } from "../data/localize";
-import type { RepositoryBase } from "../data/repository";
+import type { RepositoryBase, RepositoryType } from "../data/repository";
 import { repositoriesClearNew } from "../data/websocket";
 import { HacsStyles } from "../styles/hacs-common-style";
 import { documentationUrl } from "../tools/documentation";
@@ -268,7 +268,7 @@ export class HacsDashboard extends LitElement {
           ...repository,
           translated_status:
             localizeFunc(`repository_status.${repository.status}`) || repository.status,
-          translated_category: localizeFunc(`common.${repository.category}`),
+          translated_category: localizeFunc(`common.type.${repository.category}`),
         })),
   );
 
@@ -330,7 +330,7 @@ export class HacsDashboard extends LitElement {
             : ""}
           ${repository.name}
           <div class="secondary">
-            ${narrow ? localizeFunc(`common.${repository.category}`) : repository.description}
+            ${narrow ? localizeFunc(`common.type.${repository.category}`) : repository.description}
           </div>
         `,
       },
@@ -462,11 +462,8 @@ export class HacsDashboard extends LitElement {
           name: "type",
           selector: {
             select: {
-              options: types.map((type) => ({
-                label: localizeFunc(
-                  // @ts-ignore
-                  `common.${type}`,
-                ),
+              options: types.map((type: string) => ({
+                label: localizeFunc(`common.type.${type as RepositoryType}`),
                 value: `type_${type}`,
               })),
               mode: "dropdown",
@@ -487,10 +484,7 @@ export class HacsDashboard extends LitElement {
                 selector: {
                   select: {
                     options: Object.keys(tableColumnDefaults).map((column) => ({
-                      label: localizeFunc(
-                        // @ts-ignore
-                        `column.${column}`,
-                      ),
+                      label: localizeFunc(`column.${column}` as HacsLocalizeKeys),
                       value: column,
                     })),
                     multiple: true,

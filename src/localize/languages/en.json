@@ -1,32 +1,32 @@
 {
   "common": {
     "add": "add",
-    "appdaemon": "AppDaemon",
     "cancel": "Cancel",
     "close": "Close",
     "download": "Download",
     "downloaded": "Downloaded",
     "ignore": "Ignore",
-    "integration_plural": "Integrations",
-    "integration": "Integration",
     "learn_more": "Learn more",
-    "lovelace": "Lovelace",
     "navigate": "Navigate",
-    "netdaemon": "NetDaemon",
     "new": "New",
-    "plugin": "Lovelace",
-    "python_script": "Python Script",
     "reload": "Reload",
     "remove": "Remove",
     "repositories": "Repositories",
     "repository": "Repository",
     "save": "Save",
     "show": "Show",
-    "theme": "Theme",
-    "template": "Template",
     "update": "Update",
     "updates": "Updates",
-    "yes": "Yes"
+    "yes": "Yes",
+    "type": {
+      "integration": "Integration",
+      "plugin": "Dashboard",
+      "theme": "Theme",
+      "python_script": "Python Script",
+      "appdaemon": "AppDaemon",
+      "netdaemon": "NetDaemon",
+      "template": "Template"
+    }
   },
   "dashboard": {
     "no_data": "No repositories matching search and filters"
