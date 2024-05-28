@@ -151,12 +151,7 @@ export class HacsDashboard extends LitElement {
           {
             path: mdiFileDocument,
             label: this.hacs.localize("menu.documentation"),
-            action: () =>
-              mainWindow.open(
-                documentationUrl({ experimental: this.hacs.info?.experimental }),
-                "_blank",
-                "noreferrer=true",
-              ),
+            action: () => mainWindow.open(documentationUrl({}), "_blank", "noreferrer=true"),
           },
           {
             path: mdiGithub,
@@ -169,8 +164,7 @@ export class HacsDashboard extends LitElement {
             action: () =>
               mainWindow.open(
                 documentationUrl({
-                  experimental: this.hacs.info?.experimental,
-                  path: "/docs/issues",
+                  path: "/docs/help/issues",
                 }),
                 "_blank",
                 "noreferrer=true",

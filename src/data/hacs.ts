@@ -10,7 +10,6 @@ export interface HacsInfo {
   debug: boolean;
   dev: boolean;
   disabled_reason: string;
-  experimental: boolean;
   lovelace_mode: "storage" | "yaml" | "auto-gen";
   stage: "startup" | "waiting" | "running" | "setup";
   startup: boolean;
