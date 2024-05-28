@@ -33,7 +33,7 @@
     "available_version": "Available version",
     "status": "Status",
     "type": "Type",
-    "last_updated": "Updated"
+    "last_updated": "Activity"
   },
   "confirm": {
     "home_assistant_version_not_correct": "You are running Home Assistant version '{haversion}', but this repository requires minimum version '{minversion}' to be installed."
