@@ -1,0 +1,141 @@
+name: "Release actions"
+
+on:
+  release:
+    types:
+      - published
+
+env:
+  NODE_VERSION: 18
+  PYTHON_VERSION: "3.x"
+
+permissions: {}
+
+jobs:
+  translations:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Set up the Lokalise CLI
+        uses: frenck/action-setup-lokalise@v1.0.1
+        with:
+          version: v2.6.10
+
+      - name: Download translations
+        run: |
+          lokalise2 \
+            --token "${{ secrets.lokalise_token }}" \
+            --project-id "854515055f679055040b37.42677693" \
+            file download \
+            --format json \
+            --unzip-to ./translations \
+            --export-empty-as skip \
+            --export-sort a_z \
+            --original-filenames=false  \
+            --bundle-structure %LANG_ISO%.%FORMAT%
+
+      - name: Upload dists
+        uses: actions/upload-artifact@v4.3.3
+        with:
+          name: translations
+          path: ./translations
+          if-no-files-found: error
+          retention-days: 1
+
+  build:
+    runs-on: ubuntu-latest
+    needs: translations
+    steps:
+      - uses: actions/checkout@v4.1.6
+        with:
+          submodules: recursive
+
+      - name: Set up Python
+        uses: actions/setup-python@v5.1.0
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+
+      - name: Set up Node ${{ env.NODE_VERSION }}
+        uses: actions/setup-node@v4.0.2
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: yarn
+
+      - name: Clear target directory
+        run: |
+          rm -R ./src/localize/languages/
+          mkdir -p ./src/localize/languages/
+
+      - name: Download translations
+        uses: actions/download-artifact@v4.1.7
+        with:
+          name: translations
+          path: "./src/localize/languages/"
+
+      - name: "Set version number"
+        run: |
+          export version=${{ github.event.release.tag_name }}
+          sed -i "s|main|${version##*/}|" ./setup.py
+          sed -i "s|main|${version##*/}|" ./public/version.py
+          sed -i "s|main|${version##*/}|" ./src/version.ts
+
+          cat ./setup.py
+          cat ./public/version.py
+          cat ./src/version.ts
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install setuptools wheel twine
+          script/bootstrap
+
+      - name: Build
+        run: script/build
+
+      - name: Upload dists
+        uses: actions/upload-artifact@v4.3.3
+        with:
+          name: "dist"
+          path: "dist/"
+          if-no-files-found: error
+          retention-days: 5
+
+  publish:
+    runs-on: ubuntu-latest
+    needs: build
+    environment:
+      name: release
+      url: https://pypi.org/p/hacs-frontend
+    permissions:
+      id-token: write
+      contents: write
+    steps:
+      - name: Download dists
+        uses: actions/download-artifact@v4.1.7
+        with:
+          name: "dist"
+          path: "dist/"
+
+      - name: Publish dists to PyPI
+        uses: pypa/gh-action-pypi-publish@81e9d935c883d0b210363ab89cf05f3894778450 # v1.8.14
+
+      - name: Attest
+        uses: actions/attest-build-provenance@173725a1209d09b31f9d30a3890cf2757ebbff0d #v1.1.2
+        with:
+          subject-path: dist/*
+
+      - name: Upload release assets
+        uses: softprops/action-gh-release@v2.0.5
+        with:
+          files: dist/*
+
+  notify:
+    runs-on: ubuntu-latest
+    name: Trigger Discord notification
+    needs: publish
+    steps:
+      - name: Discord notification
+        run: |
+          curl \
+            -H "Content-Type: application/json" \
+            -d '{"username": "GitHub Action", "content": "New version of HACS frontend are now pushed to [PyPi](<https://pypi.org/project/hacs-frontend>)"}' \
+            ${{ secrets.DISCORD_WEBHOOK }}
