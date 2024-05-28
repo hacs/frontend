@@ -27,7 +27,7 @@ jobs:
             --project-id "854515055f679055040b37.42677693" \
             file download \
             --format json \
-            --unzip-to /tmp/lokalise \
+            --unzip-to ./translations \
             --export-empty-as skip \
             --export-sort a_z \
             --original-filenames=false  \
@@ -37,7 +37,7 @@ jobs:
         uses: actions/upload-artifact@v4.3.3
         with:
           name: translations
-          path: "/tmp/lokalise"
+          path: ./translations
           if-no-files-found: error
           retention-days: 1
 
@@ -50,7 +50,7 @@ jobs:
           submodules: recursive
 
       - name: Set up Python
-        uses: actions/setup-python@v5
+        uses: actions/setup-python@v5.1.0
         with:
           python-version: ${{ env.PYTHON_VERSION }}
 
@@ -62,14 +62,14 @@ jobs:
 
       - name: Clear target directory
         run: |
-          rm -R /home/runner/work/frontend/frontend/src/localize/languages/
-          mkdir -p /home/runner/work/frontend/frontend/src/localize/languages/
+          rm -R ./src/localize/languages/
+          mkdir -p ./src/localize/languages/
 
       - name: Download translations
         uses: actions/download-artifact@v4.1.7
         with:
           name: translations
-          path: "/home/runner/work/frontend/frontend/src/localize/languages/"
+          path: "./src/localize/languages/"
 
       - name: "Set version number"
         run: |
