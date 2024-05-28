@@ -13,12 +13,11 @@ export const aboutHacsmarkdownContent = (hacs: Hacs) => `
 
 **${hacs.localize("dialog_about.useful_links")}:**
 
-- [General documentation](${documentationUrl({ experimental: hacs.info?.experimental })})
+- [General documentation](${documentationUrl({})})
 - [Configuration](${documentationUrl({
-  experimental: hacs.info?.experimental,
-  path: "/docs/configuration/start",
+  path: "/docs/use/configuration/basic",
 })})
-- [FAQ](${documentationUrl({ experimental: hacs.info?.experimental, path: "/docs/faq/what" })})
+- [FAQ](${documentationUrl({ path: "/docs/faq" })})
 - [GitHub](https://github.com/hacs)
 - [Discord](https://discord.gg/apgchf8)
 - [Become a GitHub sponsor? ❤️](https://github.com/sponsors/ludeeus)

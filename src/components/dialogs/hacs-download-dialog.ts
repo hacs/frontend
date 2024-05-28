@@ -149,8 +149,7 @@ export class HacsDonwloadDialog extends LitElement {
                   <a
                     class="learn_more"
                     href=${documentationUrl({
-                      path: "/docs/entities/update_entities#install-service",
-                      experimental: this._dialogParams!.hacs.info.experimental,
+                      path: "/docs/use/entities/update/#install-service",
                     })}
                     slot="action"
                     target="_blank"
