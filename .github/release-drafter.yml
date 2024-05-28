@@ -1,3 +1,11 @@
+change-template: "- #$NUMBER $TITLE @$AUTHOR"
+sort-direction: ascending
+
+categories:
+  - title: "Dependency Updates"
+    label: "dependencies"
+    collapse-after: 1
+
 template: |
   ## What’s Changed
 

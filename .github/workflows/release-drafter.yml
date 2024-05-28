@@ -2,18 +2,23 @@ name: Release Drafter
 
 on:
   push:
-    branches: ["main"]
+    branches:
+      - main
+
+permissions: {}
 
 jobs:
   update_release_draft:
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
     steps:
       - id: version
         run: |
           version=$(date --utc '+%Y%m%d%H%M%S')
-          echo "::set-output name=version::$version"
+          echo "version=$version" >> $GITHUB_OUTPUT
 
-      - uses: release-drafter/release-drafter@v6
+      - uses: release-drafter/release-drafter@v6.0.0
         with:
           tag: ${{ steps.version.outputs.version }}
           name: ${{ steps.version.outputs.version }}
