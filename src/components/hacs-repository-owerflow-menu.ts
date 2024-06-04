@@ -13,10 +13,6 @@ import memoizeOne from "memoize-one";
 import { mainWindow } from "../../homeassistant-frontend/src/common/dom/get_main_window";
 import { navigate } from "../../homeassistant-frontend/src/common/navigate";
 import { getConfigEntries } from "../../homeassistant-frontend/src/data/config_entries";
-import {
-  deleteResource,
-  fetchResources,
-} from "../../homeassistant-frontend/src/data/lovelace/resource";
 import { showConfirmationDialog } from "../../homeassistant-frontend/src/dialogs/generic/show-dialog-box";
 import type { RepositoryBase } from "../data/repository";
 import {
@@ -79,7 +75,7 @@ export const repositoryMenuItems = memoizeOne(
             label: element.hacs.localize("repository_card.open_source"),
             action: () =>
               mainWindow.open(
-                `/hacsfiles/${repository.local_path.split("/").pop()}/${repository.file_name}`,
+                `/hacsfiles/${repository.local_path.split("/").pop()}/${repository.file_name}?cachebuster=${Date.now()}`,
                 "_blank",
                 "noreferrer=true",
               ),
@@ -159,18 +155,6 @@ const _repositoryRemove = async (
   element: HacsRepositoryDashboard | HacsDashboard,
   repository: RepositoryBase,
 ) => {
-  if (repository.category === "plugin" && element.hacs.info?.lovelace_mode !== "yaml") {
-    const resources = await fetchResources(element.hass.connection);
-    resources
-      .filter((resource) =>
-        resource.url.startsWith(
-          `/hacsfiles/${repository.full_name.split("/")[1]}/${repository.file_name}`,
-        ),
-      )
-      .forEach(async (resource) => {
-        await deleteResource(element.hass, String(resource.id));
-      });
-  }
   await repositoryUninstall(element.hass, String(repository.id));
   if (element.nodeName === "HACS-REPOSITORY-PANEL") {
     history.back();

@@ -23,7 +23,7 @@ import {
 } from "../../data/repository";
 import { repositoryBeta, websocketSubscription } from "../../data/websocket";
 import { HacsStyles } from "../../styles/hacs-common-style";
-import { generateFrontendResourceURL, updateFrontendResource } from "../../tools/frontend-resource";
+import { generateFrontendResourceURL } from "../../tools/frontend-resource";
 import type { HacsDownloadDialogParams } from "./show-hacs-dialog";
 import { documentationUrl } from "../../tools/documentation";
 
@@ -177,7 +177,7 @@ export class HacsDonwloadDialog extends LitElement {
               ? html`
                   <p>${this._dialogParams.hacs.localize(`dialog_download.lovelace_instruction`)}</p>
                   <pre>
-                url: ${generateFrontendResourceURL({ repository: this._repository, skipTag: true })}
+                url: ${generateFrontendResourceURL({ repository: this._repository })}
                 type: module
                 </pre
                   >
@@ -281,12 +281,6 @@ export class HacsDonwloadDialog extends LitElement {
       this._dialogParams!.hacs.info.lovelace_mode,
       "_installRepository",
     );
-    if (
-      this._repository.category === "plugin" &&
-      this._dialogParams!.hacs.info.lovelace_mode === "storage"
-    ) {
-      await updateFrontendResource(this.hass, this._repository, selectedVersion);
-    }
     this._installing = false;
 
     if (this._repository.category === "plugin") {
