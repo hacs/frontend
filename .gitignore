@@ -3,6 +3,7 @@ package-lock.json
 build
 dist
 src/localize/languages/translationMetadata.json
+src/resources/polyfills
 !script/build
 hacs_frontend
 

@@ -22,6 +22,28 @@ yarnPath: ./homeassistant-frontend/.yarn/releases/yarn-${core.packageManager.spl
 );
 
 fs.copyFileSync(`./homeassistant-frontend/.browserslistrc`, `.browserslistrc`);
+fs.rmSync("./src/resources/polyfills", { recursive: true, force: true });
+fs.mkdirSync("./src/resources/polyfills", { recursive: true });
+for (const file of fs.readdirSync("./homeassistant-frontend/src/resources/polyfills", {
+  recursive: true,
+})) {
+  fs.copyFileSync(
+    `./homeassistant-frontend/src/resources/polyfills/${file}`,
+    `./src/resources/polyfills/${file}`,
+  );
+}
+
+const intlPolyfill = fs.readFileSync("./src/resources/polyfills/intl-polyfill.ts", {
+  encoding: "utf-8",
+});
+fs.writeFileSync(
+  "./src/resources/polyfills/intl-polyfill.ts",
+  intlPolyfill.replace(
+    "../../util/common-translation",
+    "../../../homeassistant-frontend/src/util/common-translation",
+  ),
+  { encoding: "utf-8" },
+);
 
 fs.copyFileSync(
   `./homeassistant-frontend/src/translations/translationMetadata.json`,
