@@ -26,7 +26,7 @@
     "no_data": "No repositories matching search and filters"
   },
   "column": {
-    "name": "Repository Name",
+    "name": "Repository name",
     "downloads": "Downloads",
     "stars": "Stars",
     "installed_version": "Downloaded version",
@@ -57,7 +57,7 @@
     "description": "Change what is shown in the overview table to match your needs.",
     "sections": {
       "filters": "Change active filters",
-      "behaviour": "Change the behaviour of the overview"
+      "behaviour": "Change the behavior of the overview"
     },
     "status": "Status",
     "type": "Type",
@@ -129,7 +129,7 @@
     },
     "configured": {
       "title": "Integration is configured",
-      "message": "The {name} integration is configured or ignored. You need to delete the configuration for it before removing it from HACS",
+      "message": "The {name} integration is configured or ignored. You need to delete the configuration for it before removing it from HACS.",
       "confirm": "Go to integrations"
     }
   }
