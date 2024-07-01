@@ -3,7 +3,6 @@ import "@material/mwc-list/mwc-list";
 import "@material/mwc-list/mwc-list-item";
 import {
   mdiAlertCircleOutline,
-  mdiDownload,
   mdiFileDocument,
   mdiGit,
   mdiGithub,
@@ -11,7 +10,7 @@ import {
   mdiNewBox,
 } from "@mdi/js";
 import type { CSSResultGroup, TemplateResult } from "lit";
-import { LitElement, html } from "lit";
+import { LitElement, html, nothing } from "lit";
 import { customElement, property } from "lit/decorators";
 import memoize from "memoize-one";
 import { relativeTime } from "../../homeassistant-frontend/src/common/datetime/relative_time";
@@ -52,22 +51,10 @@ import { HacsStyles } from "../styles/hacs-common-style";
 import { documentationUrl } from "../tools/documentation";
 import { typeIcon } from "../tools/type-icon";
 
-const tableColumnDefaults = {
-  downloads: true,
-  stars: true,
-  last_updated: true,
-  installed_version: false,
-  available_version: false,
-  status: false,
-  type: true,
-};
-
-type tableColumnDefaultsType = keyof typeof tableColumnDefaults;
-
 const defaultKeyData = {
   title: "",
-  hidden: true,
   filterable: true,
+  hidden: true,
 };
 
 const STATUS_ORDER = ["pending-restart", "pending-upgrade", "installed", "new", "default"];
@@ -106,8 +93,11 @@ export class HacsDashboard extends LitElement {
   @storage({ key: "hacs-active-search", state: true, subscribe: false })
   private _activeSearch?: string;
 
-  @storage({ key: "hacs-table-active-columns", state: true, subscribe: false })
-  private _tableColumns: Record<tableColumnDefaultsType, boolean> = tableColumnDefaults;
+  @storage({ key: "hacs-table-hidden-columns", state: true, subscribe: false })
+  private _hiddenTableColumns?: string[];
+
+  @storage({ key: "hacs-table-columns-order", state: true, subscribe: false })
+  private _orderTableColumns?: string[];
 
   protected render = (): TemplateResult | void => {
     const repositories = this._filterRepositories(
@@ -119,7 +109,7 @@ export class HacsDashboard extends LitElement {
 
     return html`<hass-tabs-subpage-data-table
       .tabs=${TABS}
-      .columns=${this._columns(this.narrow, this._tableColumns, this.hacs.localize)}
+      .columns=${this._columns(this.hacs.localize, this.narrow)}
       .data=${repositories}
       .hass=${this.hass}
       ?iswide=${this.isWide}
@@ -136,6 +126,9 @@ export class HacsDashboard extends LitElement {
       .initialCollapsedGroups=${this._activeCollapsed}
       .groupOrder=${this._groupOrder(this.hacs.localize, this._activeGrouping)}
       .initialSorting=${this._activeSorting}
+      .columnOrder=${this._orderTableColumns}
+      .hiddenColumns=${this._hiddenTableColumns}
+      @columns-changed=${this._handleColumnsChanged}
       @row-click=${this._handleRowClicked}
       @clear-filter=${this._handleClearFilter}
       @value-changed=${this._handleSearchFilterChanged}
@@ -213,11 +206,8 @@ export class HacsDashboard extends LitElement {
         .data=${{
           status: this._activeFilters?.find((filter) => filter.startsWith("status_")) || "",
           type: this._activeFilters?.find((filter) => filter.startsWith("type_")) || "",
-          columns: Object.entries(tableColumnDefaults)
-            .filter(([key, value]) => this._tableColumns[key] ?? value)
-            .map(([key, _]) => key),
         }}
-        .schema=${this._filterSchema(this.hacs.localize, this.hacs.info.categories, this.narrow)}
+        .schema=${this._filterSchema(this.hacs.localize, this.hacs.info.categories)}
         .computeLabel=${this._computeFilterFormLabel}
         @value-changed=${this._handleFilterChanged}
       ></ha-form>
@@ -268,15 +258,16 @@ export class HacsDashboard extends LitElement {
 
   private _columns = memoize(
     (
-      narrow: boolean,
-      tableColumnsOptions: { [key: string]: boolean },
       localizeFunc: LocalizeFunc<HacsLocalizeKeys>,
+      narrow: boolean,
     ): DataTableColumnContainer<RepositoryBase> => ({
       icon: {
         title: "",
         label: this.hass.localize("ui.panel.config.lovelace.dashboards.picker.headers.icon"),
-        hidden: false,
         type: "icon",
+        hidden: false,
+        moveable: false,
+        showNarrow: true,
         template: (repository: RepositoryBase) =>
           repository.category === "integration"
             ? html`
@@ -303,51 +294,33 @@ export class HacsDashboard extends LitElement {
       name: {
         ...defaultKeyData,
         title: localizeFunc("column.name"),
-        hidden: false,
         main: true,
+        hidden: false,
         sortable: true,
         grows: true,
-        template: (repository: RepositoryBase) => html`
-          ${repository.new
-            ? html`<ha-svg-icon
-                label="New"
-                style="color: var(--primary-color); margin-right: 4px;"
-                .path=${mdiNewBox}
-              ></ha-svg-icon>`
-            : ""}
-          ${!this._activeFilters?.includes("downloaded") && repository.installed
-            ? html`<ha-svg-icon
-                label="Downloaded"
-                style="color: var(--primary-color); margin-right: 4px;"
-                .path=${mdiDownload}
-              ></ha-svg-icon>`
-            : ""}
-          ${repository.name}
-          <div class="secondary">
-            ${narrow ? localizeFunc(`common.type.${repository.category}`) : repository.description}
-          </div>
-        `,
+        extraTemplate: (repository: RepositoryBase) =>
+          !narrow ? html`<div class="secondary">${repository.description}</div>` : nothing,
       },
       downloads: {
         ...defaultKeyData,
         title: localizeFunc("column.downloads"),
-        hidden: narrow || !tableColumnsOptions.downloads,
         sortable: true,
+        hidden: false,
         width: "10%",
         template: (repository: RepositoryBase) => html`${repository.downloads || "-"}`,
       },
       stars: {
         ...defaultKeyData,
         title: localizeFunc("column.stars"),
-        hidden: narrow || !tableColumnsOptions.stars,
         sortable: true,
+        hidden: false,
         width: "10%",
       },
       last_updated: {
         ...defaultKeyData,
         title: localizeFunc("column.last_updated"),
-        hidden: narrow || !tableColumnsOptions.last_updated,
         sortable: true,
+        hidden: false,
         width: "15%",
         template: (repository: RepositoryBase) => {
           if (!repository.last_updated) {
@@ -363,8 +336,9 @@ export class HacsDashboard extends LitElement {
       installed_version: {
         ...defaultKeyData,
         title: localizeFunc("column.installed_version"),
-        hidden: narrow || !tableColumnsOptions.installed_version,
         sortable: true,
+        defaultHidden: true,
+        hidden: false,
         width: "10%",
         template: (repository: RepositoryBase) =>
           repository.installed ? repository.installed_version : "-",
@@ -372,8 +346,9 @@ export class HacsDashboard extends LitElement {
       available_version: {
         ...defaultKeyData,
         title: localizeFunc("column.available_version"),
-        hidden: narrow || !tableColumnsOptions.available_version,
         sortable: true,
+        defaultHidden: true,
+        hidden: false,
         width: "10%",
         template: (repository: RepositoryBase) =>
           repository.installed ? repository.available_version : "-",
@@ -381,27 +356,31 @@ export class HacsDashboard extends LitElement {
       translated_status: {
         ...defaultKeyData,
         title: localizeFunc("column.status"),
-        hidden: narrow || !tableColumnsOptions.status,
         sortable: true,
         groupable: true,
+        hidden: false,
+        defaultHidden: true,
         width: "10%",
       },
       translated_category: {
         ...defaultKeyData,
         title: localizeFunc("column.type"),
-        hidden: narrow || !tableColumnsOptions.type,
         sortable: true,
         groupable: true,
+        hidden: false,
         width: "10%",
       },
-      authors: defaultKeyData,
       description: defaultKeyData,
+      authors: defaultKeyData,
       domain: defaultKeyData,
       full_name: defaultKeyData,
       id: defaultKeyData,
       topics: defaultKeyData,
       actions: {
         title: "",
+        moveable: false,
+        hideable: false,
+        showNarrow: true,
         width: this.narrow ? undefined : "10%",
         type: "overflow-menu",
         template: (repository: RepositoryBase) => html`
@@ -429,7 +408,7 @@ export class HacsDashboard extends LitElement {
   );
 
   private _filterSchema = memoize(
-    (localizeFunc: LocalizeFunc<HacsLocalizeKeys>, types: string[], narrow: boolean) =>
+    (localizeFunc: LocalizeFunc<HacsLocalizeKeys>, types: string[]) =>
       [
         {
           name: "filters",
@@ -465,29 +444,6 @@ export class HacsDashboard extends LitElement {
             },
           },
         },
-        ...(narrow
-          ? []
-          : ([
-              {
-                name: "behaviour",
-                type: "constant",
-                value: "",
-              },
-              {
-                name: "columns",
-                selector: {
-                  select: {
-                    options: Object.keys(tableColumnDefaults).map((column) => ({
-                      label: localizeFunc(`column.${column}` as HacsLocalizeKeys),
-                      value: column,
-                    })),
-                    multiple: true,
-                    mode: "dropdown",
-                    sort: true,
-                  },
-                },
-              },
-            ] as const satisfies readonly HaFormSchema[])),
       ] as const satisfies readonly HaFormSchema[],
   );
 
@@ -530,13 +486,6 @@ export class HacsDashboard extends LitElement {
       )
       .map(([_, value]) => value);
     this._activeFilters = updatedFilters.length ? updatedFilters : undefined;
-    this._tableColumns = Object.keys(tableColumnDefaults).reduce(
-      (entries, key) => ({
-        ...entries,
-        [key]: data.columns.includes(key) ?? tableColumnDefaults[key],
-      }),
-      {},
-    ) as Record<tableColumnDefaultsType, boolean>;
   }
 
   private _handleSearchFilterChanged(ev: CustomEvent) {
@@ -553,6 +502,11 @@ export class HacsDashboard extends LitElement {
 
   private _handleSortingChanged(ev: CustomEvent) {
     this._activeSorting = ev.detail;
+  }
+
+  private _handleColumnsChanged(ev: CustomEvent) {
+    this._orderTableColumns = ev.detail.columnOrder;
+    this._hiddenTableColumns = ev.detail.hiddenColumns;
   }
 
   private _handleClearFilter() {
