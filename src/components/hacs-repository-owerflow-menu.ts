@@ -48,26 +48,24 @@ export const repositoryMenuItems = memoizeOne(
         await repositoryUpdate(element.hass, String(repository.id));
       },
     },
-
-    ...(repository.installed_version
+    {
+      path: mdiReload,
+      label: element.hacs.localize(
+        repository.installed_version ? "repository_card.redownload" : "common.download",
+      ),
+      action: () =>
+        showHacsDownloadDialog(element, { hacs: element.hacs, repositoryId: repository.id }),
+      hideForUninstalled: true,
+    },
+    ...(repository.new
       ? [
           {
-            path: mdiReload,
-            label: element.hacs.localize("repository_card.redownload"),
-            action: () =>
-              showHacsDownloadDialog(element, { hacs: element.hacs, repositoryId: repository.id }),
-            hideForUninstalled: true,
+            path: mdiMoonNew,
+            label: element.hacs.localize("repository_card.dismiss_new"),
+            action: () => repositoriesClearNewRepository(element.hass, repository.id),
           },
         ]
-      : repository.new
-        ? [
-            {
-              path: mdiMoonNew,
-              label: element.hacs.localize("repository_card.dismiss_new"),
-              action: () => repositoriesClearNewRepository(element.hass, repository.id),
-            },
-          ]
-        : []),
+      : []),
     ...(repository.category === "plugin" && repository.installed_version
       ? [
           {
