@@ -40,7 +40,6 @@ export interface RepositoryBase {
 
 export interface RepositoryInfo extends RepositoryBase {
   additional_info: string;
-  beta: boolean;
   default_branch: string;
   hide_default_branch: boolean;
   issues: number;
@@ -66,17 +65,6 @@ export const repositoryDownloadVersion = async (
 ) =>
   hass.connection.sendMessagePromise<void>({
     type: "hacs/repository/download",
-    repository: repository,
-    version,
-  });
-
-export const repositorySetVersion = async (
-  hass: HomeAssistant,
-  repository: string,
-  version: string,
-) =>
-  hass.connection.sendMessagePromise<void>({
-    type: "hacs/repository/version",
     repository: repository,
     version,
   });

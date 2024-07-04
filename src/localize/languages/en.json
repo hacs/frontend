@@ -73,8 +73,6 @@
   "dialog_download": {
     "type": "Type",
     "url": "URL",
-    "select_version": "Select version",
-    "show_beta": "Show beta versions",
     "restart": "Remember that you need to restart Home Assistant before changes to integrations (custom_components) are applied.",
     "selector_note": "The version selector will be removed in a future release. If you need to install a specific version, you can do so by using the service call for update entities.",
     "note_downloaded": "When downloaded, this will be located in {location}",
