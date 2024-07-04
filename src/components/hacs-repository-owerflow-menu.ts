@@ -3,6 +3,7 @@ import {
   mdiAlertCircleOutline,
   mdiArrowDownCircle,
   mdiClose,
+  mdiDownload,
   mdiGithub,
   mdiInformation,
   mdiLanguageJavascript,
@@ -49,7 +50,7 @@ export const repositoryMenuItems = memoizeOne(
       },
     },
     {
-      path: mdiReload,
+      path: repository.installed_version ? mdiReload : mdiDownload,
       label: element.hacs.localize(
         repository.installed_version ? "repository_card.redownload" : "common.download",
       ),
