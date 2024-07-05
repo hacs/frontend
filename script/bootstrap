@@ -7,4 +7,5 @@ set -e
 cd "$(dirname "$0")/.."
 
 node ./script/merge_requirements.js
+node ./script/inject_translations.js
 yarn install

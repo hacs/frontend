@@ -113,7 +113,7 @@ export class HacsDashboard extends LitElement {
       .data=${repositories}
       .hass=${this.hass}
       ?iswide=${this.isWide}
-      .localizeFunc=${this.hass.localize}
+      .localizeFunc=${this.hacs.localize}
       main-page
       .narrow=${this.narrow}
       .route=${this.route}

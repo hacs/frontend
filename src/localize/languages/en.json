@@ -132,5 +132,28 @@
       "message": "The {name} integration is configured or ignored. You need to delete the configuration for it before removing it from HACS.",
       "confirm": "Go to integrations"
     }
+  },
+  "ui": {
+    "components": {
+      "subpage-data-table": {
+        "filters": "Filters",
+        "show_results": "show {number} results",
+        "clear_filter": "Clear filter",
+        "close_filter": "Close filters",
+        "exit_selection_mode": "Exit selection mode",
+        "enter_selection_mode": "Enter selection mode",
+        "sort_by": "Sort by {sortColumn}",
+        "group_by": "Group by {groupColumn}",
+        "dont_group_by": "Don't group",
+        "collapse_all_groups": "Collapse all",
+        "expand_all_groups": "Expand all",
+        "select": "Select",
+        "selected": "Selected {selected}",
+        "close_select_mode": "Close selection mode",
+        "select_all": "Select all",
+        "select_none": "Select none",
+        "settings": "Customize table"
+      }
+    }
   }
 }
