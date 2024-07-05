@@ -113,7 +113,7 @@ export class HacsDashboard extends LitElement {
       .data=${repositories}
       .hass=${this.hass}
       ?iswide=${this.isWide}
-      .localizeFunc=${this.hass.localize}
+      .localizeFunc=${this.hacs.localize}
       main-page
       .narrow=${this.narrow}
       .route=${this.route}
@@ -263,7 +263,7 @@ export class HacsDashboard extends LitElement {
     ): DataTableColumnContainer<RepositoryBase> => ({
       icon: {
         title: "",
-        label: this.hass.localize("ui.panel.config.lovelace.dashboards.picker.headers.icon"),
+        label: localizeFunc("column.icon"),
         type: "icon",
         hidden: false,
         moveable: false,
@@ -378,6 +378,7 @@ export class HacsDashboard extends LitElement {
       topics: defaultKeyData,
       actions: {
         title: "",
+        label: localizeFunc("column.actions"),
         moveable: false,
         hideable: false,
         showNarrow: true,
