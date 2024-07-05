@@ -26,9 +26,11 @@
     "no_data": "No repositories matching search and filters"
   },
   "column": {
+    "actions": "Quick actions",
     "name": "Repository name",
     "downloads": "Downloads",
     "stars": "Stars",
+    "icon": "Icon",
     "installed_version": "Downloaded version",
     "available_version": "Available version",
     "status": "Status",
