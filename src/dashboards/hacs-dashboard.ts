@@ -337,7 +337,7 @@ export class HacsDashboard extends LitElement {
         ...defaultKeyData,
         title: localizeFunc("column.installed_version"),
         sortable: true,
-        defaultHidden: true,
+        defaultHidden: false,
         hidden: false,
         width: "10%",
         template: (repository: RepositoryBase) =>
@@ -347,7 +347,7 @@ export class HacsDashboard extends LitElement {
         ...defaultKeyData,
         title: localizeFunc("column.available_version"),
         sortable: true,
-        defaultHidden: true,
+        defaultHidden: false,
         hidden: false,
         width: "10%",
         template: (repository: RepositoryBase) =>
@@ -359,7 +359,7 @@ export class HacsDashboard extends LitElement {
         sortable: true,
         groupable: true,
         hidden: false,
-        defaultHidden: true,
+        defaultHidden: false,
         width: "10%",
       },
       translated_category: {
