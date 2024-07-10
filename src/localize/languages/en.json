@@ -153,6 +153,15 @@
         "select_all": "Select all",
         "select_none": "Select none",
         "settings": "Customize table"
+      },
+      "data-table": {
+        "settings": {
+          "header": "Customize",
+          "hide": "Hide column {title}",
+          "show": "Show column {title}",
+          "done": "Done",
+          "restore": "Restore defaults"
+        }
       }
     }
   }

@@ -14,6 +14,9 @@ fs.writeFileSync(
       ui: {
         components: {
           ["subpage-data-table"]: core.ui.components["subpage-data-table"],
+          ["data-table"]: {
+            settings: core.ui.components["data-table"].settings,
+          },
         },
       },
     },
