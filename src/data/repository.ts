@@ -68,3 +68,11 @@ export const repositoryDownloadVersion = async (
     repository: repository,
     version,
   });
+
+export const repositoryReleases = async (hass: HomeAssistant, repositoryId: string) =>
+  hass.connection.sendMessagePromise<
+    { tag: string; name: string; published_at: string; prerelease: boolean }[]
+  >({
+    type: "hacs/repository/releases",
+    repository_id: repositoryId,
+  });
