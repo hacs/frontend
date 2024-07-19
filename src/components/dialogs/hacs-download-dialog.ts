@@ -340,11 +340,14 @@ export class HacsDonwloadDialog extends LitElement {
     if (this._releases !== undefined) {
       return;
     }
-    this._releases = await repositoryReleases(this.hass, this._repository!.id);
+    try {
+      this._releases = await repositoryReleases(this.hass, this._repository!.id);
+    } catch (error) {
+      this._error = error;
+    }
   }
 
   private _versionChanged(ev: CustomEvent) {
-    console.log(ev.detail.value);
     this._selectedVersion = ev.detail.value.release;
   }
 

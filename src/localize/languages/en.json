@@ -81,7 +81,7 @@
     "fetching_releases": "Fetching releases...",
     "no_releases": "No releases found",
     "release": "Release",
-    "release_warning": "It is not adviced to use this section to do a rollback, restore a backup instead.",
+    "release_warning": "It is not advised to use this section to do a rollback, restore a backup instead.",
     "restart": "Remember that you need to restart Home Assistant before changes to integrations (custom_components) are applied.",
     "selector_note": "The version selector will be removed in a future release. If you need to install a specific version, you can do so by using the service call for update entities.",
     "note_downloaded": "When downloaded, this will be located in {location}",
