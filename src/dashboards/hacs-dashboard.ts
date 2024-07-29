@@ -120,6 +120,7 @@ export class HacsDashboard extends LitElement {
       clickable
       .filter=${this._activeSearch || ""}
       hasFilters
+      hasFab
       .filters=${this._activeFilters?.length}
       .noDataText=${this.hacs.localize("dashboard.no_data")}
       .initialGroupColumn=${this._activeGrouping || "translated_status"}
