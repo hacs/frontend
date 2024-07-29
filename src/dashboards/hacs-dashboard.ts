@@ -19,6 +19,7 @@ import { mainWindow } from "../../homeassistant-frontend/src/common/dom/get_main
 import { navigate } from "../../homeassistant-frontend/src/common/navigate";
 import type {
   DataTableColumnContainer,
+  DataTableRowData,
   SortingDirection,
 } from "../../homeassistant-frontend/src/components/data-table/ha-data-table";
 import "../../homeassistant-frontend/src/layouts/hass-tabs-subpage-data-table";
@@ -50,6 +51,7 @@ import { repositoriesClearNew } from "../data/websocket";
 import { HacsStyles } from "../styles/hacs-common-style";
 import { documentationUrl } from "../tools/documentation";
 import { typeIcon } from "../tools/type-icon";
+import { PageNavigation } from "../../homeassistant-frontend/src/layouts/hass-tabs-subpage";
 
 const defaultKeyData = {
   title: "",
@@ -59,9 +61,10 @@ const defaultKeyData = {
 
 const STATUS_ORDER = ["pending-restart", "pending-upgrade", "installed", "new", "default"];
 
-const TABS = [
+const TABS: PageNavigation[] = [
   {
     name: APP_FULL_NAME,
+    path: "",
   },
 ];
 
@@ -88,7 +91,7 @@ export class HacsDashboard extends LitElement {
   private _activeGrouping?: string;
 
   @storage({ key: "hacs-table-collapsed", state: false, subscribe: false })
-  private _activeCollapsed?: string;
+  private _activeCollapsed?: string[];
 
   @storage({ key: "hacs-active-search", state: true, subscribe: false })
   private _activeSearch?: string;
@@ -113,7 +116,7 @@ export class HacsDashboard extends LitElement {
       .data=${repositories}
       .hass=${this.hass}
       ?iswide=${this.isWide}
-      .localizeFunc=${this.hacs.localize}
+      .localizeFunc=${this.hacs.localize as LocalizeFunc}
       main-page
       .narrow=${this.narrow}
       .route=${this.route}
@@ -124,7 +127,7 @@ export class HacsDashboard extends LitElement {
       .filters=${this._activeFilters?.length}
       .noDataText=${this.hacs.localize("dashboard.no_data")}
       .initialGroupColumn=${this._activeGrouping || "translated_status"}
-      .initialCollapsedGroups=${this._activeCollapsed}
+      .initialCollapsedGroups=${this._activeCollapsed || []}
       .groupOrder=${this._groupOrder(this.hacs.localize, this._activeGrouping)}
       .initialSorting=${this._activeSorting}
       .columnOrder=${this._orderTableColumns}
@@ -220,7 +223,7 @@ export class HacsDashboard extends LitElement {
       repositories: RepositoryBase[],
       localizeFunc: LocalizeFunc<HacsLocalizeKeys>,
       activeFilters?: string[],
-    ): RepositoryBase[] =>
+    ): DataTableRowData[] =>
       repositories
         .filter((repository) => {
           if (
