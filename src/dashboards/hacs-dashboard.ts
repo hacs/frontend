@@ -81,25 +81,25 @@ export class HacsDashboard extends LitElement {
 
   @property({ type: Boolean }) public isWide!: boolean;
 
-  @storage({ key: "hacs-table-filter", state: true, subscribe: false })
+  @storage({ key: "hacs-dashboard-table-filtering", state: true, subscribe: false })
   private _activeFilters?: string[] = [];
 
-  @storage({ key: "hacs-table-sort", state: false, subscribe: false })
+  @storage({ key: "hacs-dashboard-table-sorting", state: false, subscribe: false })
   private _activeSorting?: { column: string; direction: SortingDirection };
 
-  @storage({ key: "hacs-table-grouping", state: true, subscribe: false })
+  @storage({ key: "hacs-dashboard-table-grouping", state: true, subscribe: false })
   private _activeGrouping?: string;
 
-  @storage({ key: "hacs-table-collapsed", state: false, subscribe: false })
+  @storage({ key: "hacs-dashboard-table-collapsed", state: false, subscribe: false })
   private _activeCollapsed?: string[];
 
-  @storage({ key: "hacs-active-search", state: true, subscribe: false })
+  @storage({ key: "hacs-dashboard-active-search", state: true, subscribe: false })
   private _activeSearch?: string;
 
-  @storage({ key: "hacs-table-hidden-columns", state: true, subscribe: false })
+  @storage({ key: "hacs-dashboard-table-hidden-columns", state: true, subscribe: false })
   private _hiddenTableColumns?: string[];
 
-  @storage({ key: "hacs-table-columns-order", state: true, subscribe: false })
+  @storage({ key: "hacs-dashboard-table-columns-ordering", state: true, subscribe: false })
   private _orderTableColumns?: string[];
 
   protected render = (): TemplateResult | void => {
