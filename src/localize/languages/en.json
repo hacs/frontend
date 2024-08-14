@@ -11,7 +11,7 @@
     "repositories": "Repositories",
     "repository": "Repository",
     "save": "Save",
-    "show": "Show",
+    "show": "Show details",
     "type": {
       "integration": "Integration",
       "plugin": "Dashboard",
