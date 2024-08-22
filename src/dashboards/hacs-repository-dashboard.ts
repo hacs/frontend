@@ -256,6 +256,8 @@ export class HacsRepositoryDashboard extends LitElement {
               </a>
             </ha-chip-set>
             <ha-markdown
+              breaks
+              lazyImages
               .content=${markdownWithRepositoryContext(
                 this._repository.additional_info,
                 this._repository,

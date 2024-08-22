@@ -194,6 +194,7 @@ export class HacsDashboard extends LitElement {
                 hacs: this.hacs,
                 title: APP_FULL_NAME,
                 description: html`<ha-markdown
+                  lazyImages
                   .content=${aboutHacsmarkdownContent(this.hacs)}
                 ></ha-markdown>`,
               });
