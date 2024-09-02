@@ -34,7 +34,7 @@ jobs:
             --bundle-structure %LANG_ISO%.%FORMAT%
 
       - name: Upload dists
-        uses: actions/upload-artifact@v4.3.6
+        uses: actions/upload-artifact@v4.4.0
         with:
           name: translations
           path: ./translations
@@ -95,7 +95,7 @@ jobs:
         run: python setup.py sdist bdist_wheel
 
       - name: Upload dists
-        uses: actions/upload-artifact@v4.3.6
+        uses: actions/upload-artifact@v4.4.0
         with:
           name: "dist"
           path: "dist/"
