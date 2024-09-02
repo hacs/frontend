@@ -143,7 +143,7 @@ export const repositoryMenuItems = memoizeOne(
                 destructive: true,
               });
             },
-            warning: true,
+            error: true,
           },
         ]
       : []),
