@@ -301,7 +301,7 @@ export class HacsDashboard extends LitElement {
         main: true,
         hidden: false,
         sortable: true,
-        grows: true,
+        flex: 3,
         extraTemplate: (repository: RepositoryBase) =>
           !narrow ? html`<div class="secondary">${repository.description}</div>` : nothing,
       },
@@ -310,7 +310,6 @@ export class HacsDashboard extends LitElement {
         title: localizeFunc("column.downloads"),
         sortable: true,
         hidden: false,
-        width: "10%",
         template: (repository: RepositoryBase) => html`${repository.downloads || "-"}`,
       },
       stars: {
@@ -318,14 +317,12 @@ export class HacsDashboard extends LitElement {
         title: localizeFunc("column.stars"),
         sortable: true,
         hidden: false,
-        width: "10%",
       },
       last_updated: {
         ...defaultKeyData,
         title: localizeFunc("column.last_updated"),
         sortable: true,
         hidden: false,
-        width: "15%",
         template: (repository: RepositoryBase) => {
           if (!repository.last_updated) {
             return "-";
@@ -343,7 +340,6 @@ export class HacsDashboard extends LitElement {
         sortable: true,
         defaultHidden: true,
         hidden: false,
-        width: "10%",
         template: (repository: RepositoryBase) =>
           repository.installed ? repository.installed_version : "-",
       },
@@ -353,7 +349,6 @@ export class HacsDashboard extends LitElement {
         sortable: true,
         defaultHidden: true,
         hidden: false,
-        width: "10%",
         template: (repository: RepositoryBase) =>
           repository.installed ? repository.available_version : "-",
       },
@@ -364,7 +359,6 @@ export class HacsDashboard extends LitElement {
         groupable: true,
         hidden: false,
         defaultHidden: true,
-        width: "10%",
       },
       translated_category: {
         ...defaultKeyData,
@@ -372,7 +366,6 @@ export class HacsDashboard extends LitElement {
         sortable: true,
         groupable: true,
         hidden: false,
-        width: "10%",
       },
       description: defaultKeyData,
       authors: defaultKeyData,
@@ -386,7 +379,6 @@ export class HacsDashboard extends LitElement {
         moveable: false,
         hideable: false,
         showNarrow: true,
-        width: this.narrow ? undefined : "10%",
         type: "overflow-menu",
         template: (repository: RepositoryBase) => html`
           <ha-icon-overflow-menu
