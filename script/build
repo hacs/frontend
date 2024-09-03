@@ -12,4 +12,4 @@ if [ ! -d "./node_modules" ]; then
     yarn install
 fi
 
-./node_modules/.bin/gulp build-hacs
+NODE_OPTIONS=--max_old_space_size=6144 ./node_modules/.bin/gulp build-hacs

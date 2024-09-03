@@ -31,5 +31,3 @@ jobs:
         run: script/bootstrap
       - name: Build
         run: script/build
-        env:
-          IS_TEST: "true"
