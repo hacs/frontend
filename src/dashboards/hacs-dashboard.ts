@@ -11,7 +11,7 @@ import {
   mdiNewBox,
 } from "@mdi/js";
 import type { CSSResultGroup, TemplateResult } from "lit";
-import { LitElement, css, html, nothing } from "lit";
+import { LitElement, html, nothing } from "lit";
 import { customElement, property, query, state } from "lit/decorators";
 import memoize from "memoize-one";
 import { relativeTime } from "../../homeassistant-frontend/src/common/datetime/relative_time";
@@ -34,8 +34,6 @@ import "../../homeassistant-frontend/src/components/ha-menu-item";
 
 import { LocalizeFunc } from "../../homeassistant-frontend/src/common/translations/localize";
 import { HaFormSchema } from "../../homeassistant-frontend/src/components/ha-form/types";
-import "../../homeassistant-frontend/src/components/ha-icon-overflow-menu";
-import { IconOverflowMenuItem } from "../../homeassistant-frontend/src/components/ha-icon-overflow-menu";
 import { HaMenu } from "../../homeassistant-frontend/src/components/ha-menu";
 import "../../homeassistant-frontend/src/components/ha-svg-icon";
 import { PageNavigation } from "../../homeassistant-frontend/src/layouts/hass-tabs-subpage";
@@ -56,6 +54,7 @@ import { repositoriesClearNew } from "../data/websocket";
 import { HacsStyles } from "../styles/hacs-common-style";
 import { documentationUrl } from "../tools/documentation";
 import { typeIcon } from "../tools/type-icon";
+import { showAlertDialog } from "../../homeassistant-frontend/src/dialogs/generic/show-dialog-box";
 
 const defaultKeyData = {
   title: "",
@@ -107,6 +106,9 @@ export class HacsDashboard extends LitElement {
   private _orderTableColumns?: string[];
 
   @query("#overflow-menu")
+  private _overflowMenu!: HaMenu;
+
+  @query("#repository-overflow-menu")
   private _repositoryOverflowMenu!: HaMenu;
 
   @state()
@@ -150,68 +152,12 @@ export class HacsDashboard extends LitElement {
         @grouping-changed=${this._handleGroupingChanged}
         @collapsed-changed=${this._handleCollapseChanged}
       >
-        <ha-icon-overflow-menu
-          narrow
+        <ha-icon-button
           slot="toolbar-icon"
-          .hass=${this.hass}
-          .items=${[
-            {
-              path: mdiFileDocument,
-              label: this.hacs.localize("menu.documentation"),
-              action: () => mainWindow.open(documentationUrl({}), "_blank", "noreferrer=true"),
-            },
-            {
-              path: mdiGithub,
-              label: "GitHub",
-              action: () => mainWindow.open(`https://github.com/hacs`, "_blank", "noreferrer=true"),
-            },
-            {
-              path: mdiAlertCircleOutline,
-              label: this.hacs.localize("menu.open_issue"),
-              action: () =>
-                mainWindow.open(
-                  documentationUrl({
-                    path: "/docs/help/issues",
-                  }),
-                  "_blank",
-                  "noreferrer=true",
-                ),
-            },
-            {
-              path: mdiGit,
-              disabled: Boolean(this.hacs.info.disabled_reason),
-              label: this.hacs.localize("menu.custom_repositories"),
-              action: () => {
-                showHacsCustomRepositoriesDialog(this, {
-                  hacs: this.hacs,
-                });
-              },
-            },
-            repositoriesContainsNew
-              ? {
-                  path: mdiNewBox,
-                  label: this.hacs.localize("menu.dismiss"),
-                  action: () => {
-                    repositoriesClearNew(this.hass, this.hacs);
-                  },
-                }
-              : undefined,
-            {
-              path: mdiInformation,
-              label: this.hacs.localize("menu.about"),
-              action: () => {
-                showHacsFormDialog(this, {
-                  hacs: this.hacs,
-                  title: APP_FULL_NAME,
-                  description: html`<ha-markdown
-                    .content=${aboutHacsmarkdownContent(this.hacs)}
-                  ></ha-markdown>`,
-                });
-              },
-            },
-          ].filter((item) => item !== undefined) as IconOverflowMenuItem[]}
-        >
-        </ha-icon-overflow-menu>
+          .label=${this.hass.localize("ui.common.overflow_menu") || "overflow_menu"}
+          .path=${mdiDotsVertical}
+          @click=${this._showOverflowMenu}
+        ></ha-icon-button>
 
         <ha-form
           slot="filter-pane"
@@ -226,25 +172,99 @@ export class HacsDashboard extends LitElement {
           @value-changed=${this._handleFilterChanged}
         ></ha-form>
       </hass-tabs-subpage-data-table>
-      <ha-menu id="overflow-menu" positioning="fixed">
+      <ha-menu id="repository-overflow-menu" positioning="fixed">
         ${this._overflowMenuRepository
-          ? repositoryMenuItems(this, this._overflowMenuRepository).map((entry) =>
-              entry.divider
-                ? html`<li divider role="separator"></li>`
-                : html`
-                    <ha-menu-item
-                      class="${entry.error ? "error" : entry.warning ? "warning" : ""}"
-                      .clickAction=${() => {
-                        entry?.action && entry.action();
-                      }}
-                    >
-                      <ha-svg-icon .path=${entry.path} slot="start"></ha-svg-icon>
-                      <div slot="headline">${entry.label}</div>
-                    </ha-menu-item>
-                  `,
+          ? repositoryMenuItems(this, this._overflowMenuRepository, this.hacs.localize).map(
+              (entry) =>
+                entry.divider
+                  ? html`<li divider role="separator"></li>`
+                  : html`
+                      <ha-menu-item
+                        class="${entry.error ? "error" : entry.warning ? "warning" : ""}"
+                        .clickAction=${() => {
+                          entry?.action && entry.action();
+                        }}
+                      >
+                        <ha-svg-icon .path=${entry.path} slot="start"></ha-svg-icon>
+                        <div slot="headline">${entry.label}</div>
+                      </ha-menu-item>
+                    `,
             )
           : nothing}
-      </ha-menu> `;
+      </ha-menu>
+      <ha-menu id="overflow-menu" positioning="fixed">
+        <ha-menu-item
+          .clickAction=${() => {
+            mainWindow.open(documentationUrl({}), "_blank", "noreferrer=true");
+          }}
+        >
+          <ha-svg-icon .path=${mdiFileDocument} slot="start"></ha-svg-icon>
+          <div slot="headline">${this.hacs.localize("menu.documentation")}</div>
+        </ha-menu-item>
+        <ha-menu-item
+          .clickAction=${() => {
+            mainWindow.open("https://github.com/hacs", "_blank", "noreferrer=true");
+          }}
+        >
+          <ha-svg-icon .path=${mdiGithub} slot="start"></ha-svg-icon>
+          <div slot="headline">GitHub</div>
+        </ha-menu-item>
+        <ha-menu-item
+          .clickAction=${() => {
+            mainWindow.open(
+              documentationUrl({
+                path: "/docs/help/issues",
+              }),
+              "_blank",
+              "noreferrer=true",
+            );
+          }}
+        >
+          <ha-svg-icon .path=${mdiAlertCircleOutline} slot="start"></ha-svg-icon>
+          <div slot="headline">${this.hacs.localize("menu.open_issue")}</div>
+        </ha-menu-item>
+        <ha-menu-item
+          .clickAction=${() => {
+            if (!Boolean(this.hacs.info.disabled_reason)) {
+              showHacsCustomRepositoriesDialog(this, {
+                hacs: this.hacs,
+              });
+            } else {
+              showAlertDialog(this, {
+                title: "HACS is disabled",
+                text: this.hacs.info.disabled_reason,
+              });
+            }
+          }}
+        >
+          <ha-svg-icon .path=${mdiGit} slot="start"></ha-svg-icon>
+          <div slot="headline">${this.hacs.localize("menu.custom_repositories")}</div>
+        </ha-menu-item>
+        ${repositoriesContainsNew
+          ? html`<ha-menu-item
+              .clickAction=${() => {
+                repositoriesClearNew(this.hass, this.hacs);
+              }}
+            >
+              <ha-svg-icon .path=${mdiNewBox} slot="start"></ha-svg-icon>
+              <div slot="headline">${this.hacs.localize("menu.dismiss")}</div>
+            </ha-menu-item>`
+          : nothing}
+        <ha-menu-item
+          .clickAction=${() => {
+            showHacsFormDialog(this, {
+              hacs: this.hacs,
+              title: APP_FULL_NAME,
+              description: html`<ha-markdown
+                .content=${aboutHacsmarkdownContent(this.hacs)}
+              ></ha-markdown>`,
+            });
+          }}
+        >
+          <ha-svg-icon .path=${mdiInformation} slot="start"></ha-svg-icon>
+          <div slot="headline">${this.hacs.localize("menu.about")}</div>
+        </ha-menu-item>
+      </ha-menu>`;
   };
 
   private _filterRepositories = memoize(
@@ -434,6 +454,15 @@ export class HacsDashboard extends LitElement {
     this._repositoryOverflowMenu.show();
   };
 
+  private _showOverflowMenu = (ev: any) => {
+    if (this._overflowMenu.open) {
+      this._overflowMenu.close();
+      return;
+    }
+    this._overflowMenu.anchorElement = ev.target;
+    this._overflowMenu.show();
+  };
+
   private _groupOrder = memoize(
     (localize: LocalizeFunc<HacsLocalizeKeys>, activeGrouping: string | undefined) =>
       activeGrouping === "translated_status"
@@ -553,24 +582,7 @@ export class HacsDashboard extends LitElement {
   }
 
   static get styles(): CSSResultGroup {
-    return [
-      haStyle,
-      HacsStyles,
-      css`
-        ha-menu-item.error {
-          --md-menu-item-label-text-color: var(--error-color);
-          --hcv-color-icon: var(--error-color);
-        }
-
-        ha-menu-item.warning {
-          --md-menu-item-label-text-color: var(--warning-color);
-          --hcv-color-icon: var(--warning-color);
-        }
-        li[role="separator"] {
-          border-bottom: 1px solid var(--divider-color);
-        }
-      `,
-    ];
+    return [haStyle, HacsStyles];
   }
 }
 

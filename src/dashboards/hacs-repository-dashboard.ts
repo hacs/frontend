@@ -2,23 +2,26 @@ import {
   mdiAccount,
   mdiArrowDownBold,
   mdiCube,
+  mdiDotsVertical,
   mdiDownload,
   mdiExclamationThick,
   mdiStar,
 } from "@mdi/js";
 import type { PropertyValues, TemplateResult } from "lit";
 import { LitElement, css, html } from "lit";
-import { customElement, property, state } from "lit/decorators";
+import { customElement, property, query, state } from "lit/decorators";
 import memoizeOne from "memoize-one";
 import { mainWindow } from "../../homeassistant-frontend/src/common/dom/get_main_window";
 import { extractSearchParamsObject } from "../../homeassistant-frontend/src/common/url/search-params";
+import "../../homeassistant-frontend/src/components/chips/ha-assist-chip";
+import "../../homeassistant-frontend/src/components/chips/ha-chip-set";
 import "../../homeassistant-frontend/src/components/ha-alert";
 import "../../homeassistant-frontend/src/components/ha-card";
-import "../../homeassistant-frontend/src/components/chips/ha-chip-set";
-import "../../homeassistant-frontend/src/components/chips/ha-assist-chip";
 import "../../homeassistant-frontend/src/components/ha-fab";
-import "../../homeassistant-frontend/src/components/ha-icon-overflow-menu";
 import "../../homeassistant-frontend/src/components/ha-markdown";
+import "../../homeassistant-frontend/src/components/ha-menu";
+import type { HaMenu } from "../../homeassistant-frontend/src/components/ha-menu";
+import "../../homeassistant-frontend/src/components/ha-menu-item";
 import { showConfirmationDialog } from "../../homeassistant-frontend/src/dialogs/generic/show-dialog-box";
 import "../../homeassistant-frontend/src/layouts/hass-error-screen";
 import "../../homeassistant-frontend/src/layouts/hass-loading-screen";
@@ -48,6 +51,9 @@ export class HacsRepositoryDashboard extends LitElement {
   @state() public _repository?: RepositoryInfo;
 
   @state() private _error?: string;
+
+  @query("#overflow-menu")
+  private _repositoryOverflowMenu!: HaMenu;
 
   public connectedCallback() {
     super.connectedCallback();
@@ -188,13 +194,12 @@ export class HacsRepositoryDashboard extends LitElement {
         .header=${this._repository.name}
         hasFab
       >
-        <ha-icon-overflow-menu
-          .hass=${this.hass}
+        <ha-icon-button
           slot="toolbar-icon"
-          narrow
-          .items=${repositoryMenuItems(this, this._repository)}
-        >
-        </ha-icon-overflow-menu>
+          .label=${this.hass.localize("ui.common.overflow_menu") || "overflow_menu"}
+          .path=${mdiDotsVertical}
+          @click=${this._showOverflowRepositoryMenu}
+        ></ha-icon-button>
         <div class="content">
           <ha-card>
             <ha-chip-set>
@@ -274,8 +279,37 @@ export class HacsRepositoryDashboard extends LitElement {
             </ha-fab>`
           : ""}
       </hass-subpage>
+      <ha-menu id="overflow-menu" positioning="fixed">
+        ${repositoryMenuItems(this, this._repository, this.hacs.localize).map((entry) =>
+          entry.divider
+            ? html`<li divider role="separator"></li>`
+            : html`
+                <ha-menu-item
+                  class="${entry.error ? "error" : entry.warning ? "warning" : ""}"
+                  .clickAction=${() => {
+                    entry?.action && entry.action();
+                  }}
+                >
+                  <ha-svg-icon .path=${entry.path} slot="start"></ha-svg-icon>
+                  <div slot="headline">${entry.label}</div>
+                </ha-menu-item>
+              `,
+        )}
+      </ha-menu>
     `;
   }
+
+  private _showOverflowRepositoryMenu = (ev: any) => {
+    if (
+      this._repositoryOverflowMenu.open &&
+      ev.target === this._repositoryOverflowMenu.anchorElement
+    ) {
+      this._repositoryOverflowMenu.close();
+      return;
+    }
+    this._repositoryOverflowMenu.anchorElement = ev.target;
+    this._repositoryOverflowMenu.show();
+  };
 
   private _downloadRepositoryDialog() {
     showHacsDownloadDialog(this, {
