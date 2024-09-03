@@ -30,10 +30,26 @@ export const hacsCommonClasses = css`
   }
 `;
 
+const hacsOverflowMenuStyle = css`
+  ha-menu-item.error {
+    --md-menu-item-label-text-color: var(--error-color);
+    --hcv-color-icon: var(--error-color);
+  }
+
+  ha-menu-item.warning {
+    --md-menu-item-label-text-color: var(--warning-color);
+    --hcv-color-icon: var(--warning-color);
+  }
+  li[role="separator"] {
+    border-bottom: 1px solid var(--divider-color);
+  }
+`;
+
 export const HacsStyles: CSSResultGroup = [
   haStyle,
   hacsIconStyle,
   hacsCommonClasses,
   hacsLinkStyle,
   hacsButtonStyle,
+  hacsOverflowMenuStyle,
 ];
