@@ -225,7 +225,7 @@ export class HacsDashboard extends LitElement {
         </ha-menu-item>
         <ha-menu-item
           .clickAction=${() => {
-            if (!Boolean(this.hacs.info.disabled_reason)) {
+            if (!this.hacs.info.disabled_reason) {
               showHacsCustomRepositoriesDialog(this, {
                 hacs: this.hacs,
               });
