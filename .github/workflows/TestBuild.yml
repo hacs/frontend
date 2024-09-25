@@ -22,7 +22,7 @@ jobs:
           submodules: recursive
 
       - name: Set up Node ${{ env.NODE_VERSION }}
-        uses: actions/setup-node@v4.0.3
+        uses: actions/setup-node@v4.0.4
         with:
           node-version: ${{ env.NODE_VERSION }}
           cache: yarn
