@@ -123,7 +123,7 @@ jobs:
         uses: pypa/gh-action-pypi-publish@897895f1e160c830e369f9779632ebc134688e1b # v1.10.2
 
       - name: Attest
-        uses: actions/attest-build-provenance@1c608d11d69870c2092266b3f9a6f3abbf17002c #v1.4.3
+        uses: actions/attest-build-provenance@ef244123eb79f2f7a7e75d99086184180e6d0018 #v1.4.4
         with:
           subject-path: dist/*
 
