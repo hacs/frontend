@@ -128,7 +128,7 @@ jobs:
           subject-path: dist/*
 
       - name: Upload release assets
-        uses: softprops/action-gh-release@v2.0.8
+        uses: softprops/action-gh-release@v2.1.0
         with:
           files: dist/*
 
