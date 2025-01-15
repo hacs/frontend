@@ -31,12 +31,12 @@ export const hacsCommonClasses = css`
 `;
 
 const hacsOverflowMenuStyle = css`
-  ha-menu-item.error {
+  ha-md-menu-item.error {
     --md-menu-item-label-text-color: var(--error-color);
     --hcv-color-icon: var(--error-color);
   }
 
-  ha-menu-item.warning {
+  ha-md-menu-item.warning {
     --md-menu-item-label-text-color: var(--warning-color);
     --hcv-color-icon: var(--warning-color);
   }

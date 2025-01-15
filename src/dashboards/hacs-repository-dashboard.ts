@@ -21,7 +21,7 @@ import "../../homeassistant-frontend/src/components/ha-fab";
 import "../../homeassistant-frontend/src/components/ha-markdown";
 import "../../homeassistant-frontend/src/components/ha-menu";
 import type { HaMenu } from "../../homeassistant-frontend/src/components/ha-menu";
-import "../../homeassistant-frontend/src/components/ha-menu-item";
+import "../../homeassistant-frontend/src/components/ha-md-menu-item";
 import { showConfirmationDialog } from "../../homeassistant-frontend/src/dialogs/generic/show-dialog-box";
 import "../../homeassistant-frontend/src/layouts/hass-error-screen";
 import "../../homeassistant-frontend/src/layouts/hass-loading-screen";
@@ -284,7 +284,7 @@ export class HacsRepositoryDashboard extends LitElement {
           entry.divider
             ? html`<li divider role="separator"></li>`
             : html`
-                <ha-menu-item
+                <ha-md-menu-item
                   class="${entry.error ? "error" : entry.warning ? "warning" : ""}"
                   .clickAction=${() => {
                     entry?.action && entry.action();
@@ -292,7 +292,7 @@ export class HacsRepositoryDashboard extends LitElement {
                 >
                   <ha-svg-icon .path=${entry.path} slot="start"></ha-svg-icon>
                   <div slot="headline">${entry.label}</div>
-                </ha-menu-item>
+                </ha-md-menu-item>
               `,
         )}
       </ha-menu>

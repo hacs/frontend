@@ -1,6 +1,6 @@
-const haWebpack = require("../../homeassistant-frontend/build-scripts/webpack.cjs");
+const haRspack = require("../../homeassistant-frontend/build-scripts/rspack.cjs");
 const haPaths = require("../../homeassistant-frontend/build-scripts/paths.cjs");
-const webpack = require("webpack");
+const rspack = require("@rspack/core");
 const path = require("path");
 const log = require("fancy-log");
 const paths = require("./paths.cjs");
@@ -25,7 +25,7 @@ const createWebpackConfig = ({
     dontHash = new Set();
   }
   haPaths.polymer_dir = paths.home_assistant_frontend_root;
-  const haWebpackContents = haWebpack.createWebpackConfig({
+  const haRspackContents = haRspack.createRspackConfig({
     name,
     entry,
     outputPath,
@@ -40,14 +40,14 @@ const createWebpackConfig = ({
   });
   haPaths.polymer_dir = paths.root_dir;
   return {
-    ...haWebpackContents,
+    ...haRspackContents,
     output: {
-      ...haWebpackContents.output,
+      ...haRspackContents.output,
       devtoolModuleFilenameTemplate:
         !isTestBuild && isProdBuild
           ? (info) => {
               const sourcePath = info.resourcePath.replace(/^\.\//, "");
-              if (sourcePath.startsWith("node_modules") || sourcePath.startsWith("webpack")) {
+              if (sourcePath.startsWith("node_modules") || sourcePath.startsWith("rspack")) {
                 return `no-source/${sourcePath}`;
               }
               if (sourcePath.startsWith("homeassistant-frontend/src/")) {
@@ -72,7 +72,7 @@ const createHacsConfig = ({ isProdBuild, latestBuild, isStatsBuild, isTestBuild 
       latestBuild,
       isStatsBuild,
       isTestBuild,
-    })
+    }),
   );
 
 const bothBuilds = (createConfigFunc, params) => [
@@ -106,31 +106,31 @@ const doneHandler = (done) => (err, stats) => {
 
 const prodBuild = (conf) =>
   new Promise((resolve) => {
-    webpack(
+    rspack(
       conf,
-      // Resolve promise when done. Because we pass a callback, webpack closes itself
-      doneHandler(resolve)
+      // Resolve promise when done. Because we pass a callback, rspack closes itself
+      doneHandler(resolve),
     );
   });
 
-gulp.task("webpack-watch-app", () => {
+gulp.task("rspack-watch-app", () => {
   // This command will run forever because we don't close compiler
-  webpack(
+  rspack(
     process.env.ES5
       ? bothBuilds(createHacsConfig, { isProdBuild: false })
-      : createHacsConfig({ isProdBuild: false, latestBuild: true })
+      : createHacsConfig({ isProdBuild: false, latestBuild: true }),
   ).watch({ poll: isWsl }, doneHandler());
   gulp.watch(path.join(paths.translations_src, "en.json"), gulp.series("generate-translations"));
 });
 
-gulp.task("webpack-prod-app", () =>
+gulp.task("rspack-prod-app", () =>
   prodBuild(
     bothBuilds(createHacsConfig, {
       isProdBuild: true,
       isStatsBuild: env.isStatsBuild(),
       isTestBuild: env.isTestBuild(),
-    })
-  )
+    }),
+  ),
 );
 
 module.exports = { createHacsConfig };
