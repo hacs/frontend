@@ -30,7 +30,7 @@ import "../../homeassistant-frontend/src/components/ha-fab";
 import "../../homeassistant-frontend/src/components/ha-form/ha-form";
 import "../../homeassistant-frontend/src/components/ha-markdown";
 import "../../homeassistant-frontend/src/components/ha-menu";
-import "../../homeassistant-frontend/src/components/ha-menu-item";
+import "../../homeassistant-frontend/src/components/ha-md-menu-item";
 
 import { LocalizeFunc } from "../../homeassistant-frontend/src/common/translations/localize";
 import { HaFormSchema } from "../../homeassistant-frontend/src/components/ha-form/types";
@@ -179,7 +179,7 @@ export class HacsDashboard extends LitElement {
                 entry.divider
                   ? html`<li divider role="separator"></li>`
                   : html`
-                      <ha-menu-item
+                      <ha-md-menu-item
                         class="${entry.error ? "error" : entry.warning ? "warning" : ""}"
                         .clickAction=${() => {
                           entry?.action && entry.action();
@@ -187,29 +187,29 @@ export class HacsDashboard extends LitElement {
                       >
                         <ha-svg-icon .path=${entry.path} slot="start"></ha-svg-icon>
                         <div slot="headline">${entry.label}</div>
-                      </ha-menu-item>
+                      </ha-md-menu-item>
                     `,
             )
           : nothing}
       </ha-menu>
       <ha-menu id="overflow-menu" positioning="fixed">
-        <ha-menu-item
+        <ha-md-menu-item
           .clickAction=${() => {
             mainWindow.open(documentationUrl({}), "_blank", "noreferrer=true");
           }}
         >
           <ha-svg-icon .path=${mdiFileDocument} slot="start"></ha-svg-icon>
           <div slot="headline">${this.hacs.localize("menu.documentation")}</div>
-        </ha-menu-item>
-        <ha-menu-item
+        </ha-md-menu-item>
+        <ha-md-menu-item
           .clickAction=${() => {
             mainWindow.open("https://github.com/hacs", "_blank", "noreferrer=true");
           }}
         >
           <ha-svg-icon .path=${mdiGithub} slot="start"></ha-svg-icon>
           <div slot="headline">GitHub</div>
-        </ha-menu-item>
-        <ha-menu-item
+        </ha-md-menu-item>
+        <ha-md-menu-item
           .clickAction=${() => {
             mainWindow.open(
               documentationUrl({
@@ -222,8 +222,8 @@ export class HacsDashboard extends LitElement {
         >
           <ha-svg-icon .path=${mdiAlertCircleOutline} slot="start"></ha-svg-icon>
           <div slot="headline">${this.hacs.localize("menu.open_issue")}</div>
-        </ha-menu-item>
-        <ha-menu-item
+        </ha-md-menu-item>
+        <ha-md-menu-item
           .clickAction=${() => {
             if (!this.hacs.info.disabled_reason) {
               showHacsCustomRepositoriesDialog(this, {
@@ -239,18 +239,18 @@ export class HacsDashboard extends LitElement {
         >
           <ha-svg-icon .path=${mdiGit} slot="start"></ha-svg-icon>
           <div slot="headline">${this.hacs.localize("menu.custom_repositories")}</div>
-        </ha-menu-item>
+        </ha-md-menu-item>
         ${repositoriesContainsNew
-          ? html`<ha-menu-item
+          ? html`<ha-md-menu-item
               .clickAction=${() => {
                 repositoriesClearNew(this.hass, this.hacs);
               }}
             >
               <ha-svg-icon .path=${mdiNewBox} slot="start"></ha-svg-icon>
               <div slot="headline">${this.hacs.localize("menu.dismiss")}</div>
-            </ha-menu-item>`
+            </ha-md-menu-item>`
           : nothing}
-        <ha-menu-item
+        <ha-md-menu-item
           .clickAction=${() => {
             showHacsFormDialog(this, {
               hacs: this.hacs,
@@ -263,7 +263,7 @@ export class HacsDashboard extends LitElement {
         >
           <ha-svg-icon .path=${mdiInformation} slot="start"></ha-svg-icon>
           <div slot="headline">${this.hacs.localize("menu.about")}</div>
-        </ha-menu-item>
+        </ha-md-menu-item>
       </ha-menu>`;
   };
 
