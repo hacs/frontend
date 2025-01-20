@@ -18,7 +18,7 @@ jobs:
           version=$(date --utc '+%Y%m%d%H%M%S')
           echo "version=$version" >> $GITHUB_OUTPUT
 
-      - uses: release-drafter/release-drafter@v6.0.0
+      - uses: release-drafter/release-drafter@v6.1.0
         with:
           tag: ${{ steps.version.outputs.version }}
           name: ${{ steps.version.outputs.version }}
