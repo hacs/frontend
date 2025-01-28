@@ -134,7 +134,7 @@ export class HacsDashboard extends LitElement {
         .route=${this.route}
         clickable
         .filter=${this._activeSearch || ""}
-        hasFilters
+        has-filters
         hasFab
         .filters=${this._activeFilters?.length}
         .noDataText=${this.hacs.localize("dashboard.no_data")}
