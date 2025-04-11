@@ -10,6 +10,13 @@ on:
 
 permissions: {}
 
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  NODE_VERSION: 18
+
 jobs:
   build_frontend:
     name: Test build
@@ -20,11 +27,11 @@ jobs:
         with:
           submodules: recursive
 
-      - name: Set up Node.js
+      - name: Set up Node.js ${{ env.NODE_VERSION }}
         uses: actions/setup-node@cdca7365b2dadb8aad0a33bc7601856ffabcc48e # v4.3.0
         with:
           cache: yarn
-          node-version-file: 'homeassistant-frontend/.nvmrc'
+          node-version: ${{ env.NODE_VERSION }}
 
       - name: Install dependencies
         run: script/bootstrap

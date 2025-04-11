@@ -6,9 +6,14 @@ on:
       - published
 
 env:
+  NODE_VERSION: 18
   PYTHON_VERSION: "3.x"
 
 permissions: {}
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
 
 jobs:
   translations:
@@ -53,11 +58,11 @@ jobs:
         with:
           python-version: ${{ env.PYTHON_VERSION }}
 
-      - name: Set up Node.js
+      - name: Set up Node.js ${{ env.NODE_VERSION }}
         uses: actions/setup-node@cdca7365b2dadb8aad0a33bc7601856ffabcc48e # v4.3.0
         with:
           cache: yarn
-          node-version-file: 'homeassistant-frontend/.nvmrc'
+          node-version: ${{ env.NODE_VERSION }}
 
       - name: Clear target directory
         run: |
