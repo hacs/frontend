@@ -40,8 +40,7 @@ export const markdownWithRepositoryContext = (input: string, repository?: Reposi
         // Skip if it's a valid CSS hex color (only contains 0-9a-f and is 3 or 6 digits)
         if (issueNumber && /^[0-9a-fA-F]{3}$|^[0-9a-fA-F]{6}$/.test(issueNumber)) {
           // Check if it's in a CSS context
-          const beforeMatch = input.substring(0, input.indexOf(match));
-          if (/(?:color|background|border):\s*$/.test(beforeMatch) || /:\s*$/.test(beforeMatch)) {
+          if (/(?<=color:\s*|background:\s*|border:\s*|:\s*)$/.test(input.substring(0, offset))) {
             return match;
           }
         }
