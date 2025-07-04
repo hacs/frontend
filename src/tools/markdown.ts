@@ -31,12 +31,30 @@ export const markdownWithRepositoryContext = (input: string, repository?: Reposi
       return x.replace("(#", `(/hacs/repository/${repository.id}#`);
     });
 
-    // Add references to issues and PRs
-    input = input.replace(/(?:\w[\w-.]+\/\w[\w-.]+|\B)#[1-9]\d*\b/g, (reference) => {
-      const fullReference = reference.replace(/^#/, `${repository.full_name}#`);
-      const [fullName, issue] = fullReference.split("#");
-      return `[${reference}](https://github.com/${fullName}/issues/${issue})`;
-    });
+    // Add references to issues and PRs (avoid CSS hex colors and code blocks)
+    input = input.replace(
+      /(^|[\s])((?:\w[\w-.]+\/\w[\w-.]+)?#[1-9]\d{0,4})\b/g,
+      (match, prefix, reference) => {
+        const issueNumber = reference.split("#")[1];
+
+        // Skip if it's a valid CSS hex color (only contains 0-9a-f and is 3 or 6 digits)
+        if (issueNumber && /^[0-9a-fA-F]{3}$|^[0-9a-fA-F]{6}$/.test(issueNumber)) {
+          // Check if it's in a CSS context
+          const beforeMatch = input.substring(0, input.indexOf(match));
+          if (/(?:color|background|border):\s*$/.test(beforeMatch) || /:\s*$/.test(beforeMatch)) {
+            return match;
+          }
+        }
+
+        const fullReference = reference.includes("/")
+          ? reference
+          : `${repository.full_name}${reference}`;
+        const [fullName, issue] = fullReference.split("#");
+        return fullName && issue
+          ? `${prefix}[${reference}](https://github.com/${fullName}/issues/${issue})`
+          : match;
+      },
+    );
   }
   return input;
 };
