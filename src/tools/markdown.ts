@@ -33,8 +33,8 @@ export const markdownWithRepositoryContext = (input: string, repository?: Reposi
 
     // Add references to issues and PRs (avoid CSS hex colors and code blocks)
     input = input.replace(
-      /(^|[\s])((?:\w[\w-.]+\/\w[\w-.]+)?#[1-9]\d{0,4})\b/g,
-      (match, prefix, reference) => {
+      /(^|[\s])((?:\w[\w-.]+\/\w[\w-.]+)?#[1-9]\d*)\b/g,
+      (match, prefix, reference, offset) => {
         const issueNumber = reference.split("#")[1];
 
         // Skip if it's a valid CSS hex color (only contains 0-9a-f and is 3 or 6 digits)

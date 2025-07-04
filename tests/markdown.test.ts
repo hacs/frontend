@@ -36,6 +36,14 @@ describe("markdownWithRepositoryContext", () => {
     );
   });
 
+  it("should handle duplicate patterns correctly", () => {
+    const input = "Issue #123 was fixed. Later, set color: #123 in CSS. Then see #456.";
+    const result = markdownWithRepositoryContext(input, mockRepository);
+    expect(result).toBe(
+      "Issue [#123](https://github.com/awesome/repo/issues/123) was fixed. Later, set color: #123 in CSS. Then see [#456](https://github.com/awesome/repo/issues/456).",
+    );
+  });
+
   it("should convert legitimate issue numbers but not hex colors", () => {
     const input = "Issue #123 was fixed, but color: #456789 remains unchanged";
     const result = markdownWithRepositoryContext(input, mockRepository);
