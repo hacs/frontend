@@ -95,7 +95,7 @@
     "workbox-build": "patch:workbox-build@npm%3A7.1.1#~/homeassistant-frontend/.yarn/patches/workbox-build-npm-7.1.1-a854f3faae.patch"
   },
   "dependencies": {
-    "@babel/runtime": "7.26.0",
+    "@babel/runtime": "7.26.10",
     "@braintree/sanitize-url": "7.1.1",
     "@codemirror/autocomplete": "6.18.4",
     "@codemirror/commands": "6.7.1",
