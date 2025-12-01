@@ -139,10 +139,24 @@ export const fetchRepositoryInformation = async (
         if (backendSupportsLanguage === true) {
           message.language = baseLanguage;
           console.log(`[HACS] Sending language parameter: "${baseLanguage}" (backend supports it - from concurrent request)`);
+          // Send the request with language parameter and return (don't fall through to avoid duplicate request)
+          try {
+            const result = await hass.connection.sendMessagePromise<RepositoryInfo | undefined>(message);
+            return result;
+          } catch (error: any) {
+            throw error;
+          }
         } else if (backendSupportsLanguage === false) {
           // Explicitly ensure language is not in message to avoid sending it
           delete message.language;
           console.log(`[HACS] Skipping language parameter (backend doesn't support it - from concurrent request)`);
+          // Send the request without language parameter and return (don't fall through to avoid duplicate request)
+          try {
+            const result = await hass.connection.sendMessagePromise<RepositoryInfo | undefined>(message);
+            return result;
+          } catch (error: any) {
+            throw error;
+          }
         }
         // If still null after waiting, the previous request encountered a non-language-related error
         // or didn't complete properly. This request should attempt to determine backend support.
