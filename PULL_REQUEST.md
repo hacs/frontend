@@ -194,7 +194,7 @@ _Add screenshots showing multilingual README display if available_
 
 ## Bug Fixes
 
-This PR includes fixes for four critical bugs discovered during implementation:
+This PR includes fixes for five critical bugs discovered during implementation:
 
 1. **Race Condition in Backend Support Cache** (`src/data/repository.ts`)
    - **Issue**: Concurrent requests with different languages could corrupt the cache state
@@ -215,6 +215,11 @@ This PR includes fixes for four critical bugs discovered during implementation:
    - **Issue**: When a concurrent request waits for another request's backend support check to complete, if the cache is still `null` after waiting (indicating the previous request encountered a non-language-related error or didn't complete properly), the code would skip sending the `language` parameter entirely. This meant no request would attempt to determine backend support on subsequent concurrent requests, preventing the cache from being set and causing all requests to eventually skip the language parameter regardless of backend capability.
    - **Fix**: Modified logic to perform our own backend support check if cache is still `null` after waiting for concurrent check
    - **Result**: Ensures backend support is always determined, even if previous concurrent checks failed with non-language-related errors
+
+5. **Duplicate Requests After Concurrent Check** (`src/data/repository.ts`)
+   - **Issue**: When waiting for a concurrent backend support check to complete, if the cache was set to `true` or `false`, the code would modify the `message` object but then fall through to the final request sending code at line 235, resulting in sending a duplicate request. This caused unnecessary network traffic and potential race conditions.
+   - **Fix**: After waiting for concurrent check and setting message based on cache state, immediately send the request and return, preventing fall-through to duplicate request code
+   - **Result**: Eliminates duplicate requests when cache is already determined by concurrent check, reducing network overhead and preventing potential race conditions
 
 ## Notes
 
