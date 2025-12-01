@@ -194,7 +194,7 @@ _Add screenshots showing multilingual README display if available_
 
 ## Bug Fixes
 
-This PR includes fixes for three critical bugs discovered during implementation:
+This PR includes fixes for four critical bugs discovered during implementation:
 
 1. **Race Condition in Backend Support Cache** (`src/data/repository.ts`)
    - **Issue**: Concurrent requests with different languages could corrupt the cache state
@@ -210,6 +210,11 @@ This PR includes fixes for three critical bugs discovered during implementation:
    - **Issue**: When waiting for a concurrent backend support check, if the backend rejects the language parameter, the code logged "Skipping language parameter" but didn't actually remove it from the message object. The message still contained the language property, which then got sent anyway, causing repeated backend errors.
    - **Fix**: Added `delete message.language;` when `backendSupportsLanguage === false` after waiting for concurrent check
    - **Result**: Prevents language parameter from being sent when backend doesn't support it, eliminating repeated errors
+
+4. **Null Cache After Concurrent Check** (`src/data/repository.ts`)
+   - **Issue**: When a concurrent request waits for another request's backend support check to complete, if the cache is still `null` after waiting (indicating the previous request encountered a non-language-related error or didn't complete properly), the code would skip sending the `language` parameter entirely. This meant no request would attempt to determine backend support on subsequent concurrent requests, preventing the cache from being set and causing all requests to eventually skip the language parameter regardless of backend capability.
+   - **Fix**: Modified logic to perform our own backend support check if cache is still `null` after waiting for concurrent check
+   - **Result**: Ensures backend support is always determined, even if previous concurrent checks failed with non-language-related errors
 
 ## Notes
 
