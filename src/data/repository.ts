@@ -140,6 +140,8 @@ export const fetchRepositoryInformation = async (
           message.language = baseLanguage;
           console.log(`[HACS] Sending language parameter: "${baseLanguage}" (backend supports it - from concurrent request)`);
         } else if (backendSupportsLanguage === false) {
+          // Explicitly ensure language is not in message to avoid sending it
+          delete message.language;
           console.log(`[HACS] Skipping language parameter (backend doesn't support it - from concurrent request)`);
         }
         // If still null after waiting, another request is handling it - proceed without language
