@@ -27,12 +27,14 @@ The backend must support the optional `language` parameter in the `hacs/reposito
      - First request: Attempts to send `language` parameter
      - On success: Caches backend support and continues sending parameter
      - On error (unsupported parameter): Caches rejection and retries without parameter
+   - **Race condition protection**: Uses promise-based synchronization to prevent concurrent requests from corrupting the cache state
    - Fully backward compatible: Works with both old and new backend versions
 
 3. **Repository Dashboard** (`src/dashboards/hacs-repository-dashboard.ts`)
    - Updated `_fetchRepository()` to pass `hass.language` to `fetchRepositoryInformation()`
    - Added language change detection in `updated()` lifecycle hook
    - Automatically reloads repository information when user changes Home Assistant language
+   - **Fixed false positive detection**: Only refetches when language actually changed (prevents unnecessary API calls on initial property changes)
 
 4. **Download Dialog** (`src/components/dialogs/hacs-download-dialog.ts`)
    - Updated `_fetchRepository()` to pass `hass.language` for consistency
@@ -146,11 +148,17 @@ The implementation uses a session-based cache to avoid repeated failed requests:
 
 ```typescript
 let backendSupportsLanguage: boolean | null = null;
+let backendSupportCheckPromise: Promise<void> | null = null;
 ```
 
 - `null`: Not yet determined (will attempt to send parameter)
 - `true`: Backend supports it (will send parameter)
 - `false`: Backend doesn't support it (will skip parameter)
+
+**Race Condition Protection:**
+- Uses `backendSupportCheckPromise` to synchronize concurrent requests
+- Only sets cache if still `null` to prevent corruption from race conditions
+- Concurrent requests wait for the first check to complete before proceeding
 
 This cache is reset on page reload and can be manually reset using `resetBackendLanguageSupportCache()` for testing.
 
@@ -183,6 +191,20 @@ This implementation follows Home Assistant's translation system patterns:
 ## Screenshots
 
 _Add screenshots showing multilingual README display if available_
+
+## Bug Fixes
+
+This PR includes fixes for two critical bugs discovered during implementation:
+
+1. **Race Condition in Backend Support Cache** (`src/data/repository.ts`)
+   - **Issue**: Concurrent requests with different languages could corrupt the cache state
+   - **Fix**: Implemented promise-based synchronization to ensure only one request determines backend support at a time
+   - **Protection**: Cache is only set if still `null`, preventing concurrent modifications
+
+2. **False Language Change Detection** (`src/dashboards/hacs-repository-dashboard.ts`)
+   - **Issue**: Repository was refetched unnecessarily when `oldHass` was `undefined` (first property change)
+   - **Fix**: Added check to ensure `oldHass` exists before comparing languages
+   - **Result**: Eliminates unnecessary API calls on initial component updates
 
 ## Notes
 
