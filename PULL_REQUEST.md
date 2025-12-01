@@ -7,7 +7,7 @@ This PR adds support for automatic language detection and display of multilingua
 ## Related Backend PR
 
 This frontend implementation requires the corresponding backend changes. Please see:
-- **Backend PR:** https://github.com/hacs/integration/pull/4964 
+- **Backend PR:** https://github.com/hacs/integration/pull/4965 
 
 The backend must support the optional `language` parameter in the `hacs/repository/info` WebSocket command to fully enable this feature.
 
