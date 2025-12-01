@@ -144,8 +144,15 @@ export const fetchRepositoryInformation = async (
           delete message.language;
           console.log(`[HACS] Skipping language parameter (backend doesn't support it - from concurrent request)`);
         }
-        // If still null after waiting, another request is handling it - proceed without language
-      } else {
+        // If still null after waiting, the previous request encountered a non-language-related error
+        // or didn't complete properly. This request should attempt to determine backend support.
+      }
+      
+      // If cache is still null (either no promise existed, or previous check failed), perform our own check
+      if (backendSupportsLanguage === null) {
+        if (backendSupportCheckPromise) {
+          console.log(`[HACS] Cache still null after waiting - previous check may have failed, attempting our own check`);
+        }
         // No ongoing check: create a promise to track this check and prevent race conditions
         let resolveCheck: () => void;
         backendSupportCheckPromise = new Promise((resolve) => {
