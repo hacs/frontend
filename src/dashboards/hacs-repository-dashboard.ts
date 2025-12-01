@@ -146,6 +146,13 @@ export class HacsRepositoryDashboard extends LitElement {
     if (changedProps.has("repositories") && this._repository) {
       this._fetchRepository();
     }
+    // Reload repository information when language changes to show correct README
+    if (changedProps.has("hass") && this._repository) {
+      const oldHass = changedProps.get("hass") as HomeAssistant | undefined;
+      if (oldHass?.language !== this.hass.language) {
+        this._fetchRepository();
+      }
+    }
   }
 
   private async _fetchRepository(repositoryId?: string) {
@@ -153,6 +160,7 @@ export class HacsRepositoryDashboard extends LitElement {
       this._repository = await fetchRepositoryInformation(
         this.hass,
         repositoryId || String(this._repository!.id),
+        this.hass.language,
       );
     } catch (err: any) {
       this._error = err?.message;
