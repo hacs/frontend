@@ -20,11 +20,19 @@ export const getBaseLanguageCode = (language: string | undefined): string => {
 let backendSupportsLanguage: boolean | null = null;
 
 /**
+ * Promise that tracks the ongoing request to determine backend language support.
+ * This prevents race conditions when multiple concurrent requests try to determine
+ * backend support simultaneously.
+ */
+let backendSupportCheckPromise: Promise<void> | null = null;
+
+/**
  * Reset the backend language support cache.
  * Useful for testing or when backend is updated.
  */
 export const resetBackendLanguageSupportCache = () => {
   backendSupportsLanguage = null;
+  backendSupportCheckPromise = null;
 };
 
 export type RepositoryType =
@@ -111,57 +119,102 @@ export const fetchRepositoryInformation = async (
     repository_id: repositoryId,
   };
   
-  // Only send language parameter if backend supports it
-  // Check cache first, then try sending if not yet determined
+  // Determine if we should send the language parameter
   if (baseLanguage && baseLanguage !== "en") {
-    if (backendSupportsLanguage === null) {
-      // First time: try sending the parameter
-      message.language = baseLanguage;
-      console.log(`[HACS] Sending language parameter: "${baseLanguage}" (first attempt)`);
-    } else if (backendSupportsLanguage === true) {
+    if (backendSupportsLanguage === true) {
       // Backend supports it: send the parameter
       message.language = baseLanguage;
       console.log(`[HACS] Sending language parameter: "${baseLanguage}" (backend supports it)`);
-    } else {
+    } else if (backendSupportsLanguage === false) {
       // Backend doesn't support it: don't send the parameter
       console.log(`[HACS] Skipping language parameter (backend doesn't support it)`);
+    } else {
+      // Cache is null: need to determine backend support
+      // Wait for any ongoing check to complete first to prevent race conditions
+      if (backendSupportCheckPromise) {
+        console.log(`[HACS] Waiting for ongoing backend support check...`);
+        await backendSupportCheckPromise;
+        
+        // After waiting, check cache again (another request might have set it)
+        if (backendSupportsLanguage === true) {
+          message.language = baseLanguage;
+          console.log(`[HACS] Sending language parameter: "${baseLanguage}" (backend supports it - from concurrent request)`);
+        } else if (backendSupportsLanguage === false) {
+          console.log(`[HACS] Skipping language parameter (backend doesn't support it - from concurrent request)`);
+        }
+        // If still null after waiting, another request is handling it - proceed without language
+      } else {
+        // No ongoing check: create a promise to track this check and prevent race conditions
+        let resolveCheck: () => void;
+        backendSupportCheckPromise = new Promise((resolve) => {
+          resolveCheck = resolve;
+        });
+        
+        message.language = baseLanguage;
+        console.log(`[HACS] Sending language parameter: "${baseLanguage}" (first attempt)`);
+        
+        try {
+          const result = await hass.connection.sendMessagePromise<RepositoryInfo | undefined>(message);
+          
+          // Success: backend supports the language parameter
+          // Only set to true if still null (protect against concurrent modifications)
+          if (backendSupportsLanguage === null) {
+            backendSupportsLanguage = true;
+            console.log(`[HACS] Backend accepted language parameter "${message.language}" - caching support`);
+          }
+          
+          // Resolve the check promise
+          resolveCheck!();
+          backendSupportCheckPromise = null;
+          
+          return result;
+        } catch (error: any) {
+          // Check if error is about extra keys (backend doesn't support language parameter)
+          const errorMessage = error?.message || String(error);
+          console.log(`[HACS] Error received:`, errorMessage);
+          
+          if (
+            errorMessage.includes("extra keys not allowed") &&
+            (errorMessage.includes("language") || errorMessage.includes("'language'"))
+          ) {
+            // Backend doesn't support language parameter
+            // Only set to false if still null (protect against concurrent successful requests)
+            if (backendSupportsLanguage === null) {
+              backendSupportsLanguage = false;
+              console.log(`[HACS] Backend rejected language parameter - caching rejection and retrying without it`);
+            }
+            
+            // Resolve the check promise
+            resolveCheck!();
+            backendSupportCheckPromise = null;
+            
+            // Retry without language parameter
+            const messageWithoutLanguage: any = {
+              type: "hacs/repository/info",
+              repository_id: repositoryId,
+            };
+            
+            return hass.connection.sendMessagePromise<RepositoryInfo | undefined>(messageWithoutLanguage);
+          }
+          
+          // Resolve the check promise (even on error, so other requests can proceed)
+          resolveCheck!();
+          backendSupportCheckPromise = null;
+          
+          // Re-throw other errors
+          console.log(`[HACS] Error is not related to language parameter, re-throwing`);
+          throw error;
+        }
+      }
     }
   }
   
+  // Make the request (either with or without language parameter)
   try {
     const result = await hass.connection.sendMessagePromise<RepositoryInfo | undefined>(message);
-    
-    // If we sent the language parameter and got a result, backend supports it
-    if (message.language && backendSupportsLanguage === null) {
-      backendSupportsLanguage = true;
-      console.log(`[HACS] Backend accepted language parameter "${message.language}" - caching support`);
-    }
-    
     return result;
   } catch (error: any) {
-    // Check if error is about extra keys (backend doesn't support language parameter)
-    const errorMessage = error?.message || String(error);
-    console.log(`[HACS] Error received:`, errorMessage);
-    
-    if (
-      errorMessage.includes("extra keys not allowed") &&
-      (errorMessage.includes("language") || errorMessage.includes("'language'"))
-    ) {
-      // Backend doesn't support language parameter
-      backendSupportsLanguage = false;
-      console.log(`[HACS] Backend rejected language parameter - caching rejection and retrying without it`);
-      
-      // Retry without language parameter
-      const messageWithoutLanguage: any = {
-        type: "hacs/repository/info",
-        repository_id: repositoryId,
-      };
-      
-      return hass.connection.sendMessagePromise<RepositoryInfo | undefined>(messageWithoutLanguage);
-    }
-    
-    // Re-throw other errors
-    console.log(`[HACS] Error is not related to language parameter, re-throwing`);
+    // Re-throw errors
     throw error;
   }
 };
