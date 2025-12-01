@@ -194,7 +194,7 @@ _Add screenshots showing multilingual README display if available_
 
 ## Bug Fixes
 
-This PR includes fixes for two critical bugs discovered during implementation:
+This PR includes fixes for three critical bugs discovered during implementation:
 
 1. **Race Condition in Backend Support Cache** (`src/data/repository.ts`)
    - **Issue**: Concurrent requests with different languages could corrupt the cache state
@@ -205,6 +205,11 @@ This PR includes fixes for two critical bugs discovered during implementation:
    - **Issue**: Repository was refetched unnecessarily when `oldHass` was `undefined` (first property change)
    - **Fix**: Added check to ensure `oldHass` exists before comparing languages
    - **Result**: Eliminates unnecessary API calls on initial component updates
+
+3. **Language Parameter Not Removed After Backend Rejection** (`src/data/repository.ts`)
+   - **Issue**: When waiting for a concurrent backend support check, if the backend rejects the language parameter, the code logged "Skipping language parameter" but didn't actually remove it from the message object. The message still contained the language property, which then got sent anyway, causing repeated backend errors.
+   - **Fix**: Added `delete message.language;` when `backendSupportsLanguage === false` after waiting for concurrent check
+   - **Result**: Prevents language parameter from being sent when backend doesn't support it, eliminating repeated errors
 
 ## Notes
 
