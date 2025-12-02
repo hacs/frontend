@@ -8,9 +8,10 @@ export const fetchHacsInfo = async (hass: HomeAssistant) =>
     type: "hacs/info",
   });
 
-export const getRepositories = async (hass: HomeAssistant) =>
+export const getRepositories = async (hass: HomeAssistant, language?: string) =>
   hass.connection.sendMessagePromise<RepositoryBase[]>({
     type: "hacs/repositories/list",
+    language: language ?? hass.language,
   });
 
 export const repositoryUninstall = async (hass: HomeAssistant, repository: string) =>
