@@ -26,7 +26,6 @@ This frontend implementation requires the corresponding backend changes:
    - Updated `_fetchRepository()` to pass `hass.language` to `fetchRepositoryInformation()`
    - Added language change detection in `updated()` lifecycle hook
    - Automatically reloads repository information when user changes Home Assistant language
-   - **Fixed false positive detection**: Only refetches when language actually changed (prevents unnecessary API calls on initial property changes)
 
 4. **Download Dialog** (`src/components/dialogs/hacs-download-dialog.ts`)
    - Updated `_fetchRepository()` to pass `hass.language` for consistency
@@ -151,15 +150,6 @@ This implementation follows Home Assistant's translation system patterns:
 ## Screenshots
 
 _Add screenshots showing multilingual README display if available_
-
-## Bug Fixes
-
-This PR includes a fix for language change detection:
-
-1. **False Language Change Detection** (`src/dashboards/hacs-repository-dashboard.ts`)
-   - **Issue**: Repository was refetched unnecessarily when `oldHass` was `undefined` (first property change)
-   - **Fix**: Added check to ensure `oldHass` exists before comparing languages
-   - **Result**: Eliminates unnecessary API calls on initial component updates
 
 ## Type of Change
 
