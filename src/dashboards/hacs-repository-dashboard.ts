@@ -146,11 +146,8 @@ export class HacsRepositoryDashboard extends LitElement {
     if (changedProps.has("repositories") && this._repository) {
       this._fetchRepository();
     }
-    // Reload repository information when language changes to show correct README
     if (changedProps.has("hass") && this._repository) {
       const oldHass = changedProps.get("hass") as HomeAssistant | undefined;
-      // Only refetch if oldHass exists and language actually changed
-      // Skip if oldHass is undefined (first property change or object replacement)
       if (oldHass && oldHass.language !== this.hass.language) {
         this._fetchRepository();
       }

@@ -22,13 +22,9 @@ The backend must support the optional `language` parameter in the `hacs/reposito
 2. **Repository Information Fetching** (`src/data/repository.ts`)
    - Enhanced `fetchRepositoryInformation()` to accept optional `language` parameter
    - Automatically extracts language from `hass.language` if not provided
-   - Sends `language` parameter in WebSocket message when language is not English
-   - Implements intelligent backend support detection with caching:
-     - First request: Attempts to send `language` parameter
-     - On success: Caches backend support and continues sending parameter
-     - On error (unsupported parameter): Caches rejection and retries without parameter
-   - **Race condition protection**: Uses promise-based synchronization to prevent concurrent requests from corrupting the cache state
-   - Fully backward compatible: Works with both old and new backend versions
+   - Extracts base language code from BCP47 format (e.g., "de-DE" → "de")
+   - Sends `language` parameter in WebSocket message only when language is not English
+   - Simple, direct implementation without caching or retry logic
 
 3. **Repository Dashboard** (`src/dashboards/hacs-repository-dashboard.ts`)
    - Updated `_fetchRepository()` to pass `hass.language` to `fetchRepositoryInformation()`
@@ -44,8 +40,6 @@ The backend must support the optional `language` parameter in the `hacs/reposito
 - ✅ **Automatic Language Detection**: Uses `hass.language` from Home Assistant settings
 - ✅ **BCP47 Support**: Extracts base language code from full BCP47 format (e.g., "de-DE" → "de")
 - ✅ **Intelligent Fallback**: Falls back to `README.md` if language-specific README doesn't exist
-- ✅ **Backend Compatibility**: Automatically detects backend support and adapts behavior
-- ✅ **Backward Compatible**: Works with old backend versions (graceful degradation)
 - ✅ **Language Change Detection**: Automatically reloads README when user changes language
 - ✅ **No Breaking Changes**: Existing repositories continue to work without modifications
 
@@ -69,24 +63,13 @@ Repository maintainers can provide multilingual README files using the following
 
 ## Behavior
 
-### When Backend Supports Language Parameter
-
-1. User with `hass.language = "de"` opens a repository
+1. User with `hass.language = "de-DE"` opens a repository
 2. Frontend extracts base language code: "de"
 3. Frontend sends WebSocket message: `{ type: "hacs/repository/info", repository_id: "...", language: "de" }`
 4. Backend returns `README.de.md` if available, otherwise `README.md`
 5. Frontend displays the appropriate README
 
-### When Backend Doesn't Support Language Parameter
-
-1. User with `hass.language = "de"` opens a repository
-2. Frontend attempts to send `language` parameter
-3. Backend rejects the parameter (error: "extra keys not allowed")
-4. Frontend detects the error, caches the rejection, and retries without `language` parameter
-5. Backend returns `README.md` (standard behavior)
-6. Frontend displays `README.md`
-
-This ensures **zero breaking changes** and graceful degradation.
+**Note:** This implementation requires backend support for the `language` parameter. If the backend doesn't support it, the parameter will be ignored by the backend, and `README.md` will be returned (standard behavior).
 
 ## Testing
 
@@ -103,25 +86,10 @@ This ensures **zero breaking changes** and graceful degradation.
    - Open a repository with only `README.md` (no `README.de.md`)
    - Verify that `README.md` is displayed
 
-3. **Test Backward Compatibility:**
-   - Use an old backend version (without `language` parameter support)
-   - Set Home Assistant language to German (`de`)
-   - Open any repository
-   - Verify that no errors occur and `README.md` is displayed
-
-4. **Test Language Change:**
+3. **Test Language Change:**
    - Open a repository
    - Change Home Assistant language in settings
    - Verify that repository information is automatically reloaded
-
-### Browser Console Logs
-
-The implementation includes debug logging to help verify behavior:
-
-- `[HACS] Sending language parameter: "de" (first attempt)` - First request with language
-- `[HACS] Backend accepted language parameter "de" - caching support` - Backend supports it
-- `[HACS] Backend rejected language parameter - caching rejection and retrying without it` - Backend doesn't support it
-- `[HACS] Skipping language parameter (backend doesn't support it)` - Using cached rejection
 
 ## Implementation Details
 
@@ -142,25 +110,32 @@ export const getBaseLanguageCode = (language: string | undefined): string => {
 - `"fr"` → `"fr"`
 - `undefined` → `"en"`
 
-### Backend Support Detection
-
-The implementation uses a session-based cache to avoid repeated failed requests:
+### Repository Information Fetching
 
 ```typescript
-let backendSupportsLanguage: boolean | null = null;
-let backendSupportCheckPromise: Promise<void> | null = null;
+export const fetchRepositoryInformation = async (
+  hass: HomeAssistant,
+  repositoryId: string,
+  language?: string,
+): Promise<RepositoryInfo | undefined> => {
+  const message: any = {
+    type: "hacs/repository/info",
+    repository_id: repositoryId,
+  };
+
+  const languageToUse = language ?? hass.language;
+  if (languageToUse) {
+    const baseLanguage = getBaseLanguageCode(languageToUse);
+    if (baseLanguage !== "en") {
+      message.language = baseLanguage;
+    }
+  }
+
+  return hass.connection.sendMessagePromise<RepositoryInfo | undefined>(message);
+};
 ```
 
-- `null`: Not yet determined (will attempt to send parameter)
-- `true`: Backend supports it (will send parameter)
-- `false`: Backend doesn't support it (will skip parameter)
-
-**Race Condition Protection:**
-- Uses `backendSupportCheckPromise` to synchronize concurrent requests
-- Only sets cache if still `null` to prevent corruption from race conditions
-- Concurrent requests wait for the first check to complete before proceeding
-
-This cache is reset on page reload and can be manually reset using `resetBackendLanguageSupportCache()` for testing.
+The implementation is straightforward: it extracts the base language code and includes it in the WebSocket message if the language is not English. The backend handles the actual file selection and fallback logic.
 
 ## Alignment with Home Assistant Standards
 
@@ -171,22 +146,16 @@ This implementation follows Home Assistant's translation system patterns:
 - ✅ Automatic fallback to English/default
 - ✅ Consistent with Home Assistant's i18n approach
 
-## Documentation
-
-- **Backend Implementation Guide:** `BACKEND_IMPLEMENTATION_GUIDE.md` - Complete guide for backend developers
-- **Feature Request:** `HACS_MULTILINGUAL_FEATURE_REQUEST.md` - Original feature specification
-- **Testing Guide:** `TESTING_MULTILINGUAL_README.md` - Testing instructions
-
 ## Checklist
 
 - [x] Code follows project style guidelines
 - [x] Changes are backward compatible
-- [x] Error handling implemented
-- [x] Debug logging added
 - [x] Language change detection implemented
-- [x] Documentation updated
-- [x] Tested with backend support
-- [x] Tested without backend support (backward compatibility)
+- [x] Code tested locally
+- [x] No commented out code
+- [x] TypeScript types are correct
+- [x] No console errors or warnings
+- [x] Works with backend PR #4965
 
 ## Screenshots
 
@@ -194,36 +163,16 @@ _Add screenshots showing multilingual README display if available_
 
 ## Bug Fixes
 
-This PR includes fixes for five critical bugs discovered during implementation:
+This PR includes a fix for language change detection:
 
-1. **Race Condition in Backend Support Cache** (`src/data/repository.ts`)
-   - **Issue**: Concurrent requests with different languages could corrupt the cache state
-   - **Fix**: Implemented promise-based synchronization to ensure only one request determines backend support at a time
-   - **Protection**: Cache is only set if still `null`, preventing concurrent modifications
-
-2. **False Language Change Detection** (`src/dashboards/hacs-repository-dashboard.ts`)
+1. **False Language Change Detection** (`src/dashboards/hacs-repository-dashboard.ts`)
    - **Issue**: Repository was refetched unnecessarily when `oldHass` was `undefined` (first property change)
    - **Fix**: Added check to ensure `oldHass` exists before comparing languages
    - **Result**: Eliminates unnecessary API calls on initial component updates
 
-3. **Language Parameter Not Removed After Backend Rejection** (`src/data/repository.ts`)
-   - **Issue**: When waiting for a concurrent backend support check, if the backend rejects the language parameter, the code logged "Skipping language parameter" but didn't actually remove it from the message object. The message still contained the language property, which then got sent anyway, causing repeated backend errors.
-   - **Fix**: Added `delete message.language;` when `backendSupportsLanguage === false` after waiting for concurrent check
-   - **Result**: Prevents language parameter from being sent when backend doesn't support it, eliminating repeated errors
-
-4. **Null Cache After Concurrent Check** (`src/data/repository.ts`)
-   - **Issue**: When a concurrent request waits for another request's backend support check to complete, if the cache is still `null` after waiting (indicating the previous request encountered a non-language-related error or didn't complete properly), the code would skip sending the `language` parameter entirely. This meant no request would attempt to determine backend support on subsequent concurrent requests, preventing the cache from being set and causing all requests to eventually skip the language parameter regardless of backend capability.
-   - **Fix**: Modified logic to perform our own backend support check if cache is still `null` after waiting for concurrent check
-   - **Result**: Ensures backend support is always determined, even if previous concurrent checks failed with non-language-related errors
-
-5. **Duplicate Requests After Concurrent Check** (`src/data/repository.ts`)
-   - **Issue**: When waiting for a concurrent backend support check to complete, if the cache was set to `true` or `false`, the code would modify the `message` object but then fall through to the final request sending code at line 235, resulting in sending a duplicate request. This caused unnecessary network traffic and potential race conditions.
-   - **Fix**: After waiting for concurrent check and setting message based on cache state, immediately send the request and return, preventing fall-through to duplicate request code
-   - **Result**: Eliminates duplicate requests when cache is already determined by concurrent check, reducing network overhead and preventing potential race conditions
-
 ## Notes
 
 - This PR only implements the frontend changes. The backend must be updated separately to fully enable the feature.
-- The implementation is designed to work gracefully even if the backend doesn't support the `language` parameter yet.
+- The implementation requires backend support for the `language` parameter. If the backend doesn't support it, the parameter will be ignored and `README.md` will be returned.
 - Repository maintainers are not required to provide multilingual READMEs - this is an opt-in feature.
 
