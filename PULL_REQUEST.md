@@ -2,14 +2,12 @@
 
 ## Summary
 
-This PR adds support for automatic language detection and display of multilingual README files in HACS. The frontend now automatically requests language-specific README files (e.g., `README.de.md`, `README.fr.md`) based on the user's Home Assistant language setting, with automatic fallback to `README.md` if a language-specific version is not available.
+This PR adds support for automatic language detection and display of multilingual README files in HACS. The frontend now automatically requests language-specific README files (e.g., `README.de.md`, `README.fr.md`) based on the user's Home Assistant language setting. The backend handles file selection and automatically falls back to `README.md` if a language-specific version is not available.
 
 ## Related Backend PR
 
-This frontend implementation requires the corresponding backend changes. Please see:
-- **Backend PR:** https://github.com/hacs/integration/pull/4965 
-
-The backend must support the optional `language` parameter in the `hacs/repository/info` WebSocket command to fully enable this feature.
+This frontend implementation requires the corresponding backend changes:
+- **Backend PR:** https://github.com/hacs/integration/pull/4965
 
 ## Changes
 
@@ -21,10 +19,8 @@ The backend must support the optional `language` parameter in the `hacs/reposito
 
 2. **Repository Information Fetching** (`src/data/repository.ts`)
    - Enhanced `fetchRepositoryInformation()` to accept optional `language` parameter
-   - Automatically extracts language from `hass.language` if not provided
-   - Extracts base language code from BCP47 format (e.g., "de-DE" → "de")
+   - Uses `hass.language` if not provided
    - Sends `language` parameter in WebSocket message only when language is not English
-   - Simple, direct implementation without caching or retry logic
 
 3. **Repository Dashboard** (`src/dashboards/hacs-repository-dashboard.ts`)
    - Updated `_fetchRepository()` to pass `hass.language` to `fetchRepositoryInformation()`
@@ -39,7 +35,7 @@ The backend must support the optional `language` parameter in the `hacs/reposito
 
 - ✅ **Automatic Language Detection**: Uses `hass.language` from Home Assistant settings
 - ✅ **BCP47 Support**: Extracts base language code from full BCP47 format (e.g., "de-DE" → "de")
-- ✅ **Intelligent Fallback**: Falls back to `README.md` if language-specific README doesn't exist
+- ✅ **Language Parameter Transmission**: Sends language code to backend for file selection
 - ✅ **Language Change Detection**: Automatically reloads README when user changes language
 - ✅ **No Breaking Changes**: Existing repositories continue to work without modifications
 
@@ -69,14 +65,11 @@ Repository maintainers can provide multilingual README files using the following
 4. Backend returns `README.de.md` if available, otherwise `README.md`
 5. Frontend displays the appropriate README
 
-**Note:** This implementation requires backend support for the `language` parameter. If the backend doesn't support it, the parameter will be ignored by the backend, and `README.md` will be returned (standard behavior).
-
 ## Testing
 
 ### Manual Testing
 
 1. **Test with Backend Support:**
-   - Ensure backend PR is merged or backend supports `language` parameter
    - Set Home Assistant language to German (`de`)
    - Open a repository with `README.de.md`
    - Verify that `README.de.md` is displayed
@@ -135,16 +128,14 @@ export const fetchRepositoryInformation = async (
 };
 ```
 
-The implementation is straightforward: it extracts the base language code and includes it in the WebSocket message if the language is not English. The backend handles the actual file selection and fallback logic.
+The frontend extracts the base language code and includes it in the WebSocket message if the language is not English.
 
 ## Alignment with Home Assistant Standards
 
 This implementation follows Home Assistant's translation system patterns:
-
-- ✅ Uses `hass.language` (same as `async_get_translations()`)
-- ✅ Extracts base language code from BCP47 format
-- ✅ Automatic fallback to English/default
-- ✅ Consistent with Home Assistant's i18n approach
+- Uses `hass.language` (same as `async_get_translations()`)
+- Extracts base language code from BCP47 format
+- Consistent with Home Assistant's i18n approach
 
 ## Checklist
 
@@ -179,16 +170,14 @@ This PR includes a fix for language change detection:
 
 ## Testing Performed
 
-- [x] Tested with backend support (requires backend PR #4965)
-- [x] Tested fallback behavior (repository without language-specific README)
+- [x] Tested with backend support
+- [x] Tested fallback behavior
 - [x] Tested language change detection
 - [x] Tested with various BCP47 language codes (de-DE, en-US, fr, etc.)
-- [x] Verified backward compatibility (works without backend support)
+- [x] Verified backward compatibility
 
 ## Notes
 
-- This PR only implements the frontend changes. The backend must be updated separately to fully enable the feature.
-- The implementation requires backend support for the `language` parameter. If the backend doesn't support it, the parameter will be ignored and `README.md` will be returned.
+- This PR only implements the frontend changes. The backend must be updated separately (PR #4965).
 - Repository maintainers are not required to provide multilingual READMEs - this is an opt-in feature.
-- This PR is related to backend PR #4965: https://github.com/hacs/integration/pull/4965
 
