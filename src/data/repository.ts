@@ -57,11 +57,8 @@ export const fetchRepositoryInformation = async (
   const message: any = {
     type: "hacs/repository/info",
     repository_id: repositoryId,
+    language: language ?? hass.language,
   };
-
-  if (language ?? hass.language) {
-    message.language = language ?? hass.language;
-  }
 
   return hass.connection.sendMessagePromise<RepositoryInfo | undefined>(message);
 };
