@@ -2,7 +2,7 @@
 
 ## Summary
 
-This PR adds support for automatic language detection and display of multilingual README files in HACS. The frontend passes the user's Home Assistant language setting (`hass.language`) to the backend, which handles all language processing, file selection, and fallback logic.
+This PR adds support for multilingual README files in HACS. The frontend passes the user's Home Assistant language setting (`hass.language`) to the backend via the `hacs/repository/info` WebSocket command. The backend handles all language processing, file selection, and fallback logic.
 
 ## Related Backend PR
 
@@ -11,24 +11,16 @@ This frontend implementation requires the corresponding backend changes:
 
 ## Changes
 
-### Core Implementation
-
 1. **Repository Information Fetching** (`src/data/repository.ts`)
-   - Enhanced `fetchRepositoryInformation()` to accept optional `language` parameter
-   - Passes `hass.language` to backend if not provided
-   - All language processing logic is handled by the backend
+   - Added `language` parameter to `fetchRepositoryInformation()` function
+   - Always includes `language` field in WebSocket message (uses `hass.language` as fallback)
 
 2. **Repository Dashboard** (`src/dashboards/hacs-repository-dashboard.ts`)
-   - Updated `_fetchRepository()` to pass `hass.language` to `fetchRepositoryInformation()`
-   - Added language change detection in `updated()` lifecycle hook
-   - Automatically reloads repository information when user changes Home Assistant language
+   - Passes `hass.language` when fetching repository information
+   - Detects language changes in `updated()` lifecycle hook and automatically refetches repository data
 
 3. **Download Dialog** (`src/components/dialogs/hacs-download-dialog.ts`)
-   - Updated `_fetchRepository()` to pass `hass.language` for consistency
-
-## File Naming Convention
-
-Repository maintainers can provide multilingual README files using the pattern `README.{language_code}.md` (e.g., `README.de.md`, `README.fr.md`). The default `README.md` is always used as fallback.
+   - Passes `hass.language` when fetching repository information
 
 ## Checklist
 
@@ -41,5 +33,5 @@ Repository maintainers can provide multilingual README files using the pattern `
 ## Notes
 
 - This PR only implements the frontend changes. The backend must be updated separately (PR #4965).
-- Repository maintainers are not required to provide multilingual READMEs - this is an opt-in feature.
+- Repository maintainers can provide multilingual README files using the pattern `README.{language_code}.md` (e.g., `README.de.md`, `README.fr.md`). The default `README.md` is always used as fallback.
 
