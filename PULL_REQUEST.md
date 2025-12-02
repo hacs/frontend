@@ -2,7 +2,7 @@
 
 ## Summary
 
-This PR adds support for automatic language detection and display of multilingual README files in HACS. The frontend now automatically requests language-specific README files (e.g., `README.de.md`, `README.fr.md`) based on the user's Home Assistant language setting. The backend handles file selection and automatically falls back to `README.md` if a language-specific version is not available.
+This PR adds support for automatic language detection and display of multilingual README files in HACS. The frontend passes the user's Home Assistant language setting (`hass.language`) to the backend, which handles all language processing, file selection, and fallback logic.
 
 ## Related Backend PR
 
@@ -13,21 +13,17 @@ This frontend implementation requires the corresponding backend changes:
 
 ### Core Implementation
 
-1. **Language Code Extraction** (`src/data/repository.ts`)
-   - Added `getBaseLanguageCode()` function to extract base language code from BCP47 format (e.g., "de-DE" → "de")
-   - Handles edge cases (undefined, empty strings, uppercase)
-
-2. **Repository Information Fetching** (`src/data/repository.ts`)
+1. **Repository Information Fetching** (`src/data/repository.ts`)
    - Enhanced `fetchRepositoryInformation()` to accept optional `language` parameter
-   - Uses `hass.language` if not provided
-   - Sends `language` parameter in WebSocket message only when language is not English
+   - Passes `hass.language` to backend if not provided
+   - All language processing logic is handled by the backend
 
-3. **Repository Dashboard** (`src/dashboards/hacs-repository-dashboard.ts`)
+2. **Repository Dashboard** (`src/dashboards/hacs-repository-dashboard.ts`)
    - Updated `_fetchRepository()` to pass `hass.language` to `fetchRepositoryInformation()`
    - Added language change detection in `updated()` lifecycle hook
    - Automatically reloads repository information when user changes Home Assistant language
 
-4. **Download Dialog** (`src/components/dialogs/hacs-download-dialog.ts`)
+3. **Download Dialog** (`src/components/dialogs/hacs-download-dialog.ts`)
    - Updated `_fetchRepository()` to pass `hass.language` for consistency
 
 ## File Naming Convention

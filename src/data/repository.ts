@@ -49,19 +49,6 @@ export interface RepositoryInfo extends RepositoryBase {
   version_or_commit: "version" | "commit";
 }
 
-/**
- * Extracts the base language code from a BCP47 language tag.
- * Examples: "de-DE" → "de", "en-US" → "en", "fr" → "fr"
- * @param language - The language code in BCP47 format (e.g., "de-DE", "en-US") or simple format (e.g., "de", "en")
- * @returns The base language code in lowercase, or "en" if language is undefined or empty
- */
-export const getBaseLanguageCode = (language: string | undefined): string => {
-  if (!language) {
-    return "en";
-  }
-  return language.split("-")[0].toLowerCase();
-};
-
 export const fetchRepositoryInformation = async (
   hass: HomeAssistant,
   repositoryId: string,
@@ -72,12 +59,8 @@ export const fetchRepositoryInformation = async (
     repository_id: repositoryId,
   };
 
-  const languageToUse = language ?? hass.language;
-  if (languageToUse) {
-    const baseLanguage = getBaseLanguageCode(languageToUse);
-    if (baseLanguage !== "en") {
-      message.language = baseLanguage;
-    }
+  if (language ?? hass.language) {
+    message.language = language ?? hass.language;
   }
 
   return hass.connection.sendMessagePromise<RepositoryInfo | undefined>(message);
