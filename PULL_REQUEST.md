@@ -170,9 +170,25 @@ This PR includes a fix for language change detection:
    - **Fix**: Added check to ensure `oldHass` exists before comparing languages
    - **Result**: Eliminates unnecessary API calls on initial component updates
 
+## Type of Change
+
+- [x] New feature (non-breaking change which adds functionality)
+- [ ] Bugfix (non-breaking change which fixes an issue)
+- [ ] Breaking change (fix/feature causing existing functionality to break)
+- [ ] Code quality improvements to existing code or addition of tests
+
+## Testing Performed
+
+- [x] Tested with backend support (requires backend PR #4965)
+- [x] Tested fallback behavior (repository without language-specific README)
+- [x] Tested language change detection
+- [x] Tested with various BCP47 language codes (de-DE, en-US, fr, etc.)
+- [x] Verified backward compatibility (works without backend support)
+
 ## Notes
 
 - This PR only implements the frontend changes. The backend must be updated separately to fully enable the feature.
 - The implementation requires backend support for the `language` parameter. If the backend doesn't support it, the parameter will be ignored and `README.md` will be returned.
 - Repository maintainers are not required to provide multilingual READMEs - this is an opt-in feature.
+- This PR is related to backend PR #4965: https://github.com/hacs/integration/pull/4965
 
