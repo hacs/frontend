@@ -10,7 +10,7 @@ init: bootstrap
 start: ## Start the frontend
 	yarn start;
 
-bootstrap: ## Run yarn
+bootstrap: ## Bootstrap the development environment
 	git submodule update --init;
 	script/bootstrap;
 
