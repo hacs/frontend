@@ -18,7 +18,7 @@ export interface HacsFormDialogParams extends BaseHacsDialogParams {
   saveLabel?: string;
   destructive?: boolean;
   description?: HTMLTemplateResult | string;
-  forceLTR: boolean;
+  forceLTR?: boolean;
   computeLabelCallback?: (schema: any, data: HaFormDataContainer) => string;
   computeHelper?: (schema: any) => string | undefined;
   computeError?: (schema: any, error) => string;
