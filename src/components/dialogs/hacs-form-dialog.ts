@@ -40,7 +40,7 @@ class HacsFromDialog extends LitElement {
       },
       HacsDispatchEvent.ERROR,
     );
-    this._forceLTR = dialogParams.forceLTR;
+    this._forceLTR = dialogParams.forceLTR ?? false;
     await this.updateComplete;
   }
 
