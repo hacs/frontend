@@ -26,6 +26,8 @@ class HacsFromDialog extends LitElement {
 
   @state() _errors?: Record<string, string>;
 
+  @state() _forceLTR: boolean = false;
+
   _errorSubscription: any;
 
   public async showDialog(dialogParams: HacsFormDialogParams): Promise<void> {
@@ -38,6 +40,7 @@ class HacsFromDialog extends LitElement {
       },
       HacsDispatchEvent.ERROR,
     );
+    this._forceLTR = dialogParams.forceLTR;
     await this.updateComplete;
   }
 
@@ -64,6 +67,7 @@ class HacsFromDialog extends LitElement {
           ? createCloseHeading(this.hass, this._dialogParams.title)
           : this._dialogParams.title}
         @closed=${this.closeDialog}
+        class="${this._forceLTR ? "force-ltr" : ""}"
       >
         <div>
           ${this._dialogParams.description || nothing}
@@ -150,6 +154,9 @@ class HacsFromDialog extends LitElement {
       mwc-linear-progress {
         margin-bottom: -8px;
         margin-top: 4px;
+      }
+      .force-ltr {
+        direction: ltr;
       }
     `;
   }

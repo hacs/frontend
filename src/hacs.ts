@@ -9,6 +9,10 @@ import { computeLocalize } from "../homeassistant-frontend/src/common/translatio
 import { getTranslation } from "../homeassistant-frontend/src/util/common-translation";
 import { fetchHacsInfo, getRepositories, websocketSubscription } from "./data/websocket";
 import { HacsDispatchEvent } from "./data/common";
+import {
+  computeRTLDirection,
+  computeDirectionStyles,
+} from "../homeassistant-frontend/src/common/util/compute_rtl";
 
 export class HacsElement extends ProvideHassLitMixin(LitElement) {
   @property({ attribute: false }) public hacs: Partial<Hacs> = { localize: () => "" };
@@ -43,30 +47,30 @@ export class HacsElement extends ProvideHassLitMixin(LitElement) {
     websocketSubscription(
       this.hass,
       () => this._updateProperties("configuration"),
-      HacsDispatchEvent.CONFIG
+      HacsDispatchEvent.CONFIG,
     );
 
     websocketSubscription(
       this.hass,
       () => this._updateProperties("status"),
-      HacsDispatchEvent.STATUS
+      HacsDispatchEvent.STATUS,
     );
 
     websocketSubscription(
       this.hass,
       () => this._updateProperties("status"),
-      HacsDispatchEvent.STAGE
+      HacsDispatchEvent.STAGE,
     );
 
     websocketSubscription(
       this.hass,
       () => this._updateProperties("repositories"),
-      HacsDispatchEvent.REPOSITORY
+      HacsDispatchEvent.REPOSITORY,
     );
 
     this.hass.connection.subscribeEvents(
       async () => this._updateProperties("lovelace"),
-      "lovelace_updated"
+      "lovelace_updated",
     );
 
     this._updateHacs({
@@ -76,12 +80,17 @@ export class HacsElement extends ProvideHassLitMixin(LitElement) {
     this._updateProperties();
 
     this.addEventListener("update-hacs", (e) =>
-      this._updateHacs((e as any).detail as Partial<Hacs>)
+      this._updateHacs((e as any).detail as Partial<Hacs>),
     );
   }
 
   private async _initializeLocalize() {
     const { language, data } = await getTranslation(null, this._language);
+
+    const dir = computeRTLDirection(this.hass);
+    window.document.documentElement.setAttribute("dir", dir);
+    computeDirectionStyles(dir === "rtl", this);
+
     this._updateHacs({
       localize: await computeLocalize<HacsLocalizeKeys>(this.constructor.prototype, language, {
         [language]: data,

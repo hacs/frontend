@@ -258,6 +258,7 @@ export class HacsDashboard extends LitElement {
               description: html`<ha-markdown
                 .content=${aboutHacsmarkdownContent(this.hacs)}
               ></ha-markdown>`,
+              forceLTR: true,
             });
           }}
         >
