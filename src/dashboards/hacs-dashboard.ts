@@ -39,7 +39,7 @@ import "../../homeassistant-frontend/src/components/ha-svg-icon";
 import { PageNavigation } from "../../homeassistant-frontend/src/layouts/hass-tabs-subpage";
 import { haStyle } from "../../homeassistant-frontend/src/resources/styles";
 import type { HomeAssistant, Route } from "../../homeassistant-frontend/src/types";
-import { brandsUrl } from "../../homeassistant-frontend/src/util/brands-url";
+import { hacsBrandsUrl } from "../tools/brands-url";
 import {
   showHacsCustomRepositoriesDialog,
   showHacsFormDialog,
@@ -327,8 +327,7 @@ export class HacsDashboard extends LitElement {
                 <img
                   style="height: 32px; width: 32px"
                   slot="item-icon"
-                  src=${brandsUrl({
-                    domain: repository.domain || "invalid",
+                  src=${hacsBrandsUrl(repository, {
                     type: "icon",
                     useFallback: true,
                     darkOptimized: this.hass.themes?.darkMode,
