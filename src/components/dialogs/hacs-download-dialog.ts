@@ -150,6 +150,7 @@ export class HacsDonwloadDialog extends LitElement {
       this._repository = await fetchRepositoryInformation(
         this.hass,
         this._dialogParams!.repositoryId,
+        this.hass.language,
       );
     } catch (err: any) {
       this._error = err;
