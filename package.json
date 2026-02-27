@@ -85,7 +85,7 @@
     "prettier": "3.4.2",
     "rspack-manifest-plugin": "5.0.2",
     "sinon": "19.0.2",
-    "tar": "7.4.3",
+    "tar": "7.5.8",
     "terser-webpack-plugin": "5.3.11",
     "ts-lit-plugin": "2.0.2",
     "typescript": "5.7.2",
