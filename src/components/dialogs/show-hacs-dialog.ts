@@ -18,6 +18,7 @@ export interface HacsFormDialogParams extends BaseHacsDialogParams {
   saveLabel?: string;
   destructive?: boolean;
   description?: HTMLTemplateResult | string;
+  forceLTR?: boolean;
   computeLabelCallback?: (schema: any, data: HaFormDataContainer) => string;
   computeHelper?: (schema: any) => string | undefined;
   computeError?: (schema: any, error) => string;
@@ -33,7 +34,7 @@ export interface HacsCustomRepositoriesDialogParams extends BaseHacsDialogParams
 
 export const showHacsFormDialog = (
   element: HTMLElement,
-  dialogParams: HacsFormDialogParams
+  dialogParams: HacsFormDialogParams,
 ): void => {
   fireEvent(element, "show-dialog", {
     dialogTag: "hacs-form-dialog",
@@ -44,7 +45,7 @@ export const showHacsFormDialog = (
 
 export const showHacsDownloadDialog = (
   element: HTMLElement,
-  dialogParams: HacsDownloadDialogParams
+  dialogParams: HacsDownloadDialogParams,
 ): void => {
   fireEvent(element, "show-dialog", {
     dialogTag: "hacs-download-dialog",
@@ -55,7 +56,7 @@ export const showHacsDownloadDialog = (
 
 export const showHacsCustomRepositoriesDialog = (
   element: HTMLElement,
-  dialogParams: HacsCustomRepositoriesDialogParams
+  dialogParams: HacsCustomRepositoriesDialogParams,
 ): void => {
   fireEvent(element, "show-dialog", {
     dialogTag: "hacs-custom-repositories-dialog",
