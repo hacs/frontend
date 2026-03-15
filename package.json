@@ -3,7 +3,8 @@
   "description": "Frontend of HACS",
   "scripts": {
     "start": "./script/develop",
-    "build": "./script/build"
+    "build": "./script/build",
+    "lint": "eslint ."
   },
   "repository": {
     "type": "git",

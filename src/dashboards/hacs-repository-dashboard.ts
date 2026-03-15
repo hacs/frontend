@@ -287,7 +287,7 @@ export class HacsRepositoryDashboard extends LitElement {
                 <ha-md-menu-item
                   class="${entry.error ? "error" : entry.warning ? "warning" : ""}"
                   .clickAction=${() => {
-                    entry?.action && entry.action();
+                    entry?.action?.();
                   }}
                 >
                   <ha-svg-icon .path=${entry.path} slot="start"></ha-svg-icon>

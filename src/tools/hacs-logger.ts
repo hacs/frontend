@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 export class HacsLogger {
   prefix: string;
 

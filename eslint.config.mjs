@@ -11,8 +11,10 @@ export default tseslint.config(
     ignores: [
       "src/resources/lit-virtualizer/*",
       "homeassistant-frontend/**",
+      "hacs_frontend/**",
       "build/**",
       "node_modules/**",
+      "script/**",
     ],
   },
   eslint.configs.recommended,
@@ -27,8 +29,6 @@ export default tseslint.config(
       sourceType: "module",
       parserOptions: {
         ecmaFeatures: { modules: true },
-        projectService: true,
-        tsconfigRootDir: import.meta.dirname,
       },
       globals: {
         ...globals.browser,
@@ -58,9 +58,6 @@ export default tseslint.config(
       "@typescript-eslint/no-unused-vars": "off",
       "@typescript-eslint/explicit-function-return-type": "off",
       "@typescript-eslint/explicit-module-boundary-types": "off",
-      "@typescript-eslint/no-empty-object-type": "off",
-      "@typescript-eslint/no-unused-expressions": "off",
-      "@typescript-eslint/no-require-imports": "off",
       "wc/no-self-class": "off",
       "lit/attribute-value-entities": "off",
     },

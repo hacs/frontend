@@ -182,7 +182,7 @@ export class HacsDashboard extends LitElement {
                       <ha-md-menu-item
                         class="${entry.error ? "error" : entry.warning ? "warning" : ""}"
                         .clickAction=${() => {
-                          entry?.action && entry.action();
+                          entry?.action?.();
                         }}
                       >
                         <ha-svg-icon .path=${entry.path} slot="start"></ha-svg-icon>
@@ -327,6 +327,7 @@ export class HacsDashboard extends LitElement {
                 <img
                   style="height: 32px; width: 32px"
                   slot="item-icon"
+                  alt=${repository.domain || "integration"}
                   src=${brandsUrl({
                     domain: repository.domain || "invalid",
                     type: "icon",
