@@ -141,10 +141,13 @@ export class HacsRepositoryDashboard extends LitElement {
     }
   }
 
-  protected updated(changedProps) {
+  protected updated(changedProps: PropertyValues<this>): void {
     super.updated(changedProps);
-    if (changedProps.has("repositories") && this._repository) {
-      this._fetchRepository();
+    if (changedProps.has("hass") && this._repository) {
+      const oldHass = changedProps.get("hass") as HomeAssistant | undefined;
+      if (oldHass && oldHass.language !== this.hass.language) {
+        this._fetchRepository();
+      }
     }
   }
 
@@ -153,6 +156,7 @@ export class HacsRepositoryDashboard extends LitElement {
       this._repository = await fetchRepositoryInformation(
         this.hass,
         repositoryId || String(this._repository!.id),
+        this.hass.language,
       );
     } catch (err: any) {
       this._error = err?.message;
