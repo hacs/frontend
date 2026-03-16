@@ -239,13 +239,19 @@ export class HacsRepositoryDashboard extends LitElement {
                     <ha-svg-icon slot="icon" .path=${mdiArrowDownBold}></ha-svg-icon>
                   </ha-assist-chip>`
                 : ""}
-              <ha-assist-chip
-                .label=${String(this._repository.stars)}
-                title="${this.hacs.localize("dialog_info.stars")}"
+              <a
+                href="https://github.com/${this._repository.full_name}/stargazers"
+                target="_blank"
+                rel="noreferrer noopener"
               >
-                <ha-svg-icon slot="icon" .path=${mdiStar}></ha-svg-icon>
-                ${this._repository.stars}
-              </ha-assist-chip>
+                <ha-assist-chip
+                  .label=${String(this._repository.stars)}
+                  title="${this.hacs.localize("dialog_info.stars")}"
+                >
+                  <ha-svg-icon slot="icon" .path=${mdiStar}></ha-svg-icon>
+                  ${this._repository.stars}
+                </ha-assist-chip>
+              </a>
               <a
                 href="https://github.com/${this._repository.full_name}/issues"
                 target="_blank"
