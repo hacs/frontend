@@ -29,7 +29,7 @@ export interface HacsDownloadDialogParams extends BaseHacsDialogParams {
   repository?: RepositoryInfo;
 }
 
-export interface HacsCustomRepositoriesDialogParams extends BaseHacsDialogParams {}
+export type HacsCustomRepositoriesDialogParams = BaseHacsDialogParams;
 
 export const showHacsFormDialog = (
   element: HTMLElement,

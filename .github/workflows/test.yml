@@ -15,11 +15,12 @@ concurrency:
   cancel-in-progress: true
 
 env:
-  NODE_VERSION: 18
+  NODE_VERSION: 22
+  NODE_VERSION_BUILD: 18
 
 jobs:
-  build_frontend:
-    name: Test build
+  lint:
+    name: Lint
     runs-on: ubuntu-latest
 
     steps:
@@ -32,6 +33,27 @@ jobs:
         with:
           cache: yarn
           node-version: ${{ env.NODE_VERSION }}
+
+      - name: Install dependencies
+        run: script/bootstrap
+
+      - name: Lint
+        run: yarn lint
+
+  build_frontend:
+    name: Test build
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        with:
+          submodules: recursive
+
+      - name: Set up Node.js ${{ env.NODE_VERSION_BUILD }}
+        uses: actions/setup-node@53b83947a5a98c8d113130e565377fae1a50d02f # v6.3.0
+        with:
+          cache: yarn
+          node-version: ${{ env.NODE_VERSION_BUILD }}
 
       - name: Install dependencies
         run: script/bootstrap
