@@ -360,6 +360,7 @@ export class HacsRepositoryDashboard extends LitElement {
           margin: auto;
           padding: 8px;
           max-width: 1536px;
+          direction: ltr;
         }
 
         ha-chip-set {
