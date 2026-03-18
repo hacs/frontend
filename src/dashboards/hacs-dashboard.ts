@@ -64,6 +64,18 @@ const defaultKeyData = {
 
 const STATUS_ORDER = ["pending-restart", "pending-upgrade", "installed", "new", "default"];
 
+const repositoryHostedBrandIconUrl = (repository: RepositoryBase, dark: boolean): string =>
+  repository.domain
+    ? brandsUrl({
+        domain: repository.domain,
+        type: "icon",
+        darkOptimized: dark,
+      })
+    : repositoryFallbackIconUrl(repository, dark);
+
+const repositoryFallbackIconUrl = (repository: RepositoryBase, dark: boolean): string =>
+  `/api/hacs/icon/${repository.id}${dark ? "?dark=1" : ""}`;
+
 const TABS: PageNavigation[] = [
   {
     name: APP_FULL_NAME,
@@ -113,6 +125,15 @@ export class HacsDashboard extends LitElement {
 
   @state()
   private _overflowMenuRepository?: RepositoryBase;
+
+  private _handleRepositoryIconError(ev: Event, repository: RepositoryBase): void {
+    const img = ev.currentTarget as HTMLImageElement;
+    const fallback = repositoryFallbackIconUrl(repository, Boolean(this.hass.themes?.darkMode));
+    if (img.src.endsWith(fallback)) {
+      return;
+    }
+    img.src = fallback;
+  }
 
   protected render = (): TemplateResult | void => {
     const repositories = this._filterRepositories(
@@ -327,12 +348,11 @@ export class HacsDashboard extends LitElement {
                 <img
                   style="height: 32px; width: 32px"
                   slot="item-icon"
-                  src=${brandsUrl({
-                    domain: repository.domain || "invalid",
-                    type: "icon",
-                    useFallback: true,
-                    darkOptimized: this.hass.themes?.darkMode,
-                  })}
+                  src=${repositoryHostedBrandIconUrl(
+                    repository,
+                    Boolean(this.hass.themes?.darkMode),
+                  )}
+                  @error=${(ev: Event) => this._handleRepositoryIconError(ev, repository)}
                   referrerpolicy="no-referrer"
                 />
               `
