@@ -309,6 +309,38 @@ export class HacsDashboard extends LitElement {
         })),
   );
 
+  private _repositoryBrandFallbackUrl(repository: RepositoryBase): string {
+    return brandsUrl({
+      domain: repository.domain || "invalid",
+      type: "icon",
+      useFallback: true,
+      darkOptimized: this.hass.themes?.darkMode,
+    });
+  }
+
+  private _repositoryBrandUrl(repository: RepositoryBase): string {
+    if (!repository.installed || !repository.domain) {
+      return this._repositoryBrandFallbackUrl(repository);
+    }
+
+    return `/api/brands/integration/${repository.domain}/icon.png`;
+  }
+
+  private _handleRepositoryBrandError = (event: Event): void => {
+    const image = event.currentTarget;
+    if (!(image instanceof HTMLImageElement)) {
+      return;
+    }
+
+    const fallbackSrc = image.dataset.fallbackSrc;
+    if (!fallbackSrc || image.getAttribute("src") === fallbackSrc) {
+      return;
+    }
+
+    image.src = fallbackSrc;
+    image.removeAttribute("data-fallback-src");
+  };
+
   private _columns = memoize(
     (
       localizeFunc: LocalizeFunc<HacsLocalizeKeys>,
@@ -327,12 +359,9 @@ export class HacsDashboard extends LitElement {
                 <img
                   style="height: 32px; width: 32px"
                   slot="item-icon"
-                  src=${brandsUrl({
-                    domain: repository.domain || "invalid",
-                    type: "icon",
-                    useFallback: true,
-                    darkOptimized: this.hass.themes?.darkMode,
-                  })}
+                  src=${this._repositoryBrandUrl(repository)}
+                  data-fallback-src=${this._repositoryBrandFallbackUrl(repository)}
+                  @error=${this._handleRepositoryBrandError}
                   referrerpolicy="no-referrer"
                 />
               `
