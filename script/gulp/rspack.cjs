@@ -24,21 +24,24 @@ const createWebpackConfig = ({
   if (!dontHash) {
     dontHash = new Set();
   }
-  haPaths.polymer_dir = paths.home_assistant_frontend_root;
-  const haRspackContents = haRspack.createRspackConfig({
-    name,
-    entry,
-    outputPath,
-    publicPath,
-    defineOverlay,
-    isProdBuild,
-    latestBuild,
-    isStatsBuild,
-    isTestBuild,
-    isHassioBuild: true,
-    dontHash,
-  });
-  haPaths.polymer_dir = paths.root_dir;
+  haPaths.root_dir = paths.home_assistant_frontend_root;
+  let haRspackContents;
+  try {
+    haRspackContents = haRspack.createRspackConfig({
+      name,
+      entry,
+      outputPath,
+      publicPath,
+      defineOverlay,
+      isProdBuild,
+      latestBuild,
+      isStatsBuild,
+      isTestBuild,
+      dontHash,
+    });
+  } finally {
+    haPaths.root_dir = paths.root_dir;
+  }
   return {
     ...haRspackContents,
     output: {

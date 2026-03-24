@@ -19,9 +19,9 @@ import "../../homeassistant-frontend/src/components/ha-alert";
 import "../../homeassistant-frontend/src/components/ha-card";
 import "../../homeassistant-frontend/src/components/ha-fab";
 import "../../homeassistant-frontend/src/components/ha-markdown";
-import "../../homeassistant-frontend/src/components/ha-menu";
-import type { HaMenu } from "../../homeassistant-frontend/src/components/ha-menu";
-import "../../homeassistant-frontend/src/components/ha-md-menu-item";
+import "../../homeassistant-frontend/src/components/ha-dropdown";
+import type { HaDropdown } from "../../homeassistant-frontend/src/components/ha-dropdown";
+import "../../homeassistant-frontend/src/components/ha-dropdown-item";
 import { showConfirmationDialog } from "../../homeassistant-frontend/src/dialogs/generic/show-dialog-box";
 import "../../homeassistant-frontend/src/layouts/hass-error-screen";
 import "../../homeassistant-frontend/src/layouts/hass-loading-screen";
@@ -53,7 +53,7 @@ export class HacsRepositoryDashboard extends LitElement {
   @state() private _error?: string;
 
   @query("#overflow-menu")
-  private _repositoryOverflowMenu!: HaMenu;
+  private _repositoryOverflowMenu!: HaDropdown;
 
   public connectedCallback() {
     super.connectedCallback();
@@ -279,23 +279,23 @@ export class HacsRepositoryDashboard extends LitElement {
             </ha-fab>`
           : ""}
       </hass-subpage>
-      <ha-menu id="overflow-menu" positioning="fixed">
+      <ha-dropdown id="overflow-menu">
         ${repositoryMenuItems(this, this._repository, this.hacs.localize).map((entry) =>
           entry.divider
             ? html`<li divider role="separator"></li>`
             : html`
-                <ha-md-menu-item
+                <ha-dropdown-item
                   class="${entry.error ? "error" : entry.warning ? "warning" : ""}"
-                  .clickAction=${() => {
-                    entry?.action && entry.action();
+                  @click=${() => {
+                    entry?.action?.();
                   }}
                 >
-                  <ha-svg-icon .path=${entry.path} slot="start"></ha-svg-icon>
-                  <div slot="headline">${entry.label}</div>
-                </ha-md-menu-item>
+                  <ha-svg-icon .path=${entry.path} slot="icon"></ha-svg-icon>
+                  ${entry.label}
+                </ha-dropdown-item>
               `,
         )}
-      </ha-menu>
+      </ha-dropdown>
     `;
   }
 
@@ -304,11 +304,11 @@ export class HacsRepositoryDashboard extends LitElement {
       this._repositoryOverflowMenu.open &&
       ev.target === this._repositoryOverflowMenu.anchorElement
     ) {
-      this._repositoryOverflowMenu.close();
+      this._repositoryOverflowMenu.anchorElement = undefined;
       return;
     }
     this._repositoryOverflowMenu.anchorElement = ev.target;
-    this._repositoryOverflowMenu.show();
+    this._repositoryOverflowMenu.open = true;
   };
 
   private _downloadRepositoryDialog() {
