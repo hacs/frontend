@@ -1,10 +1,11 @@
-import "@material/mwc-button/mwc-button";
 import "@material/mwc-linear-progress/mwc-linear-progress";
 import { mdiDelete } from "@mdi/js";
 import { css, html, LitElement, nothing } from "lit";
 import { customElement, property, state } from "lit/decorators";
 import { fireEvent } from "../../../homeassistant-frontend/src/common/dom/fire_event";
-import { createCloseHeading } from "../../../homeassistant-frontend/src/components/ha-dialog";
+import "../../../homeassistant-frontend/src/components/ha-button";
+import "../../../homeassistant-frontend/src/components/ha-dialog";
+import "../../../homeassistant-frontend/src/components/ha-dialog-footer";
 import "../../../homeassistant-frontend/src/components/ha-form/ha-form";
 import type { HaFormSchema } from "../../../homeassistant-frontend/src/components/ha-form/types";
 import "../../../homeassistant-frontend/src/components/ha-settings-row";
@@ -65,10 +66,7 @@ export class HacsCustomRepositoriesDialog extends LitElement {
         open
         scrimClickAction
         escapeKeyAction
-        .heading=${createCloseHeading(
-          this.hass,
-          this._dialogParams.hacs.localize("dialog_custom_repositories.title"),
-        )}
+        .headerTitle=${this._dialogParams.hacs.localize("dialog_custom_repositories.title")}
         @closed=${this.closeDialog}
       >
         <div>
@@ -134,19 +132,21 @@ export class HacsCustomRepositoriesDialog extends LitElement {
             ? html`<mwc-linear-progress indeterminate></mwc-linear-progress>`
             : nothing}
         </div>
-        <mwc-button slot="secondaryAction" @click=${this.closeDialog} dialogInitialFocus>
-          ${this._dialogParams.hacs.localize("common.cancel")}
-        </mwc-button>
-        <mwc-button
-          .disabled=${this._waiting ||
-          !this._data ||
-          !this._data.repository ||
-          !this._data.category}
-          slot="primaryAction"
-          @click=${this._addRepository}
-        >
-          ${this._dialogParams.hacs.localize("common.add")}
-        </mwc-button>
+        <ha-dialog-footer slot="footer">
+          <ha-button slot="secondaryAction" @click=${this.closeDialog} dialogInitialFocus>
+            ${this._dialogParams.hacs.localize("common.cancel")}
+          </ha-button>
+          <ha-button
+            .disabled=${this._waiting ||
+            !this._data ||
+            !this._data.repository ||
+            !this._data.category}
+            slot="primaryAction"
+            @click=${this._addRepository}
+          >
+            ${this._dialogParams.hacs.localize("common.add")}
+          </ha-button>
+        </ha-dialog-footer>
       </ha-dialog>
     `;
   }

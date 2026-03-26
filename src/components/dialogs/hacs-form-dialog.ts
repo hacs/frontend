@@ -1,10 +1,10 @@
-import "@material/mwc-button/mwc-button";
 import "@material/mwc-linear-progress/mwc-linear-progress";
 import { CSSResultGroup, LitElement, css, html, nothing } from "lit";
 import { customElement, property, state } from "lit/decorators";
 import { fireEvent } from "../../../homeassistant-frontend/src/common/dom/fire_event";
+import "../../../homeassistant-frontend/src/components/ha-button";
 import "../../../homeassistant-frontend/src/components/ha-dialog";
-import { createCloseHeading } from "../../../homeassistant-frontend/src/components/ha-dialog";
+import "../../../homeassistant-frontend/src/components/ha-dialog-footer";
 import "../../../homeassistant-frontend/src/components/ha-form/ha-form";
 import type {
   HaFormDataContainer,
@@ -60,9 +60,7 @@ class HacsFromDialog extends LitElement {
         open
         .scrimClickAction=${this._dialogParams.saveAction !== undefined}
         .escapeKeyAction=${this._dialogParams.saveAction !== undefined}
-        .heading=${this._dialogParams.saveAction === undefined
-          ? createCloseHeading(this.hass, this._dialogParams.title)
-          : this._dialogParams.title}
+        .headerTitle=${this._dialogParams.title}
         @closed=${this.closeDialog}
       >
         <div>
@@ -85,19 +83,21 @@ class HacsFromDialog extends LitElement {
             : nothing}
         </div>
         ${this._dialogParams.saveAction
-          ? html`<mwc-button slot="secondaryAction" @click=${this.closeDialog} dialogInitialFocus>
-                ${this._dialogParams.hacs.localize("common.cancel")}
-              </mwc-button>
-              <mwc-button
-                class="${this._dialogParams.destructive ? "destructive" : ""}"
-                .disabled=${this._waiting ||
-                (this._dialogParams.schema?.some((entry) => entry.required) &&
-                  !this._dialogParams.data)}
-                slot="primaryAction"
-                @click=${this._saveClicked}
-              >
-                ${this._dialogParams.saveLabel || this._dialogParams.hacs.localize("common.save")}
-              </mwc-button>`
+          ? html`<ha-dialog-footer slot="footer">
+                <ha-button slot="secondaryAction" @click=${this.closeDialog} dialogInitialFocus>
+                  ${this._dialogParams.hacs.localize("common.cancel")}
+                </ha-button>
+                <ha-button
+                  class="${this._dialogParams.destructive ? "destructive" : ""}"
+                  .disabled=${this._waiting ||
+                  (this._dialogParams.schema?.some((entry) => entry.required) &&
+                    !this._dialogParams.data)}
+                  slot="primaryAction"
+                  @click=${this._saveClicked}
+                >
+                  ${this._dialogParams.saveLabel || this._dialogParams.hacs.localize("common.save")}
+                </ha-button>
+              </ha-dialog-footer>`
           : nothing}
       </ha-dialog>
     `;

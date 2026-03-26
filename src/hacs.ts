@@ -9,6 +9,7 @@ import { computeLocalize } from "../homeassistant-frontend/src/common/translatio
 import { getTranslation } from "../homeassistant-frontend/src/util/common-translation";
 import { fetchHacsInfo, getRepositories, websocketSubscription } from "./data/websocket";
 import { HacsDispatchEvent } from "./data/common";
+import { fetchAndScheduleBrandsAccessToken } from "../homeassistant-frontend/src/util/brands-url";
 
 export class HacsElement extends ProvideHassLitMixin(LitElement) {
   @property({ attribute: false }) public hacs: Partial<Hacs> = { localize: () => "" };
@@ -40,6 +41,8 @@ export class HacsElement extends ProvideHassLitMixin(LitElement) {
   }
 
   private async _initHacs(): Promise<void> {
+    fetchAndScheduleBrandsAccessToken(this.hass);
+
     websocketSubscription(
       this.hass,
       () => this._updateProperties("configuration"),
