@@ -1,14 +1,7 @@
-// Compat needs to be first import
-import "../homeassistant-frontend/src/resources/compatibility";
-
 import "./main";
 
 import("../homeassistant-frontend/src/resources/roboto");
-import("../homeassistant-frontend/src/resources/ha-style");
-
-import("@polymer/polymer/lib/utils/settings").then(({ setCancelSyntheticClickEvents }) =>
-  setCancelSyntheticClickEvents(false),
-);
+import("../homeassistant-frontend/src/resources/append-ha-style");
 
 const styleEl = document.createElement("style");
 styleEl.innerHTML = `

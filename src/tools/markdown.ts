@@ -6,7 +6,7 @@ const showGitHubWeb = (text: string) =>
 export const markdownWithRepositoryContext = (input: string, repository?: RepositoryInfo) => {
   // Handle convertion to raw GitHub URL
   input = input.replace(
-    /https:\/\/github\.com\/([^\/]+)\/([^\/]+)\/blob\/([^\s]+)/g,
+    /https:\/\/github\.com\/([^/]+)\/([^/]+)\/blob\/([^\s]+)/g,
     function (x, owner, repo, path) {
       return showGitHubWeb(x) ? x : `https://raw.githubusercontent.com/${owner}/${repo}/${path}`;
     },
@@ -27,7 +27,7 @@ export const markdownWithRepositoryContext = (input: string, repository?: Reposi
     });
 
     // Handle anchor refrences
-    input = input.replace(/\[.*\]\(\#.*\)/g, function (x) {
+    input = input.replace(/\[.*\]\(#.*\)/g, function (x) {
       return x.replace("(#", `(/hacs/repository/${repository.id}#`);
     });
 

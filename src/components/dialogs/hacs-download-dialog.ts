@@ -1,4 +1,3 @@
-import "@material/mwc-button/mwc-button";
 import "@material/mwc-linear-progress/mwc-linear-progress";
 import { css, CSSResultGroup, html, LitElement, nothing } from "lit";
 import { customElement, property, state } from "lit/decorators";
@@ -8,8 +7,9 @@ import { mainWindow } from "../../../homeassistant-frontend/src/common/dom/get_m
 import { computeRTL } from "../../../homeassistant-frontend/src/common/util/compute_rtl";
 import "../../../homeassistant-frontend/src/components/ha-alert";
 import "../../../homeassistant-frontend/src/components/ha-button";
-import "../../../homeassistant-frontend/src/components/ha-circular-progress";
+import "../../../homeassistant-frontend/src/components/ha-spinner";
 import "../../../homeassistant-frontend/src/components/ha-dialog";
+import "../../../homeassistant-frontend/src/components/ha-dialog-footer";
 import "../../../homeassistant-frontend/src/components/ha-expansion-panel";
 import "../../../homeassistant-frontend/src/components/ha-form/ha-form";
 import "../../../homeassistant-frontend/src/components/ha-list-item";
@@ -162,9 +162,9 @@ export class HacsDonwloadDialog extends LitElement {
     }
     if (!this._repository) {
       return html`
-        <ha-dialog open scrimClickAction escapeKeyAction heading="Loading...">
+        <ha-dialog open scrimClickAction escapeKeyAction headerTitle="Loading...">
           <div class="loading">
-            <ha-circular-progress indeterminate></ha-circular-progress>
+            <ha-spinner></ha-spinner>
             ${this._error
               ? html`<ha-alert alert-type="error" .rtl=${computeRTL(this.hass)}>
                   ${this._error.message || this._error}
@@ -260,16 +260,18 @@ export class HacsDonwloadDialog extends LitElement {
             ? html`<mwc-linear-progress indeterminate></mwc-linear-progress>`
             : nothing}
         </div>
-        <mwc-button slot="secondaryAction" @click=${this.closeDialog} dialogInitialFocus>
-          ${this._dialogParams.hacs.localize("common.cancel")}
-        </mwc-button>
-        <mwc-button
-          slot="primaryAction"
-          ?disabled=${this._waiting || this._installing}
-          @click=${this._installRepository}
-        >
-          ${this._dialogParams.hacs.localize("common.download")}
-        </mwc-button>
+        <ha-dialog-footer slot="footer">
+          <ha-button slot="secondaryAction" @click=${this.closeDialog} dialogInitialFocus>
+            ${this._dialogParams.hacs.localize("common.cancel")}
+          </ha-button>
+          <ha-button
+            slot="primaryAction"
+            .disabled=${this._waiting || this._installing}
+            @click=${this._installRepository}
+          >
+            ${this._dialogParams.hacs.localize("common.download")}
+          </ha-button>
+        </ha-dialog-footer>
       </ha-dialog>
     `;
   }

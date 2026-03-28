@@ -18,7 +18,7 @@ const hacsPaths = {
 };
 
 haPaths.build_dir = hacsPaths.build_dir;
-haPaths.polymer_dir = hacsPaths.root_dir;
+haPaths.root_dir = hacsPaths.root_dir;
 haPaths.translations_src = hacsPaths.translations_src;
 haPaths.app_output_root = hacsPaths.app_output_root;
 haPaths.app_output_static = hacsPaths.app_output_static;

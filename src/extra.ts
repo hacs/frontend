@@ -10,6 +10,7 @@ import { showToast } from "../homeassistant-frontend/src/util/toast";
       return;
     }
     if (!hass) {
+      // eslint-disable-next-line no-console
       console.error("[HACS/extra/reload_handler] hass not found");
       return;
     }
@@ -21,7 +22,7 @@ import { showToast } from "../homeassistant-frontend/src/util/toast";
         message: "[HACS] You need to reload your browser",
         action: {
           action: () => {
-            mainWindow.location.href = mainWindow.location.href;
+            mainWindow.location.reload();
           },
           text: "reload",
         },

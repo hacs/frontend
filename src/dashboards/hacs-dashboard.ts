@@ -25,16 +25,15 @@ import type {
 } from "../../homeassistant-frontend/src/components/data-table/ha-data-table";
 import "../../homeassistant-frontend/src/layouts/hass-tabs-subpage-data-table";
 
-import "../../homeassistant-frontend/src/components/ha-button-menu";
+import "../../homeassistant-frontend/src/components/ha-dropdown";
+import "../../homeassistant-frontend/src/components/ha-dropdown-item";
 import "../../homeassistant-frontend/src/components/ha-fab";
 import "../../homeassistant-frontend/src/components/ha-form/ha-form";
 import "../../homeassistant-frontend/src/components/ha-markdown";
-import "../../homeassistant-frontend/src/components/ha-menu";
-import "../../homeassistant-frontend/src/components/ha-md-menu-item";
 
 import { LocalizeFunc } from "../../homeassistant-frontend/src/common/translations/localize";
 import { HaFormSchema } from "../../homeassistant-frontend/src/components/ha-form/types";
-import { HaMenu } from "../../homeassistant-frontend/src/components/ha-menu";
+import type { HaDropdown } from "../../homeassistant-frontend/src/components/ha-dropdown";
 import "../../homeassistant-frontend/src/components/ha-svg-icon";
 import { PageNavigation } from "../../homeassistant-frontend/src/layouts/hass-tabs-subpage";
 import { haStyle } from "../../homeassistant-frontend/src/resources/styles";
@@ -106,10 +105,10 @@ export class HacsDashboard extends LitElement {
   private _orderTableColumns?: string[];
 
   @query("#overflow-menu")
-  private _overflowMenu!: HaMenu;
+  private _overflowMenu!: HaDropdown;
 
   @query("#repository-overflow-menu")
-  private _repositoryOverflowMenu!: HaMenu;
+  private _repositoryOverflowMenu!: HaDropdown;
 
   @state()
   private _overflowMenuRepository?: RepositoryBase;
@@ -172,45 +171,45 @@ export class HacsDashboard extends LitElement {
           @value-changed=${this._handleFilterChanged}
         ></ha-form>
       </hass-tabs-subpage-data-table>
-      <ha-menu id="repository-overflow-menu" positioning="fixed">
+      <ha-dropdown id="repository-overflow-menu">
         ${this._overflowMenuRepository
           ? repositoryMenuItems(this, this._overflowMenuRepository, this.hacs.localize).map(
               (entry) =>
                 entry.divider
                   ? html`<li divider role="separator"></li>`
                   : html`
-                      <ha-md-menu-item
+                      <ha-dropdown-item
                         class="${entry.error ? "error" : entry.warning ? "warning" : ""}"
-                        .clickAction=${() => {
-                          entry?.action && entry.action();
+                        @click=${() => {
+                          entry?.action?.();
                         }}
                       >
-                        <ha-svg-icon .path=${entry.path} slot="start"></ha-svg-icon>
-                        <div slot="headline">${entry.label}</div>
-                      </ha-md-menu-item>
+                        <ha-svg-icon .path=${entry.path} slot="icon"></ha-svg-icon>
+                        ${entry.label}
+                      </ha-dropdown-item>
                     `,
             )
           : nothing}
-      </ha-menu>
-      <ha-menu id="overflow-menu" positioning="fixed">
-        <ha-md-menu-item
-          .clickAction=${() => {
+      </ha-dropdown>
+      <ha-dropdown id="overflow-menu">
+        <ha-dropdown-item
+          @click=${() => {
             mainWindow.open(documentationUrl({}), "_blank", "noreferrer=true");
           }}
         >
-          <ha-svg-icon .path=${mdiFileDocument} slot="start"></ha-svg-icon>
-          <div slot="headline">${this.hacs.localize("menu.documentation")}</div>
-        </ha-md-menu-item>
-        <ha-md-menu-item
-          .clickAction=${() => {
+          <ha-svg-icon .path=${mdiFileDocument} slot="icon"></ha-svg-icon>
+          ${this.hacs.localize("menu.documentation")}
+        </ha-dropdown-item>
+        <ha-dropdown-item
+          @click=${() => {
             mainWindow.open("https://github.com/hacs", "_blank", "noreferrer=true");
           }}
         >
-          <ha-svg-icon .path=${mdiGithub} slot="start"></ha-svg-icon>
-          <div slot="headline">GitHub</div>
-        </ha-md-menu-item>
-        <ha-md-menu-item
-          .clickAction=${() => {
+          <ha-svg-icon .path=${mdiGithub} slot="icon"></ha-svg-icon>
+          GitHub
+        </ha-dropdown-item>
+        <ha-dropdown-item
+          @click=${() => {
             mainWindow.open(
               documentationUrl({
                 path: "/docs/help/issues",
@@ -220,11 +219,11 @@ export class HacsDashboard extends LitElement {
             );
           }}
         >
-          <ha-svg-icon .path=${mdiAlertCircleOutline} slot="start"></ha-svg-icon>
-          <div slot="headline">${this.hacs.localize("menu.open_issue")}</div>
-        </ha-md-menu-item>
-        <ha-md-menu-item
-          .clickAction=${() => {
+          <ha-svg-icon .path=${mdiAlertCircleOutline} slot="icon"></ha-svg-icon>
+          ${this.hacs.localize("menu.open_issue")}
+        </ha-dropdown-item>
+        <ha-dropdown-item
+          @click=${() => {
             if (!this.hacs.info.disabled_reason) {
               showHacsCustomRepositoriesDialog(this, {
                 hacs: this.hacs,
@@ -237,21 +236,21 @@ export class HacsDashboard extends LitElement {
             }
           }}
         >
-          <ha-svg-icon .path=${mdiGit} slot="start"></ha-svg-icon>
-          <div slot="headline">${this.hacs.localize("menu.custom_repositories")}</div>
-        </ha-md-menu-item>
+          <ha-svg-icon .path=${mdiGit} slot="icon"></ha-svg-icon>
+          ${this.hacs.localize("menu.custom_repositories")}
+        </ha-dropdown-item>
         ${repositoriesContainsNew
-          ? html`<ha-md-menu-item
-              .clickAction=${() => {
+          ? html`<ha-dropdown-item
+              @click=${() => {
                 repositoriesClearNew(this.hass, this.hacs);
               }}
             >
-              <ha-svg-icon .path=${mdiNewBox} slot="start"></ha-svg-icon>
-              <div slot="headline">${this.hacs.localize("menu.dismiss")}</div>
-            </ha-md-menu-item>`
+              <ha-svg-icon .path=${mdiNewBox} slot="icon"></ha-svg-icon>
+              ${this.hacs.localize("menu.dismiss")}
+            </ha-dropdown-item>`
           : nothing}
-        <ha-md-menu-item
-          .clickAction=${() => {
+        <ha-dropdown-item
+          @click=${() => {
             showHacsFormDialog(this, {
               hacs: this.hacs,
               title: APP_FULL_NAME,
@@ -261,10 +260,10 @@ export class HacsDashboard extends LitElement {
             });
           }}
         >
-          <ha-svg-icon .path=${mdiInformation} slot="start"></ha-svg-icon>
-          <div slot="headline">${this.hacs.localize("menu.about")}</div>
-        </ha-md-menu-item>
-      </ha-menu>`;
+          <ha-svg-icon .path=${mdiInformation} slot="icon"></ha-svg-icon>
+          ${this.hacs.localize("menu.about")}
+        </ha-dropdown-item>
+      </ha-dropdown>`;
   };
 
   private _filterRepositories = memoize(
@@ -327,10 +326,10 @@ export class HacsDashboard extends LitElement {
                 <img
                   style="height: 32px; width: 32px"
                   slot="item-icon"
+                  alt=""
                   src=${brandsUrl({
                     domain: repository.domain || "invalid",
                     type: "icon",
-                    useFallback: true,
                     darkOptimized: this.hass.themes?.darkMode,
                   })}
                   referrerpolicy="no-referrer"
@@ -446,21 +445,21 @@ export class HacsDashboard extends LitElement {
       this._repositoryOverflowMenu.open &&
       ev.target === this._repositoryOverflowMenu.anchorElement
     ) {
-      this._repositoryOverflowMenu.close();
+      this._repositoryOverflowMenu.anchorElement = undefined;
       return;
     }
     this._repositoryOverflowMenu.anchorElement = ev.target;
     this._overflowMenuRepository = ev.target.repository;
-    this._repositoryOverflowMenu.show();
+    this._repositoryOverflowMenu.open = true;
   };
 
   private _showOverflowMenu = (ev: any) => {
     if (this._overflowMenu.open) {
-      this._overflowMenu.close();
+      this._overflowMenu.anchorElement = undefined;
       return;
     }
     this._overflowMenu.anchorElement = ev.target;
-    this._overflowMenu.show();
+    this._overflowMenu.open = true;
   };
 
   private _groupOrder = memoize(
