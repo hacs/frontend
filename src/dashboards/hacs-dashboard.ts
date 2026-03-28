@@ -326,6 +326,7 @@ export class HacsDashboard extends LitElement {
                 <img
                   style="height: 32px; width: 32px"
                   slot="item-icon"
+                  alt=""
                   src=${brandsUrl({
                     domain: repository.domain || "invalid",
                     type: "icon",

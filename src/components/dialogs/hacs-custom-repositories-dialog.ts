@@ -39,7 +39,6 @@ export class HacsCustomRepositoriesDialog extends LitElement {
     this._errorSubscription = await websocketSubscription(
       this.hass,
       (data) => {
-        console.log(data);
         this._errors = { base: data?.message || data };
       },
       HacsDispatchEvent.ERROR,
