@@ -36,7 +36,7 @@ import { HaMenu } from "../../homeassistant-frontend/src/components/ha-menu";
 import "../../homeassistant-frontend/src/components/ha-svg-icon";
 import { PageNavigation } from "../../homeassistant-frontend/src/layouts/hass-tabs-subpage";
 import { haStyle } from "../../homeassistant-frontend/src/resources/styles";
-import type { HomeAssistant, Route } from "../../homeassistant-frontend/src/types";
+import type { HomeAssistant, Route, ValueChangedEvent } from "../../homeassistant-frontend/src/types";
 import { brandsUrl } from "../../homeassistant-frontend/src/util/brands-url";
 import {
   showHacsCustomRepositoriesDialog,
@@ -483,8 +483,8 @@ export class HacsDashboard extends LitElement {
     this._overflowMenu.show();
   };
 
-  private _handleFilterExpanded(ev) {
-    const filterId = (ev.target as HTMLElement).id;
+  private _handleFilterExpanded(ev: CustomEvent<{ expanded: boolean }>) {
+    const filterId = (ev.currentTarget as HTMLElement).id;
     if (ev.detail.expanded) {
       this._expandedFilter = filterId;
     } else if (this._expandedFilter === filterId) {
@@ -522,14 +522,11 @@ export class HacsDashboard extends LitElement {
     navigate(`/hacs/repository/${ev.detail.id}`);
   }
 
-  private _handlePaneFilterChanged(ev: CustomEvent) {
+  private _handlePaneFilterChanged(ev: ValueChangedEvent<string[] | undefined>) {
     ev.stopPropagation();
 
-    const filterId = (ev.target as HTMLElement).id;
-    const prefix =
-      filterId === "status-filter"
-        ? "status_"
-        : "type_";
+    const filterId = (ev.currentTarget as HTMLElement).id;
+    const prefix = filterId === "status-filter" ? "status_" : "type_";
 
     const preservedFilters = (this._activeFilters || []).filter((filter) => !filter.startsWith(prefix));
     const nextValues = ev.detail.value || [];
