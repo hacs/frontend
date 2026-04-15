@@ -35,6 +35,7 @@
     "available_version": "Available version",
     "status": "Status",
     "type": "Type",
+    "topics": "Topics",
     "last_updated": "Activity"
   },
   "confirm": {

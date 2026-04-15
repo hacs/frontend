@@ -421,7 +421,13 @@ export class HacsDashboard extends LitElement {
       domain: defaultKeyData,
       full_name: defaultKeyData,
       id: defaultKeyData,
-      topics: defaultKeyData,
+      topics: {
+        ...defaultKeyData,
+        title: localizeFunc("column.topics"),
+        hidden: false,
+        template: (repository: RepositoryBase) =>
+          repository.topics?.length ? repository.topics.join(", ") : "-",
+      },
       actions: {
         title: "",
         label: localizeFunc("column.actions"),
