@@ -55,6 +55,7 @@ import { HacsStyles } from "../styles/hacs-common-style";
 import { documentationUrl } from "../tools/documentation";
 import { typeIcon } from "../tools/type-icon";
 import { showAlertDialog } from "../../homeassistant-frontend/src/dialogs/generic/show-dialog-box";
+import "../components/hacs-data-table-topics";
 
 const defaultKeyData = {
   title: "",
@@ -425,8 +426,11 @@ export class HacsDashboard extends LitElement {
         ...defaultKeyData,
         title: localizeFunc("column.topics"),
         hidden: false,
+        defaultHidden: true,
         template: (repository: RepositoryBase) =>
-          repository.topics?.length ? repository.topics.join(", ") : "-",
+          repository.topics?.length
+            ? html`<hacs-data-table-topics .topics=${repository.topics}></hacs-data-table-topics>`
+            : "-",
       },
       actions: {
         title: "",
