@@ -60,7 +60,13 @@ const defaultKeyData = {
   hidden: true,
 };
 
-const STATUS_ORDER = ["pending-restart", "pending-upgrade", "installed", "new", "default"];
+type RepositoryStatus = RepositoryBase["status"];
+type RepositoryStatusKey = `repository_status.${RepositoryStatus}`;
+
+const STATUS_ORDER = ["pending-restart", "pending-upgrade", "installed", "new", "default"] as const satisfies readonly RepositoryStatus[];
+
+const repositoryStatusKey = (status: RepositoryStatus): RepositoryStatusKey =>
+  `repository_status.${status}`;
 
 const TABS: PageNavigation[] = [
   {
@@ -167,11 +173,7 @@ export class HacsDashboard extends LitElement {
           .value=${this._activeFilters?.filter((filter) => filter.startsWith("status_"))}
           .states=${STATUS_ORDER.map((filter) => ({
             value: `status_${filter}`,
-            label:
-              this.hacs.localize(
-                // @ts-ignore
-                `repository_status.${filter}`,
-              ) || filter,
+            label: this.hacs.localize(repositoryStatusKey(filter)) || filter,
           }))}
           @data-table-filter-changed=${this._handlePaneFilterChanged}
           .expanded=${this._expandedFilter === "status-filter"}
@@ -323,8 +325,7 @@ export class HacsDashboard extends LitElement {
         })
         .map((repository) => ({
           ...repository,
-          translated_status:
-            localizeFunc(`repository_status.${repository.status}`) || repository.status,
+          translated_status: localizeFunc(repositoryStatusKey(repository.status)) || repository.status,
           translated_category: localizeFunc(`common.type.${repository.category}`),
         })),
   );
@@ -495,27 +496,27 @@ export class HacsDashboard extends LitElement {
   private _groupOrder = memoize(
     (localize: LocalizeFunc<HacsLocalizeKeys>, activeGrouping: string | undefined) =>
       activeGrouping === "translated_status"
-        ? STATUS_ORDER.map((filter) =>
-            localize(
-              // @ts-ignore
-              `repository_status.${filter}`,
-            ),
-          )
+        ? STATUS_ORDER.map((filter) => localize(repositoryStatusKey(filter)))
         : undefined,
   );
 
   get _scrollerTarget() {
-    return (
+    const slot =
       this.shadowRoot
         ?.querySelector("hass-tabs-subpage-data-table")
         ?.shadowRoot?.querySelector("hass-tabs-subpage")
         ?.shadowRoot?.querySelector(".content")
-        ?.querySelectorAll("SLOT")[0]
-        // @ts-ignore
-        ?.assignedNodes()
-        ?.find((node) => node.nodeName === "HA-DATA-TABLE")
-        ?.shadowRoot?.querySelector(".scroller")
-    );
+        ?.querySelector("slot") || null;
+
+    if (!(slot instanceof HTMLSlotElement)) {
+      return undefined;
+    }
+
+    const dataTable = slot
+      .assignedNodes()
+      .find((node): node is HTMLElement => node instanceof HTMLElement && node.nodeName === "HA-DATA-TABLE");
+
+    return dataTable?.shadowRoot?.querySelector(".scroller");
   }
 
   private _handleRowClicked(ev: CustomEvent) {
