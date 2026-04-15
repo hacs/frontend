@@ -25,20 +25,18 @@ import type {
 } from "../../homeassistant-frontend/src/components/data-table/ha-data-table";
 import "../../homeassistant-frontend/src/layouts/hass-tabs-subpage-data-table";
 
-import "../../homeassistant-frontend/src/components/ha-button-menu";
 import "../../homeassistant-frontend/src/components/ha-fab";
-import "../../homeassistant-frontend/src/components/ha-form/ha-form";
+import "../../homeassistant-frontend/src/components/ha-filter-states";
 import "../../homeassistant-frontend/src/components/ha-markdown";
 import "../../homeassistant-frontend/src/components/ha-menu";
 import "../../homeassistant-frontend/src/components/ha-md-menu-item";
 
 import { LocalizeFunc } from "../../homeassistant-frontend/src/common/translations/localize";
-import { HaFormSchema } from "../../homeassistant-frontend/src/components/ha-form/types";
 import { HaMenu } from "../../homeassistant-frontend/src/components/ha-menu";
 import "../../homeassistant-frontend/src/components/ha-svg-icon";
 import { PageNavigation } from "../../homeassistant-frontend/src/layouts/hass-tabs-subpage";
 import { haStyle } from "../../homeassistant-frontend/src/resources/styles";
-import type { HomeAssistant, Route } from "../../homeassistant-frontend/src/types";
+import type { HomeAssistant, Route, ValueChangedEvent } from "../../homeassistant-frontend/src/types";
 import { brandsUrl } from "../../homeassistant-frontend/src/util/brands-url";
 import {
   showHacsCustomRepositoriesDialog,
@@ -62,7 +60,13 @@ const defaultKeyData = {
   hidden: true,
 };
 
-const STATUS_ORDER = ["pending-restart", "pending-upgrade", "installed", "new", "default"];
+type RepositoryStatus = RepositoryBase["status"];
+type RepositoryStatusKey = `repository_status.${RepositoryStatus}`;
+
+const STATUS_ORDER = ["pending-restart", "pending-upgrade", "installed", "new", "default"] as const satisfies readonly RepositoryStatus[];
+
+const repositoryStatusKey = (status: RepositoryStatus): RepositoryStatusKey =>
+  `repository_status.${status}`;
 
 const TABS: PageNavigation[] = [
   {
@@ -104,6 +108,8 @@ export class HacsDashboard extends LitElement {
 
   @storage({ key: "hacs-dashboard-table-columns-ordering", state: true, subscribe: false })
   private _orderTableColumns?: string[];
+
+  @state() private _expandedFilter?: string;
 
   @query("#overflow-menu")
   private _overflowMenu!: HaMenu;
@@ -159,18 +165,34 @@ export class HacsDashboard extends LitElement {
           @click=${this._showOverflowMenu}
         ></ha-icon-button>
 
-        <ha-form
+        <ha-filter-states
           slot="filter-pane"
-          class="filters"
           .hass=${this.hass}
-          .data=${{
-            status: this._activeFilters?.find((filter) => filter.startsWith("status_")) || "",
-            type: this._activeFilters?.find((filter) => filter.startsWith("type_")) || "",
-          }}
-          .schema=${this._filterSchema(this.hacs.localize, this.hacs.info.categories)}
-          .computeLabel=${this._computeFilterFormLabel}
-          @value-changed=${this._handleFilterChanged}
-        ></ha-form>
+          id="status-filter"
+          .label=${this.hacs.localize("dialog_overview.status")}
+          .value=${this._activeFilters?.filter((filter) => filter.startsWith("status_"))}
+          .states=${STATUS_ORDER.map((filter) => ({
+            value: `status_${filter}`,
+            label: this.hacs.localize(repositoryStatusKey(filter)) || filter,
+          }))}
+          @data-table-filter-changed=${this._handlePaneFilterChanged}
+          .expanded=${this._expandedFilter === "status-filter"}
+          @expanded-changed=${this._handleFilterExpanded}
+        ></ha-filter-states>
+        <ha-filter-states
+          slot="filter-pane"
+          .hass=${this.hass}
+          id="type-filter"
+          .label=${this.hacs.localize("dialog_overview.type")}
+          .value=${this._activeFilters?.filter((filter) => filter.startsWith("type_"))}
+          .states=${this.hacs.info.categories.map((type: string) => ({
+            value: `type_${type}`,
+            label: this.hacs.localize(`common.type.${type as RepositoryType}`),
+          }))}
+          @data-table-filter-changed=${this._handlePaneFilterChanged}
+          .expanded=${this._expandedFilter === "type-filter"}
+          @expanded-changed=${this._handleFilterExpanded}
+        ></ha-filter-states>
       </hass-tabs-subpage-data-table>
       <ha-menu id="repository-overflow-menu" positioning="fixed">
         ${this._overflowMenuRepository
@@ -303,8 +325,7 @@ export class HacsDashboard extends LitElement {
         })
         .map((repository) => ({
           ...repository,
-          translated_status:
-            localizeFunc(`repository_status.${repository.status}`) || repository.status,
+          translated_status: localizeFunc(repositoryStatusKey(repository.status)) || repository.status,
           translated_category: localizeFunc(`common.type.${repository.category}`),
         })),
   );
@@ -463,97 +484,56 @@ export class HacsDashboard extends LitElement {
     this._overflowMenu.show();
   };
 
+  private _handleFilterExpanded(ev: CustomEvent<{ expanded: boolean }>) {
+    const filterId = (ev.currentTarget as HTMLElement).id;
+    if (ev.detail.expanded) {
+      this._expandedFilter = filterId;
+    } else if (this._expandedFilter === filterId) {
+      this._expandedFilter = undefined;
+    }
+  }
+
   private _groupOrder = memoize(
     (localize: LocalizeFunc<HacsLocalizeKeys>, activeGrouping: string | undefined) =>
       activeGrouping === "translated_status"
-        ? STATUS_ORDER.map((filter) =>
-            localize(
-              // @ts-ignore
-              `repository_status.${filter}`,
-            ),
-          )
+        ? STATUS_ORDER.map((filter) => localize(repositoryStatusKey(filter)))
         : undefined,
   );
 
-  private _filterSchema = memoize(
-    (localizeFunc: LocalizeFunc<HacsLocalizeKeys>, types: string[]) =>
-      [
-        {
-          name: "filters",
-          type: "constant",
-          value: "",
-        },
-        {
-          name: "status",
-          selector: {
-            select: {
-              options: STATUS_ORDER.map((filter) => ({
-                value: `status_${filter}`,
-                label: localizeFunc(
-                  // @ts-ignore
-                  `repository_status.${filter}`,
-                ),
-              })),
-              mode: "dropdown",
-              sort: false,
-            },
-          },
-        },
-        {
-          name: "type",
-          selector: {
-            select: {
-              options: types.map((type: string) => ({
-                label: localizeFunc(`common.type.${type as RepositoryType}`),
-                value: `type_${type}`,
-              })),
-              mode: "dropdown",
-              sort: true,
-            },
-          },
-        },
-      ] as const satisfies readonly HaFormSchema[],
-  );
-
   get _scrollerTarget() {
-    return (
+    const slot =
       this.shadowRoot
         ?.querySelector("hass-tabs-subpage-data-table")
         ?.shadowRoot?.querySelector("hass-tabs-subpage")
         ?.shadowRoot?.querySelector(".content")
-        ?.querySelectorAll("SLOT")[0]
-        // @ts-ignore
-        ?.assignedNodes()
-        ?.find((node) => node.nodeName === "HA-DATA-TABLE")
-        ?.shadowRoot?.querySelector(".scroller")
-    );
-  }
+        ?.querySelector("slot") || null;
 
-  private _computeFilterFormLabel = (schema, _) =>
-    this.hacs.localize(
-      // @ts-ignore
-      `dialog_overview.${schema.name}`,
-    ) ||
-    this.hacs.localize(
-      // @ts-ignore
-      `dialog_overview.sections.${schema.name}`,
-    ) ||
-    schema.name;
+    if (!(slot instanceof HTMLSlotElement)) {
+      return undefined;
+    }
+
+    const dataTable = slot
+      .assignedNodes()
+      .find((node): node is HTMLElement => node instanceof HTMLElement && node.nodeName === "HA-DATA-TABLE");
+
+    return dataTable?.shadowRoot?.querySelector(".scroller");
+  }
 
   private _handleRowClicked(ev: CustomEvent) {
     navigate(`/hacs/repository/${ev.detail.id}`);
   }
 
-  private _handleFilterChanged(ev: CustomEvent) {
+  private _handlePaneFilterChanged(ev: ValueChangedEvent<string[] | undefined>) {
     ev.stopPropagation();
-    const data = ev.detail.value;
-    const updatedFilters: string[] = Object.entries<any>(data)
-      .filter(
-        ([key, value]) =>
-          ["status", "type"].includes(key) && ![undefined, null, ""].includes(value),
-      )
-      .map(([_, value]) => value);
-    this._activeFilters = updatedFilters.length ? updatedFilters : undefined;
+
+    const filterId = (ev.currentTarget as HTMLElement).id;
+    const prefix = filterId === "status-filter" ? "status_" : "type_";
+
+    const preservedFilters = (this._activeFilters || []).filter((filter) => !filter.startsWith(prefix));
+    const nextValues = ev.detail.value || [];
+    const nextFilters = [...preservedFilters, ...nextValues];
+
+    this._activeFilters = nextFilters.length ? nextFilters : undefined;
   }
 
   private _handleSearchFilterChanged(ev: CustomEvent) {
