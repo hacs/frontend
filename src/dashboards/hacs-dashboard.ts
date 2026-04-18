@@ -10,7 +10,7 @@ import {
   mdiInformation,
   mdiNewBox,
 } from "@mdi/js";
-import type { CSSResultGroup, TemplateResult } from "lit";
+import type { CSSResultGroup, PropertyValues, TemplateResult } from "lit";
 import { LitElement, html, nothing } from "lit";
 import { customElement, property, query, state } from "lit/decorators";
 import memoize from "memoize-one";
@@ -39,7 +39,11 @@ import "../../homeassistant-frontend/src/components/ha-svg-icon";
 import { PageNavigation } from "../../homeassistant-frontend/src/layouts/hass-tabs-subpage";
 import { haStyle } from "../../homeassistant-frontend/src/resources/styles";
 import type { HomeAssistant, Route } from "../../homeassistant-frontend/src/types";
-import { brandsUrl } from "../../homeassistant-frontend/src/util/brands-url";
+import {
+  brandsUrl,
+  clearBrandsTokenRefresh,
+  fetchAndScheduleBrandsAccessToken,
+} from "../../homeassistant-frontend/src/util/brands-url";
 import {
   showHacsCustomRepositoriesDialog,
   showHacsFormDialog,
@@ -113,6 +117,16 @@ export class HacsDashboard extends LitElement {
 
   @state()
   private _overflowMenuRepository?: RepositoryBase;
+
+  protected firstUpdated(changedProps: PropertyValues): void {
+    super.firstUpdated(changedProps);
+    fetchAndScheduleBrandsAccessToken(this.hass);
+  }
+
+  public disconnectedCallback(): void {
+    super.disconnectedCallback();
+    clearBrandsTokenRefresh();
+  }
 
   protected render = (): TemplateResult | void => {
     const repositories = this._filterRepositories(
@@ -330,7 +344,6 @@ export class HacsDashboard extends LitElement {
                   src=${brandsUrl({
                     domain: repository.domain || "invalid",
                     type: "icon",
-                    useFallback: true,
                     darkOptimized: this.hass.themes?.darkMode,
                   })}
                   referrerpolicy="no-referrer"
