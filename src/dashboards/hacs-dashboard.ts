@@ -419,7 +419,11 @@ export class HacsDashboard extends LitElement {
       description: defaultKeyData,
       authors: defaultKeyData,
       domain: defaultKeyData,
-      full_name: defaultKeyData,
+      full_name: {
+        ...defaultKeyData,
+        title: localizeFunc("column.full_name"),
+        sortable: true,
+      },
       id: defaultKeyData,
       topics: defaultKeyData,
       actions: {
