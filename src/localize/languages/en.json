@@ -28,6 +28,7 @@
   "column": {
     "actions": "Quick actions",
     "name": "Repository name",
+    "full_name": "Repository",
     "downloads": "Downloads",
     "stars": "Stars",
     "icon": "Icon",
