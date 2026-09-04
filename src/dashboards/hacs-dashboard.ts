@@ -39,7 +39,6 @@ import "../../homeassistant-frontend/src/components/ha-svg-icon";
 import { PageNavigation } from "../../homeassistant-frontend/src/layouts/hass-tabs-subpage";
 import { haStyle } from "../../homeassistant-frontend/src/resources/styles";
 import type { HomeAssistant, Route } from "../../homeassistant-frontend/src/types";
-import { brandsUrl } from "../../homeassistant-frontend/src/util/brands-url";
 import {
   showHacsCustomRepositoriesDialog,
   showHacsFormDialog,
@@ -52,6 +51,7 @@ import { HacsLocalizeKeys } from "../data/localize";
 import type { RepositoryBase, RepositoryType } from "../data/repository";
 import { repositoriesClearNew } from "../data/websocket";
 import { HacsStyles } from "../styles/hacs-common-style";
+import { brandsUrl } from "../tools/brands-url";
 import { documentationUrl } from "../tools/documentation";
 import { typeIcon } from "../tools/type-icon";
 import { showAlertDialog } from "../../homeassistant-frontend/src/dialogs/generic/show-dialog-box";
@@ -330,7 +330,6 @@ export class HacsDashboard extends LitElement {
                   src=${brandsUrl({
                     domain: repository.domain || "invalid",
                     type: "icon",
-                    useFallback: true,
                     darkOptimized: this.hass.themes?.darkMode,
                   })}
                   referrerpolicy="no-referrer"

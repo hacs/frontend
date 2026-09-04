@@ -9,6 +9,11 @@ import { computeLocalize } from "../homeassistant-frontend/src/common/translatio
 import { getTranslation } from "../homeassistant-frontend/src/util/common-translation";
 import { fetchHacsInfo, getRepositories, websocketSubscription } from "./data/websocket";
 import { HacsDispatchEvent } from "./data/common";
+import {
+  clearBrandsTokenRefresh,
+  fetchBrandsAccessToken,
+  scheduleBrandsTokenRefresh,
+} from "./tools/brands-url";
 
 export class HacsElement extends ProvideHassLitMixin(LitElement) {
   @property({ attribute: false }) public hacs: Partial<Hacs> = { localize: () => "" };
@@ -23,6 +28,11 @@ export class HacsElement extends ProvideHassLitMixin(LitElement) {
     this._initHacs();
   }
 
+  public disconnectedCallback(): void {
+    super.disconnectedCallback();
+    clearBrandsTokenRefresh();
+  }
+
   protected willUpdate(changedProperties: PropertyValues) {
     if (!this.hasUpdated) {
       this._initHacs();
@@ -31,6 +41,10 @@ export class HacsElement extends ProvideHassLitMixin(LitElement) {
       const oldHass = changedProperties.get("hass") as HomeAssistant | undefined;
       if (oldHass?.language !== this.hass.language) {
         this._language = this.hass.language;
+      }
+      if (oldHass && !oldHass.connected && this.hass.connected) {
+        // Core hands out new brands tokens after a restart.
+        fetchBrandsAccessToken(this.hass, { retry: true });
       }
     }
 
@@ -74,6 +88,7 @@ export class HacsElement extends ProvideHassLitMixin(LitElement) {
     });
 
     this._updateProperties();
+    scheduleBrandsTokenRefresh(this.hass);
 
     this.addEventListener("update-hacs", (e) =>
       this._updateHacs((e as any).detail as Partial<Hacs>)
@@ -94,9 +109,12 @@ export class HacsElement extends ProvideHassLitMixin(LitElement) {
     const _fetch: any = {};
 
     if (prop === "all") {
+      // The brands access token is resolved alongside the initial data, so the
+      // first render already loads integration icons through the local proxy.
       [_fetch.repositories, _fetch.info] = await Promise.all([
         getRepositories(this.hass),
         fetchHacsInfo(this.hass),
+        fetchBrandsAccessToken(this.hass),
       ]);
     } else if (prop === "info") {
       _fetch.info = await fetchHacsInfo(this.hass);
