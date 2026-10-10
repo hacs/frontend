@@ -5,7 +5,7 @@ import paths from "./paths.cjs";
 import { createHash } from "crypto";
 import path from "path";
 
-const changeLang = { et_EE: "et", "zh-Hans": "zh_Hans", "pt-BR": "pt_BR" };
+const changeLang = { et_EE: "et", "pt-BR": "pt_BR" };
 const ignoredLanguages = new Set(["es-419", "en-GB", "translationMetadata"]);
 const fingerprints = {};
 
