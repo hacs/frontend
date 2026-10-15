@@ -107,13 +107,18 @@
     "open_source": "Open source",
     "pending_restart": "Pending restart",
     "pending_update": "Pending update",
+    "pin": "Pin version",
+    "pinned_available": "Pinned, {version} available",
     "redownload": "Redownload",
     "report": "Request for removal",
+    "unpin": "Unpin version",
     "update_information": "Update information"
   },
   "repository_status": {
     "pending-restart": "Pending restart",
     "pending-upgrade": "Pending update",
+    "pinned-upgrade": "Pinned, update available",
+    "pinned": "Pinned",
     "installed": "Downloaded",
     "new": "New",
     "default": "Available for download"

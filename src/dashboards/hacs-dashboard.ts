@@ -62,7 +62,25 @@ const defaultKeyData = {
   hidden: true,
 };
 
-const STATUS_ORDER = ["pending-restart", "pending-upgrade", "installed", "new", "default"];
+const STATUS_ORDER = [
+  "pending-restart",
+  "pending-upgrade",
+  "pinned-upgrade",
+  "pinned",
+  "installed",
+  "new",
+  "default",
+];
+
+type DisplayStatus = RepositoryBase["status"] | "pinned" | "pinned-upgrade";
+
+const PINNED_STATUS: Partial<Record<RepositoryBase["status"], DisplayStatus>> = {
+  installed: "pinned",
+  "pending-upgrade": "pinned-upgrade",
+};
+
+const displayStatus = (repository: RepositoryBase): DisplayStatus =>
+  (repository.pinned && PINNED_STATUS[repository.status]) || repository.status;
 
 const TABS: PageNavigation[] = [
   {
@@ -277,7 +295,7 @@ export class HacsDashboard extends LitElement {
         .filter((repository) => {
           if (
             activeFilters?.filter((filter) => filter.startsWith("status_")).length &&
-            !activeFilters.includes(`status_${repository.status}`)
+            !activeFilters.includes(`status_${displayStatus(repository)}`)
           ) {
             return false;
           }
@@ -304,7 +322,8 @@ export class HacsDashboard extends LitElement {
         .map((repository) => ({
           ...repository,
           translated_status:
-            localizeFunc(`repository_status.${repository.status}`) || repository.status,
+            localizeFunc(`repository_status.${displayStatus(repository)}`) ||
+            displayStatus(repository),
           translated_category: localizeFunc(`common.type.${repository.category}`),
         })),
   );

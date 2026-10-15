@@ -5,6 +5,7 @@ import {
   mdiDotsVertical,
   mdiDownload,
   mdiExclamationThick,
+  mdiPin,
   mdiStar,
 } from "@mdi/js";
 import type { PropertyValues, TemplateResult } from "lit";
@@ -141,9 +142,13 @@ export class HacsRepositoryDashboard extends LitElement {
     }
   }
 
-  protected updated(changedProps) {
+  protected updated(changedProps: PropertyValues) {
     super.updated(changedProps);
-    if (changedProps.has("repositories") && this._repository) {
+    if (
+      changedProps.has("hacs") &&
+      this._repository &&
+      changedProps.get("hacs")?.repositories !== this.hacs.repositories
+    ) {
       this._fetchRepository();
     }
   }
@@ -210,6 +215,19 @@ export class HacsRepositoryDashboard extends LitElement {
                       title="${this.hacs.localize("dialog_info.version_installed")}"
                     >
                       <ha-svg-icon slot="icon" .path=${mdiCube}></ha-svg-icon>
+                    </ha-assist-chip>
+                  `
+                : ""}
+              ${this._repository.pinned
+                ? html`
+                    <ha-assist-chip
+                      .label=${this._repository.pending_upgrade
+                        ? this.hacs.localize("repository_card.pinned_available", {
+                            version: this._repository.available_version,
+                          })
+                        : this.hacs.localize("repository_status.pinned")}
+                    >
+                      <ha-svg-icon slot="icon" .path=${mdiPin}></ha-svg-icon>
                     </ha-assist-chip>
                   `
                 : ""}

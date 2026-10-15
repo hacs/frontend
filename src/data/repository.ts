@@ -1,3 +1,7 @@
+import {
+  fetchEntityRegistry,
+  updateEntityRegistryEntry,
+} from "../../homeassistant-frontend/src/data/entity_registry";
 import type { HomeAssistant } from "../../homeassistant-frontend/src/types";
 
 export type RepositoryType =
@@ -32,6 +36,7 @@ export interface RepositoryBase {
   name: string;
   new: boolean;
   pending_upgrade: boolean;
+  pinned: boolean;
   stars: number;
   state: string;
   status: "pending-restart" | "pending-upgrade" | "new" | "installed" | "default";
@@ -76,3 +81,16 @@ export const repositoryReleases = async (hass: HomeAssistant, repositoryId: stri
     type: "hacs/repository/releases",
     repository_id: repositoryId,
   });
+
+export const repositoryPin = async (hass: HomeAssistant, repositoryId: string, pinned: boolean) => {
+  const entry = (await fetchEntityRegistry(hass.connection)).find(
+    (entity) =>
+      entity.platform === "hacs" &&
+      entity.unique_id === repositoryId &&
+      entity.entity_id.startsWith("update."),
+  );
+  if (!entry) {
+    throw new Error(`No update entity found for repository ${repositoryId}`);
+  }
+  await updateEntityRegistryEntry(hass, entry.entity_id, { disabled_by: pinned ? "user" : null });
+};

@@ -8,15 +8,22 @@ import {
   mdiInformation,
   mdiLanguageJavascript,
   mdiMoonNew,
+  mdiPin,
+  mdiPinOff,
   mdiReload,
 } from "@mdi/js";
 import memoizeOne from "memoize-one";
 import { mainWindow } from "../../homeassistant-frontend/src/common/dom/get_main_window";
 import { navigate } from "../../homeassistant-frontend/src/common/navigate";
 import { getConfigEntries } from "../../homeassistant-frontend/src/data/config_entries";
-import { showConfirmationDialog } from "../../homeassistant-frontend/src/dialogs/generic/show-dialog-box";
-import type { RepositoryBase } from "../data/repository";
 import {
+  showAlertDialog,
+  showConfirmationDialog,
+} from "../../homeassistant-frontend/src/dialogs/generic/show-dialog-box";
+import type { RepositoryBase } from "../data/repository";
+import { repositoryPin } from "../data/repository";
+import {
+  getRepositories,
   repositoriesClearNewRepository,
   repositoryUninstall,
   repositoryUpdate,
@@ -64,6 +71,32 @@ export const repositoryMenuItems = memoizeOne(
         showHacsDownloadDialog(element, { hacs: element.hacs, repositoryId: repository.id }),
       hideForUninstalled: true,
     },
+    ...(repository.installed
+      ? [
+          {
+            path: repository.pinned ? mdiPinOff : mdiPin,
+            label: localize(repository.pinned ? "repository_card.unpin" : "repository_card.pin"),
+            action: async () => {
+              try {
+                await repositoryPin(element.hass, repository.id, !repository.pinned);
+              } catch (err: any) {
+                showAlertDialog(element, {
+                  text: err?.message ?? String(err),
+                  confirmText: element.hass.localize("ui.common.ok"),
+                });
+                return;
+              }
+              element.dispatchEvent(
+                new CustomEvent("update-hacs", {
+                  detail: { repositories: await getRepositories(element.hass) },
+                  bubbles: true,
+                  composed: true,
+                }),
+              );
+            },
+          },
+        ]
+      : []),
     ...(repository.new
       ? [
           {
