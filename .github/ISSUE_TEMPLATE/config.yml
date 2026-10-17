@@ -1,5 +1,8 @@
 blank_issues_enabled: false
 contact_links:
-  - name: HACS Issue tracker
-    url: https://github.com/hacs/integration/issues
-    about: For issues and feature requests related to HACS
+  - name: Feature requests
+    url: https://github.com/orgs/home-assistant/discussions/categories/marketplace
+    about: HACS is moving into Home Assistant as the Marketplace, ideas and feature requests go to its discussions
+  - name: Bugs in the Marketplace (Home Assistant 2026.11 and later)
+    url: https://github.com/home-assistant/frontend/issues
+    about: Running the Marketplace that ships with Home Assistant? Report bugs in the Home Assistant frontend repository
