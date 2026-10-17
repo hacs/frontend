@@ -6,7 +6,7 @@ HACS is moving into Home Assistant as the built-in Marketplace integration, star
 
 - Code: [home-assistant/frontend](https://github.com/home-assistant/frontend)
 - Contributor documentation: [contributors.home-assistant.io/frontend](https://contributors.home-assistant.io/frontend/)
-- Bug reports: [Marketplace issues in home-assistant/frontend](https://github.com/home-assistant/frontend/issues?q=sort%3Aupdated-desc+is%3Aissue+state%3Aopen+label%3AMarketplace)
+- Bug reports: [home-assistant/frontend issues](https://github.com/home-assistant/frontend/issues)
 - Feature requests: [Marketplace discussions](https://github.com/orgs/home-assistant/discussions/categories/marketplace)
 - Repository submissions: [hacs/default](https://github.com/hacs/default)
 
